@@ -1,0 +1,51 @@
+<ng-container >
+    <div class="container-fluid">
+        <div class="row shadow ">
+            <div class="col-sm-2 p-3 brand-container">
+                   <a class="nav-link home-link text-light" href="javascript:void(0);" >E2X InfoTech</a>
+            </div>
+            <div class="col-sm-10 text-end p-3 background-nav">
+                <div class="h3 me-3" id="navbarSupportedContent">
+                    <div class="display-6 text-light">Hi, Owner</div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid list-category">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 section-background">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="javascript:void(0);" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-5 d-none d-sm-inline"></span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start  ps-4" id="menu">
+                        <li class="nav-item h6 w-100">
+                            <a href="javascript:void(0);" routerLink="/user/dashboard" class="nav-link px-0" routerLinkActive="active-tab" #rla="routerLinkActive" >
+                          <span class="ms-1 d-none d-sm-inline px-2">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item h6 w-100">
+                            <a href="javascript:void(0);" routerLink="/user/manage-property" class="nav-link px-0" routerLinkActive="active-tab" #rla="routerLinkActive" >
+                          <span class="ms-1 d-none d-sm-inline px-2">Manage Property</span>
+                            </a>
+                        </li>
+                        <li class="nav-item h6 w-100">
+                            <a href="javascript:void(0);" routerLink="/calendar-view" class="nav-link px-0" routerLinkActive="active-tab" #rla="routerLinkActive" >
+                              <span class="ms-1 d-none d-sm-inline px-2">Calendar View</span>
+                            </a>
+                        </li>
+                        <li class="nav-item h6 w-100">
+                            <a href="javascript:void(0);" (click)="logout()" class="nav-link px-0" routerLinkActive="active-tab" #rla="routerLinkActive" >
+                              <span class="ms-1 d-none d-sm-inline px-2" >LogOut</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                </div>
+            </div>
+            <div class="col">
+               <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+    </ng-container>

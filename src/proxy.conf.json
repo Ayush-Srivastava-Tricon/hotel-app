@@ -1,0 +1,11 @@
+{
+    "/hotelapi/*":{
+        "target":"http://locahost:4200/",
+        "secure":false,
+        "pathRewrite":{
+            "^/hotelapi":""
+        },
+        "changeOrigin":false,
+        "logLevel":"debug"
+    }
+}

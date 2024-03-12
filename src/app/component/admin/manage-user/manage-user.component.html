@@ -1,0 +1,170 @@
+<div class="container-fluid mt-3 p-4">
+    <div class="row">
+        <div class="col-sm-12 text-end">
+            <button class="btn btn-success" (click)="openModal()">Add Owner</button>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 pt-4 ps-4">
+            <table class="table table-sm table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr class="table-row-rooms">
+                        <th>Owner Id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Alternate Email</th>
+                        <th>Mobile</th>
+                        <th>Alternate Mobile</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="ownerList.length==0">
+                        <td colspan="19" class="text-center">
+                            No Data
+                        </td>
+                    </tr>
+                    <tr *ngFor="let item of ownerList;let idx = index;" class="text-center align-middle">
+                        <td>{{item.owner_id}}</td>
+                        <td> <a href="javascript:void(0);" (click)="viewOwnerDetails()">{{item.name}}</a>  </td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.alternate_email}}</td>
+                        <td>{{item.mobile}}</td>
+                        <td>{{item.alternate_mobile}}</td>
+                        <td>{{item.status == 1 ? 'Active' :'InActive'}}</td>
+                        <td>
+                            <div class="dropdown">
+                                <i class="btn btn-light bi bi-three-dots-vertical"
+                                    (click)="showDropDown(idx)"></i>
+                                <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
+                                    *ngIf="showActionDropDown[idx]">
+                                    <a class="dropdown-item">Change Status</a>
+                                    <a class="dropdown-item" (click)="editOwnerOpenModal(item)">Edit Owner</a>
+                                    <a class="dropdown-item" (click)="deleteOwnerModal(idx)">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal" *ngIf="showModal.owner||showModal.delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" *ngIf="showModal.owner">
+                <h5 class="modal-title">{{isEditModal? 'Edit':'Add'}} Owner</h5>
+                <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="showModal.owner">
+                    <div [formGroup]="ownerModal">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <label for="propertyType">Name</label>
+                                <input type="text" class="form-control" formControlName="name"
+                                    [class.is-invalid]="ownerModal.controls.name.dirty && ownerModal.controls.name.errors?.['required']">
+                                <small
+                                    *ngIf="ownerModal.controls.name.dirty && ownerModal.controls.name.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="propertyType">Email</label>
+                                <input type="email"  class="form-control" formControlName="email"
+                                    [class.is-invalid]="ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['required']">
+                                <small
+                                    *ngIf="ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                <small
+                                    *ngIf="ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['pattern']"
+                                    class="text-danger">Only Number</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                           <div class="col-sm-6">
+                                <label for="propertyType">Alternate Email</label>
+                                <input type="email" class="form-control" formControlName="alternate_email"
+                                    [class.is-invalid]="ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['required']">
+                                <small
+                                    *ngIf="ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                <small
+                                    *ngIf="ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['pattern']"
+                                    class="text-danger">Only Number</small>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="propertyType">Password</label>
+                                <input type="password"  class="form-control" formControlName="password"
+                                    [class.is-invalid]="ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['required']">
+                                <small
+                                    *ngIf="ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                <small
+                                    *ngIf="ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['pattern']"
+                                    class="text-danger">Only Number</small>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                 <label for="propertyType">Mobile</label>
+                                 <input type="text" class="form-control" formControlName="mobile"
+                                     [class.is-invalid]="ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['required']">
+                                 <small
+                                     *ngIf="ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['required']"
+                                     class="text-danger">Required</small>
+                                 <small
+                                     *ngIf="ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['pattern']"
+                                     class="text-danger">Only Number</small>
+                             </div>
+                             <div class="col-sm-6">
+                                 <label for="propertyType">Alternate Mobile</label>
+                                 <input type="text"  class="form-control" formControlName="alternate_mobile"
+                                     [class.is-invalid]="ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['required']">
+                                 <small
+                                     *ngIf="ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['required']"
+                                     class="text-danger">Required</small>
+                                 <small
+                                     *ngIf="ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['pattern']"
+                                     class="text-danger">Only Number</small>
+                             </div>
+                         </div>
+                        <div class="row mt-3 mb-2">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-primary"
+                                    (click)="isEditModal ? editOwner() :createNewOwner()">{{isEditModal?'Edit':'Add'}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="showModal.delete">
+                    <div class="modal-header flex-row">
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Do you really want to delete the Owner ?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            (click)="closeModal()">Cancel</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteOwner()">Delete</button>
+                    </div>
+                </ng-container>
+
+
+            </div>
+            <div class="modal-footer" *ngIf="showModal.ownerModal">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade in" *ngIf="showModal.ownerModal"></div>

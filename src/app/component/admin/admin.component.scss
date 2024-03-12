@@ -1,0 +1,252 @@
+.brand-container{
+    background-color: #1d5a8f;
+    color: var(--white);
+    font-size: 1.5rem;
+  }
+  
+  .list-category {
+  
+    .section-background {
+        background-color: #1d5a8f;
+  
+        .nav-item a.active-tab{
+          background-color: #2196f3;
+        }
+  
+        .nav-item .nav-link{
+            color: #fff !important;
+            display:flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            transition: all 0.2s ease;
+  
+            img{
+                 filter: invert(1);
+            }
+        }
+        .nav-item .nav-link:hover{
+                padding-left: 5px !important;
+                
+        }
+    }
+  
+   
+  }
+  
+  .form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 350px;
+      background-color: #fff;
+      padding: 33px;
+      border-radius: 20px;
+      position: relative;
+    }
+    
+    .title {
+      font-size: 28px;
+      color: royalblue;
+      font-weight: 600;
+      letter-spacing: -1px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding-left: 30px;
+    }
+    
+    .title::before,.title::after {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      left: 0px;
+      background-color: royalblue;
+    }
+    
+    .title::before {
+      width: 18px;
+      height: 18px;
+      background-color: royalblue;
+    }
+    
+    .title::after {
+      width: 18px;
+      height: 18px;
+      animation: pulse 1s linear infinite;
+    }
+    
+    .message, .signin {
+      color: rgba(88, 87, 87, 0.822);
+      font-size: 14px;
+    }
+    
+    .signin {
+      text-align: center;
+    }
+    
+    .signin a {
+      color: royalblue;
+    }
+    
+    .signin a:hover {
+      text-decoration: underline royalblue;
+    }
+    
+    .flex {
+      display: flex;
+      width: 100%;
+      gap: 6px;
+    }
+    
+    .form label {
+      position: relative;
+    }
+    
+    .form label .input {
+      width: 100%;
+      padding: 10px 10px 20px 10px;
+      outline: 0;
+      border: 1px solid rgba(105, 105, 105, 0.397);
+      border-radius: 10px;
+    }
+    
+    .form label .input + span {
+      position: absolute;
+      left: 10px;
+      top: 15px;
+      color: grey;
+      font-size: 0.9em;
+      cursor: text;
+      transition: 0.3s ease;
+    }
+    
+    .form label .input:placeholder-shown + span {
+      top: 15px;
+      font-size: 0.9em;
+    }
+    
+    .form label .input:focus + span,.form label .input:valid + span {
+      top: 30px;
+      font-size: 0.7em;
+      font-weight: 600;
+    }
+    
+    .form label .input:valid + span {
+      color: green;
+    }
+    
+    .submit {
+      border: none;
+      outline: none;
+      background-color: royalblue;
+      padding: 10px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
+      transform: .3s ease;
+    }
+    
+    .submit:hover {
+      background-color: rgb(56, 90, 194);
+    }
+    
+    @keyframes pulse {
+      from {
+        transform: scale(0.9);
+        opacity: 1;
+      }
+    
+      to {
+        transform: scale(1.8);
+        opacity: 0;
+      }
+    }
+  
+    .loader {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    
+    .jimu-primary-loading:before,
+    .jimu-primary-loading:after {
+      position: absolute;
+      top: 0;
+      content: '';
+    }
+    
+    .jimu-primary-loading:before {
+      left: -19.992px;
+    }
+    
+    .jimu-primary-loading:after {
+      left: 19.992px;
+      -webkit-animation-delay: 0.32s !important;
+      animation-delay: 0.32s !important;
+    }
+    
+    .jimu-primary-loading:before,
+    .jimu-primary-loading:after,
+    .jimu-primary-loading {
+      background: #076fe5;
+      -webkit-animation: loading-keys-app-loading 0.8s infinite ease-in-out;
+      animation: loading-keys-app-loading 0.8s infinite ease-in-out;
+      width: 13.6px;
+      height: 32px;
+    }
+    
+    .jimu-primary-loading {
+      text-indent: -9999em;
+      margin: auto;
+      position: absolute;
+      right: calc(50% - 6.8px);
+      top: calc(50% - 16px);
+      -webkit-animation-delay: 0.16s !important;
+      animation-delay: 0.16s !important;
+    }
+    
+    @-webkit-keyframes loading-keys-app-loading {
+    
+      0%,
+      80%,
+      100% {
+        opacity: .75;
+        box-shadow: 0 0 #076fe5;
+        height: 32px;
+      }
+    
+      40% {
+        opacity: 1;
+        box-shadow: 0 -8px #076fe5;
+        height: 40px;
+      }
+    }
+    
+    @keyframes loading-keys-app-loading {
+    
+      0%,
+      80%,
+      100% {
+        opacity: .75;
+        box-shadow: 0 0 #076fe5;
+        height: 32px;
+      }
+    
+      40% {
+        opacity: 1;
+        box-shadow: 0 -8px #076fe5;
+        height: 40px;
+      }
+    }
+  
+    .opacityLow{
+      opacity: 0.9;
+    }
+
+    .background-nav{
+      background: #1d5a8f;
+    }

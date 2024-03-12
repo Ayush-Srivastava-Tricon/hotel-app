@@ -1,0 +1,350 @@
+<div class="container-fluid">
+
+    <div class="row mb-3 justify-content-around align-items-center calendar-header ">
+      <div class="col-sm-11">
+        <div class="d-inline-flex align-items-center me-2">
+          <div class="bi bi-square-fill text-success me-1" style="font-size: 20px;"></div>
+          <span>Available</span>
+        </div>
+        <div class="d-inline-flex align-items-center me-2">
+          <div class="bi bi-square-fill text-danger me-1" style="font-size: 20px;"></div>
+          <span>Not Available</span>
+        </div>
+        <div class="d-inline-flex align-items-center me-2">
+          <div class="bi bi-dash-square-fill text-danger me-1" style="font-size: 20px;"></div>
+          <span>Stop Sale</span>
+        </div>
+        <div class="d-inline-flex align-items-center me-2">
+          <div class="bi bi-slash-circle-fill text-warning me-1" style="font-size: 20px;"></div>
+          <span>Out of Order</span>
+        </div>
+        <div class="d-inline-flex align-items-center me-2">
+          <div class="bi bi-box-arrow-in-right text-danger me-1" style="font-size: 20px;"></div>
+          <span>Closed to Arrival</span>
+        </div>
+        <div class="d-inline-flex align-items-center me-2">
+          <div class="bi bi-box-arrow-right text-danger me-1" style="font-size: 20px;"></div>
+          <span>Closed to Departure</span>
+        </div>
+      </div>
+      <div class="col-sm-1 text-end">
+        <span class="bi bi-question-octagon-fill text-primary" style="font-size: 25px;"></span>
+      </div>
+    </div>
+  
+    <div class="row mb-4 justify-content-between">
+      <div class="col-sm-3">
+        <div class="d-flex">
+          <button class="btn btn-sm btn-primary text-light">Date Range</button>
+          <input type="date"  id= "date" class="form-control-sm mx-4" (change)="selectedDate($event)">
+        </div>
+      </div>
+      <div class="col-sm-6"></div>
+      <div class="col-sm-3 text-end">
+          <select class="form-control-sm me-3">
+            <option value="1">Property Id</option>
+          </select>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row my-2" style="background-color: antiquewhite;">
+        <ng-container *ngFor="let data of mainData; let calendarIdx =index;">
+          <div class="row  mb-3 d-flex justify-content-between align-items-center pt-2">
+            <div class="col-sm-1 "></div>
+            <div class="col-sm-3"> <span class="bi bi-arrow-left-square text-danger"
+                style="font-size: 30px;cursor: pointer;" (click)="previousMonth()">
+              </span>
+            </div>
+            <div class="col-sm-3">
+              <div class="month">{{ currentMonth }}</div>
+            </div>
+            <div class="col-sm-3 text-end"> <small class="lead me-1">{{nextDisplayMonth}}</small> <span
+                class="bi bi-arrow-right-square text-danger" style="font-size: 30px;cursor: pointer;"
+                (click)="nextMonth()"></span></div>
+          </div>
+          <table class="table table-bordered table-sm shadow p-3 mb-3" loading="lazy">
+            <thead class="thead-dark">
+              <tr id="weekId">
+                <th class="textRandom">
+                  {{data.name}}
+                </th>
+                <ng-container *ngFor="let head of weekdaysWithDates;let thIdx=index;">
+                  <th class="weekday-date" id="head{{thIdx}}{{calendarIdx}}"
+                     style="cursor: pointer;"
+                    [ngClass]="{'selected-date':head.isSelectedDate,'active':dragEl['head'+thIdx+calendarIdx]}">
+                    {{head.weekday}}
+                    <br>
+                    {{head.date}}
+                  </th>
+                </ng-container>
+              </tr>
+  
+            </thead>
+            <tbody>
+              <tr *ngIf="loader">
+                <td colspan="31" class="spinner-border text-center" role="status"></td>
+              </tr>
+              <ng-container *ngFor="let text of randomTexts ; let id = index;">
+                <tr>
+                  <td class="textRandom">
+                    {{ text }}
+                  </td>
+                  <ng-container *ngFor="let dayData of datesData;let dataIdx = index;">
+                    <td *ngIf="id == 0" class="hover-td" 
+                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-success':dayData?.newData?.all_data?.al ,'text-light':dayData?.newData?.all_data?.al , 'bg-danger': !(dayData?.newData?.all_data?.al) || dayData?.newData?.all_data?.al == 0 ,'active':dragEl['head'+dataIdx+calendarIdx] }"
+                      (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"     (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)" >
+                      {{dayData?.newData?.all_data?.al }}
+                    </td>
+                    <td *ngIf="id == 1" class="hover-td" [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
+                    (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''" (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
+                      {{dayData?.newData?.all_data?.mn }} -  {{dayData?.newData?.all_data?.mx }}
+                    </td>
+                    <td *ngIf="id == 2" class="hover-td" [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
+                    (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''" (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
+                      <i class="bi bi-box-arrow-in-right text-danger mx-1 " style="font-size: 20px;"
+                        *ngIf="dayData?.newData?.all_data?.cta == 'true'"></i>
+                      <i class="bi bi-box-arrow-right text-danger mx-1 " style="font-size: 20px;"
+                        *ngIf="dayData?.newData?.all_data?.ctd == 'true'"></i>
+                    </td>
+                    <td *ngIf="id == 3" class="hover-td"
+                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.all_data?.ss,'active':dragEl['head'+dataIdx+calendarIdx]}"
+                      (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"  (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
+                      {{dayData?.newData?.all_data?.pr}}
+                    </td>
+                  </ng-container>
+                </tr>
+              </ng-container>
+              <ng-container *ngFor="let child of data.children;">
+                <tr>
+                  <td>
+                    <a href="javascript:void(0);">
+                      {{child.name}}
+                    </a>
+                    <br>
+                  </td>
+                  <ng-container *ngFor="let date of datesData;let idx= index;">
+                    <td class="hover-td">
+                      400
+                    </td>
+                  </ng-container>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="modal" tabindex="-1" *ngIf="showModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Calendar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body" [formGroup]="modalFieldForm">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-7">
+                <fieldset class="border p-2">
+                  <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Date Interval
+                    </button> </legend>
+                  <div class="row g-3 alight-items-center">
+                    <div class="col-md-5">
+                      <input type="date" formControlName="start" class="form-control-sm" id="start" [class.is-invalid]="modalFieldForm.controls.al?.errors?.['required']">
+                      <small *ngIf="modalFieldForm.controls.start?.dirty && modalFieldForm.controls.start?.errors?.['required']">Can't be Empty</small>
+                    </div>
+                    <div class="col-md-2 p-0 text-center align-self-center ">
+                      ->
+                    </div>
+                    <div class="col-md-5">
+                      <input type="date" formControlName='end' class="form-control-sm" id="end"  [class.is-invalid]="modalFieldForm.controls.end?.errors?.['required']">
+                      <small *ngIf="modalFieldForm.controls.end?.dirty && modalFieldForm.controls.end?.errors?.['required']">Can't be Empty</small>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset class="border p-2">
+                  <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary">Room </button>
+                  </legend>
+                  <div class="row g-3 align-items-center ">
+                    <div class="col-md-6">
+                      <span for="room">{{activeModalRoomName}}</span>
+                    </div>
+                    <div class="col-md-6 text-center">
+                      <img src="../assets/super-deluxe-room.jpg" width="100" height="80" alt="">
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col-sm-5">
+                <fieldset class="border p-2 mb-2">
+                  <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary">Availability (Qty =
+                      {{modalFieldForm.controls.al.value}}) </button> </legend>
+                  <div class="row g-3">
+                    <div class="col-md-12">
+                      <input type="text" formControlName='al' class="form-control" id="start" [class.is-invalid]="modalFieldForm.controls.al?.errors?.['pattern']">
+                      <small class="text-danger"
+                        *ngIf="modalFieldForm.controls.al?.dirty && modalFieldForm.controls.al?.errors?.['required'] ">Field
+                        is required</small>
+                      <small class="text-danger"
+                        *ngIf="modalFieldForm.controls.al?.dirty && modalFieldForm.controls.al?.errors?.['pattern']">Only
+                        Number</small>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset class="border p-2 mb-2">
+                  <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary">Price </button>
+                  </legend>
+                  <div class="row g-3">
+                    <div class="col-md-12">
+                      <input type="text" class="form-control" formControlName='pr' id="price" [class.is-invalid]="modalFieldForm.controls.pr?.errors?.['pattern']">
+                      <small class="text-danger"
+                        *ngIf="modalFieldForm.controls.pr?.dirty && modalFieldForm.controls.pr?.errors?.['required'] ">Field
+                        is required</small>
+                      <small class="text-danger"
+                        *ngIf="modalFieldForm.controls.pr?.dirty && modalFieldForm.controls.pr?.errors?.['pattern']">
+                        Number with 2 Decimal</small>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset class="border p-2 mb-2">
+                  <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary">Length of Stay
+                    </button> </legend>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="min">Min</label>
+                      <input type="text" min="1" max="99" maxlength="2" class="form-control" formControlName="mn"
+                        id="price" [class.is-invalid]="modalFieldForm.controls.mn?.errors?.['pattern']">
+                      <small class="text-danger"
+                        *ngIf="modalFieldForm.controls.mn?.dirty && modalFieldForm.controls.mn?.errors?.['required'] ">Field
+                        is required</small>
+                      <small class="text-danger"
+                        *ngIf="modalFieldForm.controls.mn?.dirty && modalFieldForm.controls.mn?.errors?.['pattern']">Only
+                        Number</small>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="min">Max</label>
+                      <input type="text" min="1" max="999" maxlength="3" class="form-control" formControlName="mx"
+                        id="price" [class.is-invalid]="modalFieldForm.controls.mx?.errors?.['pattern']">
+                      <small class="text-danger"
+                        *ngIf="modalFieldForm.controls.mx?.dirty && modalFieldForm.controls.mx?.errors?.['required'] ">Field
+                        is required</small>
+                      <small class="text-danger"
+                        *ngIf="modalFieldForm.controls.mx?.dirty && modalFieldForm.controls.mx?.errors?.['pattern']">Only
+                        Number</small>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+  
+            <div class="row">
+              <div class="col-md-12">
+                <fieldset class="border p-2">
+                  <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary"
+                      (click)="showAdvanceSection=!showAdvanceSection">Advance Setting </button> </legend>
+                  <div class="row g-3" *ngIf="showAdvanceSection">
+  
+                    <div class="row align-items-baseline mx-1">
+                      <div class="col-md-5">
+                        <label for="ss" class="col-form-label-lg">Stop Sale</label>
+                      </div>
+                      <div class="col-md-7">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" [value]="'true'"
+                            [checked]="modalFieldForm.get('ss').value === 'true'" formControlName="ss">
+                          <label class="form-check-label" for="ss1">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" [value]="'false'"
+                            [checked]="modalFieldForm.get('ss').value == 'false'" formControlName="ss">
+                          <label class="form-check-label" for="ss2">No</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio">
+                          <label class="form-check-label" for="ss3">Calendar Unchange</label>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="row align-items-baseline mx-1 ">
+                      <div class="col-md-5">
+                        <label for="ss" class="col-form-label-lg">Check in Allowed</label>
+                      </div>
+                      <div class="col-md-7">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" [value]="'true'"
+                            [checked]="modalFieldForm.get('cta').value === 'true'" formControlName="cta">
+                          <label class="form-check-label" for="cin1">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" [value]="'false'"
+                            [checked]="modalFieldForm.get('cta').value === 'true'" formControlName="cta">
+                          <label class="form-check-label" for="cin2">No</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" id="cin" formControlName="cta">
+                          <label class="form-check-label" for="cin">Calendar Unchange</label>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="row align-items-baseline mx-1 ">
+                      <div class="col-md-5">
+                        <label for="ss" class="col-form-label-lg">Check out Allowed</label>
+                      </div>
+                      <div class="col-md-7">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio"
+                            [checked]="modalFieldForm.get('ctd').value === 'true'" [value]="'true'" formControlName="ctd">
+                          <label class="form-check-label" for="cout1">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio"
+                            [checked]="modalFieldForm.get('ctd').value === 'true'" [value]="'false'"
+                            formControlName="ctd">
+                          <label class="form-check-label" for="cout2">No</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" formControlName="ctd" id="cout3">
+                          <label class="form-check-label" for="cout3">Calendar Unchange</label>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="row align-items-baseline mx-1 ">
+                      <div class="col-md-5">
+                        <label for="ss" class="col-form-label-lg">Cutoff Days</label>
+                      </div>
+                      <div class="col-md-7">
+                        <div class="form-check form-check-inline">
+                          <input class="form-control" type="text" formControlName="cu" [class.is-invalid]="modalFieldForm.controls.cu?.errors?.['pattern']">
+                          <small class="text-danger"
+                            *ngIf="modalFieldForm.controls.cu?.dirty && modalFieldForm.controls.cu?.errors?.['required'] ">Field
+                            is required</small>
+                          <small class="text-danger"
+                            *ngIf="modalFieldForm.controls.cu?.dirty && modalFieldForm.controls.cu?.errors?.['pattern']">Only
+                            Number</small>
+                        </div>
+                        <div class="form-check form-check-inline">
+                        </div>
+                        <div class="form-check form-check-inline">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+            (click)="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="updateValue()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
