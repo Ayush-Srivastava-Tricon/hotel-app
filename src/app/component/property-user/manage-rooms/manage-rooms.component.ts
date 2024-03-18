@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AppConstants } from 'src/app/constants/app.constant';
+import { PropertyService } from 'src/app/services/property.service';
 import { AlertService } from 'src/app/shared/alert.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class ManageRoomsComponent {
   isEditModal:boolean=false;
   deleteRoomIndex:number=0;
 
-  constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService){
+  constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService,private proService:PropertyService){
     this.roomModal  = this.fb.group(
       {
         property_id:['',],
@@ -38,37 +39,57 @@ export class ManageRoomsComponent {
         // is_active:[true],
       }
     )
-    this.roomsList =[
-      {
-        property_id:1,
-        room_name:'99Accres',
-        adult:'Flat',
-        child:'Lucknow',
-        default_price:'Lucknow',
-        default_quantity:'India',
-        default_min:'UP',
-        default_max:'Flat beuatiful',
-        parent_room_id:34,
-        nonrefundable:3999,
-        is_pms:'Gomti Nagar',
-        is_dorm:12,
-        cald_show:2,
-        be_show:5,
-        breakfast:5,
-        // is_active:5,
-        description:''
+    // this.roomsList =[
+    //   {
+    //     property_id:1,
+    //     room_name:'99Accres',
+    //     adult:'Flat',
+    //     child:'Lucknow',
+    //     default_price:'Lucknow',
+    //     default_quantity:'India',
+    //     default_min:'UP',
+    //     default_max:'Flat beuatiful',
+    //     parent_room_id:34,
+    //     nonrefundable:3999,
+    //     is_pms:'Gomti Nagar',
+    //     is_dorm:12,
+    //     cald_show:2,
+    //     be_show:5,
+    //     breakfast:5,
+    //     // is_active:5,
+    //     description:''
+    //   }
+    // ]
+  }
+
+  ngOnInit(){
+    this.fetchAllRooms();
+  }
+
+  fetchAllRooms(){
+    this.proService.fetchAllRooms((res:any)=>{
+      if(res.status == 200){
+        console.log(res);
+        
       }
-    ]
+    })
   }
 
   createNewRoom(){
       if(this.roomModal.status == "VALID"){
-        console.log(this.roomModal.value);
-        this.roomsList.push(this.roomModal.value);
-        this.showModal.property=false;
-        this.roomModal.reset();
-        this.alertService.alert("success", "New Property Created", "Success", { displayDuration: 2000, pos: 'top' });
-      }else{
+        this.proService.addRooms(this.roomModal.value,(res:any)=>{
+          if(res.status == 200){
+            this.roomsList.push(this.roomModal.value);
+            this.showModal.property=false;
+            this.roomModal.reset();
+            this.alertService.alert("success", "New Property Created", "Success", { displayDuration: 2000, pos: 'top' });
+          }
+        else{
+          this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 2000, pos: 'top' });
+        }
+      })
+    }
+      else{
         this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
       }
   }

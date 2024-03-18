@@ -37,6 +37,10 @@ export class BaseServiceService {
     //<=======Owner Serivce===========>
     'getAllProperty':'hotelapi/properties',
     'addNewProperty':'hotelapi/properties',
+
+    //<========Property Service========>
+    'getAllRooms':'hotelapi/rooms ',
+    'addRooms':'hotelapi/rooms ',
   }
 
   constructor(public http:HttpClient) { }
