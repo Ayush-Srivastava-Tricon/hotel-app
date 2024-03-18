@@ -6,45 +6,38 @@
     </div>
     <div class="row justify-content-center align-items-center">
         <div class="col-sm-12 pt-4 ps-1">
-            <table class="table table-sm table-bordered table-striped">
+            <table class="table table-sm table-bordered">
                 <thead class="thead-dark">
                     <tr class="table-row-rooms">
                         <th>Property ID</th>
                         <th>Property Name</th>
-                        <th>Description</th>
-                        <th>Amenities</th>
-                        <th>Email</th>
-                        <th>Mobile</th>
                         <th>City</th>
-                        <th>State</th>
-                        <th>Country</th>
-                        <th>Postal Code</th>
-                        <th>Latitute</th>
-                        <th>Longitude</th>
                         <th>Owner Id</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="propertyList.length==0">
-                        <td colspan="9" class="text-center">
-                            No Data
+                    <tr *ngIf="loader">
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
                         </td>
                     </tr>
+                    <ng-container *ngIf="propertyList.length>0 && !loader">
+
                     <tr *ngFor="let item of propertyList;let idx = index;" class="text-center align-middle">
                         <td>{{item.property_id}}</td>
                         <td>{{item.property_name}}</td>
-                        <td>{{item.description}}</td>
-                        <td>{{item.amenities}}</td>
-                        <td>{{item.email}}</td>
-                        <td>{{item.mobile}}</td>
                         <td>{{item.city}}</td>
-                        <td>{{item.state}}</td>
-                        <td>{{item.country}}</td>
-                        <td>{{item.postal_code}}</td>
-                        <td>{{item.latitudes}}</td>
-                        <td>{{item.longitudes}}</td>
                         <td>{{item.owner_id}}</td>
                         <td>{{item.status == 1 ? 'Active' : 'InActive'}}</td>
                         <td>
@@ -60,6 +53,8 @@
                             </div>
                         </td>
                     </tr>
+                </ng-container>
+
                 </tbody>
             </table>
 

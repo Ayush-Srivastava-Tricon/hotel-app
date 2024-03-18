@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-property-user',
@@ -9,9 +10,14 @@ import { Router } from '@angular/router';
 export class PropertyUserComponent {
 
 
-  constructor(private router:Router){}
+  constructor(private router:Router,private adminService:AdminService){}
 
   logout(){
-    this.router.navigate(['/login'])
+    if(this.adminService.isAdmin()){
+      this.router.navigate(['/admin'])
+    }else{
+      this.router.navigate(['/login'])
+    }
+    
   }
 }

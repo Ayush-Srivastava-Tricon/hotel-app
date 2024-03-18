@@ -98,3 +98,18 @@
       font-weight: 600;
     }
   }
+
+  tr>td>a{
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .btn.disabled{
+    background-color: lightgray;
+    border: none;
+  }
+
+  .manage-owner-container{
+    background-color: aliceblue;
+    height: 100vh;
+  }

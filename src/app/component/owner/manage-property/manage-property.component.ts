@@ -19,6 +19,7 @@ export class ManagePropertyComponent {
   showActionDropDown:any={};
   isEditModal:boolean=false;
   deletePropertyIndex:number=0;
+  loader:boolean=false;
 
   constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService){
     this.propertyUserModal  = this.fb.group(
@@ -85,9 +86,62 @@ export class ManagePropertyComponent {
     ]
   }
 
+  ngOnInit(){
+    // this.fetchPropertyList();
+    this.loader=true;
+    this.propertyList =[
+      {
+        "property_id": 1,
+        "email": "amit-kumar@e2x.com",
+        "property_name": "Taj",
+        "property_type": "HOTEL",
+        "address": null,
+        "mobile": "8765654345",
+        "city": "Lucknow",
+        "state": "Uttar Pradesh",
+        "country": "India",
+        "postal_code": "987675",
+        "description": null,
+        "owner_id": null,
+        "amenities": "",
+        "status": 1,
+        "latitudes": null,
+        "longitudes": null,
+        "created_at": "2024-03-07 14:23:09",
+        "updated_at": "2024-03-07 14:23:09"
+    },
+     {
+      "property_id": 2,
+      "email": "amittkumar@e2x.com",
+      "property_name": "Taj",
+      "property_type": "HOTEL",
+      "address": null,
+      "mobile": "8765654345",
+      "city": "New Delhi",
+      "state": "Delhi",
+      "country": "India",
+      "postal_code": "987675",
+      "description": null,
+      "owner_id": null,
+      "amenities": "",
+      "status": 0,
+      "latitudes": null,
+      "longitudes": null,
+      "created_at": "2024-03-07 14:34:17",
+      "updated_at": "2024-03-07 14:34:17"
+  }
+
+    ];
+
+    setTimeout(() => {
+      this.loader=false;
+    }, 3000);
+  }
+
   createNewProperty(){
       if(this.propertyUserModal.status == "VALID"){
         console.log(this.propertyUserModal.controls);
+        
         this.propertyList.push(this.propertyUserModal.value);
         this.showModal.property=false;
         this.propertyUserModal.reset();

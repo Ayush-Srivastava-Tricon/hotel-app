@@ -9,13 +9,17 @@ const routes: Routes = [
     children:[
       {
         path:'',
-        redirectTo:'manage-room',
+        redirectTo:'calendar-view',
         pathMatch:'full',
       },
       {
         path:'manage-room',
         loadChildren:()=>import("./manage-rooms/manage-rooms.module").then(m=>m.ManageRoomsModule)
-      }
+      },
+      {
+        path:'calendar-view',
+        loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
+      },
     ]
   }
 ];

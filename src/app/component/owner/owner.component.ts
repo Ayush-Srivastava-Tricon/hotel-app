@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  templateUrl: './owner.component.html',
+  styleUrls: ['./owner.component.scss']
 })
-export class UserComponent {
+export class OwnerComponent {
 
   constructor(private router:Router){}
 

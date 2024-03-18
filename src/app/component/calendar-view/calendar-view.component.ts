@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { BookingServiceService } from 'src/app/services/booking-service.service';
+import { Router } from '@angular/router';
+import { CalendarService } from 'src/app/services/calendar.service';
 import { AlertService } from 'src/app/shared/alert.service';
 @Component({
   selector: 'app-calendar-view',
@@ -52,7 +53,9 @@ export class CalendarViewComponent {
 
 
 
-  constructor(private _service: BookingServiceService, private fb: FormBuilder, private alertService: AlertService) {
+  constructor(private _service: CalendarService, private fb: FormBuilder, private alertService: AlertService,private router:Router) {
+    console.log(this.router.url);
+    
     this.modalFieldForm = this.fb.group({
       "pr": ['', [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
       "ss": ['', Validators.required],
@@ -190,10 +193,12 @@ export class CalendarViewComponent {
 
   getHotelRooms() {
     this._service.getHotelRooms((res: any) => {
-      if (res) {
+      if (res.status == 200) {
         this.hotelRooms = res;
         this.getHotelPrice();
-
+      }else{
+        
+        this.hotelRooms = res;
       }
     })
   }

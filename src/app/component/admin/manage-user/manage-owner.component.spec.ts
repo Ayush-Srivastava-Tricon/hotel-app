@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageUserComponent } from './manage-user.component';
+import { ManageOwnerComponent } from './manage-owner.component';
 
 describe('ManageUserComponent', () => {
-  let component: ManageUserComponent;
-  let fixture: ComponentFixture<ManageUserComponent>;
+  let component: ManageOwnerComponent;
+  let fixture: ComponentFixture<ManageOwnerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ManageUserComponent ]
+      declarations: [ ManageOwnerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ManageUserComponent);
+    fixture = TestBed.createComponent(ManageOwnerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

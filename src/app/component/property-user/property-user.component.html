@@ -1,51 +1,45 @@
-<ng-container >
+<ng-container>
     <div class="container-fluid">
         <div class="row shadow ">
             <div class="col-sm-2 p-3 brand-container">
-                   <a class="nav-link home-link text-light" href="javascript:void(0);" >E2X InfoTech</a>
+                <a class="nav-link home-link text-light" href="javascript:void(0);">E2X InfoTech</a>
             </div>
             <div class="col-sm-10 text-end p-3 background-nav">
                 <div class="h3 me-3" id="navbarSupportedContent">
-                    <div class="display-6 text-light">Hi, Manager</div>
-            </div>
+                    <div class="display-6 text-light">Hi Property</div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container-fluid list-category">
-        <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 section-background">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href="javascript:void(0);" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline"></span>
-                    </a>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start  ps-4" id="menu">
-                        <!-- <li class="nav-item h6 w-100">
-                            <a href="javascript:void(0);" routerLink="/user/dashboard" class="nav-link px-0" routerLinkActive="active-tab" #rla="routerLinkActive" >
-                          <span class="ms-1 d-none d-sm-inline px-2">Dashboard</span>
-                            </a>
-                        </li> -->
-                        <li class="nav-item h6 w-100">
-                            <a href="javascript:void(0);" routerLink="/manager/manage-room" class="nav-link px-0" routerLinkActive="active-tab" #rla="routerLinkActive" >
-                          <span class="ms-1 d-none d-sm-inline px-2">Manage Rooms</span>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse ps-2" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="javascript:void(0);" routerLink="/manager/manage-room" class="nav-link"
+                                routerLinkActive="active-tab" #rla="routerLinkActive">
+                                Manage Room
                             </a>
                         </li>
-                        <li class="nav-item h6 w-100">
-                            <a href="javascript:void(0);" routerLink="/calendar-view" class="nav-link px-0" routerLinkActive="active-tab" #rla="routerLinkActive" >
-                              <span class="ms-1 d-none d-sm-inline px-2">Calendar View</span>
-                            </a>
-                        </li>
-                        <li class="nav-item h6 w-100">
-                            <a href="javascript:void(0);" (click)="logout()" class="nav-link px-0" routerLinkActive="active-tab" #rla="routerLinkActive" >
-                              <span class="ms-1 d-none d-sm-inline px-2" >LogOut</span>
+                        <li class="nav-item">
+                            <a href="javascript:void(0);" routerLink="/manager/calendar-view" class="nav-link"
+                                routerLinkActive="active-tab" #rla="routerLinkActive">
+                                Calendar View
                             </a>
                         </li>
                     </ul>
-                    <hr>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="javascript:void(0);" (click)="logout()" class="nav-link"
+                                routerLinkActive="active-tab" #rla="routerLinkActive">
+                                LogOut
+                            </a>
+                        </li>
+                        </ul>
                 </div>
-            </div>
-            <div class="col">
-               <router-outlet></router-outlet>
-            </div>
-        </div>
-    </div>
-    </ng-container>
+            </nav>
+        <router-outlet></router-outlet>
+</ng-container>

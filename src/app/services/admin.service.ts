@@ -21,4 +21,12 @@ export class AdminService extends BaseServiceService {
       this.getData({},`${this.httpUrl['getOwnerById']}/${ownerId}`,callback)
   }
 
+  filterByIdOrName(params:any,callback:any){
+      this.postData(params,`${this.httpUrl['filter']}`,callback)
+  }
+
+  isAdmin(){
+    return !!localStorage.getItem("isadmin");
+  }
+
 }

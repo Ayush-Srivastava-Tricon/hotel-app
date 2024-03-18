@@ -1,6 +1,6 @@
 {
     "/hotelapi/*":{
-        "target":"http://locahost:4200/",
+        "target":"https://www.e2xinfotech.com/hotelapi/",
         "secure":false,
         "pathRewrite":{
             "^/hotelapi":""

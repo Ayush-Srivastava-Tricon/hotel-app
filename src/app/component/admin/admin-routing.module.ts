@@ -9,7 +9,7 @@ const routes: Routes = [
     children:[
       {
         path:'',
-        redirectTo:'dashboard',
+        redirectTo:'manage-owner',
         pathMatch:'full',
       },
      {
@@ -18,10 +18,14 @@ const routes: Routes = [
      },
      {
       path:'manage-owner',
-      loadChildren:()=>import("./manage-user/manage-user.module").then(m=>m.ManageUserModule)
+      loadChildren:()=>import("./manage-user/manage-owner.module").then(m=>m.ManageOwnerModule)
      },
-    ]
-  }
+     {
+      path:':id',
+      loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
+     }
+    ],
+  },
 ];
 
 @NgModule({

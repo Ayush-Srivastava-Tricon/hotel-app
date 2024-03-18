@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class BookingServiceService extends BaseServiceService {
+export class CalendarService extends BaseServiceService {
 
   constructor(http:HttpClient) { 
     super(http);

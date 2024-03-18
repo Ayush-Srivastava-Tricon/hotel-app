@@ -12,12 +12,18 @@ const routes: Routes = [
     loadChildren:()=>import("./component/auth/signup/signup.module").then(m=>m.SignupModule)
   },
   {
-    path:'calendar-view',
+    path:'calendar-view/:id/:id',
+    pathMatch:'full',
     loadChildren:()=>import("./component/calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
   },
   {
-    path:'user',
-    loadChildren:()=>import("./component/user/user.module").then(m=>m.UserModule)
+    path:'calendar-view',
+    pathMatch:'full',
+    loadChildren:()=>import("./component/calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
+  },
+  {
+    path:'owner',
+    loadChildren:()=>import("./component/owner/owner.module").then(m=>m.OwnerModule)
   },
   {
     path:'manager',
