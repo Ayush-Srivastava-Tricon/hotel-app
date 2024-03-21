@@ -1,5 +1,8 @@
-*
-{
+:root{
+  --adminBlue: #435d7d;
+}
+
+*{
     font-family: "Noto Sans Mono", monospace;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -170,3 +173,27 @@ $animation-duration: 1.5s;
 
 
 //<===========END SKELETON============>
+
+
+//<================GLobal Button Css===========>
+.btn-primary,.btn-info{
+  color: white;
+  background-color: var(--adminBlue) !important;
+  outline: none;
+  border: none;
+}
+
+
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+  } 
+body {
+  top: 0px !important; 
+  }
+
+  .goog-te-combo{
+    min-height: calc(1.5em + 0.5rem + calc(var(--bs-border-width)* 2));
+    padding: 0.25rem 0.5rem;
+    font-size: .875rem;
+    border-radius: var(--bs-border-radius-sm);
+  }

@@ -20,17 +20,17 @@ export class ManageRoomsComponent {
   constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService,private proService:PropertyService){
     this.roomModal  = this.fb.group(
       {
-        property_id:['',],
-        room_name:['',[Validators.required]],
+        property_id:[''],
+        room_name:['',[Validators.required,Validators.pattern(/^[a-zA-Z ]*$/)]],
         adult:['',[Validators.required,Validators.pattern(/^[0-9]+$/)]],
         child:['',[Validators.required,Validators.pattern(/^[0-9]+$/)]],
-        default_price:['',[Validators.required,Validators.pattern(/^[0-9]+$/)]],
+        default_price:['',[Validators.required,Validators.pattern(/^\d+\.\d{2}$/)]],
         default_quantity:['',[Validators.required,Validators.pattern(/^[0-9]+$/)]],
         default_min:['',[Validators.required,Validators.pattern(/^[0-9]+$/)]],
         default_max:['',[Validators.required,Validators.pattern(/^[0-9]+$/)]],
         description:['',Validators.required],
         parent_room_id:[null],
-        nonrefundable:['',Validators.required],
+        nonrefundable:[''],
         is_pms:[false],
         is_dorm:[false],
         cald_show:[false],
@@ -70,6 +70,7 @@ export class ManageRoomsComponent {
     this.proService.fetchAllRooms((res:any)=>{
       if(res.status == 200){
         console.log(res);
+        this.roomsList = res.data;
         
       }
     })
@@ -77,17 +78,21 @@ export class ManageRoomsComponent {
 
   createNewRoom(){
       if(this.roomModal.status == "VALID"){
-        this.proService.addRooms(this.roomModal.value,(res:any)=>{
-          if(res.status == 200){
-            this.roomsList.push(this.roomModal.value);
+      //   this.proService.addRooms(this.roomModal.value,(res:any)=>{
+      //     if(res.status == 200){
+      //       this.roomsList.push(this.roomModal.value);
+      //       this.showModal.property=false;
+      //       this.roomModal.reset();
+      //       this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 2000, pos: 'top' });
+      //     }
+      //   else{
+      //     this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 2000, pos: 'top' });
+      //   }
+      // })
+      this.roomsList.push(this.roomModal.value);
             this.showModal.property=false;
             this.roomModal.reset();
-            this.alertService.alert("success", "New Property Created", "Success", { displayDuration: 2000, pos: 'top' });
-          }
-        else{
-          this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 2000, pos: 'top' });
-        }
-      })
+            this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 2000, pos: 'top' });
     }
       else{
         this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
@@ -140,5 +145,9 @@ export class ManageRoomsComponent {
       this.roomsList.splice(this.deleteRoomIndex,1);
       this.showModal.delete=false;
       this.deleteRoomIndex=0;
+  }
+
+  backToManageRoom(){
+    this.showModal.property=false;
   }
 }

@@ -16,6 +16,6 @@ export class OwnerService extends BaseServiceService {
    }
 
    addNewProperty(param:any,callback:any){
-    this.postData(param,this.httpUrl['addNewProperty'],callback)
+    this.putData(param,this.httpUrl['addNewProperty'],callback)
    }
 }

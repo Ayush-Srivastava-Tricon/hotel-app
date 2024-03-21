@@ -1,56 +1,50 @@
 <div class="container-fluid p-4 manage-owner-container">
     <div class="row mb-3">
         <div class="col-sm-8">
-            <div class="d-flex">
-                <div class="form-check mx-3">
-                    <input class="form-check-input" type="radio" name="radio" id="filter" checked (change)="changeOptionFilterOrAddOwner('filter')">
-                <label class="form-check-label" for="filter" >
-                   {{'search-owner'|translate}}
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="radio" id="owner" (change)="changeOptionFilterOrAddOwner('owner')">
-                <label class="form-check-label" for="owner">
-                    {{'add-owner'| translate}}
-                </label>
+            <div class="d-inline-flex radio-filters" *ngIf="!showModal.owner">
+                <div class="form-check me-3">
+                    <input class="form-check-input" type="radio" name="radio" id="filter" [checked]="filterBy == 'filter'"
+                        (change)="changeOptionFilterOrAddOwner('filter')">
+                    <label class="form-check-label" for="filter">
+                        {{'search-owner'|translate}}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radio" id="owner" [checked]="filterBy == 'owner'"
+                        (change)="changeOptionFilterOrAddOwner('owner')">
+                    <label class="form-check-label" for="owner">
+                        {{'add-owner'| translate}}
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
         <div class="col-sm-4 text-end">
-            <select class="form-control-sm" (change)="onLangChange($event)">
+            <!-- <div class="hidden" id="google_translate_element" class="form-control-sm" style="display: none;"></div>
+            <select class="form-control-sm skiptranslate" (change)="onLangChange($event)">
+                <option selected="true" hidden="true">Select Language</option>
                 <option value="en">English</option>
                 <option value="es">Spanish</option>
+                <ng-container *ngFor="let lang of allLang">
+                    <option class='skiptranslate' [value]="lang.key" *ngIf="lang.name != 'English' || lang.name != 'Spanish'">{{lang.name}}</option>
+                </ng-container>
             </select>
-        </div>
+        </div> -->
     </div>
-
-    <div class="row">
-        <ng-container *ngIf="filterBy == 'filter'">
-            <div class="col-sm-2">
-                <select class="form-control" [(ngModel)]="searchConfig['searchType']">
-                    <option selected="true" disabled>Select</option>
-                    <option value="2">Owner</option>
-                    <option value="3">Property</option>
-                    <!-- <option value="name">Name</option> -->
-                </select>
-            </div>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" [(ngModel)]="searchConfig['searchValue']">
-            </div>
-            <div class="col-sm-3">
-                <button class="btn btn text-light btn-info" [class.disabled]="!searchConfig['searchValue']" (click)="searchById()">Search</button>
-            </div>
-        </ng-container>
-        <ng-container *ngIf="filterBy == 'owner'">
-            <div class="col-sm-12 text-end">
-                <button class="btn btn-success" (click)="openModal()">Add Owner</button>
-            </div>
-        </ng-container>
-    </div>
-    <ng-container *ngIf="filterBy == 'owner'">
+    <ng-container *ngIf="filterBy == 'owner' && !showModal.owner">
         <div class="row justify-content-center align-items-center">
-            <div class="col-sm-12 pt-4 ps-4">
-                <table class="table table-sm table-bordered">
+            <div class="col-sm-12">
+                <div class="table-wrapper shadow">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h2>Owner <b>List</b></h2>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success" data-toggle="modal"><span>Add New Owner</span></a>
+                              </div>
+                        </div>
+                    </div>
+                    <table class="table table-shadow table-lg table-striped table-hover">
                     <thead class="thead-dark">
                         <tr class="table-row-rooms">
                             <th>Owner Id</th>
@@ -83,10 +77,10 @@
                             </td>
                         </tr>
                         <ng-container *ngIf="ownerList.length>0 && !loader">
-    
+
                             <tr *ngFor="let item of ownerList;let idx = index;" class="text-center align-middle">
                                 <td>{{item.owner_id}}</td>
-                                <td> <a href="javascript:void(0);" (click)="viewOwnerDetails()">{{item.name}}</a> </td>
+                                <td>{{item.name}}</td>
                                 <td>{{item.email}}</td>
                                 <td>{{item.alternate_email}}</td>
                                 <td>{{item.mobile}}</td>
@@ -94,7 +88,8 @@
                                 <td>{{item.status == 1 ? 'Active' :'InActive'}}</td>
                                 <td>
                                     <div class="dropdown">
-                                        <i class="btn btn-light bi bi-three-dots-vertical" (click)="showDropDown(idx)"></i>
+                                        <i class="btn btn-light bi bi-three-dots-vertical"
+                                            (click)="showDropDown(idx)"></i>
                                         <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
                                             *ngIf="showActionDropDown[idx]">
                                             <a class="dropdown-item">Change Status</a>
@@ -105,19 +100,53 @@
                                 </td>
                             </tr>
                         </ng-container>
-    
+
                     </tbody>
                 </table>
-    
+            </div>
+
             </div>
         </div>
     </ng-container>
-    <ng-container *ngIf="filterBy == 'filter'">
+    <ng-container *ngIf="filterBy == 'filter' && !showModal.owner">
         <div class="row">
-            <div class="col-sm-6">
-                <table class="table table-bordered mt-3">
-                    <thead class="thead-dark">
-                        <tr class="table-row-rooms">
+            <div class="col-sm-7">
+                <div class="table-wrapper shadow ">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h2>List <b>Properties</b></h2>
+                            </div>
+                            <div class="col-sm-6 d-flex">
+                                    <select class="form-control mx-2" [(ngModel)]="searchConfig['searchType']">
+                                        <option selected="true" disabled>Select</option>
+                                        <option value="2">Owner</option>
+                                        <option value="3">Property</option>
+                                        <!-- <option value="name">Name</option> -->
+                                    </select>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" [(ngModel)]="searchConfig['searchValue']">
+                                        <span class="input-group-text btn btn-danger" id="basic-addon1" (click)="searchById()"  [class.disabled]="!searchConfig['searchValue']">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                class="bi bi-search" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-shadow table-lg table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <!-- <th>
+                                    <span class="custom-checkbox">
+                                        <input type="checkbox" id="selectAll">
+                                        <label for="selectAll"></label>
+                                    </span>
+                                </th> -->
                                 <th>Property ID</th>
                                 <th>Property Name</th>
                                 <th>City</th>
@@ -125,165 +154,217 @@
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngIf="loader">
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                        </tr>
-                        <ng-container *ngIf="filteredOwnerList.length>0 && !loader">
-    
-                            <tr *ngFor="let item of filteredOwnerList;let idx = index;" class="text-center align-middle">
-                                <td>{{item.property_id}}</td>
-                                <td> <a href="javascript:void(0);" (click)="viewOwnerDetails()">{{item.property_name}}</a> </td>
-                                <td>{{item.city}}</td>
-                                <td>{{item.owner_name}}</td>
-                                <td>{{item.status == 1 ? 'Active' :'InActive'}}</td>
-                                <td>  <a href="javascript:void(0);"  (click)="viewFullDetails(item.property_id)">View Details</a> </td>
-                                <!-- <td>
-                                    <div class="dropdown">
-                                        <i class="btn btn-light bi bi-three-dots-vertical" (click)="showDropDown(idx)"></i>
-                                        <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
-                                            *ngIf="showActionDropDown[idx]">
-                                            <a class="dropdown-item">Change Status</a>
-                                            <a class="dropdown-item" (click)="editOwnerOpenModal(item)">Edit Owner</a>
-                                            <a class="dropdown-item" (click)="deleteOwnerModal(idx)">Delete</a>
-                                        </div>
-                                    </div>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="loader">
+                                <!-- <td class="tg-cly1">
                                 </td> -->
+                                <td class="tg-cly1">
+                                </td>
+                                <td class="tg-cly1">
+                                </td>
+                                <td class="tg-cly1">
+                                </td>
+                                <td class="tg-cly1">
+                                </td>
+                                <td class="tg-cly1">
+                                </td>
+                                <td class="tg-cly1">
+                                </td>
                             </tr>
-                        </ng-container>
 
-                        <ng-container *ngIf="filteredOwnerList.length == 0 && !loader">
-                            <tr>
-                                <td colspan="8" class="text-center">No Data Found</td>
-                            </tr>
-                        </ng-container>
-    
-                    </tbody>
-                </table>
+                            <ng-container *ngIf="filteredOwnerList.length>0 && !loader">
+
+                                <tr *ngFor="let item of filteredOwnerList;let idx = index;">
+                                    <!-- <td>
+                                        <span class="custom-checkbox">
+                                            <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                                            <label for="checkbox1"></label>
+                                        </span>
+                                    </td> -->
+                                    <td>{{item.property_id}}</td>
+                                    <td>{{item.property_name}}</td>
+                                    <td>{{item.city}}</td>
+                                    <td>{{item.owner_name}}</td>
+                                    <td>{{item.status == 1 ? 'Active' :'InActive'}}</td>
+                                    <td> <a href="javascript:void(0);" (click)="viewFullDetails(idx)">View
+                                            Details</a> </td>
+                                </tr>
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                    <!-- <div class="clearfix">
+                    <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                    <ul class="pagination">
+                      <li class="page-item disabled"><a href="#">Previous</a></li>
+                      <li class="page-item"><a href="#" class="page-link">1</a></li>
+                      <li class="page-item"><a href="#" class="page-link">2</a></li>
+                      <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                      <li class="page-item"><a href="#" class="page-link">4</a></li>
+                      <li class="page-item"><a href="#" class="page-link">5</a></li>
+                      <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                    </ul>
+                  </div> -->
+                    <ng-container *ngIf="filteredOwnerList.length == 0 && !loader">
+                        <tr>
+                            <td colspan="8" class="text-center">No Data Found</td>
+                        </tr>
+                    </ng-container>
+                </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-5">
 
-                <ng-container *ngIf="showFullDetailRight">
-
-                    <div class="row justify-content-center align-items-center">
-                        <div class="col-sm-6">
-                            <button class="btn btn-sm btn-danger"> <a href="javascript:void(0)" [routerLink]="['/manager']">Select Property</a> </button>
+                <ng-container *ngIf="showFullDetailRight.showPanel">
+                    <div class="row mb-4">
+                        <div class="col-sm-12">
+                            <div class="table-wrapper shadow h-100">
+                                <div class="h4 text-center">Property Details</div>
+                                <button class="btn btn-sm btn-danger"> <a href="javascript:void(0)"
+                                        class="text-light text-decoration-none" [routerLink]="['/manager']">Select
+                                        Property</a> </button>
+                                <div class="details mt-3">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Property Name : {{showFullDetailRight.details['property_name']}} </li>
+                                        <li class="list-group-item">Property Type : {{showFullDetailRight.details['property_type']}} </li>
+                                        <li class="list-group-item">Emai : {{showFullDetailRight.details['email']}} </li>
+                                        <li class="list-group-item">Owner Name: {{showFullDetailRight.details['owner_name']}} </li>
+                                        <li class="list-group-item">Address : {{showFullDetailRight.details['address']}}</li>
+                                        <li class="list-group-item">City : {{showFullDetailRight.details['city']}}</li>
+                                        <li class="list-group-item">State : {{showFullDetailRight.details['state']}}</li>
+                                        <li class="list-group-item">Country :  {{showFullDetailRight.details['country']}}</li>
+                                        <li class="list-group-item">Postal Code : {{showFullDetailRight.details['postal_code']}}</li>
+                                        <li class="list-group-item">Mobile : {{showFullDetailRight.details['mobile']}}</li>
+                                        <li class="list-group-item">Description : {{showFullDetailRight.details['description']}}</li>
+                                    </ul>
+                                </div>        
+                            </div>
                         </div>
                     </div>
+
+                    <!-- <div class="row ">
+                        <div class="col-sm-6">
+                        </div>
+                    </div> -->
 
                 </ng-container>
 
 
             </div>
         </div>
-            
-    
+
+
+    </ng-container>
+    <ng-container *ngIf="showModal.owner">
+        <div class="my-3 ms-2 d-flex justify-content-between "><span class="h3">{{isEditModal? 'Edit':'Add'}} Owner</span><a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageOwner()">Back To Manage Owner</a></div>
+        <div class="shadow p-4 rounded bg-white" [formGroup]="ownerModal">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <label for="propertyType">Name</label>
+                    <input type="text" class="form-control" formControlName="name"
+                        [class.is-invalid]="ownerModal.controls.name.dirty && ownerModal.controls.name.errors?.['required']">
+                    <small
+                        *ngIf="ownerModal.controls.name.dirty && ownerModal.controls.name.errors?.['required']"
+                        class="text-danger">Required</small>
+                </div>
+                <div class="col-sm-6">
+                    <label for="propertyType">Email</label>
+                    <input type="email" class="form-control" formControlName="email"
+                        [class.is-invalid]="(ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['required']) || (ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['pattern'])">
+                    <small
+                        *ngIf="ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['required']"
+                        class="text-danger">Required</small>
+                    <small
+                        *ngIf="ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['pattern']"
+                        class="text-danger">Only Number</small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <label for="propertyType">Alternate Email</label>
+                    <input type="email" class="form-control" formControlName="alternate_email"
+                        [class.is-invalid]="(ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['required']) || (ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['pattern'])">
+                    <small
+                        *ngIf="ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['required']"
+                        class="text-danger">Required</small>
+                    <small
+                        *ngIf="ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['pattern']"
+                        class="text-danger">Only Number</small>
+                </div>
+                <div class="col-sm-6">
+                    <label for="propertyType">Password</label>
+                    <div class="input-group">
+                        <input [type]="showPassword ?'text':'password'" class="form-control"
+                        formControlName="password"
+                        [class.is-invalid]="(ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['required']) || (ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['pattern'])">
+                        <span class="input-group-text" (click)="showPassword=!showPassword">
+                            <ng-container *ngIf="!showPassword">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
+                                    <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"></path>
+                                    <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"></path>
+                                    <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"></path>
+                                  </svg>
+                            </ng-container>
+                            <ng-container  *ngIf="showPassword">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z">
+                                    </path>
+                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"></path>
+                                </svg>
+                            </ng-container>
+                        </span>
+                    </div>
+                    <small
+                        *ngIf="ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['required']"
+                        class="text-danger">Required</small>
+                    <small
+                        *ngIf="ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['pattern']"
+                        class="text-danger">Only Number</small>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <label for="propertyType">Mobile</label>
+                    <input type="text" class="form-control" formControlName="mobile"
+                        [class.is-invalid]="(ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['required']) || (ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['pattern'])">
+                    <small
+                        *ngIf="ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['required']"
+                        class="text-danger">Required</small>
+                    <small
+                        *ngIf="ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['pattern']"
+                        class="text-danger">Only Number</small>
+                </div>
+                <div class="col-sm-6">
+                    <label for="propertyType">Alternate Mobile</label>
+                    <input type="text" class="form-control" formControlName="alternate_mobile"
+                        [class.is-invalid]="(ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['required']) || (ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['pattern'])">
+                    <small
+                        *ngIf="ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['required']"
+                        class="text-danger">Required</small>
+                    <small
+                        *ngIf="ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['pattern']"
+                        class="text-danger">Only Number</small>
+                </div>
+            </div>
+            <div class="row mt-3 mb-2">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary"
+                        (click)="isEditModal ? editOwner() :createNewOwner()">{{isEditModal?'Edit':'Add'}}</button>
+                </div>
+            </div>
+        </div>
     </ng-container>
 </div>
 
 
+
 <!-- Modal -->
-<div class="modal" *ngIf="showModal.owner||showModal.delete||showModal.viewOwner">
+<div class="modal" *ngIf="showModal.delete">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header" *ngIf="showModal.owner">
-                <h5 class="modal-title">{{isEditModal? 'Edit':'Add'}} Owner</h5>
-                <button type="button" class="close" (click)="closeModal()" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
             <div class="modal-body">
-                <ng-container *ngIf="showModal.owner">
-                    <div [formGroup]="ownerModal">
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
-                                <label for="propertyType">Name</label>
-                                <input type="text" class="form-control" formControlName="name"
-                                    [class.is-invalid]="ownerModal.controls.name.dirty && ownerModal.controls.name.errors?.['required']">
-                                <small
-                                    *ngIf="ownerModal.controls.name.dirty && ownerModal.controls.name.errors?.['required']"
-                                    class="text-danger">Required</small>
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="propertyType">Email</label>
-                                <input type="email" class="form-control" formControlName="email"
-                                    [class.is-invalid]="ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['required']">
-                                <small
-                                    *ngIf="ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['required']"
-                                    class="text-danger">Required</small>
-                                <small
-                                    *ngIf="ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['pattern']"
-                                    class="text-danger">Only Number</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
-                                <label for="propertyType">Alternate Email</label>
-                                <input type="email" class="form-control" formControlName="alternate_email"
-                                    [class.is-invalid]="ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['required']">
-                                <small
-                                    *ngIf="ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['required']"
-                                    class="text-danger">Required</small>
-                                <small
-                                    *ngIf="ownerModal.controls.alternate_email.dirty && ownerModal.controls.alternate_email.errors?.['pattern']"
-                                    class="text-danger">Only Number</small>
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="propertyType">Password</label>
-                                <input type="password" class="form-control" formControlName="password"
-                                    [class.is-invalid]="ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['required']">
-                                <small
-                                    *ngIf="ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['required']"
-                                    class="text-danger">Required</small>
-                                <small
-                                    *ngIf="ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['pattern']"
-                                    class="text-danger">Only Number</small>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
-                                <label for="propertyType">Mobile</label>
-                                <input type="text" class="form-control" formControlName="mobile"
-                                    [class.is-invalid]="ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['required']">
-                                <small
-                                    *ngIf="ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['required']"
-                                    class="text-danger">Required</small>
-                                <small
-                                    *ngIf="ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['pattern']"
-                                    class="text-danger">Only Number</small>
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="propertyType">Alternate Mobile</label>
-                                <input type="text" class="form-control" formControlName="alternate_mobile"
-                                    [class.is-invalid]="ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['required']">
-                                <small
-                                    *ngIf="ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['required']"
-                                    class="text-danger">Required</small>
-                                <small
-                                    *ngIf="ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['pattern']"
-                                    class="text-danger">Only Number</small>
-                            </div>
-                        </div>
-                        <div class="row mt-3 mb-2">
-                            <div class="col-sm-12">
-                                <button type="submit" class="btn btn-primary"
-                                    (click)="isEditModal ? editOwner() :createNewOwner()">{{isEditModal?'Edit':'Add'}}</button>
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
                 <ng-container *ngIf="showModal.delete">
                     <div class="modal-header flex-row">
                         <h4 class="modal-title w-100">Are you sure?</h4>
@@ -298,25 +379,8 @@
                         <button type="button" class="btn btn-outline-danger" (click)="deleteOwner()">Delete</button>
                     </div>
                 </ng-container>
-                <ng-container *ngIf="showModal.viewOwner">
-                    <div class="modal-header flex-row">
-                        <h4 class="modal-title w-100">Owner Details</h4>
-                        <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"
-                            (click)="closeModal()">Close</button>
-                    </div>
-                </ng-container>
-
-            </div>
-            <div class="modal-footer" *ngIf="showModal.owner">
-                <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal-backdrop fade in" *ngIf="showModal.owner"></div>
+<div class="modal-backdrop fade in" *ngIf="showModal.delete"></div>

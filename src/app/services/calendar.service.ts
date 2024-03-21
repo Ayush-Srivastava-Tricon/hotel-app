@@ -34,4 +34,9 @@ export class CalendarService extends BaseServiceService {
   getHotelRooms(callback:any){
     this.getData({},this.httpUrl['getHotelRooms'],callback);
   }
+  
+  getAllCalendarData(callback:any){
+    this.getData({},this.httpUrl['getCalendarData'],callback);
+    
+  }
 }

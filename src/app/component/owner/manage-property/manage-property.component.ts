@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AppConstants } from 'src/app/constants/app.constant';
+import { OwnerService } from 'src/app/services/owner.service';
 import { AlertService } from 'src/app/shared/alert.service';
 
 @Component({
@@ -21,7 +22,7 @@ export class ManagePropertyComponent {
   deletePropertyIndex:number=0;
   loader:boolean=false;
 
-  constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService){
+  constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService,private ownerService:OwnerService){
     this.propertyUserModal  = this.fb.group(
       {
         property_name:['',[Validators.required]],
@@ -30,8 +31,10 @@ export class ManagePropertyComponent {
         mobile:['',[Validators.required]],
         property_type:['',[Validators.required]],
         address:['',[Validators.required]],
-        city:[{value:'',disabled:true},[Validators.required]],
-        state:[{value:'',disabled:true},[Validators.required]],
+        city:['',[Validators.required]],
+        state:['',[Validators.required]],
+        // city:[{value:'',disabled:true},[Validators.required]],
+        // state:[{value:'',disabled:true},[Validators.required]],
         country:['',[Validators.required]],
         postal_code:['',[Validators.required]],
         description:['',[Validators.required]],
@@ -41,111 +44,92 @@ export class ManagePropertyComponent {
         longitudes:['',[Validators.required]],
       }
     )
-    this.propertyList =[
-      {
-        "property_id": 1,
-        "email": "amit-kumar@e2x.com",
-        "property_name": "Taj",
-        "property_type": "HOTEL",
-        "address": null,
-        "mobile": "8765654345",
-        "city": "Lucknow",
-        "state": "Uttar Pradesh",
-        "country": "India",
-        "postal_code": "987675",
-        "description": null,
-        "owner_id": null,
-        "amenities": "",
-        "status": 1,
-        "latitudes": null,
-        "longitudes": null,
-        "created_at": "2024-03-07 14:23:09",
-        "updated_at": "2024-03-07 14:23:09"
-    },
-     {
-      "property_id": 2,
-      "email": "amittkumar@e2x.com",
-      "property_name": "Taj",
-      "property_type": "HOTEL",
-      "address": null,
-      "mobile": "8765654345",
-      "city": "New Delhi",
-      "state": "Delhi",
-      "country": "India",
-      "postal_code": "987675",
-      "description": null,
-      "owner_id": null,
-      "amenities": "",
-      "status": 0,
-      "latitudes": null,
-      "longitudes": null,
-      "created_at": "2024-03-07 14:34:17",
-      "updated_at": "2024-03-07 14:34:17"
-  }
-
-    ]
   }
 
   ngOnInit(){
-    // this.fetchPropertyList();
-    this.loader=true;
-    this.propertyList =[
-      {
-        "property_id": 1,
-        "email": "amit-kumar@e2x.com",
-        "property_name": "Taj",
-        "property_type": "HOTEL",
-        "address": null,
-        "mobile": "8765654345",
-        "city": "Lucknow",
-        "state": "Uttar Pradesh",
-        "country": "India",
-        "postal_code": "987675",
-        "description": null,
-        "owner_id": null,
-        "amenities": "",
-        "status": 1,
-        "latitudes": null,
-        "longitudes": null,
-        "created_at": "2024-03-07 14:23:09",
-        "updated_at": "2024-03-07 14:23:09"
-    },
-     {
-      "property_id": 2,
-      "email": "amittkumar@e2x.com",
-      "property_name": "Taj",
-      "property_type": "HOTEL",
-      "address": null,
-      "mobile": "8765654345",
-      "city": "New Delhi",
-      "state": "Delhi",
-      "country": "India",
-      "postal_code": "987675",
-      "description": null,
-      "owner_id": null,
-      "amenities": "",
-      "status": 0,
-      "latitudes": null,
-      "longitudes": null,
-      "created_at": "2024-03-07 14:34:17",
-      "updated_at": "2024-03-07 14:34:17"
+    this.fetchPropertyList();
+  //   this.loader=true;
+  //   this.propertyList =[
+  //     {
+  //       "property_id": 1,
+  //       "email": "amit-kumar@e2x.com",
+  //       "property_name": "Taj",
+  //       "property_type": "HOTEL",
+  //       "address": null,
+  //       "mobile": "8765654345",
+  //       "city": "Lucknow",
+  //       "state": "Uttar Pradesh",
+  //       "country": "India",
+  //       "postal_code": "987675",
+  //       "description": null,
+  //       "owner_id": null,
+  //       "amenities": "",
+  //       "status": 1,
+  //       "latitudes": null,
+  //       "longitudes": null,
+  //       "created_at": "2024-03-07 14:23:09",
+  //       "updated_at": "2024-03-07 14:23:09"
+  //   },
+  //    {
+  //     "property_id": 2,
+  //     "email": "amittkumar@e2x.com",
+  //     "property_name": "Taj",
+  //     "property_type": "HOTEL",
+  //     "address": null,
+  //     "mobile": "8765654345",
+  //     "city": "New Delhi",
+  //     "state": "Delhi",
+  //     "country": "India",
+  //     "postal_code": "987675",
+  //     "description": null,
+  //     "owner_id": null,
+  //     "amenities": "",
+  //     "status": 0,
+  //     "latitudes": null,
+  //     "longitudes": null,
+  //     "created_at": "2024-03-07 14:34:17",
+  //     "updated_at": "2024-03-07 14:34:17"
+  // }
+
+  //   ];
+
+  //   setTimeout(() => {
+  //     this.loader=false;
+  //   }, 3000);
   }
 
-    ];
-
-    setTimeout(() => {
-      this.loader=false;
-    }, 3000);
+  fetchPropertyList(){
+    this.loader= true;
+    this.ownerService.fetchPropertyList((res:any)=>{
+      if(res.status == 200){
+          this.loader= false;
+          this.propertyList = res.data;
+        }
+      })
   }
 
   createNewProperty(){
       if(this.propertyUserModal.status == "VALID"){
-        console.log(this.propertyUserModal.controls);
-        
-        this.propertyList.push(this.propertyUserModal.value);
-        this.showModal.property=false;
-        this.propertyUserModal.reset();
-        this.alertService.alert("success", "New Property Created", "Success", { displayDuration: 2000, pos: 'top' });
+
+        // const formData:any = new FormData();
+        // formData.append("property_id",1);
+        // let inputfieldsLength:any = Object.keys(this.propertyUserModal.value).length;
+        // for (let i = 0; i<inputfieldsLength;i++){
+        //     formData.append(`${Object.keys(this.propertyUserModal.value)[i]}`,`${Object.values(this.propertyUserModal.value)[i]}`)
+        // }
+
+        this.propertyUserModal.value['property_id'] = 1;  //line to be removed
+
+        this.ownerService.addNewProperty(this.propertyUserModal.value,(res:any)=>{
+          if(res.status == 200){
+            this.propertyList.push(this.propertyUserModal.value);
+            this.showModal.property=false;
+            this.propertyUserModal.reset();
+            this.alertService.alert("success", "New Property Created", "Success", { displayDuration: 2000, pos: 'top' });
+          } else{
+            this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 2000, pos: 'top' });
+          }
+        })
       }else{
         this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
       }
@@ -242,6 +226,9 @@ export class ManagePropertyComponent {
     }
   }
 
+  backToManageProperty(){
+    this.showModal.property=false;
+  }
 
 }
 

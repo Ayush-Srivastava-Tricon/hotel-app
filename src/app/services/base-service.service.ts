@@ -21,6 +21,7 @@ export class BaseServiceService {
     'updateHotelAvailability': "hotelapi/updateHotelAvailability.php",
     'getHotelPrice': "hotelapi/getHotelPrice.php",
     'getHotelRooms': "hotelapi/getHotelRooms.php",
+    'getCalendarData':"hotelapi/calendar",
 
     // <=======AUTHENTICATION=======>
     'login': "hotelapi/login",
@@ -75,7 +76,7 @@ export class BaseServiceService {
 
       }
       if (error) {
-        callback(error);
+        callback({status:400,error:error});
       }
     })
   
@@ -102,5 +103,16 @@ export class BaseServiceService {
     );
   }
 
+
+  putData(data:any,url:any,callback:any){
+    const  headers = new HttpHeaders()
+    .set('content-type','application/json')
+    .set('Access-Control-Allow-Origin', '*')
+    .set('Authorization',`Bearer ${this.getTokenFromLocal()}`)
+
+    return this.http.put(environment.apiUrl+url,data,{headers:headers}).subscribe((data:any)=>callback(data),((error:any)=>callback(error))
+    );
+
+  }
 
 }

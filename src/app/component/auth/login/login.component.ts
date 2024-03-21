@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertService } from 'src/app/shared/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent {
   userType:any='';
   userModal:any={};
 
-  constructor(private router : Router,private authService:AuthService){}
+  constructor(private router : Router,private authService:AuthService,private alertService:AlertService){}
 
   selectUserType(userType:any,roleNum:number){
     localStorage.clear();
@@ -31,8 +32,9 @@ export class LoginComponent {
               this.setAccessToken(res);
               this.setUserAndRole(res);
               this.router.navigate([this.userType]);
+              this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
             }else{
-              alert("wrong crednetial")            //need to be change
+              this.alertService.alert("error",res.error.message, "Error", { displayDuration: 2000, pos: 'top' });      //need to be change
         }
       })
   }

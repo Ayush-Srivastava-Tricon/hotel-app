@@ -13,12 +13,11 @@ export class AdminComponent {
   constructor(private router: Router, private authService: AuthService,private translate:TranslateService) { }
 
   logout() {
-debugger;    
     this.authService.logout(this.authService.roleId, this.authService.userId, (res: any) => {
       if (res) {
         this.router.navigate(['/login']);
+        localStorage.clear();
       }else{
-        
         this.router.navigate(['/login']);
         localStorage.clear();
       }

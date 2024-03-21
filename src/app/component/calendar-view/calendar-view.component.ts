@@ -14,8 +14,6 @@ export class CalendarViewComponent {
   currentYear: number = 0;
   weekdaysWithDates: any = [];
   randomTexts: string[] = ['Units to Sell', 'Lenght of Stay', 'Restriction', 'Price'];
-  dates: any;
-  roomData: any;
   datesData: any = [];
   showModal: boolean = false;
   mainData: any = [];
@@ -42,20 +40,127 @@ export class CalendarViewComponent {
   loader: Boolean = false;
   dragEl: any = {};
   activeModalRoomName: string = '';
-  tdData: any = {};
   dragEventStart: boolean = false;
 
   selectedStartDate: any;
   selectedEndDate: any;
   timeoutId: any = null;
 
+  data: any = [
+    {
+      "name": "Ayush-Room",
+      "id": "1",
+      "expanded": true,
+      "data": [
+        {
+          "start": "2024-03-29",
+          "end": "2024-03-29",
+          "text": "300.00",
+          "resource": "1",
+          "all_data":
+          {
+            "al": "170",
+            "pr": "300",
+            "ss": "true",
+            "mn": "1",
+            "mx": "20",
+            "cta": "true",
+            "ctd": "false",
+            "cu": "true"
+          }
+
+        },
+        {
+          "start": "2024-03-25",
+          "end": "2024-03-25",
+          "text": "245.00",
+          "resource": "1",
+          "all_data":
+          {
+            "al": "170",
+            "pr": "300",
+            "ss": "true",
+            "mn": "1",
+            "mx": "20",
+            "cta": "true",
+            "ctd": "false",
+            "cu": "true"
+          }
+        }
+      ],
+      "children": [
+        {
+          "name": "Sub Room 1_1",
+          "id": "2"
+        },
+        {
+          "name": "Sub Room 2_1",
+          "id": "3"
+        }
+      ]
+    },
+    {
+      "name": "Testing Ayush",
+      "id": "2",
+      "expanded": true,
+      "data": [
+        {
+          "start": "2024-04-13",
+          "end": "2024-04-13",
+          "text": "300.00",
+          "resource": "2",
+          "all_data":
+          {
+            "al": "170",
+            "pr": "300",
+            "ss": "true",
+            "mn": "1",
+            "mx": "20",
+            "cta": "true",
+            "ctd": "false",
+            "cu": "true"
+          }
+        },
+        {
+          "start": "2024-04-27",
+          "end": "2024-04-27",
+          "text": "245.00",
+          "resource": "2",
+          "all_data":
+          {
+            "al": "170",
+            "pr": "300",
+            "ss": "true",
+            "mn": "1",
+            "mx": "20",
+            "cta": "true",
+            "ctd": "false",
+            "cu": "true"
+          }
+        }
+      ],
+      "children": [
+        {
+          "name": "Sub Room 2_1",
+          "id": "5"
+        },
+        {
+          "name": "Sub Room 2_2",
+          "id": "6"
+        },
+        {
+          "name": "Sub Room 2_3",
+          "id": "14"
+        }
+      ]
+    }
+  ]
+
 
 
 
 
   constructor(private _service: CalendarService, private fb: FormBuilder, private alertService: AlertService,private router:Router) {
-    console.log(this.router.url);
-    
     this.modalFieldForm = this.fb.group({
       "pr": ['', [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
       "ss": ['', Validators.required],
@@ -73,6 +178,16 @@ export class CalendarViewComponent {
 
   ngOnInit(): void {
     this.getHotelRooms();
+    // this.fetchCalendarData();
+  }
+
+  fetchCalendarData(){
+    this._service.getAllCalendarData((res:any)=>{
+      if(res.status == 200){
+        console.log(res);
+        
+      }
+    })
   }
 
   selectedDate(event: any) {
@@ -124,21 +239,22 @@ export class CalendarViewComponent {
       dateIndex++;
     }
     let begindateInx = 0;
-    while (begindateInx < 31 - dateIndex) {
+    while (begindateInx < (31 - dateIndex)) {
 
       const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
       const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-      const daysInNextMonth: number = new Date(nextYear, nextMonth + 1, 0).getDate();
 
       const currentDayIndex = (firstDayOfMonth + begindateInx) % 7;
       const dayName = weekDays[currentDayIndex];
       let date = begindateInx - daysInMonth + 1; // Start from 1st day of the current month if necessary
       let monthToShow = monthNames[currentMonth];
+     
+      
       let yearToShow = currentYear;
 
       if (date <= 0) {
         date += daysInMonth;
-        monthToShow = monthNames[currentMonth];
+        monthToShow = monthNames[currentMonth+1];
         yearToShow = currentYear;
       } else {
         monthToShow = monthNames[nextMonth];
@@ -161,7 +277,6 @@ export class CalendarViewComponent {
     }
     setTimeout(() => {
       this.makeCalendarData();
-      // this.selectDate = '';
     }, 0);
   }
 
@@ -172,7 +287,6 @@ export class CalendarViewComponent {
       const [key, value] = pair.split(":");
       eventData[key.replace(/"/g, "").trim()] = value.replace(/"/g, "").trim();
     });
-    console.log(eventData);
     
     return eventData;
   }
@@ -182,6 +296,8 @@ export class CalendarViewComponent {
     this.datesData = [];
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.renderCalendar();
+    let selectedRangeDate:any = document.getElementById("date");
+    selectedRangeDate.value = '' ;
   }
 
   nextMonth(): void {
@@ -189,6 +305,8 @@ export class CalendarViewComponent {
     this.datesData = [];
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.renderCalendar();
+    let selectedRangeDate:any = document.getElementById("date");
+    selectedRangeDate.value = '' ;
   }
 
   getHotelRooms() {
@@ -198,7 +316,9 @@ export class CalendarViewComponent {
         this.getHotelPrice();
       }else{
         
-        this.hotelRooms = res;
+        this.getHotelPrice();
+        // this.hotelRooms = res;
+        
       }
     })
   }
@@ -253,32 +373,35 @@ export class CalendarViewComponent {
   }
 
   getHotelPrice() {
-    this.loader = true;
-    this._service.getHotelPrice((res: any) => {
-      if (res) {
-        this.hotelPrice = res;
-        this.hotelPrice.forEach((e: any) => {
-          e.all_data = this.extractEventData(e.all_data);
-        });
-        this.loader = false;
+    // this.loader = true;
+    // this._service.getHotelPrice((res: any) => {
+    //   if (res) {
+    //     this.hotelPrice = res;
+    //     this.hotelPrice.forEach((e: any) => {
+    //       e.all_data = this.extractEventData(e.all_data);
+    //     });
+    //     this.loader = false;
+    //     this.combineRoomsAndHotelPriceData();
+    //   }
+    
+    // });
         this.combineRoomsAndHotelPriceData();
-      }
-
-    });
   }
 
   combineRoomsAndHotelPriceData() {
-    let data: any = [];
+    // let data: any = [];
     this.loader = true;
-    this.mainData = this.hotelRooms.map((e: any, idx: any) => {
-      this.hotelPrice.forEach((ele: any) => {
-        if(e.id == ele.resource){    //id == resource 
-        data.push(ele);
-        e['data'] = data;
-        }
-      })
-      return e;
-    });
+    // this.mainData = this.hotelRooms.map((e: any, idx: any) => {
+    //   this.hotelPrice.forEach((ele: any) => {
+    //     if(e.id == ele.resource){    //id == resource 
+    //     data.push(ele);
+    //     e['data'] = data;
+    //     }
+    //   })
+    //   return e;
+    // });                                               //will be uncommente when Calendar API will be fixed.
+
+    this.mainData = this.data;
     setTimeout(() => {
       this.loader = false;
       this.renderCalendar();
@@ -312,8 +435,6 @@ export class CalendarViewComponent {
         });
       });
     });
-    console.log(this.mainData);
-    
   }
 
   closeModal() {

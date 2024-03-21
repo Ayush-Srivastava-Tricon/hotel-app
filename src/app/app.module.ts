@@ -9,7 +9,7 @@ import { TokenInterceptor } from './token.interceptor';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient} from '@angular/common/http';
-
+import "../app/constants/javascript.variable";
 @NgModule({
   declarations: [
     AppComponent,
