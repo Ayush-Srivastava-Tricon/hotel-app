@@ -53,7 +53,7 @@
                                             (click)="showDropDown(idx)"></i>
                                         <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
                                             *ngIf="showActionDropDown[idx]">
-                                            <a class="dropdown-item">Change Status</a>
+                                            <!-- <a class="dropdown-item">Change Status</a> -->
                                             <a class="dropdown-item" (click)="editPropertyOpenModal(item)">Edit
                                                 Property</a>
                                             <a class="dropdown-item" (click)="deletePropertyModal(idx)">Delete</a>
@@ -73,7 +73,14 @@
 
 <ng-container *ngIf="showModal.property">
     <div class="container-fluid mt-2 ">
-        <div class="my-3 ms-2 d-flex justify-content-between "><span class="h3">{{isEditModal? 'Edit':'Add'}} Property</span><a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageProperty()">Back To Manage Property</a></div>
+        <div class="my-3 ms-2 d-flex justify-content-between ">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageProperty()">Back to Manage Property</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Property</li>
+                </ol>
+              </nav>
+        </div>
         <div class="shadow p-4 rounded bg-white" [formGroup]="propertyUserModal">
             <div class="row mb-2">
                 <div class="col-sm-6">

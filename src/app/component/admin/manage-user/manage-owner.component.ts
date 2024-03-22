@@ -71,7 +71,6 @@ export class ManageOwnerComponent {
 
   ngOnInit() {
     this.setDefaultLang('en');
-    // this.fetchOwnerList();
   }
 
 
@@ -88,10 +87,12 @@ export class ManageOwnerComponent {
   }
 
   fetchOwnerList() {
+    this.loader= true;
     this.adminService.fetchOwnerList((res: any) => {
       if (res) {
+        this.loader= false;
         console.log(res);
-        this.filteredOwnerList = res.data;
+        this.ownerList = res.data;
 
       }
     })
@@ -256,6 +257,9 @@ export class ManageOwnerComponent {
     this.filteredOwnerList = [];
     this.searchConfig = { searchType: 'Select' };
     this.filterBy = type;
+    if(type =='owner'){
+      this.fetchOwnerList();
+    }
   }
 
   onLangChange(event: any) {
@@ -268,7 +272,7 @@ export class ManageOwnerComponent {
   }
 
   loginAsProperty() {
-    this.router.navigate(['/manage-property'])
+    this.router.navigate(['/manage-property']);
   }
 
   backToManageOwner() {

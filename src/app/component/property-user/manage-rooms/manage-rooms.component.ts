@@ -16,6 +16,7 @@ export class ManageRoomsComponent {
   showActionDropDown:any={};
   isEditModal:boolean=false;
   deleteRoomIndex:number=0;
+  loader:boolean=false;
 
   constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService,private proService:PropertyService){
     this.roomModal  = this.fb.group(
@@ -67,8 +68,10 @@ export class ManageRoomsComponent {
   }
 
   fetchAllRooms(){
+    this.loader=true;
     this.proService.fetchAllRooms((res:any)=>{
       if(res.status == 200){
+        this.loader=false;
         console.log(res);
         this.roomsList = res.data;
         
@@ -78,21 +81,21 @@ export class ManageRoomsComponent {
 
   createNewRoom(){
       if(this.roomModal.status == "VALID"){
-      //   this.proService.addRooms(this.roomModal.value,(res:any)=>{
-      //     if(res.status == 200){
-      //       this.roomsList.push(this.roomModal.value);
-      //       this.showModal.property=false;
-      //       this.roomModal.reset();
-      //       this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 2000, pos: 'top' });
-      //     }
-      //   else{
-      //     this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 2000, pos: 'top' });
-      //   }
-      // })
-      this.roomsList.push(this.roomModal.value);
+        this.proService.addRooms(this.roomModal.value,(res:any)=>{
+          if(res.status == 200){
+            this.roomsList.push(this.roomModal.value);
             this.showModal.property=false;
             this.roomModal.reset();
             this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 2000, pos: 'top' });
+          }
+        else{
+          this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 2000, pos: 'top' });
+        }
+      })
+      // this.roomsList.push(this.roomModal.value);
+      //       this.showModal.property=false;
+      //       this.roomModal.reset();
+      //       this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 2000, pos: 'top' });
     }
       else{
         this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
@@ -149,5 +152,6 @@ export class ManageRoomsComponent {
 
   backToManageRoom(){
     this.showModal.property=false;
+    this.showActionDropDown={};
   }
 }

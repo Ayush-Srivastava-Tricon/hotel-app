@@ -39,7 +39,7 @@ const routes: Routes = [
   },
   {
     path:'**',
-    redirectTo:'/login'
+    loadChildren:()=>import("./component/page-not-found/page-not-found.module").then(m=>m.PageNotFoundModule)
   },
 ];
 

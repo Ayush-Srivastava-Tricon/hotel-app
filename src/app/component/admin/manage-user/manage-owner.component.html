@@ -256,7 +256,14 @@
 
     </ng-container>
     <ng-container *ngIf="showModal.owner">
-        <div class="my-3 ms-2 d-flex justify-content-between "><span class="h3">{{isEditModal? 'Edit':'Add'}} Owner</span><a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageOwner()">Back To Manage Owner</a></div>
+        <div class="my-3 ms-2 d-flex justify-content-between ">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageOwner()">Back to Manage Owner</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Owner</li>
+                </ol>
+              </nav>
+        </div>
         <div class="shadow p-4 rounded bg-white" [formGroup]="ownerModal">
             <div class="row mb-2">
                 <div class="col-sm-6">

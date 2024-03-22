@@ -1,9 +1,4 @@
 <div class="container-fluid mt-2" *ngIf="!showModal.property">
-    <div class="row">
-        <div class="col-sm-12 text-end">
-            <button class="btn btn-success" (click)="openModal()">Add Rooms</button>
-        </div>
-    </div>
     <div class="row justify-content-center align-items-center">
         <div class="col-sm-12 px-4">
             <div class="table-wrapper shadow table-responsive ">
@@ -11,6 +6,10 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <h2>List <b>Rooms</b></h2>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
+                                data-toggle="modal"><span>Add Rooms</span></a>
                         </div>
                     </div>
                 </div>
@@ -28,18 +27,44 @@
                         <th>Default Max</th>
                         <th>Description</th>
                         <th>Parent Room Id</th>
-                        <th>Non-Refundable</th>
-                        <th>is PMS</th>
+                        <!-- <th>Non-Refundable</th> -->
+                        <!-- <th>is PMS</th>
                         <th>is DORM</th>
                         <th>Cald Show</th>
                         <th>Be Show</th>
-                        <th>Breakfast</th>
+                        <th>Breakfast</th> -->
                         <!-- <th>is Active</th> -->
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="roomsList.length==0">
+                    <tr *ngIf="loader">
+                        <!-- <td class="tg-cly1">
+                        </td> -->
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                        <td class="tg-cly1">
+                        </td>
+                    </tr>
+                    <tr *ngIf="roomsList.length==0 && !loader">
                         <td colspan="19" class="text-center">
                             No Data
                         </td>
@@ -56,12 +81,12 @@
                         <td>{{item.default_max}}</td>
                         <td>{{item.description}}</td>
                         <td>{{item.parent_room_id}}</td>
-                        <td>{{item.nonrefundable}}</td>
+                        <!-- <td>{{item.nonrefundable}}</td>
                         <td>{{item.is_pms ? item.is_pms : false}}</td>
                         <td>{{item.is_dorm ? item.is_dorm:false}}</td>
                         <td>{{item.cald_show ? item.cald_show:false}}</td>
                         <td>{{item.be_show ? item.be_show:false}}</td>
-                        <td>{{item.breakfast ? item.breakfast:false}}</td>
+                        <td>{{item.breakfast ? item.breakfast:false}}</td> -->
                         <!-- <td>{{item.is_active ? item.is_active:false}}</td> -->
                         <td>
                             <div class="dropdown">
@@ -69,7 +94,7 @@
                                     (click)="showDropDown(idx)"></i>
                                 <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
                                     *ngIf="showActionDropDown[idx]">
-                                    <a class="dropdown-item">Change Status</a>
+                                    <!-- <a class="dropdown-item">Change Status</a> -->
                                     <a class="dropdown-item" (click)="editRoomOpenModal(item)">Edit Room</a>
                                     <a class="dropdown-item" (click)="deleteRoomModal(idx)">Delete</a>
                                 </div>
@@ -85,7 +110,16 @@
 </div>
 
 <div class="container-fluid mt-2" *ngIf="showModal.property">
-    <div class="my-3 ms-2 d-flex justify-content-between "><span class="h3">{{isEditModal? 'Edit':'Add'}} Room </span><a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageRoom()">Back To Manage Room</a></div>
+    <div class="my-3 ms-2 d-flex justify-content-between ">
+        <!-- <span class="h3">{{isEditModal? 'Edit':'Add'}} Room </span>
+        <a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageRoom()">Back To Manage Room</a> -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageRoom()">Back to Manage Room</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Room</li>
+            </ol>
+          </nav>
+    </div>
         <div class="shadow p-4 rounded" [formGroup]="roomModal">
             <div class="row mb-2">
                 <div class="col-sm-3 mb-2">
