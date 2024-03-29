@@ -16,6 +16,26 @@ export class OwnerService extends BaseServiceService {
    }
 
    addNewProperty(param:any,callback:any){
-    this.putData(param,this.httpUrl['addNewProperty'],callback)
+    this.postData(param,this.httpUrl['addNewProperty'],callback)
+   }
+
+   deleteProperty(propertyId:any,callback:any){
+    this.deleteData({},this.httpUrl['deleteProperty']+"/"+propertyId,callback)
+   }
+
+   editProperty(param:any,callback:any){
+    this.putData(param,this.httpUrl['editProperty'],callback)
+   }
+
+   fetchCountry(callback:any){
+    this.getData({},this.httpUrl['get-countries'],callback);
+   }
+
+   fetchState(countryId:any,callback:any){
+    this.getData({},`${this.httpUrl['get-state']}?country_id=${countryId}`,callback);
+   }
+
+   fetchCity(countryId:any,stateId:any,callback:any){
+    this.getData({},`${this.httpUrl['get-city']}/?country_id=${countryId}&state_id=${stateId}`,callback);
    }
 }

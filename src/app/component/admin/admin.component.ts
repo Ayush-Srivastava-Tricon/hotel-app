@@ -10,14 +10,16 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AdminComponent {
 
-  constructor(private router: Router, private authService: AuthService,private translate:TranslateService) { }
+  constructor(private router: Router, private authService: AuthService, private translate: TranslateService) { }
 
   logout() {
-    this.authService.logout(this.authService.roleId, this.authService.userId, (res: any) => {
+    const role_id:any = this.authService.roleId ? this.authService.roleId : JSON.parse(<any>localStorage.getItem("roleId"));
+    const userId:any = this.authService.userId ? this.authService.userId : JSON.parse(<any>localStorage.getItem("userId"));
+    this.authService.logout(role_id, userId, (res: any) => {
       if (res) {
         this.router.navigate(['/login']);
         localStorage.clear();
-      }else{
+      } else {
         this.router.navigate(['/login']);
         localStorage.clear();
       }

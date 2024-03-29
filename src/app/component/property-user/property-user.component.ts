@@ -9,8 +9,13 @@ import { AdminService } from 'src/app/services/admin.service';
 })
 export class PropertyUserComponent {
 
+  currentPropertyId:any=0;
 
   constructor(private router:Router,private adminService:AdminService){}
+
+  ngOnInit(){
+    this.currentPropertyId = localStorage.getItem("userId");
+  }
 
   logout(){
     if(this.adminService.isAdmin()){

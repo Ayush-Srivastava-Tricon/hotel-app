@@ -30,7 +30,9 @@ export class BaseServiceService {
 
     //<========Admin Service=========>
     'addOwner':'hotelapi/owners',
+    'editOwner':'hotelapi/owners',
     'getOwner':'hotelapi/owners',
+    'deleteOwner':'hotelapi/owners',
     'getOwnerById':'hotelapi/owners',
     'filter':'admin/filter',
 
@@ -38,10 +40,17 @@ export class BaseServiceService {
     //<=======Owner Serivce===========>
     'getAllProperty':'hotelapi/properties',
     'addNewProperty':'hotelapi/properties',
+    'deleteProperty':'hotelapi/properties',
+    'editProperty':'hotelapi/properties',
+    'get-countries':'hotelapi/country',
+    'get-state':'hotelapi/state',
+    'get-city':'hotelapi/city',
 
     //<========Property Service========>
-    'getAllRooms':'hotelapi/rooms ',
-    'addRooms':'hotelapi/rooms ',
+    'getAllRooms':'hotelapi/rooms',
+    'addRooms':'hotelapi/rooms',
+    'editRoom':'hotelapi/rooms',
+    'deleteRoom':'hotelapi/rooms',
   }
 
   constructor(public http:HttpClient) { }
@@ -89,7 +98,8 @@ export class BaseServiceService {
     .set('Access-Control-Allow-Origin', '*')
     .set('Authorization',`Bearer ${refreshToken}`)
 
-    return this.http.get(environment.apiUrl+"/refreshToken?role=1&user_id=1",{headers:headers}).subscribe((data:any)=>callback(<any>data));
+
+    return this.http.get(environment.apiUrl+`/refreshToken?role=${localStorage.getItem("roleId")}&user_id=${localStorage.getItem("userId")}`,{headers:headers}).subscribe((data:any)=>callback(<any>data));
   }
 
 
@@ -111,6 +121,16 @@ export class BaseServiceService {
     .set('Authorization',`Bearer ${this.getTokenFromLocal()}`)
 
     return this.http.put(environment.apiUrl+url,data,{headers:headers}).subscribe((data:any)=>callback(data),((error:any)=>callback(error))
+    );
+
+  }
+  deleteData(data:any,url:any,callback:any){
+    const  headers = new HttpHeaders()
+    .set('content-type','application/json')
+    .set('Access-Control-Allow-Origin', '*')
+    .set('Authorization',`Bearer ${this.getTokenFromLocal()}`)
+
+    return this.http.delete(environment.apiUrl+url,{headers:headers}).subscribe((data:any)=>callback(data),((error:any)=>callback(error))
     );
 
   }

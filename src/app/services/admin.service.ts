@@ -13,6 +13,14 @@ export class AdminService extends BaseServiceService {
       this.postData(params,this.httpUrl['addOwner'],callback)
   }
 
+  editOwner(params:any,callback:any){
+      this.putData(params,this.httpUrl['editOwner'],callback)
+  }
+
+  deleteOwner(ownerId:any,callback:any){
+      this.deleteData({},this.httpUrl['deleteOwner']+"/"+ownerId,callback)
+  }
+
   fetchOwnerList(callback:any){
       this.getData({},this.httpUrl['getOwner'],callback)
   }

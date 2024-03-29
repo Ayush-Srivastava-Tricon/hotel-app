@@ -177,8 +177,8 @@ export class CalendarViewComponent {
   }
 
   ngOnInit(): void {
-    this.getHotelRooms();
-    // this.fetchCalendarData();
+    // this.getHotelRooms();
+    this.fetchCalendarData();
   }
 
   fetchCalendarData(){

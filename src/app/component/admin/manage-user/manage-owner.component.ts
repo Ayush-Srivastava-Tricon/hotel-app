@@ -52,6 +52,7 @@ export class ManageOwnerComponent {
       "property_id": "4"
     }
   ];
+  selectedOwnerId:any;
 
   showPassword:boolean=false;
 
@@ -60,9 +61,9 @@ export class ManageOwnerComponent {
       {
         name: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
-        alternate_email: ['', [Validators.required, Validators.email]],
+        alternate_email: ['', [ Validators.email]],
         mobile: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-        alternate_mobile: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        alternate_mobile: ['', [Validators.pattern("^[0-9]*$")]],
         password: ['', [Validators.required]],
       }
     )
@@ -139,56 +140,55 @@ export class ManageOwnerComponent {
     this.ownerModal.patchValue(item);
     console.log(item);
     this.showModal.owner = true;
+    this.ownerModal.controls.password.removeValidators();
+    this.ownerModal.controls.password.updateValueAndValidity("");
+    this.selectedOwnerId = +item.owner_id;
+    
   }
 
   editOwner() {
     if (this.ownerModal.status == "VALID") {
-      this.showModal.owner = false;
-      this.isEditModal = false;
-      this.showActionDropDown = {};
-      this.ownerModal.reset();
-      this.alertService.alert("success", "Edit Owner Successfully", "Success", { displayDuration: 2000, pos: 'top' });
+        delete this.ownerModal.value.password; 
+        const editModalObj:any = JSON.parse(JSON.stringify(this.ownerModal.value));
+        editModalObj['owner_id'] = this.selectedOwnerId;
+      this.adminService.editOwner(editModalObj,(res:any)=>{
+        if(res.status == 200){
+          this.fetchOwnerList();
+          this.showModal.owner = false;
+          this.isEditModal = false;
+          this.showActionDropDown = {};
+          this.ownerModal.reset();
+          this.alertService.alert("success", "Edit Owner Successfully", "Success", { displayDuration: 2000, pos: 'top' });
+        }
+      })
     } else {
       this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
     }
 
   }
 
-  deleteOwnerModal(idx: any) {
+  deleteOwnerModal(ownerId:any,idx: any) {
     this.deleteRoomIndex = idx;
     this.showModal.delete = true;
+    this.selectedOwnerId = +ownerId;
   }
 
   deleteOwner() {
-    this.ownerList.splice(this.deleteRoomIndex, 1);
-    this.showModal.delete = false;
-    this.deleteRoomIndex = 0;
+    this.adminService.deleteOwner(this.selectedOwnerId,(res:any)=>{
+      if(res.status == 200){
+          console.log(res);
+          this.ownerList.splice(this.deleteRoomIndex, 1);
+          this.showModal.delete = false;
+          this.deleteRoomIndex = 0;
+          this.alertService.alert("error", "Owner Deleted", "Success", { displayDuration: 2000, pos: 'top' });
+      }else {
+        this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
+      }
+    })
   }
 
   searchById() {
     this.loader = true;
-    // if(this.searchConfig.searchType == 'ownerId'){
-    //   this.filteredOwnerList = this.wholeOwnerData.find((e:any)=>e.owner_id == this.searchConfig.ownerId);
-    //   this.filteredOwnerList = this.filteredOwnerList ?  [this.filteredOwnerList] : [];
-    //   setTimeout(() => {
-    //     this.loader=false;
-    //   }, 1000);
-    // }
-    // if(this.searchConfig.searchType == 'propertyId'){
-    //   this.filteredOwnerList = this.wholeOwnerData.find((e:any)=>e.owner_id == this.searchConfig.propertyId );
-    //   this.filteredOwnerList = this.filteredOwnerList ?  [this.filteredOwnerList] : [];
-    //   setTimeout(() => {
-    //     this.loader=false;
-    //   }, 1000);
-    // }
-
-    // if(this.searchConfig.searchType == 'name'){
-    //   this.filteredOwnerList = this.wholeOwnerData.filter((e:any)=>e.name.toLowerCase().includes(this.searchConfig.name.toLowerCase()));
-    //   this.filteredOwnerList = this.filteredOwnerList ?  this.filteredOwnerList : [];
-    //   setTimeout(() => {
-    //     this.loader=false;
-    //   }, 1000);
-    // }
     let params: any = {
       "search_for": +this.searchConfig['searchType'],
       "id": this.searchConfig['searchValue'],

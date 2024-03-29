@@ -47,6 +47,8 @@ export class LoginComponent {
 
   setUserAndRole(data:any){
     this.authService.setRoleAndUser(data);
+    localStorage.setItem("roleId",data.data.role)
+    localStorage.setItem("userId",data.data.user_id)
   }
 
   setUserLoggedIn(){

@@ -19,8 +19,8 @@
                             <th>Property ID</th>
                             <th>Property Name</th>
                             <th>City</th>
-                            <th>Owner Id</th>
                             <th>Status</th>
+                            <th>Calendar View</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -42,11 +42,11 @@
                         <ng-container *ngIf="propertyList.length>0 && !loader">
 
                             <tr *ngFor="let item of propertyList;let idx = index;" class="text-center align-middle">
-                                <td>{{item.property_id}}</td>
-                                <td>{{item.property_name}}</td>
+                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar()">{{item.property_id}}</a></td>
+                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar()">{{item.property_name|titlecase}}</a> </td>
                                 <td>{{item.city}}</td>
-                                <td>{{item.owner_id}}</td>
                                 <td>{{item.status == 1 ? 'Active' : 'InActive'}}</td>
+                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar()">View Calendar</a> </td>
                                 <td>
                                     <div class="dropdown">
                                         <i class="btn btn-light bi bi-three-dots-vertical"
@@ -56,7 +56,7 @@
                                             <!-- <a class="dropdown-item">Change Status</a> -->
                                             <a class="dropdown-item" (click)="editPropertyOpenModal(item)">Edit
                                                 Property</a>
-                                            <a class="dropdown-item" (click)="deletePropertyModal(idx)">Delete</a>
+                                            <a class="dropdown-item" (click)="deletePropertyModal(item.property_id,idx)">Delete</a>
                                         </div>
                                     </div>
                                 </td>
@@ -84,158 +84,185 @@
         <div class="shadow p-4 rounded bg-white" [formGroup]="propertyUserModal">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <label for="propertyName">Property Name</label>
-                    <input type="text" class="form-control" formControlName="property_name"
-                        [class.is-invalid]="propertyUserModal.controls.property_name.dirty && propertyUserModal.controls.property_name.errors?.['required']">
-                    <small
-                        *ngIf="propertyUserModal.controls.property_name.dirty && propertyUserModal.controls.property_name.errors?.['required']"
-                        class="text-danger">Required</small>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Property Info
+                            </button> </legend>
+                        
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Property Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="property_name"
+                                [class.is-invalid]="propertyUserModal.controls.property_name.dirty && propertyUserModal.controls.property_name.errors?.['required']">
+                                <small
+                                *ngIf="propertyUserModal.controls.property_name.dirty && propertyUserModal.controls.property_name.errors?.['required']"
+                                class="text-danger">Required</small>
+                            </div>
+                        </div>    
+                        <div class="form-group row">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Property Type</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" [class.is-invalid]="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']"  formControlName="property_type">
+                                    <option [value]="null" [selected]="true" [hidden]="true">Select</option>
+                                    <option value="APT">Apartment</option>
+                                    <option value="COT">Cottage</option>
+                                    <option value="VILLA">Villa</option>
+                                    <option value="HOTEL">Hotel</option>
+                                </select>    
+                                <small
+                                    *ngIf="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>    
+                    </fieldset>
                 </div>
                 <div class="col-sm-6">
-                    <label for="propertyType">Property Type</label>
-                    <input type="text" class="form-control" formControlName="property_type"
-                        [class.is-invalid]="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']">
-                    <small
-                        *ngIf="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']"
-                        class="text-danger">Required</small>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Property Owner Info
+                            </button> </legend>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" formControlName="email">
+                                <small
+                                    *ngIf="propertyUserModal.controls.email.dirty && propertyUserModal.controls.email.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2" *ngIf="!isEditModal">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" formControlName="password">
+                                <small
+                                    *ngIf="propertyUserModal.controls.password.dirty && propertyUserModal.controls.password.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Mobile</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="mobile">
+                                <small
+                                    *ngIf="propertyUserModal.controls.mobile.dirty && propertyUserModal.controls.mobile.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Address</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="address">
+                                <small
+                                    *ngIf="propertyUserModal.controls.address.dirty && propertyUserModal.controls.address.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" formControlName="email">
-                    <small
-                        *ngIf="propertyUserModal.controls.email.dirty && propertyUserModal.controls.email.errors?.['required']"
-                        class="text-danger">Required</small>
-                </div>
-                <div class="col-sm-6">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" formControlName="password">
-                    <small
-                        *ngIf="propertyUserModal.controls.password.dirty && propertyUserModal.controls.password.errors?.['required']"
-                        class="text-danger">Required</small>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <label for="mobile">Mobile</label>
-                    <input type="text" class="form-control" formControlName="mobile">
-                    <small
-                        *ngIf="propertyUserModal.controls.mobile.dirty && propertyUserModal.controls.mobile.errors?.['required']"
-                        class="text-danger">Required</small>
-                </div>
-                <div class="col-sm-6">
-                    <label for="address">Address</label>
-                    <input type="text" class="form-control" formControlName="address">
-                    <small
-                        *ngIf="propertyUserModal.controls.address.dirty && propertyUserModal.controls.address.errors?.['required']"
-                        class="text-danger">Required</small>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    <label for="country">Country</label>
-                    <input type="text" class="form-control" formControlName="country" [class.is-invalid]="propertyUserModal.controls.country.dirty && propertyUserModal.controls.country.errors?.['required']">
-                    <!-- <select type="text" class="form-control" (change)="selectCountry($event)"
-                        formControlName="country">
-                        <option [selected]="true" [value]="null" [hidden]="true">Select</option>
-                        <option value="1" [selected]="propertyUserModal.controls.country.value == 'india'">
-                            India</option>
-                        <option value="2" [selected]="propertyUserModal.controls.country.value == 'USA'">USA
-                        </option>
-                    </select> -->
-                    <small
-                        *ngIf="propertyUserModal.controls.country.dirty && propertyUserModal.controls.country.errors?.['required']"
-                        class="text-danger">Required</small>
-
-                </div>
-                <div class="col-sm-4">
-                    <label for="state">State</label>
-                    <input type="text" class="form-control" formControlName="state" [class.is-invalid]="propertyUserModal.controls.state.dirty && propertyUserModal.controls.state.errors?.['required']">
-                    <!-- <select type="text" class="form-control" (change)="getCityByState($event)"
-                        formControlName="state">
-                        <option [selected]="true" [hidden]="true">Select</option>
-                        <option [value]="state.state_id"
-                            [selected]="propertyUserModal.controls.state.value == state.state_name"
-                            *ngFor="let state of stateList.states">{{state.state_name}}</option>
-                    </select> -->
-                    <small
-                        *ngIf="propertyUserModal.controls.state.dirty && propertyUserModal.controls.state.errors?.['required']"
-                        class="text-danger">Required</small>
-
-                </div>
-                <div class="col-sm-4">
-                    <label for="city">City</label>
-                    <input type="text" class="form-control" formControlName="city" [class.is-invalid]="propertyUserModal.controls.city.dirty && propertyUserModal.controls.city.errors?.['required']">
-                    <!-- <select type="text" class="form-control" formControlName="city">
-                        <option [selected]="true" [hidden]="true">Select</option>
-                        <option [value]="city.id"
-                            [selected]="propertyUserModal.controls.city.value == city.name"
-                            *ngFor="let city of cityList.cityList">{{city.name}}</option>
-                    </select> -->
-                    <small
-                        *ngIf="propertyUserModal.controls.city.dirty && propertyUserModal.controls.city.errors?.['required']"
-                        class="text-danger">Required</small>
-
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-sm-8">
-                    <label for="country">Description</label>
-                    <textarea type="text" class="form-control" formControlName="description"></textarea>
-                    <small
-                        *ngIf="propertyUserModal.controls.description.dirty && propertyUserModal.controls.description.errors?.['required']"
-                        class="text-danger">Required</small>
-
-                </div>
-                <div class="col-sm-4">
-                    <label for="postal_code">Postal Code</label>
-                    <input type="text" class="form-control" formControlName="postal_code">
-                    <small
-                        *ngIf="propertyUserModal.controls.postal_code.dirty && propertyUserModal.controls.postal_code.errors?.['required']"
-                        class="text-danger">Required</small>
-
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <label for="ownerId">Owner Id</label>
-                    <input type="text" class="form-control" formControlName="owner_id">
-                    <small
-                        *ngIf="propertyUserModal.controls.owner_id.dirty && propertyUserModal.controls.owner_id.errors?.['required']"
-                        class="text-danger">Required</small>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Location
+                            </button> </legend>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Country</label>
+                            <div class="col-sm-9">
+                                <select type="text" class="form-control" (change)="getStateByCountry($event)">
+                                    <option [selected]="true" [value]="null" [hidden]="true">Select</option>
+                                    <ng-container *ngFor="let cty of countryList">
+                                        <option [value]="cty|json">{{cty.name}}</option>
+                                    </ng-container>
+                    
+                                </select>
+                                <small
+                                    *ngIf="propertyUserModal.controls.country.dirty && propertyUserModal.controls.country.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">State</label>
+                            <div class="col-sm-9">
+                                <select type="text" class="form-control" [disabled]="stateList.length==0" (change)="getCityByState($event)">
+                                    <option [selected]="true" [hidden]="true">Select</option>
+                                    <ng-container *ngFor="let state of stateList">
+                                        <option [value]="state|json">{{state.name}}</option>
+                                    </ng-container>
+                                </select>
+                                <small
+                                    *ngIf="propertyUserModal.controls.state.dirty && propertyUserModal.controls.state.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">City</label>
+                            <div class="col-sm-9">
+                                <select type="text" class="form-control" loading="lazy" [disabled]="cityList.length==0" (change)="selectCity($event)">
+                                    <option [selected]="true" [value]="null" [hidden]="true">Select</option>
+                                    <ng-container *ngFor="let city of cityList">
+                                        <option [value]="city.name">{{city.name}}</option>
+                                    </ng-container>
+                                </select>
+                                <small
+                                    *ngIf="propertyUserModal.controls.city.dirty && propertyUserModal.controls.city.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Postal Code</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="postal_code">
+                                <small
+                                    *ngIf="propertyUserModal.controls.postal_code.dirty && propertyUserModal.controls.postal_code.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Latitude</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="latitudes">
+                                <small
+                                    *ngIf="propertyUserModal.controls.latitudes.dirty && propertyUserModal.controls.latitudes.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Longitude</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="longitudes">
+                                <small
+                                    *ngIf="propertyUserModal.controls.longitudes.dirty && propertyUserModal.controls.longitudes.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-sm btn-primary" (click)="getCurrentLatLong()">Get Lat
+                                    Long</button>
+                                </div>
+                    </fieldset>
 
                 </div>
                 <div class="col-sm-6">
-                    <label for="amenities">Amenities</label>
-                    <input type="text" class="form-control" formControlName="amenities">
-                    <small
-                        *ngIf="propertyUserModal.controls.amenities.dirty && propertyUserModal.controls.amenities.errors?.['required']"
-                        class="text-danger">Required</small>
-
-                </div>
-            </div>
-            <div class="row mb-2 align-items-end">
-                <div class="col-sm-4">
-                    <label for="latitudes">Latitude</label>
-                    <input type="text" class="form-control" formControlName="latitudes">
-                    <small
-                        *ngIf="propertyUserModal.controls.latitudes.dirty && propertyUserModal.controls.latitudes.errors?.['required']"
-                        class="text-danger">Required</small>
-
-                </div>
-                <div class="col-sm-4">
-                    <label for="longitudes">Longitude</label>
-                    <input type="text" class="form-control" formControlName="longitudes">
-                    <small
-                        *ngIf="propertyUserModal.controls.longitudes.dirty && propertyUserModal.controls.longitudes.errors?.['required']"
-                        class="text-danger">Required</small>
-
-                </div>
-                <div class="col-sm-4">
-                    <button class="btn btn-sm btn-primary" (click)="getCurrentLatLong()">Get Lat
-                        Long</button>
-
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Others
+                            </button> </legend>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                                <textarea type="text" class="form-control" formControlName="description"></textarea>
+                                <small
+                                    *ngIf="propertyUserModal.controls.description.dirty && propertyUserModal.controls.description.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Amenities</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="amenities">
+                                <small
+                                    *ngIf="propertyUserModal.controls.amenities.dirty && propertyUserModal.controls.amenities.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
             <div class="row mt-3 mb-2">

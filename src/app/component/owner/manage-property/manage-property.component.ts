@@ -11,211 +11,196 @@ import { AlertService } from 'src/app/shared/alert.service';
 })
 export class ManagePropertyComponent {
 
-  propertyUserModal:any;
-  stateList:any=[];
-  cityList:any=[];
-  countryId:number=1;
-  propertyList:any=[];
-  showModal:any={property:false,delete:false};
-  showActionDropDown:any={};
-  isEditModal:boolean=false;
-  deletePropertyIndex:number=0;
-  loader:boolean=false;
+  propertyUserModal: any;
+  countryList: any = [];
+  stateList: any = [];
+  cityList: any = [];
+  countryId: number = 1;
+  propertyList: any = [];
+  showModal: any = { property: false, delete: false };
+  showActionDropDown: any = {};
+  isEditModal: boolean = false;
+  deletePropertyIndex: number = 0;
+  loader: boolean = false;
+  selectedPropertyId:number=0;
+  currentOwnerId:any;
 
-  constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService,private ownerService:OwnerService){
-    this.propertyUserModal  = this.fb.group(
+  constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private ownerService: OwnerService) {
+    this.propertyUserModal = this.fb.group(
       {
-        property_name:['',[Validators.required]],
-        email:['',[Validators.required]],
-        password:['',[Validators.required]],
-        mobile:['',[Validators.required]],
-        property_type:['',[Validators.required]],
-        address:['',[Validators.required]],
-        city:['',[Validators.required]],
-        state:['',[Validators.required]],
-        // city:[{value:'',disabled:true},[Validators.required]],
-        // state:[{value:'',disabled:true},[Validators.required]],
-        country:['',[Validators.required]],
-        postal_code:['',[Validators.required]],
-        description:['',[Validators.required]],
-        owner_id:['',[Validators.required]],
-        amenities:['',[Validators.required]],
-        latitudes:['',[Validators.required]],
-        longitudes:['',[Validators.required]],
+        property_name: ['', [Validators.required]],
+        email: ['', [Validators.required]],
+        password: ['', [Validators.required]],
+        mobile: ['', [Validators.required]],
+        property_type: ['', [Validators.required]],
+        address: ['', [Validators.required]],
+        city: [{ value: '', disabled: true }, [Validators.required]],
+        state: [{ value: '', disabled: true }, [Validators.required]],
+        country: ['', [Validators.required]],
+        postal_code: ['', [Validators.required]],
+        description: ['', [Validators.required]],
+        amenities: ['', [Validators.required]],
+        latitudes: ['', [Validators.required]],
+        longitudes: ['', [Validators.required]],
       }
     )
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.fetchPropertyList();
-  //   this.loader=true;
-  //   this.propertyList =[
-  //     {
-  //       "property_id": 1,
-  //       "email": "amit-kumar@e2x.com",
-  //       "property_name": "Taj",
-  //       "property_type": "HOTEL",
-  //       "address": null,
-  //       "mobile": "8765654345",
-  //       "city": "Lucknow",
-  //       "state": "Uttar Pradesh",
-  //       "country": "India",
-  //       "postal_code": "987675",
-  //       "description": null,
-  //       "owner_id": null,
-  //       "amenities": "",
-  //       "status": 1,
-  //       "latitudes": null,
-  //       "longitudes": null,
-  //       "created_at": "2024-03-07 14:23:09",
-  //       "updated_at": "2024-03-07 14:23:09"
-  //   },
-  //    {
-  //     "property_id": 2,
-  //     "email": "amittkumar@e2x.com",
-  //     "property_name": "Taj",
-  //     "property_type": "HOTEL",
-  //     "address": null,
-  //     "mobile": "8765654345",
-  //     "city": "New Delhi",
-  //     "state": "Delhi",
-  //     "country": "India",
-  //     "postal_code": "987675",
-  //     "description": null,
-  //     "owner_id": null,
-  //     "amenities": "",
-  //     "status": 0,
-  //     "latitudes": null,
-  //     "longitudes": null,
-  //     "created_at": "2024-03-07 14:34:17",
-  //     "updated_at": "2024-03-07 14:34:17"
-  // }
-
-  //   ];
-
-  //   setTimeout(() => {
-  //     this.loader=false;
-  //   }, 3000);
+    this.currentOwnerId = localStorage.getItem("userId");
   }
 
-  fetchPropertyList(){
-    this.loader= true;
-    this.ownerService.fetchPropertyList((res:any)=>{
-      if(res.status == 200){
-          this.loader= false;
-          this.propertyList = res.data;
-        }
-      })
-  }
 
-  createNewProperty(){
-      if(this.propertyUserModal.status == "VALID"){
-
-        // const formData:any = new FormData();
-        // formData.append("property_id",1);
-        // let inputfieldsLength:any = Object.keys(this.propertyUserModal.value).length;
-        // for (let i = 0; i<inputfieldsLength;i++){
-        //     formData.append(`${Object.keys(this.propertyUserModal.value)[i]}`,`${Object.values(this.propertyUserModal.value)[i]}`)
-        // }
-
-        this.propertyUserModal.value['property_id'] = 1;  //line to be removed
-
-        this.ownerService.addNewProperty(this.propertyUserModal.value,(res:any)=>{
-          if(res.status == 200){
-            this.propertyList.push(this.propertyUserModal.value);
-            this.showModal.property=false;
-            this.propertyUserModal.reset();
-            this.alertService.alert("success", "New Property Created", "Success", { displayDuration: 2000, pos: 'top' });
-          } else{
-            this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 2000, pos: 'top' });
-          }
-        })
-      }else{
-        this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
+  fetchPropertyList() {
+    this.loader = true;
+    this.ownerService.fetchPropertyList((res: any) => {
+      if (res.status == 200) {
+        this.loader = false;
+        this.propertyList = res.data;
       }
+    })
   }
 
-  selectCountry(event:any){
-        this.stateList=[];
-        this.cityList=[];
-        this.countryId = event.target.value;
-        this.getStateByCountry(event.target.value);
-
-  }
-
-  getStateByCountry(id:any){
-      this.cityList=[];
-      this.stateList =  this.constants.stateList.find((e:any)=>e.id == id);
-      this.propertyUserModal.controls.state.enable();
-  }
-
-  getCityByState(event:any){
-      this.cityList = this.constants.cityList.find((e:any)=>{
-        if(e.country_id == this.countryId && e.state_id == event.target.value){
-          return e || [];
+  createNewProperty() {
+    if (this.propertyUserModal.status == "VALID") {
+      this.ownerService.addNewProperty(this.propertyUserModal.value, (res: any) => {
+        if (res.status == 200) {
+          this.propertyList.push(this.propertyUserModal.value);
+          this.showModal.property = false;
+          this.propertyUserModal.reset();
+          this.fetchPropertyList();
+          this.alertService.alert("success", "New Property Created", "Success", { displayDuration: 3000, pos: 'top' });
+        } else {
+          this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });
         }
       })
-      if(this.cityList){
+    } else {
+      this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 3000, pos: 'top' });
+    }
+  }
+
+  getStateByCountry(event: any) {
+    const countryData = JSON.parse(event.target.value);
+    this.countryId = +countryData.country_id;
+    this.propertyUserModal.controls.country.setValue(countryData.name);
+    this.propertyUserModal.controls.state.setValue('');
+    this.propertyUserModal.controls.city.setValue('');
+    this.ownerService.fetchState(+countryData.country_id, (res: any) => {
+      if (res.status == 200) {
+        this.stateList = res.data;
+        this.propertyUserModal.controls.state.enable();
+      } else {
+        this.stateList = [];
+        this.cityList = [];
+        this.propertyUserModal.controls.state.disable();
+        this.propertyUserModal.controls.city.disable();
+      }
+    })
+
+  }
+
+
+  getCityByState(event: any) {
+    const stateData = JSON.parse(event.target.value);
+    this.propertyUserModal.controls.state.setValue(stateData.name);
+    this.propertyUserModal.controls.city.setValue('');
+    this.ownerService.fetchCity(this.countryId, +stateData.state_id, (res: any) => {
+      if (res.status == 200) {
+        this.cityList = res.data;
         this.propertyUserModal.controls.city.enable();
-      }else{
+      } else {
         this.cityList = [];
         this.propertyUserModal.controls.city.disable();
       }
+    })
 
-      
   }
 
-  openModal(){
-    this.showModal.property= true;
+  selectCity(event: any) {
+    this.propertyUserModal.controls.city.setValue(event.target.value);
+    console.log(this.propertyUserModal.value);
+
+  }
+
+  openModal() {
+    this.showModal.property = true;
+    this.isEditModal = false;
+    this.fetchCountry();
     this.propertyUserModal.reset();
   }
 
-  closeModal(){
-   this.showModal.property= false;
-   this.showModal.delete=false;
-   this.isEditModal= false;
-   this.propertyUserModal.reset();
+  closeModal() {
+    this.showModal.property = false;
+    this.showModal.delete = false;
+    this.isEditModal = false;
+    this.propertyUserModal.reset();
   }
 
-  showDropDown(idx:any){
+  showDropDown(idx: any) {
     this.showActionDropDown[idx] = !this.showActionDropDown[idx];
   }
 
-  editPropertyOpenModal(item:any){
-      this.isEditModal= true;
-      this.propertyUserModal.patchValue(item);
-      console.log(item);
-      this.showModal.property=true;
+  editPropertyOpenModal(item: any) {
+    this.isEditModal = true;
+    this.fetchCountry();
+    this.propertyUserModal.patchValue(item);
+    console.log(item);
+    this.showModal.property = true;
+    this.propertyUserModal.controls.password.removeValidators();
+    this.propertyUserModal.controls.password.updateValueAndValidity("");
+    this.selectedPropertyId = item.property_id;
   }
 
-  editProperty(){
-    if(this.propertyUserModal.status == "VALID"){
-      this.showModal.property=false;
-      this.isEditModal= false;
-      this.showActionDropDown={};
-      this.propertyUserModal.reset();
-      this.alertService.alert("success", "Edit Property Successfully", "Success", { displayDuration: 2000, pos: 'top' });
-    }else{
+  editProperty() {
+    if (this.propertyUserModal.status == "VALID") {
+      delete this.propertyUserModal.value.password;
+      const editModalObj:any = JSON.parse(JSON.stringify(this.propertyUserModal.value));
+      editModalObj['property_id'] = +this.selectedPropertyId;
+      editModalObj['owner_id'] = +this.currentOwnerId;
+      this.ownerService.editProperty(editModalObj,(res:any)=>{
+        if(res.status == 200){
+          this.fetchPropertyList();
+          this.showModal.property = false;
+          this.isEditModal = false;
+          this.showActionDropDown = {};
+          this.propertyUserModal.reset();
+          this.alertService.alert("success", "Edit Property Successfully", "Success", { displayDuration: 2000, pos: 'top' });
+        } else{
+          this.alertService.alert("error", "Something went Wrong", "Error", { displayDuration: 2000, pos: 'top' });
+        }
+      })
+    } else {
       this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
     }
-      
+
   }
 
-  deletePropertyModal(idx:any){
+  deletePropertyModal(propertyId:any,idx: any) {
     this.deletePropertyIndex = idx;
-    this.showModal.delete=true;
+    this.selectedPropertyId = propertyId;
+    this.showModal.delete = true;
   }
 
-  deleteProperty(){
-      this.propertyList.splice(this.deletePropertyIndex,1);
-      this.showModal.delete=false;
-      this.deletePropertyIndex=0;
+  deleteProperty() {
+    this.ownerService.deleteProperty(this.selectedPropertyId,(res:any)=>{
+      if(res.status == 200){
+        this.fetchPropertyList();
+        this.propertyList.splice(this.deletePropertyIndex, 1);
+        this.showModal.delete = false;
+        this.deletePropertyIndex = 0;
+        this.selectedPropertyId = 0;
+        this.alertService.alert("error", "Property Deleted Successfully", "Success", { displayDuration: 2000, pos: 'top' });
+      }else{
+        this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
+      }
+    })
   }
 
-  getCurrentLatLong(){
-    let ths:any= this;
+  getCurrentLatLong() {
+    let ths: any = this;
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
+      navigator.geolocation.getCurrentPosition(function (position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         ths.propertyUserModal.controls.latitudes.setValue(latitude);
@@ -226,8 +211,22 @@ export class ManagePropertyComponent {
     }
   }
 
-  backToManageProperty(){
-    this.showModal.property=false;
+  backToManageProperty() {
+    this.showModal.property = false;
+    this.isEditModal = false;
+    this.showActionDropDown= {};
+  }
+
+  fetchCountry() {
+    this.ownerService.fetchCountry((res: any) => {
+      if (res.status == 200) {
+        this.countryList = res.data;
+      }
+    })
+  }
+
+  viewCalendar(){
+
   }
 
 }

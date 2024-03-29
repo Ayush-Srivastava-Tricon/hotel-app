@@ -12,10 +12,18 @@ export class PropertyService extends BaseServiceService {
   }
 
   fetchAllRooms(callback:any){
-    this.getData({},this.httpUrl['getAllRooms'],callback)
+    this.getData({},this.httpUrl['getAllRooms'],callback);
   }
 
   addRooms(params:any,callback:any){
-    this.postData(params,this.httpUrl['addRooms'],callback)
+    this.postData(params,this.httpUrl['addRooms'],callback);
+  }
+
+  editRoom(params:any,callback:any){
+    this.putData(params,this.httpUrl['editRoom'],callback);
+  }
+
+  deleteRoom(roomId:any,callback:any){
+    this.deleteData({},this.httpUrl['deleteRoom']+"/"+roomId,callback);
   }
 }

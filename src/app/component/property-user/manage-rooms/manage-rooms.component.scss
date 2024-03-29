@@ -304,3 +304,13 @@ cursor: auto;
 box-shadow: none;
 background: #ddd;
 }
+
+.add-room-container{
+    background-color: whitesmoke;
+
+    .col-sm-6{
+      background-color: white;
+      padding: 20px;
+      height: 285px;
+    }
+}
