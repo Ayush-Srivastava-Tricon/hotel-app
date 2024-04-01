@@ -62,11 +62,13 @@
                 class="bi bi-arrow-right-square text-danger" style="font-size: 30px;cursor: pointer;"
                 (click)="nextMonth()"></span></div>
           </div>
+          <div class="table-responsive">
+
           <table class="table table-bordered table-sm shadow p-3 mb-3" loading="lazy">
             <thead class="thead-dark">
               <tr id="weekId">
                 <th class="textRandom">
-                  {{data.name}}
+                  {{data.room_name}}
                 </th>
                 <ng-container *ngFor="let head of weekdaysWithDates;let thIdx=index;">
                   <th class="weekday-date" id="head{{thIdx}}{{calendarIdx}}"
@@ -91,25 +93,25 @@
                   </td>
                   <ng-container *ngFor="let dayData of datesData;let dataIdx = index;">
                     <td *ngIf="id == 0" class="hover-td" 
-                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-success':dayData?.newData?.all_data?.al ,'text-light':dayData?.newData?.all_data?.al , 'bg-danger': !(dayData?.newData?.all_data?.al) || dayData?.newData?.all_data?.al == 0 ,'active':dragEl['head'+dataIdx+calendarIdx] }"
+                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-success':dayData?.newData?.al ,'text-light':dayData?.newData?.al , 'bg-danger': !(dayData?.newData?.al) || dayData?.newData?.al == 0 ,'active':dragEl['head'+dataIdx+calendarIdx] }"
                       (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"     (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)" >
-                      {{dayData?.newData?.all_data?.al }}
+                      {{dayData?.newData?.al }}
                     </td>
                     <td *ngIf="id == 1" class="hover-td" [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
                     (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''" (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
-                      {{dayData?.newData?.all_data?.mn }} -  {{dayData?.newData?.all_data?.mx }}
+                      {{dayData?.newData?.mn }} -  {{dayData?.newData?.mx }}
                     </td>
                     <td *ngIf="id == 2" class="hover-td" [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
                     (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''" (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
                       <i class="bi bi-box-arrow-in-right text-danger mx-1 " style="font-size: 20px;"
-                        *ngIf="dayData?.newData?.all_data?.cta == 'true'"></i>
+                        *ngIf="dayData?.newData?.cta"></i>
                       <i class="bi bi-box-arrow-right text-danger mx-1 " style="font-size: 20px;"
-                        *ngIf="dayData?.newData?.all_data?.ctd == 'true'"></i>
+                        *ngIf="dayData?.newData?.ctd"></i>
                     </td>
-                    <td *ngIf="id == 3" class="hover-td"
-                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.all_data?.ss,'active':dragEl['head'+dataIdx+calendarIdx]}"
+                    <td *ngIf="id == 3" class="hover-td text-light"
+                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.ss,'active':dragEl['head'+dataIdx+calendarIdx]}"
                       (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"  (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
-                      {{dayData?.newData?.all_data?.pr}}
+                      {{dayData?.newData?.pr}}
                     </td>
                   </ng-container>
                 </tr>
@@ -131,6 +133,8 @@
               </ng-container>
             </tbody>
           </table>
+        </div>
+
         </ng-container>
       </div>
     </div>
@@ -253,12 +257,12 @@
                       <div class="col-md-7">
                         <div class="form-check form-check-inline">
                           <input class="form-check-input" type="radio" [value]="'true'"
-                            [checked]="modalFieldForm.get('ss').value === 'true'" formControlName="ss">
+                            [checked]="modalFieldForm.get('ss').value === true" formControlName="ss">
                           <label class="form-check-label" for="ss1">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
                           <input class="form-check-input" type="radio" [value]="'false'"
-                            [checked]="modalFieldForm.get('ss').value == 'false'" formControlName="ss">
+                            [checked]="modalFieldForm.get('ss').value === false" formControlName="ss">
                           <label class="form-check-label" for="ss2">No</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -274,13 +278,13 @@
                       </div>
                       <div class="col-md-7">
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" [value]="'true'"
-                            [checked]="modalFieldForm.get('cta').value === 'true'" formControlName="cta">
+                          <input class="form-check-input" type="radio" [value]="true"
+                            [checked]="modalFieldForm.get('cta').value === true" formControlName="cta">
                           <label class="form-check-label" for="cin1">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" [value]="'false'"
-                            [checked]="modalFieldForm.get('cta').value === 'true'" formControlName="cta">
+                          <input class="form-check-input" type="radio" [value]="false"
+                            [checked]="modalFieldForm.get('cta').value === false" formControlName="cta">
                           <label class="form-check-label" for="cin2">No</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -297,12 +301,12 @@
                       <div class="col-md-7">
                         <div class="form-check form-check-inline">
                           <input class="form-check-input" type="radio"
-                            [checked]="modalFieldForm.get('ctd').value === 'true'" [value]="'true'" formControlName="ctd">
+                            [checked]="modalFieldForm.get('ctd').value === true" [value]="true" formControlName="ctd">
                           <label class="form-check-label" for="cout1">Yes</label>
                         </div>
                         <div class="form-check form-check-inline">
                           <input class="form-check-input" type="radio"
-                            [checked]="modalFieldForm.get('ctd').value === 'true'" [value]="'false'"
+                            [checked]="modalFieldForm.get('ctd').value === false" [value]="false"
                             formControlName="ctd">
                           <label class="form-check-label" for="cout2">No</label>
                         </div>

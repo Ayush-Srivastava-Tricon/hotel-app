@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertService } from 'src/app/shared/alert.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,8 +13,18 @@ export class LoginComponent {
 
   userType:any='';
   userModal:any={};
+  isAdminLogin:boolean=false;
 
   constructor(private router : Router,private authService:AuthService,private alertService:AlertService){}
+
+  ngOnInit(){
+    console.log(this.router.url);
+    if(this.router.url.endsWith("/adminLogin")){
+      this.isAdminLogin=true;
+      this.selectUserType('admin',1);
+    }
+    
+  }
 
   selectUserType(userType:any,roleNum:number){
     localStorage.clear();
@@ -23,8 +34,6 @@ export class LoginComponent {
   }
 
   login(){
-    console.log(23);
-    
       this.setUserLoggedIn();
       this.authService.login(this.userModal,(res:any)=>{
         if(res.status == 200){

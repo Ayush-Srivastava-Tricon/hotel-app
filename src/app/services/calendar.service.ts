@@ -15,8 +15,8 @@ export class CalendarService extends BaseServiceService {
     this.postData(params,this.httpUrl['addHotelAlot'],callback);
   }
 
-  updatePriceAlot(params:any,callback:any){
-    this.postData(params,this.httpUrl['updatePriceAlot'],callback);
+  updateCalendar(params:any,callback:any){
+    this.postData(params,this.httpUrl['updateCalendar'],callback);
   }
 
   getHotelAvailability(callback:any){
@@ -35,8 +35,8 @@ export class CalendarService extends BaseServiceService {
     this.getData({},this.httpUrl['getHotelRooms'],callback);
   }
   
-  getAllCalendarData(callback:any){
-    this.getData({},this.httpUrl['getCalendarData'],callback);
+  getAllCalendarData(propertyId:any,startEndDate:any,callback:any){
+    this.getData({},`${this.httpUrl['getCalendarData']}?property_id=${propertyId}&${startEndDate}`,callback);
     
   }
 }

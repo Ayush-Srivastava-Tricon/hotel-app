@@ -19,11 +19,10 @@
             </div>
         </div>
         <div class="col-sm-4 text-end">
-            <div class="hidden" id="google_translate_element" class="form-control-sm" style="display: none;"></div>
             <select class="form-control-sm skiptranslate" (change)="onLangChange($event)">
                 <option selected="true" hidden="true">Select Language</option>
-                <option value="en">English</option>
-                <option value="es">Spanish</option>
+                <option value="en|en">English</option>
+                <option value="en|es">Spanish</option>
                 <ng-container *ngFor="let lang of allLang">
                     <option class='skiptranslate' [value]="lang.key" *ngIf="lang.name != 'English' || lang.name != 'Spanish'">{{lang.name}}</option>
                 </ng-container>
@@ -221,7 +220,7 @@
                             <div class="table-wrapper shadow h-100">
                                 <div class="h4 text-center">Property Details</div>
                                 <button class="btn btn-sm btn-danger"> <a href="javascript:void(0)"
-                                        class="text-light text-decoration-none" [routerLink]="['/manager']">Select
+                                        class="text-light text-decoration-none" (click)="loginAsProperty()">Select
                                         Property</a> </button>
                                 <div class="details mt-3">
                                     <ul class="list-group list-group-flush">

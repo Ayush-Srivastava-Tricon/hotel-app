@@ -7,6 +7,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AdminService extends BaseServiceService {
 
+  googleTranslateApiKey :any = "AIzaSyATBXajvzQLTDHEQbcpq0Ihe0vWDHmO520";
+  googleTranslateApiUrl:any = 'https://translation.googleapis.com/language/translate/v2';
+
   constructor(http:HttpClient) { super(http);}
 
   addOwner(params:any,callback:any){
@@ -35,6 +38,15 @@ export class AdminService extends BaseServiceService {
 
   isAdmin(){
     return !!localStorage.getItem("isadmin");
+  }
+
+  doGTranslate(text: string, targetLang: string,callback:any) {
+    const params = {
+      key: this.googleTranslateApiKey,
+      q: text,
+      target: targetLang
+    };
+    return this.http.post(this.googleTranslateApiUrl,params ).subscribe((data:any)=>callback(data));
   }
 
 }

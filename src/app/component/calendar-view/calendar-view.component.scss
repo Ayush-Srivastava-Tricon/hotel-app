@@ -53,7 +53,7 @@
   }
   
   .textRandom {
-    width: 200px;
+    min-width: 125px;
     padding: 10px;
   }
   
@@ -86,15 +86,20 @@
   .hover-td {
     font-size: 12px !important;
     text-align: center !important;
-    padding: 5px !important;
-    max-width: 45px !important;
+    padding: 7px !important;
+    width: 50px !important;
+    height: 45px !important;
     vertical-align: middle;
   
   }
-  
-  .td {
-    width: 30px;
+
+  tr>td:first-child{
+    
   }
+  
+  // .td {
+  //   width: 30px;
+  // }
   
   .hover-td:hover {
     opacity: 0.8;

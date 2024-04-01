@@ -22,6 +22,7 @@ export class BaseServiceService {
     'getHotelPrice': "hotelapi/getHotelPrice.php",
     'getHotelRooms': "hotelapi/getHotelRooms.php",
     'getCalendarData':"hotelapi/calendar",
+    'updateCalendar':"hotelapi/calendar",
 
     // <=======AUTHENTICATION=======>
     'login': "hotelapi/login",
@@ -85,7 +86,7 @@ export class BaseServiceService {
 
       }
       if (error) {
-        callback({status:400,error:error});
+        callback(error);
       }
     })
   

@@ -56,7 +56,9 @@ export class ManageOwnerComponent {
 
   showPassword:boolean=false;
 
-  constructor(private router: Router, private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private adminService: AdminService, private translate: TranslateService) {
+  constructor(private router: Router, private fb: FormBuilder, private constants: AppConstants, 
+    private alertService: AlertService, private adminService: AdminService, 
+    private translate: TranslateService) {
     this.ownerModal = this.fb.group(
       {
         name: ['', [Validators.required]],
@@ -263,7 +265,22 @@ export class ManageOwnerComponent {
   }
 
   onLangChange(event: any) {
-    this.translate.use(event.target.value);
+    const selectedLangKey :any= event.target.value; 
+    const targetLang:any = selectedLangKey.split("|")[1];
+    if(selectedLangKey.split("|")[1] == 'en' || selectedLangKey.split("|")[1] == 'es'){
+      this.translate.use(targetLang);
+    }else{
+      const htmlContent:any = document.querySelector(".form-check-label");
+      console.log(htmlContent);
+      
+      this.adminService.doGTranslate(htmlContent.innerText,selectedLangKey,(res:any)=>{
+          if(res){
+            console.log(res);
+            
+          }
+      })
+    }
+    
   }
 
   viewFullDetails(propertyId: any) {
@@ -272,7 +289,7 @@ export class ManageOwnerComponent {
   }
 
   loginAsProperty() {
-    this.router.navigate(['/manage-property']);
+    this.router.navigate(['/manager/calendar-view',1]);
   }
 
   backToManageOwner() {

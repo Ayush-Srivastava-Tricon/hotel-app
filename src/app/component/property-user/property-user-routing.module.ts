@@ -17,7 +17,13 @@ const routes: Routes = [
         loadChildren:()=>import("./manage-rooms/manage-rooms.module").then(m=>m.ManageRoomsModule)
       },
       {
+        path:'calendar-view/:id',
+        pathMatch:'full',
+        loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
+      },
+      {
         path:'calendar-view',
+        pathMatch:'full',
         loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
       },
     ]

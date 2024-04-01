@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarService } from 'src/app/services/calendar.service';
 import { AlertService } from 'src/app/shared/alert.service';
 @Component({
@@ -52,9 +52,9 @@ export class CalendarViewComponent {
       "id": "1",
       "expanded": true,
       "data": [
-        {
-          "start": "2024-03-29",
-          "end": "2024-03-29",
+       {
+        
+          "end": "2024-03-29",  "start": "2024-03-29",
           "text": "300.00",
           "resource": "1",
           "all_data":
@@ -154,7 +154,9 @@ export class CalendarViewComponent {
         }
       ]
     }
-  ]
+  ];
+
+  loggedProperty:any= {'isLoginProperty':false,'propertyId':0};
 
 
 
@@ -173,21 +175,55 @@ export class CalendarViewComponent {
       "start": ['', Validators.required,],
       "end": ['', Validators.required,],
       "resource": [''],
-    })
+    });
+
+    if( this.router.url.split("/")[3]){
+      this.loggedProperty.isLoginProperty = true;
+      this.loggedProperty.propertyId = this.router.url.split("/")[3];
+      this.fetchCalendarData();
+    } else{
+      this.loggedProperty.propertyId = localStorage.getItem("userId");
+      this.fetchCalendarData();
+    }
+
   }
 
   ngOnInit(): void {
-    // this.getHotelRooms();
-    this.fetchCalendarData();
   }
 
   fetchCalendarData(){
-    this._service.getAllCalendarData((res:any)=>{
+   let startEndDate:any =  this.getStartAndEndDate();
+    this._service.getAllCalendarData(this.loggedProperty.propertyId,startEndDate,(res:any)=>{
       if(res.status == 200){
         console.log(res);
-        
+        this.mainData=res.responseData;
+        this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
+        setTimeout(() => {
+          this.loader = false;
+          this.renderCalendar();
+        }, 0);
+      }else if(res.status == 404){
+        this.alertService.alert("error", res.error.message, "error", { displayDuration: 2000, pos: 'top' });
+        setTimeout(() => {
+          this.loader = false;
+          this.renderCalendar();
+        }, 0);
       }
     })
+  }
+
+  getStartAndEndDate() {
+    let now = new Date();
+    let current;
+    if (now.getMonth() == 11) {
+      current = new Date(now.getFullYear() + 1, 0, 1);
+    } else {
+      current = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    }
+
+    return `start_date=${this.formatDate(now)}&end_date=${this.formatDate(current)}`;
+
+    
   }
 
   selectedDate(event: any) {
@@ -309,36 +345,22 @@ export class CalendarViewComponent {
     selectedRangeDate.value = '' ;
   }
 
-  getHotelRooms() {
-    this._service.getHotelRooms((res: any) => {
-      if (res.status == 200) {
-        this.hotelRooms = res;
-        this.getHotelPrice();
-      }else{
-        
-        this.getHotelPrice();
-        // this.hotelRooms = res;
-        
-      }
-    })
-  }
-
   openModal(data: any, roomName: any, endDate?: any) {
     this.dragEventStart ? '' : this.selectedEndDate = endDate;
     this.dragEl = {};
     this.dragEventStart = false;
     let eventData: any = data || {};
-
+    
     if (eventData) {
       this.modalFieldForm.patchValue({
-        "pr": eventData.all_data?.pr,
-        "ss": eventData.all_data?.ss,
-        "mn": eventData.all_data?.mn,
-        "mx": eventData.all_data?.mx,
-        "cta": eventData.all_data?.cta,
-        "ctd": eventData.all_data?.ctd,
-        "cu": eventData.all_data?.cu,
-        "al": eventData.all_data?.al,
+        "pr": eventData?.pr,
+        "ss": eventData?.ss,
+        "mn": eventData?.mn,
+        "mx": eventData?.mx,
+        "cta": eventData?.cta,
+        "ctd": eventData?.ctd,
+        "cu": eventData?.cu,
+        "al": eventData?.al,
         "start": this.selectedStartDate ? this.selectedStartDate : eventData.start,
         "end": this.selectedEndDate ? this.selectedEndDate : eventData.end,
         "resource": eventData.resource,
@@ -352,62 +374,26 @@ export class CalendarViewComponent {
   }
 
   updateValue() {
+    
     if (this.modalFieldForm.status == 'VALID') {
-      let params: any = {
-        data: this.modalFieldForm.value
-      };
-      this._service.updatePriceAlot(params, (res: any) => {
+      const selectedRoomId:any = this.modalFieldForm.value.resource;
+      delete this.modalFieldForm.value.resource;
+      const params:any = {
+        'room_id':selectedRoomId,
+        "data":[this.modalFieldForm.value]
+      }
+      this._service.updateCalendar(params, (res: any) => {
         if (res) {
           this.showModal = false;
           this.alertService.alert("success", "Data Saved Successfully", "Success", { displayDuration: 2000, pos: 'top' });
           this.modalFieldForm.reset();
-          // this.getHotelPrice();
         }
       })
     } else {
       this.errorMsg = "Please Fill the fields";
       this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
     }
-
-
-  }
-
-  getHotelPrice() {
-    // this.loader = true;
-    // this._service.getHotelPrice((res: any) => {
-    //   if (res) {
-    //     this.hotelPrice = res;
-    //     this.hotelPrice.forEach((e: any) => {
-    //       e.all_data = this.extractEventData(e.all_data);
-    //     });
-    //     this.loader = false;
-    //     this.combineRoomsAndHotelPriceData();
-    //   }
     
-    // });
-        this.combineRoomsAndHotelPriceData();
-  }
-
-  combineRoomsAndHotelPriceData() {
-    // let data: any = [];
-    this.loader = true;
-    // this.mainData = this.hotelRooms.map((e: any, idx: any) => {
-    //   this.hotelPrice.forEach((ele: any) => {
-    //     if(e.id == ele.resource){    //id == resource 
-    //     data.push(ele);
-    //     e['data'] = data;
-    //     }
-    //   })
-    //   return e;
-    // });                                               //will be uncommente when Calendar API will be fixed.
-
-    this.mainData = this.data;
-    setTimeout(() => {
-      this.loader = false;
-      this.renderCalendar();
-    }, 0);
-
-
   }
 
   formatDate(date: any) {
@@ -429,13 +415,21 @@ export class CalendarViewComponent {
     this.mainData.forEach((e: any) => {
       e?.data?.forEach((item: any) => {
         this.datesData.forEach((dayData: any, idx: any) => {
-          if (new Date(item.start).setHours(0, 0, 0, 0) == new Date(dayData.formateDate).setHours(0, 0, 0, 0)) {
+          if (item.date == dayData.date) {
             dayData['newData'] = item;
+            dayData.newData['resource'] = e.room_id;
+            dayData.newData['start'] = `${e.year}-${e.month}-${item.date}`;
           }
+          // if (new Date(item.start).setHours(0, 0, 0, 0) == new Date(dayData.formateDate).setHours(0, 0, 0, 0)) {
+          //   dayData['newData'] = item;
+          // }
         });
       });
     });
+    console.log(this.datesData);
+    
   }
+
 
   closeModal() {
     this.showModal = false;
