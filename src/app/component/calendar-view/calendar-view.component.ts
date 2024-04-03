@@ -37,7 +37,7 @@ export class CalendarViewComponent {
   errorMsg: any = '';
   nextDisplayMonth: any;
   modalFieldForm: any;
-  loader: Boolean = false;
+  loader: boolean = false;
   dragEl: any = {};
   activeModalRoomName: string = '';
   dragEventStart: boolean = false;
@@ -177,9 +177,9 @@ export class CalendarViewComponent {
       "resource": [''],
     });
 
-    if( this.router.url.split("/")[3]){
+    if(localStorage.getItem("selectedPropertyId")){
       this.loggedProperty.isLoginProperty = true;
-      this.loggedProperty.propertyId = this.router.url.split("/")[3];
+      this.loggedProperty.propertyId = localStorage.getItem("selectedPropertyId");
       this.fetchCalendarData();
     } else{
       this.loggedProperty.propertyId = localStorage.getItem("userId");
@@ -191,8 +191,9 @@ export class CalendarViewComponent {
   ngOnInit(): void {
   }
 
-  fetchCalendarData(){
-   let startEndDate:any =  this.getStartAndEndDate();
+  fetchCalendarData(nextButtonDate?:any){
+   let startEndDate:any =  this.getStartAndEndDate(nextButtonDate);
+   this.loader=true;
     this._service.getAllCalendarData(this.loggedProperty.propertyId,startEndDate,(res:any)=>{
       if(res.status == 200){
         console.log(res);
@@ -212,8 +213,15 @@ export class CalendarViewComponent {
     })
   }
 
-  getStartAndEndDate() {
-    let now = new Date();
+  getStartAndEndDate(nextButtonDate:any) {
+    let now:any;
+    if(nextButtonDate){
+         now =  new Date(nextButtonDate).setDate(1);
+         now = new Date(now);
+    }else{
+      now = new Date();
+    }
+
     let current;
     if (now.getMonth() == 11) {
       current = new Date(now.getFullYear() + 1, 0, 1);
@@ -331,47 +339,21 @@ export class CalendarViewComponent {
     this.currentDate = new Date(this.currentDate);
     this.datesData = [];
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
-    this.renderCalendar();
+    this.fetchCalendarData();
+    
     let selectedRangeDate:any = document.getElementById("date");
     selectedRangeDate.value = '' ;
   }
-
+  
   nextMonth(): void {
     this.currentDate = new Date(this.currentDate);
     this.datesData = [];
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-    this.renderCalendar();
+    this.fetchCalendarData(this.formatDate(this.currentDate));
     let selectedRangeDate:any = document.getElementById("date");
     selectedRangeDate.value = '' ;
   }
 
-  openModal(data: any, roomName: any, endDate?: any) {
-    this.dragEventStart ? '' : this.selectedEndDate = endDate;
-    this.dragEl = {};
-    this.dragEventStart = false;
-    let eventData: any = data || {};
-    
-    if (eventData) {
-      this.modalFieldForm.patchValue({
-        "pr": eventData?.pr,
-        "ss": eventData?.ss,
-        "mn": eventData?.mn,
-        "mx": eventData?.mx,
-        "cta": eventData?.cta,
-        "ctd": eventData?.ctd,
-        "cu": eventData?.cu,
-        "al": eventData?.al,
-        "start": this.selectedStartDate ? this.selectedStartDate : eventData.start,
-        "end": this.selectedEndDate ? this.selectedEndDate : eventData.end,
-        "resource": eventData.resource,
-      });
-      this.activeModalRoomName = roomName;
-    } else {
-      this.modalFieldForm.reset();
-    }
-    this.showModal = true;
-
-  }
 
   updateValue() {
     
@@ -412,22 +394,69 @@ export class CalendarViewComponent {
   }
 
   makeCalendarData() {
+    this.loader = true;
+    let roomIdExist: any = [];
     this.mainData.forEach((e: any) => {
-      e?.data?.forEach((item: any) => {
-        this.datesData.forEach((dayData: any, idx: any) => {
-          if (item.date == dayData.date) {
-            dayData['newData'] = item;
-            dayData.newData['resource'] = e.room_id;
-            dayData.newData['start'] = `${e.year}-${e.month}-${item.date}`;
-          }
-          // if (new Date(item.start).setHours(0, 0, 0, 0) == new Date(dayData.formateDate).setHours(0, 0, 0, 0)) {
-          //   dayData['newData'] = item;
-          // }
-        });
+      e.data.forEach((ele: any) => {
+        ele.date = `${e.year}-${e.month}-${ele.date}`;
       });
     });
-    console.log(this.datesData);
-    
+
+    this.mainData.forEach((e: any) => {
+      if (roomIdExist.length == 0) {
+        roomIdExist.push(
+          {
+            "id": e.id,
+            "month": e.month,
+            "year": e.year,
+            "room_id": e.room_id,
+            "room_name": e.room_name,
+            "data": e.data
+          }
+        );
+      } else {
+        let isRoomExist: any = roomIdExist.some((data: any) => data.room_id == e.room_id);
+        if (!isRoomExist) {
+          roomIdExist.push(
+            {
+              "id": e.id,
+              "month": e.month,
+              "year": e.year,
+              "room_id": e.room_id,
+              "room_name": e.room_name,
+              "data": e.data
+            }
+          );
+        }
+      }
+    });
+
+    this.mainData.forEach((e: any) => {
+      roomIdExist.forEach((ele: any) => {
+        if (e.room_id == ele.room_id && e.month != ele.month) {
+          e.data.forEach((data: any) => {
+            ele.data.push(data);
+          });
+        }
+      });
+
+    });
+
+    roomIdExist.forEach((e: any) => {
+      e.data.forEach((item: any) => {
+        for (let i = 0; i < this.datesData.length; i++) {
+          if (new Date(item.date).setHours(0, 0, 0, 0) == new Date(this.datesData[i].formateDate).setHours(0, 0, 0, 0)) {
+            this.datesData[i]['newData'] = item;
+            this.datesData[i].newData['resource'] = roomIdExist[0].room_id;
+            this.datesData[i].newData['start'] = item.date;
+            break;
+          }
+        }
+      })
+      e['datesData'] = JSON.parse(JSON.stringify(this.datesData));
+    });
+    this.mainData=roomIdExist;
+    this.loader = false;
   }
 
 
@@ -439,9 +468,9 @@ export class CalendarViewComponent {
   }
 
   selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number) {
-    if(new Date(startingDate).setHours(0,0,0,0) >= new Date(this.selectedStartDate).setHours(0,0,0,0) ){        
+    // if(new Date(startingDate).setHours(0,0,0,0) >= new Date(this.selectedStartDate).setHours(0,0,0,0) ){        
       this.dragEl[`head${dIdx}${calIdx}`] = !this.dragEl[`head${dIdx}${calIdx}`];
-    }    
+    // }    
   }
 
 
@@ -453,17 +482,54 @@ export class CalendarViewComponent {
     } else {                                      //this part will run if single clicked 
       this.timeoutId = setTimeout(() => {
         this.timeoutId = null;
+
         if(!this.selectedStartDate) {
           this.selectedStartDate =  startDate;
         }
         this.dragEventStart = !this.dragEventStart ;
-        
         if(!this.dragEventStart) {
-
-          this.openModal(dayData, roomName, startDate);
+          if(new Date(this.selectedStartDate).setHours(0,0,0,0) >= new Date(startDate).setHours(0,0,0,0)){
+              let tempDate:any = this.selectedStartDate;
+              this.selectedStartDate = startDate;
+              startDate = tempDate;
+              this.openModal(dayData, roomName, startDate);
+            }
+            this.openModal(dayData, roomName, startDate);
         }
        
       }, 200);
     }
   }
+
+  openModal(data: any, roomName: any, endDate?: any) {
+    this.dragEventStart ? '' : this.selectedEndDate = endDate;
+    this.dragEl = {};
+    this.dragEventStart = false;
+    let eventData: any = data || {};
+    console.log(eventData);
+    
+    if (eventData) {
+      this.modalFieldForm.patchValue({
+        "pr": eventData?.pr,
+        "ss": eventData?.ss,
+        "mn": eventData?.mn,
+        "mx": eventData?.mx,
+        "cta": eventData?.cta,
+        "ctd": eventData?.ctd,
+        "cu": eventData?.cu,
+        "al": eventData?.al,
+        "start": this.selectedStartDate ? this.selectedStartDate : eventData.start,
+        "end": this.selectedEndDate ? this.selectedEndDate : eventData.end,
+        "resource": eventData.resource,
+      });
+      this.activeModalRoomName = roomName;
+    } else {
+      this.modalFieldForm.reset();
+    }
+    this.showModal = true;
+
+  }
 }
+
+
+

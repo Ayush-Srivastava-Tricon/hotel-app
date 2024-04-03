@@ -9,8 +9,12 @@ const routes: Routes = [
     children:[
       {
         path:'',
-        redirectTo:'calendar-view',
+        redirectTo:'dashboard',
         pathMatch:'full',
+      },
+      {
+        path:'dashboard',
+        loadChildren:()=>import("./dashboard/dashboard.module").then(m=>m.DashboardModule)
       },
       {
         path:'manage-room',

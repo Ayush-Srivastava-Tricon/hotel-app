@@ -83,18 +83,22 @@
   
             </thead>
             <tbody>
-              <tr *ngIf="loader">
-                <td colspan="31" class="spinner-border text-center" role="status"></td>
-              </tr>
               <ng-container *ngFor="let text of randomTexts ; let id = index;">
                 <tr>
                   <td class="textRandom">
                     {{ text }}
                   </td>
-                  <ng-container *ngFor="let dayData of datesData;let dataIdx = index;">
+                  <ng-container *ngIf="loader">
+                    <ng-container *ngFor="let dayData of data.datesData">
+                      <td class="tg-cly1"></td>
+                    </ng-container>
+                  </ng-container>
+                  <ng-container *ngIf="!loader">
+
+                  <ng-container *ngFor="let dayData of data.datesData;let dataIdx = index;">
                     <td *ngIf="id == 0" class="hover-td" 
                       [ngClass]="{'disabled':dayData.isDatePassed,'bg-success':dayData?.newData?.al ,'text-light':dayData?.newData?.al , 'bg-danger': !(dayData?.newData?.al) || dayData?.newData?.al == 0 ,'active':dragEl['head'+dataIdx+calendarIdx] }"
-                      (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"     (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)" >
+                      (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :'' "     (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)" >
                       {{dayData?.newData?.al }}
                     </td>
                     <td *ngIf="id == 1" class="hover-td" [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
@@ -108,12 +112,14 @@
                       <i class="bi bi-box-arrow-right text-danger mx-1 " style="font-size: 20px;"
                         *ngIf="dayData?.newData?.ctd"></i>
                     </td>
-                    <td *ngIf="id == 3" class="hover-td text-light"
-                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.ss,'active':dragEl['head'+dataIdx+calendarIdx]}"
+                    <td *ngIf="id == 3" class="hover-td"
+                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.ss,'active':dragEl['head'+dataIdx+calendarIdx],'text-light':dayData?.newData?.ss}"
                       (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"  (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
                       {{dayData?.newData?.pr}}
                     </td>
                   </ng-container>
+                </ng-container>
+
                 </tr>
               </ng-container>
               <ng-container *ngFor="let child of data.children;">

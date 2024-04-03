@@ -18,7 +18,7 @@ const routes: Routes = [
      },
      {
       path:'manage-owner',
-      loadChildren:()=>import("./manage-user/manage-owner.module").then(m=>m.ManageOwnerModule)
+      loadChildren:()=>import("./manage-owner/manage-owner.module").then(m=>m.ManageOwnerModule)
      },
      {
       path:':id',

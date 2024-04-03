@@ -10,7 +10,7 @@ export class AppComponent {
   constructor(){}
 
   ngAfterViewInit(){
-    googleTranslateElementInit();
+    // googleTranslateElementInit();
   }
 
 }

@@ -35,7 +35,7 @@ export class BaseServiceService {
     'getOwner':'hotelapi/owners',
     'deleteOwner':'hotelapi/owners',
     'getOwnerById':'hotelapi/owners',
-    'filter':'admin/filter',
+    'filter':'hotelapi/admin/filter',
 
 
     //<=======Owner Serivce===========>

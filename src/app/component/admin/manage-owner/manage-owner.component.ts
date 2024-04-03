@@ -53,6 +53,7 @@ export class ManageOwnerComponent {
     }
   ];
   selectedOwnerId:any;
+  selectedPropertyId:any=0;
 
   showPassword:boolean=false;
 
@@ -193,12 +194,7 @@ export class ManageOwnerComponent {
     this.loader = true;
     let params: any = {
       "search_for": +this.searchConfig['searchType'],
-      "id": this.searchConfig['searchValue'],
-      "name": "",
-      "mobile": "",
-      "country": "",
-      "state": "",
-      "city": ""
+      "param":this.searchConfig['searchValue']
     };
     this.loader = true;
     this.adminService.filterByIdOrName(params, (res: any) => {
@@ -208,46 +204,6 @@ export class ManageOwnerComponent {
         this.filteredOwnerList = res.data;
       }
       this.loader = false;
-      this.filteredOwnerList = [ {
-        "property_id": 1,
-        "property_name": "Vedanta",
-        "property_type": "HOTEL",
-        "email": "amit-kumar@e2x.com",
-        "owner_name": "Amit Kumar",
-        "address": "",
-        "mobile": "8765654345",
-        "city": "New Delhi",
-        "state": "Delhi",
-        "country": "India",
-        "postal_code": "987675",
-        "latitudes": "37.38714000",
-        "longitudes": "17.38714000",
-        "amenities": "",
-        "description": "",
-        "status": 1,
-        "created_at": "2024-03-07 14:23:09"
-    },
-    {
-        "property_id": 3,
-        "property_name": "Taj",
-        "property_type": "HOTEL",
-        "email": "amittkumar@e2x.com",
-        "owner_name": "Smith",
-        "address": null,
-        "mobile": "8765654345",
-        "city": "New Delhi",
-        "state": "Delhi",
-        "country": "India",
-        "postal_code": "987675",
-        "latitudes": null,
-        "longitudes": null,
-        "amenities": "",
-        "description": null,
-        "status": 1,
-        "created_at": "2024-03-07 14:34:17"
-    }
-      ];
-
     });
 
     this.showFullDetailRight.showPanel=false;
@@ -283,13 +239,16 @@ export class ManageOwnerComponent {
     
   }
 
-  viewFullDetails(propertyId: any) {
-    this.showFullDetailRight.showPanel = true;
-    this.showFullDetailRight['details'] = this.filteredOwnerList[propertyId];
+  viewFullDetails(idx:any,propertyId: any) {
+    this.showFullDetailRight.showPanel = true;  
+    this.showFullDetailRight['details'] = this.filteredOwnerList[idx];
+    this.selectedPropertyId  = propertyId;
+    
   }
 
   loginAsProperty() {
-    this.router.navigate(['/manager/calendar-view',1]);
+    localStorage.setItem("selectedPropertyId",this.selectedPropertyId);
+    this.router.navigate(['/manager']);
   }
 
   backToManageOwner() {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { CommonService } from 'src/app/services/common.service';
 import { AlertService } from 'src/app/shared/alert.service';
 
 
@@ -15,7 +16,7 @@ export class LoginComponent {
   userModal:any={};
   isAdminLogin:boolean=false;
 
-  constructor(private router : Router,private authService:AuthService,private alertService:AlertService){}
+  constructor(private router : Router,private authService:AuthService,private alertService:AlertService,private commonService:CommonService){}
 
   ngOnInit(){
     console.log(this.router.url);
@@ -52,10 +53,12 @@ export class LoginComponent {
     localStorage.setItem("token",data.Bearer);
     localStorage.setItem("refreshToken",data.RefreshToken);
     this.authService.setAccessToken(data.Bearer,data.RefreshToken);
+    this.commonService.setAccessToken(data.Bearer,data.RefreshToken);
   }
 
   setUserAndRole(data:any){
     this.authService.setRoleAndUser(data);
+    this.commonService.setRoleAndUser(data);
     localStorage.setItem("roleId",data.data.role)
     localStorage.setItem("userId",data.data.user_id)
   }

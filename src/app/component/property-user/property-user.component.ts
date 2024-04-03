@@ -14,14 +14,21 @@ export class PropertyUserComponent {
   constructor(private router:Router,private adminService:AdminService){}
 
   ngOnInit(){
-    this.currentPropertyId = localStorage.getItem("userId");
+    if(localStorage.getItem("selectedPropertyId")){
+      this.currentPropertyId = localStorage.getItem("selectedPropertyId");
+    }else{
+      this.currentPropertyId = localStorage.getItem("userId");
+    }
+
   }
 
   logout(){
     if(this.adminService.isAdmin()){
-      this.router.navigate(['/admin'])
+      localStorage.removeItem("selectedPropertyId");
+      this.router.navigate(['/admin']);
     }else{
-      this.router.navigate(['/login'])
+      localStorage.clear();
+      this.router.navigate(['/login']);
     }
     
   }

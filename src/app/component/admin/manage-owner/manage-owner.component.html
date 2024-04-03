@@ -156,8 +156,6 @@
                         </thead>
                         <tbody>
                             <tr *ngIf="loader">
-                                <!-- <td class="tg-cly1">
-                                </td> -->
                                 <td class="tg-cly1">
                                 </td>
                                 <td class="tg-cly1">
@@ -186,8 +184,11 @@
                                     <td>{{item.city}}</td>
                                     <td>{{item.owner_name}}</td>
                                     <td>{{item.status == 1 ? 'Active' :'InActive'}}</td>
-                                    <td> <a href="javascript:void(0);" (click)="viewFullDetails(idx)">View
-                                            Details</a> </td>
+                                    <td> 
+                                        <a href="javascript:void(0);" (click)="viewFullDetails(idx,item.property_id)">
+                                            View Details
+                                        </a> 
+                                    </td>
                                 </tr>
                             </ng-container>
 
