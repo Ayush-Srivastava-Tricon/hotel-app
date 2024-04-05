@@ -109,6 +109,7 @@ export class BaseServiceService {
     .set('content-type','application/json')
     .set('Access-Control-Allow-Origin', '*')
     .set('Authorization',`Bearer ${this.getTokenFromLocal()}`)
+    .set('Content-Type', 'multipart/form-data')
 
     return this.http.post(environment.apiUrl+url,data,{headers:headers}).subscribe((data:any)=>callback(data),((error:any)=>callback(error))
     );

@@ -314,3 +314,19 @@ background: #ddd;
       height: 285px;
     }
 }
+
+.image-container .image-block{
+    width: 80px;
+    height: 80px;
+    border: 1px solid;
+
+    .img-preview{
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+  }
+  .add-img-disabled{
+    pointer-events: none;
+    color: gray;
+  }

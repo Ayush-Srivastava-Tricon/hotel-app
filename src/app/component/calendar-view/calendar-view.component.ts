@@ -41,187 +41,75 @@ export class CalendarViewComponent {
   dragEl: any = {};
   activeModalRoomName: string = '';
   dragEventStart: boolean = false;
-
   selectedStartDate: any;
   selectedEndDate: any;
   timeoutId: any = null;
+  allPropertyList:any=[];
+  loggedProperty: any = { 'isLoginProperty': false, 'propertyId': 0 };
+  isAdmin:boolean=false;
 
-  data: any = [
-    {
-      "name": "Ayush-Room",
-      "id": "1",
-      "expanded": true,
-      "data": [
-       {
-        
-          "end": "2024-03-29",  "start": "2024-03-29",
-          "text": "300.00",
-          "resource": "1",
-          "all_data":
-          {
-            "al": "170",
-            "pr": "300",
-            "ss": "true",
-            "mn": "1",
-            "mx": "20",
-            "cta": "true",
-            "ctd": "false",
-            "cu": "true"
-          }
-
-        },
-        {
-          "start": "2024-03-25",
-          "end": "2024-03-25",
-          "text": "245.00",
-          "resource": "1",
-          "all_data":
-          {
-            "al": "170",
-            "pr": "300",
-            "ss": "true",
-            "mn": "1",
-            "mx": "20",
-            "cta": "true",
-            "ctd": "false",
-            "cu": "true"
-          }
-        }
-      ],
-      "children": [
-        {
-          "name": "Sub Room 1_1",
-          "id": "2"
-        },
-        {
-          "name": "Sub Room 2_1",
-          "id": "3"
-        }
-      ]
-    },
-    {
-      "name": "Testing Ayush",
-      "id": "2",
-      "expanded": true,
-      "data": [
-        {
-          "start": "2024-04-13",
-          "end": "2024-04-13",
-          "text": "300.00",
-          "resource": "2",
-          "all_data":
-          {
-            "al": "170",
-            "pr": "300",
-            "ss": "true",
-            "mn": "1",
-            "mx": "20",
-            "cta": "true",
-            "ctd": "false",
-            "cu": "true"
-          }
-        },
-        {
-          "start": "2024-04-27",
-          "end": "2024-04-27",
-          "text": "245.00",
-          "resource": "2",
-          "all_data":
-          {
-            "al": "170",
-            "pr": "300",
-            "ss": "true",
-            "mn": "1",
-            "mx": "20",
-            "cta": "true",
-            "ctd": "false",
-            "cu": "true"
-          }
-        }
-      ],
-      "children": [
-        {
-          "name": "Sub Room 2_1",
-          "id": "5"
-        },
-        {
-          "name": "Sub Room 2_2",
-          "id": "6"
-        },
-        {
-          "name": "Sub Room 2_3",
-          "id": "14"
-        }
-      ]
-    }
-  ];
-
-  loggedProperty:any= {'isLoginProperty':false,'propertyId':0};
-
-
-
-
-
-  constructor(private _service: CalendarService, private fb: FormBuilder, private alertService: AlertService,private router:Router) {
+  constructor(private _service: CalendarService, private fb: FormBuilder, private alertService: AlertService, private router: Router) {
     this.modalFieldForm = this.fb.group({
-      "pr": ['', [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
-      "ss": ['', Validators.required],
-      "mn": ['', [Validators.required, Validators.maxLength(2), Validators.pattern("^[0-9]*$")]],
-      "mx": ['', [Validators.required, Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
-      "cta": ['', Validators.required],
-      "ctd": ['', Validators.required],
-      "cu": ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      "al": ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      "start": ['', Validators.required,],
-      "end": ['', Validators.required,],
+      "pr": ['', [Validators.pattern("^[0-9]*$")]],
+      "ss": ['',],
+      "mn": ['', [Validators.maxLength(2), Validators.pattern("^[0-9]*$")]],
+      "mx": ['', [Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
+      "cta": ['',],
+      "ctd": ['',],
+      "cu": ['', [Validators.pattern("^[0-9]*$")]],
+      "al": ['', [Validators.pattern("^[0-9]*$")]],
+      "start": ['',],
+      "end": ['',],
       "resource": [''],
     });
-
-    if(localStorage.getItem("selectedPropertyId")){
-      this.loggedProperty.isLoginProperty = true;
-      this.loggedProperty.propertyId = localStorage.getItem("selectedPropertyId");
-      this.fetchCalendarData();
-    } else{
-      this.loggedProperty.propertyId = localStorage.getItem("userId");
-      this.fetchCalendarData();
-    }
-
   }
 
   ngOnInit(): void {
+    this.isAdmin = JSON.parse(<any>localStorage.getItem("isadmin"));
+    if (localStorage.getItem("selectedPropertyId")) {
+      this.loggedProperty.isLoginProperty = true;
+      this.loggedProperty.propertyId = localStorage.getItem("selectedPropertyId");
+      this.setDataToAllPropertyDropdown();
+      this.fetchCalendarData();
+    } else {
+      this.loggedProperty.propertyId = localStorage.getItem("userId");
+      this.fetchCalendarData();
+    }
   }
 
-  fetchCalendarData(nextButtonDate?:any){
-   let startEndDate:any =  this.getStartAndEndDate(nextButtonDate);
-   this.loader=true;
-    this._service.getAllCalendarData(this.loggedProperty.propertyId,startEndDate,(res:any)=>{
-      if(res.status == 200){
+  setDataToAllPropertyDropdown(){
+    this.allPropertyList = JSON.parse(<any>localStorage.getItem("propertyList"));
+  }
+
+  fetchCalendarData(nextButtonDate?: any) {
+    this.mainData = [];
+    let startEndDate: any = this.getStartAndEndDate(nextButtonDate);
+    this.loader = true;
+    this._service.getAllCalendarData(this.loggedProperty.propertyId, startEndDate, (res: any) => {
+      if (res.status == 200) {
         console.log(res);
-        this.mainData=res.responseData;
+        this.mainData = res.responseData;
         this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
         setTimeout(() => {
-          this.loader = false;
           this.renderCalendar();
         }, 0);
-      }else if(res.status == 404){
+      } else if (res.status == 404) {
         this.alertService.alert("error", res.error.message, "error", { displayDuration: 2000, pos: 'top' });
         setTimeout(() => {
-          this.loader = false;
           this.renderCalendar();
         }, 0);
       }
     })
   }
 
-  getStartAndEndDate(nextButtonDate:any) {
-    let now:any;
-    if(nextButtonDate){
-         now =  new Date(nextButtonDate).setDate(1);
-         now = new Date(now);
-    }else{
+  getStartAndEndDate(nextButtonDate: any) {
+    let now: any;
+    if (nextButtonDate) {
+      now = new Date(nextButtonDate).setDate(1);
+      now = new Date(now);
+    } else {
       now = new Date();
     }
-
     let current;
     if (now.getMonth() == 11) {
       current = new Date(now.getFullYear() + 1, 0, 1);
@@ -230,8 +118,6 @@ export class CalendarViewComponent {
     }
 
     return `start_date=${this.formatDate(now)}&end_date=${this.formatDate(current)}`;
-
-    
   }
 
   selectedDate(event: any) {
@@ -292,13 +178,13 @@ export class CalendarViewComponent {
       const dayName = weekDays[currentDayIndex];
       let date = begindateInx - daysInMonth + 1; // Start from 1st day of the current month if necessary
       let monthToShow = monthNames[currentMonth];
-     
-      
+
+
       let yearToShow = currentYear;
 
       if (date <= 0) {
         date += daysInMonth;
-        monthToShow = monthNames[currentMonth+1];
+        monthToShow = monthNames[currentMonth + 1];
         yearToShow = currentYear;
       } else {
         monthToShow = monthNames[nextMonth];
@@ -331,7 +217,7 @@ export class CalendarViewComponent {
       const [key, value] = pair.split(":");
       eventData[key.replace(/"/g, "").trim()] = value.replace(/"/g, "").trim();
     });
-    
+
     return eventData;
   }
 
@@ -340,42 +226,18 @@ export class CalendarViewComponent {
     this.datesData = [];
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.fetchCalendarData();
-    
-    let selectedRangeDate:any = document.getElementById("date");
-    selectedRangeDate.value = '' ;
+
+    let selectedRangeDate: any = document.getElementById("date");
+    selectedRangeDate.value = '';
   }
-  
+
   nextMonth(): void {
     this.currentDate = new Date(this.currentDate);
     this.datesData = [];
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.fetchCalendarData(this.formatDate(this.currentDate));
-    let selectedRangeDate:any = document.getElementById("date");
-    selectedRangeDate.value = '' ;
-  }
-
-
-  updateValue() {
-    
-    if (this.modalFieldForm.status == 'VALID') {
-      const selectedRoomId:any = this.modalFieldForm.value.resource;
-      delete this.modalFieldForm.value.resource;
-      const params:any = {
-        'room_id':selectedRoomId,
-        "data":[this.modalFieldForm.value]
-      }
-      this._service.updateCalendar(params, (res: any) => {
-        if (res) {
-          this.showModal = false;
-          this.alertService.alert("success", "Data Saved Successfully", "Success", { displayDuration: 2000, pos: 'top' });
-          this.modalFieldForm.reset();
-        }
-      })
-    } else {
-      this.errorMsg = "Please Fill the fields";
-      this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
-    }
-    
+    let selectedRangeDate: any = document.getElementById("date");
+    selectedRangeDate.value = '';
   }
 
   formatDate(date: any) {
@@ -390,64 +252,15 @@ export class CalendarViewComponent {
       day = '0' + day;
 
     return [year, month, day].join('-');
-
   }
 
   makeCalendarData() {
-    this.loader = true;
-    let roomIdExist: any = [];
     this.mainData.forEach((e: any) => {
-      e.data.forEach((ele: any) => {
-        ele.date = `${e.year}-${e.month}-${ele.date}`;
-      });
-    });
-
-    this.mainData.forEach((e: any) => {
-      if (roomIdExist.length == 0) {
-        roomIdExist.push(
-          {
-            "id": e.id,
-            "month": e.month,
-            "year": e.year,
-            "room_id": e.room_id,
-            "room_name": e.room_name,
-            "data": e.data
-          }
-        );
-      } else {
-        let isRoomExist: any = roomIdExist.some((data: any) => data.room_id == e.room_id);
-        if (!isRoomExist) {
-          roomIdExist.push(
-            {
-              "id": e.id,
-              "month": e.month,
-              "year": e.year,
-              "room_id": e.room_id,
-              "room_name": e.room_name,
-              "data": e.data
-            }
-          );
-        }
-      }
-    });
-
-    this.mainData.forEach((e: any) => {
-      roomIdExist.forEach((ele: any) => {
-        if (e.room_id == ele.room_id && e.month != ele.month) {
-          e.data.forEach((data: any) => {
-            ele.data.push(data);
-          });
-        }
-      });
-
-    });
-
-    roomIdExist.forEach((e: any) => {
       e.data.forEach((item: any) => {
         for (let i = 0; i < this.datesData.length; i++) {
           if (new Date(item.date).setHours(0, 0, 0, 0) == new Date(this.datesData[i].formateDate).setHours(0, 0, 0, 0)) {
             this.datesData[i]['newData'] = item;
-            this.datesData[i].newData['resource'] = roomIdExist[0].room_id;
+            this.datesData[i].newData['resource'] = e.room_id;
             this.datesData[i].newData['start'] = item.date;
             break;
           }
@@ -455,59 +268,55 @@ export class CalendarViewComponent {
       })
       e['datesData'] = JSON.parse(JSON.stringify(this.datesData));
     });
-    this.mainData=roomIdExist;
     this.loader = false;
   }
-
 
   closeModal() {
     this.showModal = false;
     this.showAdvanceSection = false;
     this.selectedStartDate = '';
     this.selectedEndDate = '';
+    this.dragEl = {};
   }
 
   selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number) {
-    // if(new Date(startingDate).setHours(0,0,0,0) >= new Date(this.selectedStartDate).setHours(0,0,0,0) ){        
-      this.dragEl[`head${dIdx}${calIdx}`] = !this.dragEl[`head${dIdx}${calIdx}`];
-    // }    
+    this.dragEl[`head${dIdx}${calIdx}`] = !this.dragEl[`head${dIdx}${calIdx}`];
   }
 
-
-  handleClickEvent(startDate: any, dayData: any, roomName: any) {
+  handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any) {
     if (this.timeoutId !== null) {            //this part will run if double clicked within 200ms
       clearTimeout(this.timeoutId);
       this.timeoutId = null;
-      this.openModal(dayData, roomName, startDate);
+      this.openModal(dayData, roomName, startDate, roomId);
     } else {                                      //this part will run if single clicked 
       this.timeoutId = setTimeout(() => {
         this.timeoutId = null;
 
-        if(!this.selectedStartDate) {
-          this.selectedStartDate =  startDate;
+        if (!this.selectedStartDate) {
+          this.selectedStartDate = startDate;
         }
-        this.dragEventStart = !this.dragEventStart ;
-        if(!this.dragEventStart) {
-          if(new Date(this.selectedStartDate).setHours(0,0,0,0) >= new Date(startDate).setHours(0,0,0,0)){
-              let tempDate:any = this.selectedStartDate;
-              this.selectedStartDate = startDate;
-              startDate = tempDate;
-              this.openModal(dayData, roomName, startDate);
-            }
-            this.openModal(dayData, roomName, startDate);
+        this.dragEventStart = !this.dragEventStart;
+        if (!this.dragEventStart) {
+          if (new Date(this.selectedStartDate).setHours(0, 0, 0, 0) >= new Date(startDate).setHours(0, 0, 0, 0)) {
+            let tempDate: any = this.selectedStartDate;
+            this.selectedStartDate = startDate;
+            startDate = tempDate;
+            this.openModal({}, roomName, startDate, roomId);
+          }
+          this.openModal({}, roomName, startDate, roomId);
         }
-       
+
       }, 200);
     }
   }
 
-  openModal(data: any, roomName: any, endDate?: any) {
+  openModal(data: any, roomName: any, endDate?: any, roomId?: any) {
     this.dragEventStart ? '' : this.selectedEndDate = endDate;
     this.dragEl = {};
     this.dragEventStart = false;
     let eventData: any = data || {};
     console.log(eventData);
-    
+
     if (eventData) {
       this.modalFieldForm.patchValue({
         "pr": eventData?.pr,
@@ -520,14 +329,40 @@ export class CalendarViewComponent {
         "al": eventData?.al,
         "start": this.selectedStartDate ? this.selectedStartDate : eventData.start,
         "end": this.selectedEndDate ? this.selectedEndDate : eventData.end,
-        "resource": eventData.resource,
+        "resource": roomId,
       });
       this.activeModalRoomName = roomName;
     } else {
       this.modalFieldForm.reset();
     }
     this.showModal = true;
+  }
 
+  updateValue() {
+    if (this.modalFieldForm.status == 'VALID') {
+      const selectedRoomId: any = this.modalFieldForm.value.resource;
+      delete this.modalFieldForm.value.resource;
+      const params: any = {
+        'room_id': selectedRoomId,
+        "data": [this.modalFieldForm.value]
+      }
+      this._service.updateCalendar(params, (res: any) => {
+        if (res) {
+          this.showModal = false;
+          this.alertService.alert("success", "Data Saved Successfully", "Success", { displayDuration: 2000, pos: 'top' });
+          this.modalFieldForm.reset();
+        }
+      })
+    } else {
+      this.errorMsg = "Please Fill the fields";
+      this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
+    }
+  }
+
+  changeCalendarByProperty(event:any){
+    localStorage.setItem("selectedPropertyId",JSON.parse(event.target.value));  
+    this.loggedProperty.propertyId = event.target.value;
+    this.fetchCalendarData();
   }
 }
 

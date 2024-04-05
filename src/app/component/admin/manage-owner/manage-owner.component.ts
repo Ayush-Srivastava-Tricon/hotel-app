@@ -202,6 +202,7 @@ export class ManageOwnerComponent {
         console.log(res);
         this.loader = false;
         this.filteredOwnerList = res.data;
+        this.setAllPropertyListToLocal(res.data);
       }
       this.loader = false;
     });
@@ -256,5 +257,9 @@ export class ManageOwnerComponent {
     this.filteredOwnerList = [];
     this.searchConfig = { searchType: 'Select' };
     this.filterBy = 'filter';
+  }
+
+  setAllPropertyListToLocal(data:any){
+    localStorage.setItem("propertyList",JSON.stringify(data));
   }
 }

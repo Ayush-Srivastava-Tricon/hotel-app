@@ -25,6 +25,7 @@ export class PropertyUserComponent {
   logout(){
     if(this.adminService.isAdmin()){
       localStorage.removeItem("selectedPropertyId");
+      localStorage.removeItem("propertyList");
       this.router.navigate(['/admin']);
     }else{
       localStorage.clear();

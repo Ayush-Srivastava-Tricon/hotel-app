@@ -18,6 +18,13 @@ export class ManageRoomsComponent {
   deleteRoomIndex:number=0;
   loader:boolean=false;
   currentRoomId:number=0;
+  addImageConfig: any = { 'image': [],'imagePreview':[]};
+  toUploadImagefile:any=[];
+  imageArrayContainer:any=[{
+    thumbnailUrl:'',
+    image:''
+  }];
+  formData:any= new FormData();
 
   constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService,private proService:PropertyService){
     this.roomModal  = this.fb.group(
@@ -63,12 +70,18 @@ export class ManageRoomsComponent {
   }
 
   createNewRoom(){
-      if(this.roomModal.status == "VALID"){
-        this.roomModal.controls.property_id.setValue(this.roomsList[0].property_id);
-        this.convertStringToNumber();
-        this.proService.addRooms(this.roomModal.value,(res:any)=>{
+    
+    if(this.roomModal.status == "VALID"){
+      this.roomModal.controls.property_id.setValue(this.roomsList[0].property_id);
+      this.convertStringToNumber();
+      const formData:any = new FormData();
+
+      formData.append('roomData', JSON.stringify([this.roomModal.value]));
+      formData.append('fileKey', JSON.stringify(this.toUploadImagefile));
+  
+        this.proService.addRooms(formData,(res:any)=>{
           if(res.status == 200){  
-            this.roomsList.push(this.roomModal.value);
+            // this.roomsList.push(this.roomModal.value);
             this.showModal.property=false;
             this.roomModal.reset();
             this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
@@ -173,4 +186,36 @@ export class ManageRoomsComponent {
       this.roomModal.value.parent_room_id = +this.roomModal.value.parent_room_id;
     }
   }
+
+  uploadImage(event:any,idx:any){
+    let file = event.target.files[0];
+    const reader: any = new FileReader();
+    const imageSrc = URL.createObjectURL(file);
+    reader.readAsDataURL(file);
+    this.imageArrayContainer[idx].imageUrl  = file.name;
+    this.imageArrayContainer[idx].thumbnailUrl  = imageSrc;
+    this.toUploadImagefile.push(file.name);
+    console.log(this.toUploadImagefile);
+    
+  }
+
+  filterNullImages() {
+    return this.toUploadImagefile.filter((e: any) => e != null);
+  }
+
+  // checkFileAlreadyExist(file:any){
+
+  //   this.toUploadImagefile.push(file.name);
+  //   if(this.toUploadImagefile)
+
+  // }
+  
+  selectImg(file:any){
+     file.click();
+  }
+
+  addMoreImageSection(){
+    this.imageArrayContainer.push({ thumbnailUrl:'',image:''});
+  }
 }
+

@@ -125,7 +125,7 @@
                                     </select>
                                     <div class="input-group">
                                         <input type="text" class="form-control" [(ngModel)]="searchConfig['searchValue']">
-                                        <span class="input-group-text btn btn-danger" id="basic-addon1" (click)="searchById()"  [class.disabled]="!searchConfig['searchValue']">
+                                        <span class="input-group-text btn btn-danger" id="basic-addon1" (click)="searchById()"  [class.disabled]="!searchConfig['searchValue'] || searchConfig['searchType'] == 'Select'">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                 class="bi bi-search" viewBox="0 0 16 16">
                                                 <path

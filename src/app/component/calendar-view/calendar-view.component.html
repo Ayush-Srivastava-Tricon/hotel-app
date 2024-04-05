@@ -40,10 +40,12 @@
         </div>
       </div>
       <div class="col-sm-6"></div>
-      <div class="col-sm-3 text-end">
-          <!-- <select class="form-control-sm me-3">
-            <option value="1">Property Id</option>
-          </select> -->
+      <div class="col-sm-3 text-end" *ngIf="isAdmin">
+          <select class="form-control-sm me-3" (change)="changeCalendarByProperty($event)">
+            <ng-container *ngFor="let data of allPropertyList">
+                <option [selected]="data.property_id == loggedProperty.propertyId" [value]="data.property_id">{{data.property_name}}</option>
+            </ng-container>
+          </select>
       </div>
     </div>
     <div class="container-fluid">
@@ -98,15 +100,15 @@
                   <ng-container *ngFor="let dayData of data.datesData;let dataIdx = index;">
                     <td *ngIf="id == 0" class="hover-td" 
                       [ngClass]="{'disabled':dayData.isDatePassed,'bg-success':dayData?.newData?.al ,'text-light':dayData?.newData?.al , 'bg-danger': !(dayData?.newData?.al) || dayData?.newData?.al == 0 ,'active':dragEl['head'+dataIdx+calendarIdx] }"
-                      (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :'' "     (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)" >
+                      (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :'' "     (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id);dragEl['head'+dataIdx+calendarIdx]=true;" >
                       {{dayData?.newData?.al }}
                     </td>
                     <td *ngIf="id == 1" class="hover-td" [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
-                    (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''" (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
+                    (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''" (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id);dragEl['head'+dataIdx+calendarIdx]=true;"   >
                       {{dayData?.newData?.mn }} -  {{dayData?.newData?.mx }}
                     </td>
                     <td *ngIf="id == 2" class="hover-td" [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
-                    (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''" (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
+                    (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''" (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id);dragEl['head'+dataIdx+calendarIdx]=true;"   >
                       <i class="bi bi-box-arrow-in-right text-danger mx-1 " style="font-size: 20px;"
                         *ngIf="dayData?.newData?.cta"></i>
                       <i class="bi bi-box-arrow-right text-danger mx-1 " style="font-size: 20px;"
@@ -114,7 +116,7 @@
                     </td>
                     <td *ngIf="id == 3" class="hover-td"
                       [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.ss,'active':dragEl['head'+dataIdx+calendarIdx],'text-light':dayData?.newData?.ss}"
-                      (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"  (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.name)"   >
+                      (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"  (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id);dragEl['head'+dataIdx+calendarIdx]=true;"  >
                       {{dayData?.newData?.pr}}
                     </td>
                   </ng-container>
@@ -214,7 +216,7 @@
                         is required</small>
                       <small class="text-danger"
                         *ngIf="modalFieldForm.controls.pr?.dirty && modalFieldForm.controls.pr?.errors?.['pattern']">
-                        Number with 2 Decimal</small>
+                        Only Number</small>
                     </div>
                   </div>
                 </fieldset>
