@@ -11,6 +11,9 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class AdminComponent {
 
+
+  dropdown:any= {};
+  
   constructor(private router: Router, private authService: AuthService, private translate: TranslateService,private common:CommonService) { }
 
   logout() {
@@ -29,8 +32,8 @@ export class AdminComponent {
   }
 
   ngOnInit(){
-    this.common.bearerToken.next();
-    this.common.refreshToken.next();
+    // this.common.bearerToken.next();
+    // this.common.refreshToken.next();
     
   }
 }

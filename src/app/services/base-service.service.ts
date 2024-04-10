@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' ,'Access-Control-Allow-Origin': '*'})
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
 };
 
 @Injectable({
@@ -11,9 +11,9 @@ const httpOptions = {
 })
 export class BaseServiceService {
 
-  httpUrl:any={
+  httpUrl: any = {
 
-    
+
 
     'addHotelAlot': "hotelapi/addHotelAlot.php",
     'updatePriceAlot': "hotelapi/updatePriceAlot.php",
@@ -21,8 +21,8 @@ export class BaseServiceService {
     'updateHotelAvailability': "hotelapi/updateHotelAvailability.php",
     'getHotelPrice': "hotelapi/getHotelPrice.php",
     'getHotelRooms': "hotelapi/getHotelRooms.php",
-    'getCalendarData':"hotelapi/calendar",
-    'updateCalendar':"hotelapi/calendar",
+    'getCalendarData': "hotelapi/calendar",
+    'updateCalendar': "hotelapi/calendar",
 
     // <=======AUTHENTICATION=======>
     'login': "hotelapi/login",
@@ -30,109 +30,127 @@ export class BaseServiceService {
 
 
     //<========Admin Service=========>
-    'addOwner':'hotelapi/owners',
-    'editOwner':'hotelapi/owners',
-    'getOwner':'hotelapi/owners',
-    'deleteOwner':'hotelapi/owners',
-    'getOwnerById':'hotelapi/owners',
-    'filter':'hotelapi/admin/filter',
+    'addOwner': 'hotelapi/owners',
+    'editOwner': 'hotelapi/owners',
+    'getOwner': 'hotelapi/owners',
+    'deleteOwner': 'hotelapi/owners',
+    'getOwnerById': 'hotelapi/owners',
+    'filter': 'hotelapi/admin/filter',
+    'addOta': 'hotelapi/otadetails',
+    'editOta': 'hotelapi/otadetails',
+    'getOta': 'hotelapi/otadetails',
 
 
     //<=======Owner Serivce===========>
-    'getAllProperty':'hotelapi/properties',
-    'addNewProperty':'hotelapi/properties',
-    'deleteProperty':'hotelapi/properties',
-    'editProperty':'hotelapi/properties',
-    'get-countries':'hotelapi/country',
-    'get-state':'hotelapi/state',
-    'get-city':'hotelapi/city',
+    'getAllProperty': 'hotelapi/properties',
+    'addNewProperty': 'hotelapi/properties',
+    'deleteProperty': 'hotelapi/properties',
+    'editProperty': 'hotelapi/properties',
+    'get-countries': 'hotelapi/country',
+    'get-state': 'hotelapi/state',
+    'get-city': 'hotelapi/city',
 
     //<========Property Service========>
-    'getAllRooms':'hotelapi/rooms',
-    'addRooms':'hotelapi/rooms',
-    'editRoom':'hotelapi/rooms',
-    'deleteRoom':'hotelapi/rooms',
+    'getAllRooms': 'hotelapi/rooms',
+    'addRooms': 'hotelapi/rooms',
+    'editRoom': 'hotelapi/rooms',
+    'deleteRoom': 'hotelapi/rooms',
+    'getOtaUserList': 'hotelapi/otausers',
+    'addOtaUser': 'hotelapi/otausers',
+    'editOtaUser': 'hotelapi/otausers',
   }
 
-  constructor(public http:HttpClient) { }
+  constructor(public http: HttpClient) { }
 
-  getTokenFromLocal(){
-    let token  = localStorage.getItem("token");
+  getTokenFromLocal() {
+    let token = localStorage.getItem("token");
     return token;
   }
 
-  getData(data:any,url:any,callback:any){
-    let headers  = new HttpHeaders()
-    .set('content-type', 'application/json')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('Authorization',`Bearer ${this.getTokenFromLocal()}`)
+  getData(data: any, url: any, callback: any) {
+    let headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
 
 
-    return this.http.get(environment.apiUrl+url,{headers:headers}).subscribe((data:any)=>
-    {
+    return this.http.get(environment.apiUrl + url, { headers: headers }).subscribe((data: any) => {
       callback(<any>data);
     },
-    (error: any) => {
-      console.log(error)
-      if (error.status == 401) {
-        this.handleRefreshToken(url,(res:any)=>{
-          if(res.data){
-            console.log(res);
-            localStorage.setItem("token",res.data.Bearer);
-            this.getData({},url,callback)
-          }
-        });
+      (error: any) => {
+        console.log(error)
+        if (error.status == 401) {
+          this.handleRefreshToken(url, (res: any) => {
+            if (res.data) {
+              console.log(res);
+              localStorage.setItem("token", res.data.Bearer);
+              this.getData({}, url, callback)
+            }
+          });
 
-      }
-      if (error) {
-        callback(error);
-      }
-    })
-  
+        }
+        if (error) {
+          callback(error);
+        }
+      })
+
   }
 
-  handleRefreshToken(url:any,callback:any){
-    let refreshToken:any = localStorage.getItem("refreshToken");
-    let headers  = new HttpHeaders()
-    .set('content-type', 'application/json')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('Authorization',`Bearer ${refreshToken}`)
+  handleRefreshToken(url: any, callback: any) {
+    let refreshToken: any = localStorage.getItem("refreshToken");
+    let headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authorization', `Bearer ${refreshToken}`)
 
 
-    return this.http.get(environment.apiUrl+`/refreshToken?role=${localStorage.getItem("roleId")}&user_id=${localStorage.getItem("userId")}`,{headers:headers}).subscribe((data:any)=>callback(<any>data));
+    return this.http.get(environment.apiUrl + `refreshToken?role=${localStorage.getItem("roleId")}&user_id=${localStorage.getItem("userId")}`, { headers: headers }).subscribe((data: any) => callback(<any>data));
   }
 
 
-  postData(data:any,url:any,callback:any){
-    const  headers = new HttpHeaders()
-    .set('content-type','application/json')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('Authorization',`Bearer ${this.getTokenFromLocal()}`)
-    .set('Content-Type', 'multipart/form-data')
+  postData(data: any, url: any, callback: any) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.post(environment.apiUrl+url,data,{headers:headers}).subscribe((data:any)=>callback(data),((error:any)=>callback(error))
+    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => callback(data), ((error: any) => callback(error))
+    );
+  }
+
+  postDataWithFile(data: any, url: any, callback: any) {
+    const headers = new HttpHeaders()
+      // .set('content-type', 'multipart/form-data')
+      .set('Accept', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
+
+      console.log(this.getTokenFromLocal());
+      
+
+    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((dta: any) => callback(dta), ((error: any) => callback(error))
     );
   }
 
 
-  putData(data:any,url:any,callback:any){
-    const  headers = new HttpHeaders()
-    .set('content-type','application/json')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('Authorization',`Bearer ${this.getTokenFromLocal()}`)
+  putData(data: any, url: any, callback: any) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.put(environment.apiUrl+url,data,{headers:headers}).subscribe((data:any)=>callback(data),((error:any)=>callback(error))
+    return this.http.put(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => callback(data), ((error: any) => callback(error))
     );
 
   }
-  deleteData(data:any,url:any,callback:any){
-    const  headers = new HttpHeaders()
-    .set('content-type','application/json')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('Authorization',`Bearer ${this.getTokenFromLocal()}`)
+  deleteData(data: any, url: any, callback: any) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.delete(environment.apiUrl+url,{headers:headers}).subscribe((data:any)=>callback(data),((error:any)=>callback(error))
+    return this.http.delete(environment.apiUrl + url, { headers: headers }).subscribe((data: any) => callback(data), ((error: any) => callback(error))
     );
 
   }

@@ -26,32 +26,6 @@ export class ManageOwnerComponent {
   isLangTranslating: boolean = false;
   showFullDetailRight: any = {showPanel:false};
   allLang: any = [];
-  wholeOwnerData: any = [
-    {
-      "owner_id": 1,
-      "name": "Amit Kumar",
-      "email": "amitkumar@e2x.com",
-      "alternate_email": "1",
-      "mobile": "8765654345",
-      "alternate_mobile": "",
-      "status": 1,
-      "created_at": "2024-03-07 11:42:05",
-      "updated_at": "2024-03-07 11:42:05",
-      "property_id": "2"
-    },
-    {
-      "owner_id": 2,
-      "name": "Amit Kumar",
-      "email": "amit.kumar@e2x.com",
-      "alternate_email": "amit1@e2x.com",
-      "mobile": "8765654345",
-      "alternate_mobile": "",
-      "status": 1,
-      "created_at": "2024-03-07 11:43:24",
-      "updated_at": "2024-03-07 11:43:24",
-      "property_id": "4"
-    }
-  ];
   selectedOwnerId:any;
   selectedPropertyId:any=0;
 

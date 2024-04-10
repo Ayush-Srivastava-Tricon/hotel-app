@@ -21,6 +21,14 @@ const routes: Routes = [
         loadChildren:()=>import("./manage-rooms/manage-rooms.module").then(m=>m.ManageRoomsModule)
       },
       {
+        path:'manage-ota-user',
+        loadChildren:()=>import("./manage-ota-user/manage-ota-user.module").then(m=>m.ManageOtaUserModule)
+      },
+      {
+        path:'manage-ota-rooms',
+        loadChildren:()=>import("./manage-ota-rooms/manage-ota-rooms.module").then(m=>m.ManageOtaRoomsModule)
+      },
+      {
         path:'calendar-view/:id',
         pathMatch:'full',
         loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)

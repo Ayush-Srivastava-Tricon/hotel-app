@@ -1,0 +1,445 @@
+<div class="container-fluid" *ngIf="!showModal.ota">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12">
+            <div class="table-wrapper shadow">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>OTA <b>List</b></h2>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
+                                data-toggle="modal"><span>Add OTA Detail</span></a>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-shadow table-lg table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr class="table-row-rooms">
+                            <th>OTA ID</th>
+                            <th>OTA Name</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="loader">
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                        </tr>
+                        <ng-container *ngIf="otaList.length>0 && !loader">
+
+                            <tr *ngFor="let item of otaList;let idx = index;" class="text-center align-middle">
+                                <td>{{item.id}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.status == 1 ? 'Active' :'InActive'}}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <i class="btn btn-light btn-sm bi bi-three-dots-vertical"
+                                            (click)="showDropDown(idx)"></i>
+                                        <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
+                                            *ngIf="showActionDropDown[idx]">
+                                            <!-- <a class="dropdown-item">Change Status</a> -->
+                                            <a class="dropdown-item" (click)="editOwnerOpenModal(item)">Edit OTA</a>
+                                            <!-- <a class="dropdown-item" (click)="deleteotaModal(item.owner_id,idx)">Delete</a> -->
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<ng-container *ngIf="showModal.ota">
+    <div class="my-3 ms-2 d-flex justify-content-between ">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageOta()">Back to Manage OTA</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} OTA</li>
+            </ol>
+          </nav>
+    </div>
+    <div class="shadow p-4 rounded bg-white" [formGroup]="otaModal">
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <label for="propertyType">Name</label>
+                <input type="text" class="form-control" formControlName="name"
+                    [class.is-invalid]="otaModal.controls.name.dirty && otaModal.controls.name.errors?.['required']">
+                <small
+                    *ngIf="otaModal.controls.name.dirty && otaModal.controls.name.errors?.['required']"
+                    class="text-danger">Required</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Site Def User</label>
+                <input type="text" class="form-control" formControlName="site_def_user"
+                    [class.is-invalid]="(otaModal.controls.site_def_user.dirty && otaModal.controls.site_def_user.errors?.['required']) || (otaModal.controls.site_def_user.dirty && otaModal.controls.site_def_user.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.site_def_user.dirty && otaModal.controls.site_def_user.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.site_def_user.dirty && otaModal.controls.site_def_user.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Site Def Pass</label>
+                <input type="email" class="form-control" formControlName="site_def_passw"
+                    [class.is-invalid]="(otaModal.controls.site_def_passw.dirty && otaModal.controls.site_def_passw.errors?.['required']) || (otaModal.controls.site_def_passw.dirty && otaModal.controls.site_def_passw.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.site_def_passw.dirty && otaModal.controls.site_def_passw.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.site_def_passw.dirty && otaModal.controls.site_def_passw.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Default Passkey</label>
+                <input type="text" class="form-control" formControlName="default_passkey"
+                [class.is-invalid]="(otaModal.controls.default_passkey.dirty && otaModal.controls.default_passkey.errors?.['required']) || (otaModal.controls.default_passkey.dirty && otaModal.controls.default_passkey.errors?.['pattern'])">
+                <small *ngIf="otaModal.controls.default_passkey.dirty && otaModal.controls.default_passkey.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small *ngIf="otaModal.controls.default_passkey.dirty && otaModal.controls.default_passkey.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+        
+        </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <label for="propertyType">IP White List</label>
+                <input type="text" class="form-control" formControlName="ip_whitelist"
+                    [class.is-invalid]="(otaModal.controls.ip_whitelist.dirty && otaModal.controls.ip_whitelist.errors?.['required']) || (otaModal.controls.ip_whitelist.dirty && otaModal.controls.ip_whitelist.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.ip_whitelist.dirty && otaModal.controls.ip_whitelist.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.ip_whitelist.dirty && otaModal.controls.ip_whitelist.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Push Flag</label>
+                <input type="text" class="form-control" formControlName="push_flag"
+                    [class.is-invalid]="(otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['required']) || (otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Pull Delay</label>
+                <input type="text" class="form-control" formControlName="pull_delay"
+                    [class.is-invalid]="(otaModal.controls.pull_delay.dirty && otaModal.controls.pull_delay.errors?.['required']) || (otaModal.controls.pull_delay.dirty && otaModal.controls.pull_delay.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.pull_delay.dirty && otaModal.controls.pull_delay.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.pull_delay.dirty && otaModal.controls.pull_delay.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Pull Priority</label>
+                <input type="text" class="form-control" formControlName="pull_priority"
+                    [class.is-invalid]="(otaModal.controls.pull_priority.dirty && otaModal.controls.pull_priority.errors?.['required']) || (otaModal.controls.pull_priority.dirty && otaModal.controls.pull_priority.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.pull_priority.dirty && otaModal.controls.pull_priority.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.pull_priority.dirty && otaModal.controls.pull_priority.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+        </div>
+        <div class="row mb-2">
+           
+           
+            <div class="col-sm-3">
+                <label for="propertyType">Online Doc Url</label>
+                <input type="text" class="form-control" formControlName="online_doc_url"
+                    [class.is-invalid]="(otaModal.controls.online_doc_url.dirty && otaModal.controls.online_doc_url.errors?.['required']) || (otaModal.controls.online_doc_url.dirty && otaModal.controls.online_doc_url.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.online_doc_url.dirty && otaModal.controls.online_doc_url.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.online_doc_url.dirty && otaModal.controls.online_doc_url.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Room Import Exist</label>
+                <input type="text" class="form-control" formControlName="roomimport_exists"
+                    [class.is-invalid]="(otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['required']) || (otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Calendar Exist</label>
+                <input type="text" class="form-control" formControlName="calendar_exists"
+                    [class.is-invalid]="(otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['required']) || (otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Reservation Exist</label>
+                <input type="text" class="form-control" formControlName="reservation_exists"
+                    [class.is-invalid]="(otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['required']) || (otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <label for="propertyType">Review Exist</label>
+                <input type="text" class="form-control" formControlName="review_exists"
+                    [class.is-invalid]="(otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['required']) || (otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Promotion Exist</label>
+                <input type="text" class="form-control" formControlName="promotion_exists"
+                    [class.is-invalid]="(otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['required']) || (otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Content Exist</label>
+                <input type="text" class="form-control" formControlName="content_exists"
+                    [class.is-invalid]="(otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['required']) || (otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Message Exist</label>
+                <input type="text" class="form-control" formControlName="message_exists"
+                    [class.is-invalid]="(otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['required']) || (otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <label for="propertyType">Room Import Active</label>
+                <input type="text" class="form-control" formControlName="roomimport_active"
+                    [class.is-invalid]="(otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['required']) || (otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Calendar Active</label>
+                <input type="text" class="form-control" formControlName="calendar_active"
+                    [class.is-invalid]="(otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['required']) || (otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Reservation Active</label>
+                <input type="text" class="form-control" formControlName="reservation_active"
+                    [class.is-invalid]="(otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['required']) || (otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Review Active</label>
+                <input type="text" class="form-control" formControlName="review_active"
+                    [class.is-invalid]="(otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['required']) || (otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <label for="propertyType">Promotion Active</label>
+                <input type="text" class="form-control" formControlName="promotion_active"
+                    [class.is-invalid]="(otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['required']) || (otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Content Active</label>
+                <input type="text" class="form-control" formControlName="content_active"
+                    [class.is-invalid]="(otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['required']) || (otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Message Active</label>
+                <input type="text" class="form-control" formControlName="message_active"
+                    [class.is-invalid]="(otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['required']) || (otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Alotment</label>
+                <input type="text" class="form-control" formControlName="alotment"
+                    [class.is-invalid]="(otaModal.controls.alotment.dirty && otaModal.controls.alotment.errors?.['required']) || (otaModal.controls.alotment.dirty && otaModal.controls.alotment.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.alotment.dirty && otaModal.controls.alotment.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.alotment.dirty && otaModal.controls.alotment.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <label for="propertyType">Price</label>
+                <input type="text" class="form-control" formControlName="price"
+                    [class.is-invalid]="(otaModal.controls.price.dirty && otaModal.controls.price.errors?.['required']) || (otaModal.controls.price.dirty && otaModal.controls.price.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.price.dirty && otaModal.controls.price.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.price.dirty && otaModal.controls.price.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Min Stay</label>
+                <input type="text" class="form-control" formControlName="minstay"
+                    [class.is-invalid]="(otaModal.controls.minstay.dirty && otaModal.controls.minstay.errors?.['required']) || (otaModal.controls.minstay.dirty && otaModal.controls.minstay.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.minstay.dirty && otaModal.controls.minstay.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.minstay.dirty && otaModal.controls.minstay.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Max Stay</label>
+                <input type="text" class="form-control" formControlName="maxstay"
+                    [class.is-invalid]="(otaModal.controls.maxstay.dirty && otaModal.controls.maxstay.errors?.['required']) || (otaModal.controls.maxstay.dirty && otaModal.controls.maxstay.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.maxstay.dirty && otaModal.controls.maxstay.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.maxstay.dirty && otaModal.controls.maxstay.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">StopSell</label>
+                <input type="text" class="form-control" formControlName="stopsell"
+                    [class.is-invalid]="(otaModal.controls.stopsell.dirty && otaModal.controls.stopsell.errors?.['required']) || (otaModal.controls.stopsell.dirty && otaModal.controls.stopsell.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.stopsell.dirty && otaModal.controls.stopsell.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.stopsell.dirty && otaModal.controls.stopsell.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <label for="propertyType">Close to Arrival</label>
+                <input type="text" class="form-control" formControlName="cta"
+                    [class.is-invalid]="(otaModal.controls.cta.dirty && otaModal.controls.cta.errors?.['required']) || (otaModal.controls.cta.dirty && otaModal.controls.cta.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.cta.dirty && otaModal.controls.cta.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.cta.dirty && otaModal.controls.cta.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Close to Departure</label>
+                <input type="text" class="form-control" formControlName="ctd"
+                    [class.is-invalid]="(otaModal.controls.ctd.dirty && otaModal.controls.ctd.errors?.['required']) || (otaModal.controls.ctd.dirty && otaModal.controls.ctd.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.ctd.dirty && otaModal.controls.ctd.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.ctd.dirty && otaModal.controls.ctd.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+            <div class="col-sm-3">
+                <label for="propertyType">Cut Off</label>
+                <input type="text" class="form-control" formControlName="cutoff"
+                    [class.is-invalid]="(otaModal.controls.cutoff.dirty && otaModal.controls.cutoff.errors?.['required']) || (otaModal.controls.cutoff.dirty && otaModal.controls.cutoff.errors?.['pattern'])">
+                <small
+                    *ngIf="otaModal.controls.cutoff.dirty && otaModal.controls.cutoff.errors?.['required']"
+                    class="text-danger">Required</small>
+                <small
+                    *ngIf="otaModal.controls.cutoff.dirty && otaModal.controls.cutoff.errors?.['pattern']"
+                    class="text-danger">Only Number</small>
+            </div>
+        </div>
+        <div class="row mt-3 mb-2">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary"
+                    (click)="isEditModal ? editOtaDetails() :addNewOtaDetails()">{{isEditModal?'Edit':'Add'}}</button>
+            </div>
+        </div>
+    </div>
+</ng-container>

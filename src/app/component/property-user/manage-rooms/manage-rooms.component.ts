@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { count } from 'rxjs';
 import { AppConstants } from 'src/app/constants/app.constant';
 import { PropertyService } from 'src/app/services/property.service';
 import { AlertService } from 'src/app/shared/alert.service';
@@ -10,168 +11,172 @@ import { AlertService } from 'src/app/shared/alert.service';
   styleUrls: ['./manage-rooms.component.scss']
 })
 export class ManageRoomsComponent {
-  roomModal:any;
-  roomsList:any=[];
-  showModal:any={property:false,delete:false};
-  showActionDropDown:any={};
-  isEditModal:boolean=false;
-  deleteRoomIndex:number=0;
-  loader:boolean=false;
-  currentRoomId:number=0;
-  addImageConfig: any = { 'image': [],'imagePreview':[]};
-  toUploadImagefile:any=[];
-  imageArrayContainer:any=[{
-    thumbnailUrl:'',
-    image:''
+  roomModal: any;
+  roomsList: any = [];
+  showModal: any = { property: false, delete: false };
+  showActionDropDown: any = {};
+  isEditModal: boolean = false;
+  deleteRoomIndex: number = 0;
+  loader: boolean = false;
+  currentRoomId: number = 0;
+  addImageConfig: any = { 'image': [], 'imagePreview': [] };
+  toUploadImagefile: any = [];
+  // files: string[] = [];
+  imageArrayContainer: any = [{
+    thumbnailUrl: '',
+    image: ''
   }];
-  formData:any= new FormData();
+  formData: any = new FormData();
 
-  constructor(private fb:FormBuilder,private constants:AppConstants,private alertService:AlertService,private proService:PropertyService){
-    this.roomModal  = this.fb.group(
+  constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private proService: PropertyService) {
+    this.roomModal = this.fb.group(
       {
-        property_id:[''],
-        room_name:['',[Validators.required,Validators.pattern(/^[a-zA-Z ]*$/)]],
-        adult:[0,[Validators.required,Validators.pattern(/^[0-9]+$/)]],
-        child:[0,[Validators.required,Validators.pattern(/^[0-9]+$/)]],
-        default_price:['',[Validators.required,Validators.pattern(/^\d+\.\d{2}$/)]],
-        default_quantity:['',[Validators.required,Validators.pattern(/^[0-9]+$/)]],
-        default_min:['',[Validators.required,Validators.pattern(/^[0-9]+$/)]],
-        default_max:['',[Validators.required,Validators.pattern(/^[0-9]+$/)]],
-        description:['',Validators.required],
-        parent_room_id:[null],
-        nonrefundable:[''],
-        is_pms:[false],
-        is_dorm:[false],
-        cald_show:[false],
-        be_show:[false],
-        breakfast:[false],
+        property_id: [''],
+        room_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]],
+        adult: [0, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+        child: [0, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+        default_price: ['', [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
+        default_quantity: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+        default_min: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+        default_max: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+        description: ['', Validators.required],
+        parent_room_id: [null],
+        nonrefundable: [''],
+        is_pms: [false],
+        is_dorm: [false],
+        cald_show: [false],
+        be_show: [false],
+        breakfast: [false],
         // is_active:[true],
       }
     )
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.fetchAllRooms();
   }
 
-  fetchAllRooms(){
-    this.loader=true;
-    this.proService.fetchAllRooms((res:any)=>{
-      if(res.status == 200){
-        this.loader=false;
+  fetchAllRooms() {
+    this.loader = true;
+    this.proService.fetchAllRooms((res: any) => {
+      if (res.status == 200) {
+        this.loader = false;
         this.roomsList = res.data;
         this.roomModal.controls.property_id.setValue(res.data[0].property_id);
-        
-      }else{
+
+      } else {
         this.roomsList = [];
-        this.loader=false;
+        this.loader = false;
       }
     })
   }
 
-  createNewRoom(){
-    
-    if(this.roomModal.status == "VALID"){
+  createNewRoom() {
+
+    if (this.roomModal.status == "VALID") {
       this.roomModal.controls.property_id.setValue(this.roomsList[0].property_id);
       this.convertStringToNumber();
-      const formData:any = new FormData();
+      const formData: any = new FormData();
 
-      formData.append('roomData', JSON.stringify([this.roomModal.value]));
-      formData.append('fileKey', JSON.stringify(this.toUploadImagefile));
-  
-        this.proService.addRooms(formData,(res:any)=>{
-          if(res.status == 200){  
-            // this.roomsList.push(this.roomModal.value);
-            this.showModal.property=false;
-            this.roomModal.reset();
-            this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
-          }
-        else{
+      formData.append('roomData', JSON.stringify(this.roomModal.value));
+
+      for (var i = 0; i < this.toUploadImagefile.length; i++) {
+        formData.append("fileKey[]", this.toUploadImagefile[i]);
+      }
+
+      this.proService.addRooms(formData, (res: any) => {
+        if (res.status == 200) {
+          // this.roomsList.push(this.roomModal.value);
+          this.showModal.property = false;
+          this.roomModal.reset();
+          this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
+        }
+        else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });
         }
-      })
+      });
     }
-      else{
-        this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 3000, pos: 'top' });
-      }
-      
+    else {
+      this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 3000, pos: 'top' });
+    }
+
   }
 
 
 
-  openModal(){
-    this.showModal.property= true;
+  openModal() {
+    this.showModal.property = true;
     this.roomModal.reset();
   }
 
-  closeModal(){
-   this.showModal.property= false;
-   this.showModal.delete=false;
-   this.isEditModal= false;
-   this.roomModal.reset();
+  closeModal() {
+    this.showModal.property = false;
+    this.showModal.delete = false;
+    this.isEditModal = false;
+    this.roomModal.reset();
   }
 
-  showDropDown(idx:any){
+  showDropDown(idx: any) {
     this.showActionDropDown[idx] = !this.showActionDropDown[idx];
   }
 
-  editRoomOpenModal(item:any){
-      this.isEditModal= true;
-      this.roomModal.patchValue(item);
-      console.log(item);
-      this.showModal.property=true;
-      this.currentRoomId = item.room_id;
+  editRoomOpenModal(item: any) {
+    this.isEditModal = true;
+    this.roomModal.patchValue(item);
+    console.log(item);
+    this.showModal.property = true;
+    this.currentRoomId = item.room_id;
   }
 
-  editRoom(){
-    if(this.roomModal.status == "VALID"){
+  editRoom() {
+    if (this.roomModal.status == "VALID") {
       this.convertStringToNumber();
-      const editModalObj:any = JSON.parse(JSON.stringify(this.roomModal.value));
+      const editModalObj: any = JSON.parse(JSON.stringify(this.roomModal.value));
       editModalObj['room_id'] = this.currentRoomId;
-      this.proService.editRoom(editModalObj,(res:any)=>{
-        if(res.status == 200){
-          this.showModal.property=false;
-          this.isEditModal= false;
-          this.showActionDropDown={};
+      this.proService.editRoom(editModalObj, (res: any) => {
+        if (res.status == 200) {
+          this.showModal.property = false;
+          this.isEditModal = false;
+          this.showActionDropDown = {};
           this.roomModal.reset();
-          this.currentRoomId=0;
+          this.currentRoomId = 0;
           this.fetchAllRooms();
           this.alertService.alert("success", "Edit Room Successfully", "Success", { displayDuration: 2000, pos: 'top' });
         }
       })
-    }else{
+    } else {
       this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
     }
     console.log(this.roomModal.value);
-    
-      
+
+
   }
 
-  deleteRoomModal(roomId:any,idx:any){
+  deleteRoomModal(roomId: any, idx: any) {
     this.deleteRoomIndex = idx;
     this.currentRoomId = +roomId;
-    this.showModal.delete=true;
+    this.showModal.delete = true;
   }
 
-  deleteRoom(){
-    this.proService.deleteRoom(this.currentRoomId,(res:any)=>{
-      if(res.status == 200){
-        this.roomsList.splice(this.deleteRoomIndex,1);
-        this.showModal.delete=false;
-        this.deleteRoomIndex=0;
+  deleteRoom() {
+    this.proService.deleteRoom(this.currentRoomId, (res: any) => {
+      if (res.status == 200) {
+        this.roomsList.splice(this.deleteRoomIndex, 1);
+        this.showModal.delete = false;
+        this.deleteRoomIndex = 0;
         this.alertService.alert("error", "Room Deleted", "Success", { displayDuration: 2000, pos: 'top' });
-      }else{
+      } else {
         this.alertService.alert("error", "Something Went Wrong ", "Error", { displayDuration: 2000, pos: 'top' });
       }
     })
   }
 
-  backToManageRoom(){
-    this.showModal.property=false;
-    this.showActionDropDown={};
+  backToManageRoom() {
+    this.showModal.property = false;
+    this.showActionDropDown = {};
   }
-  
-  convertStringToNumber(){
+
+  convertStringToNumber() {
     this.roomModal.value.property_id = +this.roomModal.value.property_id;
     this.roomModal.value.adult = +this.roomModal.value.adult;
     this.roomModal.value.child = +this.roomModal.value.child;
@@ -179,24 +184,23 @@ export class ManageRoomsComponent {
     this.roomModal.value.default_min = +this.roomModal.value.default_min;
     this.roomModal.value.default_price = +this.roomModal.value.default_price;
     this.roomModal.value.default_quantity = +this.roomModal.value.default_quantity;
-    if(this.roomModal.value.room_id){
+    if (this.roomModal.value.room_id) {
       this.roomModal.value.room_id = +this.roomModal.value.room_id;
     }
-    if(this.roomModal.value.parent_room_id){
+    if (this.roomModal.value.parent_room_id) {
       this.roomModal.value.parent_room_id = +this.roomModal.value.parent_room_id;
     }
   }
 
-  uploadImage(event:any,idx:any){
+  uploadImage(event: any, idx: any) {
     let file = event.target.files[0];
+    let thumbFileName = <File>file.name;
     const reader: any = new FileReader();
     const imageSrc = URL.createObjectURL(file);
     reader.readAsDataURL(file);
-    this.imageArrayContainer[idx].imageUrl  = file.name;
-    this.imageArrayContainer[idx].thumbnailUrl  = imageSrc;
-    this.toUploadImagefile.push(file.name);
-    console.log(this.toUploadImagefile);
-    
+    this.imageArrayContainer[idx].imageUrl = file.name;
+    this.imageArrayContainer[idx].thumbnailUrl = imageSrc;
+    this.toUploadImagefile.push(<File>file);
   }
 
   filterNullImages() {
@@ -209,13 +213,13 @@ export class ManageRoomsComponent {
   //   if(this.toUploadImagefile)
 
   // }
-  
-  selectImg(file:any){
-     file.click();
+
+  selectImg(file: any) {
+    file.click();
   }
 
-  addMoreImageSection(){
-    this.imageArrayContainer.push({ thumbnailUrl:'',image:''});
+  addMoreImageSection() {
+    this.imageArrayContainer.push({ thumbnailUrl: '', image: '' });
   }
 }
 

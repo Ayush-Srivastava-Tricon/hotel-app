@@ -14,92 +14,92 @@
                     </div>
                 </div>
                 <table class="table table-shadow table-sm table-hover">
-                <thead class="thead-dark">
-                    <tr class="table-row-rooms">
-                        <th>Room ID</th>
-                        <th>Room Name</th>
-                        <th>Adult</th>  
-                        <th>Child</th>
-                        <th>Default Price</th>
-                        <th>Default Quantity</th>
-                        <th>Default Min</th>
-                        <th>Default Max</th>
-                        <th>Description</th>
-                        <th>Parent Room Id</th>
-                        <!-- <th>Non-Refundable</th> -->
-                        <!-- <th>is PMS</th>
+                    <thead class="thead-dark">
+                        <tr class="table-row-rooms">
+                            <th>Room ID</th>
+                            <th>Room Name</th>
+                            <th>Adult</th>
+                            <th>Child</th>
+                            <th>Default Price</th>
+                            <th>Default Quantity</th>
+                            <th>Default Min</th>
+                            <th>Default Max</th>
+                            <th>Description</th>
+                            <th>Parent Room Id</th>
+                            <!-- <th>Non-Refundable</th> -->
+                            <!-- <th>is PMS</th>
                         <th>is DORM</th>
                         <th>Cald Show</th>
                         <th>Be Show</th>
                         <th>Breakfast</th> -->
-                        <!-- <th>is Active</th> -->
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngIf="loader">
-                        <!-- <td class="tg-cly1">
+                            <!-- <th>is Active</th> -->
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="loader">
+                            <!-- <td class="tg-cly1">
                         </td> -->
-                        <td class="tg-cly1">
-                        </td>
-                        <td class="tg-cly1">
-                        </td>
-                        <td class="tg-cly1">
-                        </td>
-                        <td class="tg-cly1">
-                        </td>
-                        <td class="tg-cly1">
-                        </td>
-                        <td class="tg-cly1">
-                        </td>
-                        <td class="tg-cly1">
-                        </td>
-                        <td class="tg-cly1">
-                        </td>
-                        <td class="tg-cly1">
-                        </td>
-                        <td class="tg-cly1">
-                        </td>
-                    </tr>
-                    <tr *ngIf="roomsList.length==0 && !loader">
-                        <td colspan="19" class="text-center">
-                            No Data
-                        </td>
-                    </tr>
-                    <tr *ngFor="let item of roomsList;let idx = index;" class="text-center align-middle">
-                        <td>{{item.room_id}}</td>
-                        <td>{{item.room_name}}</td>
-                        <td>{{item.adult}}</td>
-                        <td>{{item.child}}</td>
-                        <td>{{item.default_price}}</td>
-                        <td>{{item.default_quantity}}</td>
-                        <td>{{item.default_min}}</td>
-                        <td>{{item.default_max}}</td>
-                        <td>{{item.description}}</td>
-                        <td>{{item.parent_room_id}}</td>
-                        <!-- <td>{{item.nonrefundable}}</td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                        </tr>
+                        <tr *ngIf="roomsList.length==0 && !loader">
+                            <td colspan="19" class="text-center">
+                                No Data
+                            </td>
+                        </tr>
+                        <tr *ngFor="let item of roomsList;let idx = index;" class="text-center align-middle">
+                            <td>{{item.room_id}}</td>
+                            <td>{{item.room_name}}</td>
+                            <td>{{item.adult}}</td>
+                            <td>{{item.child}}</td>
+                            <td>{{item.default_price}}</td>
+                            <td>{{item.default_quantity}}</td>
+                            <td>{{item.default_min}}</td>
+                            <td>{{item.default_max}}</td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.parent_room_id}}</td>
+                            <!-- <td>{{item.nonrefundable}}</td>
                         <td>{{item.is_pms ? item.is_pms : false}}</td>
                         <td>{{item.is_dorm ? item.is_dorm:false}}</td>
                         <td>{{item.cald_show ? item.cald_show:false}}</td>
                         <td>{{item.be_show ? item.be_show:false}}</td>
                         <td>{{item.breakfast ? item.breakfast:false}}</td> -->
-                        <!-- <td>{{item.is_active ? item.is_active:false}}</td> -->
-                        <td>
-                            <div class="dropdown">
-                                <i class="btn btn-light btn-sm bi bi-three-dots-vertical"
-                                    (click)="showDropDown(idx)"></i>
-                                <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
-                                    *ngIf="showActionDropDown[idx]">
-                                    <!-- <a class="dropdown-item">Change Status</a> -->
-                                    <a class="dropdown-item" (click)="editRoomOpenModal(item)">Edit Room</a>
-                                    <a class="dropdown-item" (click)="deleteRoomModal(item.room_id,idx)">Delete</a>
+                            <!-- <td>{{item.is_active ? item.is_active:false}}</td> -->
+                            <td>
+                                <div class="dropdown">
+                                    <i class="btn btn-light btn-sm bi bi-three-dots-vertical"
+                                        (click)="showDropDown(idx)"></i>
+                                    <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
+                                        *ngIf="showActionDropDown[idx]">
+                                        <!-- <a class="dropdown-item">Change Status</a> -->
+                                        <a class="dropdown-item" (click)="editRoomOpenModal(item)">Edit Room</a>
+                                        <a class="dropdown-item" (click)="deleteRoomModal(item.room_id,idx)">Delete</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
     </div>
@@ -111,37 +111,44 @@
         <a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageRoom()">Back To Manage Room</a> -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageRoom()">Back to Manage Room</a></li>
-              <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Room</li>
+                <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "
+                        (click)="backToManageRoom()">Back to Manage Room</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Room</li>
             </ol>
-          </nav>
+        </nav>
     </div>
-        <div class="shadow p-4 rounded add-room-container" [formGroup]="roomModal">
+
+    <div class="shadow p-4 rounded add-room-container">
+        <form [formGroup]="roomModal">
             <div class="row mb-2">
                 <div class="col-sm-6 mb-2">
                     <fieldset class="border p-2">
-                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Room Detail
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Room
+                                Detail
                             </button> </legend>
-                            <div class="form-group row mb-2">
-                                <label for="propertyName" class="col-sm-3 col-form-label">Parent Room Id</label>
-                                <div class="col-sm-9">
-                                    <select type="text" class="form-control" formControlName="parent_room_id">
-                                        <option selected="true" value="null">Select</option>
-                                        <option value="1">Parent - 1 </option>
-                                        <option value="2">Parent - 2 </option>
-                                    </select>
-                                    <small *ngIf="roomModal.controls.parent_room_id.dirty && roomModal.controls.parent_room_id.errors?.['required']"
-                                        class="text-danger">Required</small>
-                                </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Parent Room Id</label>
+                            <div class="col-sm-9">
+                                <select type="text" class="form-control" formControlName="parent_room_id">
+                                    <option selected="true" value="null">Select</option>
+                                    <option value="1">Parent - 1 </option>
+                                    <option value="2">Parent - 2 </option>
+                                </select>
+                                <small
+                                    *ngIf="roomModal.controls.parent_room_id.dirty && roomModal.controls.parent_room_id.errors?.['required']"
+                                    class="text-danger">Required</small>
                             </div>
+                        </div>
                         <div class="form-group row mb-2">
                             <label for="propertyType" class="col-sm-3 col-form-label">Room Name</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="room_name"
                                     [class.is-invalid]="(roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['required']) || (roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['pattern'])">
-                                <small *ngIf="roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['required']"
+                                <small
+                                    *ngIf="roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['required']"
                                     class="text-danger">Required</small>
-                                <small *ngIf="roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['pattern']"
+                                <small
+                                    *ngIf="roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['pattern']"
                                     class="text-danger">Only Alphabets</small>
                             </div>
                         </div>
@@ -149,9 +156,10 @@
                             <label class="col-sm-3 col-form-label" for="description">Description</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" formControlName="description"
-                                [class.is-invalid]="roomModal.controls.description.dirty && roomModal.controls.description.errors?.['required']"></textarea>
-                                <small *ngIf="roomModal.controls.description.dirty && roomModal.controls.description.errors?.['required']"
-                                class="text-danger">Required</small>
+                                    [class.is-invalid]="roomModal.controls.description.dirty && roomModal.controls.description.errors?.['required']"></textarea>
+                                <small
+                                    *ngIf="roomModal.controls.description.dirty && roomModal.controls.description.errors?.['required']"
+                                    class="text-danger">Required</small>
                             </div>
                         </div>
 
@@ -161,37 +169,42 @@
                     <fieldset class="border p-2">
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Person
                             </button> </legend>
-                            <div class="form-group row mb-2">
-                                <label class="col-sm-3 col-form-label" for="propertyType" >Adult</label>
-                                <div class="col-sm-9">
-                                    <input type="text" maxlength="2" class="form-control" formControlName="adult"
-                                        [class.is-invalid]="(roomModal.controls.adult.dirty && roomModal.controls.adult.errors?.['required']) || (roomModal.controls.adult.dirty && roomModal.controls.adult.errors?.['pattern'])">
-                                    <small *ngIf="roomModal.controls.adult.dirty && roomModal.controls.adult.errors?.['required']"
-                                        class="text-danger">Required</small>
-                                    <small *ngIf="roomModal.controls.adult.dirty && roomModal.controls.adult.errors?.['pattern']"
-                                        class="text-danger">Only Number</small>
-                                </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-sm-3 col-form-label" for="propertyType">Adult</label>
+                            <div class="col-sm-9">
+                                <input type="text" maxlength="2" class="form-control" formControlName="adult"
+                                    [class.is-invalid]="(roomModal.controls.adult.dirty && roomModal.controls.adult.errors?.['required']) || (roomModal.controls.adult.dirty && roomModal.controls.adult.errors?.['pattern'])">
+                                <small
+                                    *ngIf="roomModal.controls.adult.dirty && roomModal.controls.adult.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                <small
+                                    *ngIf="roomModal.controls.adult.dirty && roomModal.controls.adult.errors?.['pattern']"
+                                    class="text-danger">Only Number</small>
                             </div>
-                            <div class="form-group row mb-2">
-                                <label class="col-sm-3 col-form-label" for="propertyType">Child</label>
-                                <div class="col-sm-9">
-                            
-                                    <input type="text" maxlength="2" class="form-control" formControlName="child"
-                                        [class.is-invalid]="(roomModal.controls.child.dirty && roomModal.controls.child.errors?.['required']) || (roomModal.controls.child.dirty && roomModal.controls.child.errors?.['pattern'])">
-                                    <small *ngIf="roomModal.controls.child.dirty && roomModal.controls.child.errors?.['required']"
-                                        class="text-danger">Required</small>
-                                    <small *ngIf="roomModal.controls.child.dirty && roomModal.controls.child.errors?.['pattern']"
-                                        class="text-danger">Only Number</small>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-sm-3 col-form-label" for="propertyType">Child</label>
+                            <div class="col-sm-9">
+
+                                <input type="text" maxlength="2" class="form-control" formControlName="child"
+                                    [class.is-invalid]="(roomModal.controls.child.dirty && roomModal.controls.child.errors?.['required']) || (roomModal.controls.child.dirty && roomModal.controls.child.errors?.['pattern'])">
+                                <small
+                                    *ngIf="roomModal.controls.child.dirty && roomModal.controls.child.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                <small
+                                    *ngIf="roomModal.controls.child.dirty && roomModal.controls.child.errors?.['pattern']"
+                                    class="text-danger">Only Number</small>
                             </div>
+                        </div>
                     </fieldset>
                 </div>
-              
+
             </div>
             <div class="row mb-2 bg-white p-2">
                 <div class="col-sm-3 mb-2 ">
                     <fieldset class="border p-2">
-                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Default Markups
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Default
+                                Markups
                             </button> </legend>
                         <div class="form-group row mb-2">
                             <label class="col-sm-3 col-form-label" for="default_price">Default Price</label>
@@ -205,13 +218,13 @@
                                     *ngIf="roomModal.controls.default_price.dirty && roomModal.controls.default_price.errors?.['pattern']"
                                     class="text-danger">Only Number with 2 decimal</small>
                             </div>
-                    
-                    
+
+
                         </div>
                         <div class="form-group row mb-2">
                             <label class="col-sm-3 col-form-label" for="country">Default Quantity</label>
                             <div class="col-sm-9">
-                    
+
                                 <input type="text" maxlength="3" class="form-control" formControlName="default_quantity"
                                     [class.is-invalid]="(roomModal.controls.default_quantity.dirty && roomModal.controls.default_quantity.errors?.['required']) || (roomModal.controls.default_quantity.dirty && roomModal.controls.default_quantity.errors?.['pattern'])">
                                 <small
@@ -221,31 +234,35 @@
                                     *ngIf="roomModal.controls.default_quantity.dirty && roomModal.controls.default_quantity.errors?.['pattern']"
                                     class="text-danger">Only Number</small>
                             </div>
-                    
+
                         </div>
                         <div class="form-group row mb-2">
                             <label class="col-sm-3 col-form-label" for="country">Default Min</label>
                             <div class="col-sm-9">
-                    
+
                                 <input type="text" maxlength="2" class="form-control" formControlName="default_min"
                                     [class.is-invalid]="(roomModal.controls.default_min.dirty && roomModal.controls.default_min.errors?.['required']) || (roomModal.controls.default_min.dirty && roomModal.controls.default_min.errors?.['pattern'])">
-                                <small *ngIf="roomModal.controls.default_min.dirty && roomModal.controls.default_min.errors?.['required']"
+                                <small
+                                    *ngIf="roomModal.controls.default_min.dirty && roomModal.controls.default_min.errors?.['required']"
                                     class="text-danger">Required</small>
-                                <small *ngIf="roomModal.controls.default_min.dirty && roomModal.controls.default_min.errors?.['pattern']"
+                                <small
+                                    *ngIf="roomModal.controls.default_min.dirty && roomModal.controls.default_min.errors?.['pattern']"
                                     class="text-danger">Only Number</small>
                             </div>
-                    
+
                         </div>
                         <div class="form-group row mb-2">
-                    
+
                             <label class="col-sm-3 col-form-label" for="country">Default Max</label>
                             <div class="col-sm-9">
-                    
+
                                 <input type="text" maxlength="3" class="form-control" formControlName="default_max"
                                     [class.is-invalid]="(roomModal.controls.default_max.dirty && roomModal.controls.default_max.errors?.['required']) || (roomModal.controls.default_max.dirty && roomModal.controls.default_max.errors?.['pattern'])">
-                                <small *ngIf="roomModal.controls.default_max.dirty && roomModal.controls.default_max.errors?.['required']"
+                                <small
+                                    *ngIf="roomModal.controls.default_max.dirty && roomModal.controls.default_max.errors?.['required']"
                                     class="text-danger">Required</small>
-                                <small *ngIf="roomModal.controls.default_max.dirty && roomModal.controls.default_max.errors?.['pattern']"
+                                <small
+                                    *ngIf="roomModal.controls.default_max.dirty && roomModal.controls.default_max.errors?.['pattern']"
                                     class="text-danger">Only Number</small>
                             </div>
                         </div>
@@ -253,111 +270,128 @@
                 </div>
                 <div class="col-sm-5 flex-wrap">
                     <fieldset class="border p-2">
-                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Optional Radio Box
-                            </button> </legend> 
-                            <div class="d-flex justify-content-around">
-                                <div class="form-group row align-items-center">
-                                    <label class="col-sm-9 col-form-label" for="nonrefundable">Non-Refundable</label>
-                                    <div class="col-sm-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="nonrefundable" formControlName="nonrefundable">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row align-items-center">
-                                    <label class="col-sm-9 col-form-label" for="description">is PMS</label>
-                                    <div class="col-sm-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="is_pms" [value]="roomModal.controls.is_pms.value"
-                                                formControlName="is_pms">
-                                            <label class="col-sm-3 col-form-label" class="form-check-label" for="is_pms"></label>
-                                        </div>
-                                        <small *ngIf="roomModal.controls.is_pms.dirty && roomModal.controls.is_pms.errors?.['required']"
-                                            class="text-danger">Required</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row align-items-center">
-                                    <label class="col-sm-9 col-form-label" for="description">is Dorm</label>
-                                    <div class="col-sm-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="is_dorm" [value]="roomModal.controls.is_dorm.value"
-                                                formControlName="is_dorm">
-                                            <label class="col-sm-3 col-form-label" class="form-check-label" for="is_dorm"></label>
-                                        </div>
-                                        <small *ngIf="roomModal.controls.is_dorm.dirty && roomModal.controls.is_dorm.errors?.['required']"
-                                            class="text-danger">Required</small>
-                                    </div>
-                                </div>
-                            
-                            </div>
-                            <div class="d-flex justify-content-around">
-                                <div class="form-group row">
-                                    <label class="col-sm-9 col-form-label" for="nonrefundable">Cald Show &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
-                                    <div class="col-sm-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="cald_show" [value]="roomModal.controls.cald_show.value"
-                                                formControlName="cald_show">
-                                            <label class="col-sm-3 col-form-label" class="form-check-label" for="cald_show"></label>
-                                        </div>
-                                        <small *ngIf="roomModal.controls.cald_show.dirty && roomModal.controls.cald_show.errors?.['required']"
-                                            class="text-danger">Required</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-9 col-form-label" for="nonrefundable">Be Show</label>
-                                    <div class="col-sm-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="be_show" [value]="roomModal.controls.be_show.value"
-                                                formControlName="be_show">
-                                            <label class="col-sm-3 col-form-label" class="form-check-label" for="be_show"></label>
-                                        </div>
-                                        <small *ngIf="roomModal.controls.be_show.dirty && roomModal.controls.be_show.errors?.['required']"
-                                            class="text-danger">Required</small>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-9 col-form-label" for="nonrefundable">Breakfast</label>
-                                    <div class="col-sm-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="breakfast" [value]="roomModal.controls.breakfast.value"
-                                                formControlName="breakfast">
-                                            <label class="col-sm-3 col-form-label" class="form-check-label" for="breakfast"></label>
-                                        </div>
-                                        <small *ngIf="roomModal.controls.breakfast.dirty && roomModal.controls.breakfast.errors?.['required']"
-                                            class="text-danger">Required</small>
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Optional
+                                Radio Box
+                            </button> </legend>
+                        <div class="d-flex justify-content-around">
+                            <div class="form-group row align-items-center">
+                                <label class="col-sm-9 col-form-label" for="nonrefundable">Non-Refundable</label>
+                                <div class="col-sm-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="nonrefundable"
+                                            formControlName="nonrefundable">
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group row align-items-center">
+                                <label class="col-sm-9 col-form-label" for="description">is PMS</label>
+                                <div class="col-sm-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="is_pms"
+                                            [value]="roomModal.controls.is_pms.value" formControlName="is_pms">
+                                        <label class="col-sm-3 col-form-label" class="form-check-label"
+                                            for="is_pms"></label>
+                                    </div>
+                                    <small
+                                        *ngIf="roomModal.controls.is_pms.dirty && roomModal.controls.is_pms.errors?.['required']"
+                                        class="text-danger">Required</small>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center">
+                                <label class="col-sm-9 col-form-label" for="description">is Dorm</label>
+                                <div class="col-sm-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="is_dorm"
+                                            [value]="roomModal.controls.is_dorm.value" formControlName="is_dorm">
+                                        <label class="col-sm-3 col-form-label" class="form-check-label"
+                                            for="is_dorm"></label>
+                                    </div>
+                                    <small
+                                        *ngIf="roomModal.controls.is_dorm.dirty && roomModal.controls.is_dorm.errors?.['required']"
+                                        class="text-danger">Required</small>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="d-flex justify-content-around">
+                            <div class="form-group row">
+                                <label class="col-sm-9 col-form-label" for="nonrefundable">Cald Show &nbsp; &nbsp;
+                                    &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                                <div class="col-sm-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="cald_show"
+                                            [value]="roomModal.controls.cald_show.value" formControlName="cald_show">
+                                        <label class="col-sm-3 col-form-label" class="form-check-label"
+                                            for="cald_show"></label>
+                                    </div>
+                                    <small
+                                        *ngIf="roomModal.controls.cald_show.dirty && roomModal.controls.cald_show.errors?.['required']"
+                                        class="text-danger">Required</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-9 col-form-label" for="nonrefundable">Be Show</label>
+                                <div class="col-sm-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="be_show"
+                                            [value]="roomModal.controls.be_show.value" formControlName="be_show">
+                                        <label class="col-sm-3 col-form-label" class="form-check-label"
+                                            for="be_show"></label>
+                                    </div>
+                                    <small
+                                        *ngIf="roomModal.controls.be_show.dirty && roomModal.controls.be_show.errors?.['required']"
+                                        class="text-danger">Required</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-9 col-form-label" for="nonrefundable">Breakfast</label>
+                                <div class="col-sm-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="breakfast"
+                                            [value]="roomModal.controls.breakfast.value" formControlName="breakfast">
+                                        <label class="col-sm-3 col-form-label" class="form-check-label"
+                                            for="breakfast"></label>
+                                    </div>
+                                    <small
+                                        *ngIf="roomModal.controls.breakfast.dirty && roomModal.controls.breakfast.errors?.['required']"
+                                        class="text-danger">Required</small>
+                                </div>
+                            </div>
+                        </div>
                     </fieldset>
-                </div>                   
+                </div>
                 <div class="col-sm-4">
                     <fieldset class="border p-2">
-                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Upload Room Image
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Upload
+                                Room Image
                             </button> </legend>
-                    
+
                         <div class="image-container d-flex justify-content-start align-items-baseline flex-wrap ">
                             <ng-container *ngFor="let item of imageArrayContainer;let idx=index;">
                                 <div class="image-block m-2" (click)="selectImg(file)">
                                     <img class="img-preview" [src]="item.thumbnailUrl">
-                                    <input type="file" accept="image/*" (change)="uploadImage($event,idx)" accept="image/*" class="file" #file
-                                        hidden>
+                                    <input type="file" accept="image/*" (change)="uploadImage($event,idx)"
+                                        accept="image/*" class="file" #file hidden>
                                 </div>
                             </ng-container>
-                            <a class="text-decoration-none fs-6 mx-2" href="javascript:void(0);" [class.add-img-disabled]="!this.imageArrayContainer[this.imageArrayContainer.length-1]?.thumbnailUrl" (click)="addMoreImageSection()">Add More</a>
-                    
+                            <a class="text-decoration-none fs-6 mx-2" href="javascript:void(0);"
+                                [class.add-img-disabled]="!this.imageArrayContainer[this.imageArrayContainer.length-1]?.thumbnailUrl"
+                                (click)="addMoreImageSection()">Add More</a>
+
                         </div>
-                    
+
                     </fieldset>
-                </div>                   
-                </div>
-                <div class="row mt-3 mb-2">
-                    <div class="col-sm-12">
-                        <button type="submit" class="btn btn-primary"
-                            (click)="isEditModal ? editRoom() :createNewRoom()">{{isEditModal?'Edit':'Create'}}</button>
-                    </div>
                 </div>
             </div>
-                <!-- <div class="col-sm-3">
+            <div class="row mt-3 mb-2">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary"
+                        (click)="isEditModal ? editRoom() :createNewRoom()">{{isEditModal?'Edit':'Create'}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- <div class="col-sm-3">
                     <label class="col-sm-3 col-form-label" for="description">is Active</label>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="is_active"  [value]="roomModal.controls.is_active.value" [attr.checked]="roomModal.value.is_active"  formControlName="is_active">
@@ -367,8 +401,8 @@
                         *ngIf="roomModal.controls.is_active.dirty && roomModal.controls.is_active.errors?.['required']"
                         class="text-danger">Required</small>
                 </div> -->
-         
-        </div>
+
+</div>
 
 
 <!-- Modal -->
