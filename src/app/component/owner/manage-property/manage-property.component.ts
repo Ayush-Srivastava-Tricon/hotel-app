@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AppConstants } from 'src/app/constants/app.constant';
 import { OwnerService } from 'src/app/services/owner.service';
 import { AlertService } from 'src/app/shared/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-property',
@@ -25,7 +26,7 @@ export class ManagePropertyComponent {
   selectedPropertyId:number=0;
   currentOwnerId:any;
 
-  constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private ownerService: OwnerService) {
+  constructor(private router:Router,private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private ownerService: OwnerService) {
     this.propertyUserModal = this.fb.group(
       {
         property_name: ['', [Validators.required]],
@@ -58,6 +59,7 @@ export class ManagePropertyComponent {
       if (res.status == 200) {
         this.loader = false;
         this.propertyList = res.data;
+        this.setAllPropertyListToLocal(res.data);
       }
     })
   }
@@ -225,8 +227,13 @@ export class ManagePropertyComponent {
     })
   }
 
-  viewCalendar(){
+  viewCalendar(propertyid:any){
+    localStorage.setItem("selectedPropertyId",propertyid);
+    this.router.navigate(['/owner/calendar-view',propertyid]);
+  }
 
+  setAllPropertyListToLocal(data:any){
+    localStorage.setItem("propertyList",JSON.stringify(data));
   }
 
 }

@@ -42,11 +42,11 @@
                         <ng-container *ngIf="propertyList.length>0 && !loader">
 
                             <tr *ngFor="let item of propertyList;let idx = index;" class="text-center align-middle">
-                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar()">{{item.property_id}}</a></td>
-                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar()">{{item.property_name|titlecase}}</a> </td>
+                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar(item.property_id)">{{item.property_id}}</a></td>
+                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar(item.property_id)">{{item.property_name|titlecase}}</a> </td>
                                 <td>{{item.city}}</td>
                                 <td>{{item.status == 1 ? 'Active' : 'InActive'}}</td>
-                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar()">View Calendar</a> </td>
+                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar(item.property_id)">View Calendar</a> </td>
                                 <td>
                                     <div class="dropdown">
                                         <i class="btn btn-light bi bi-three-dots-vertical"

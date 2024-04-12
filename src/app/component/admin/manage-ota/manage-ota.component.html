@@ -136,8 +136,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Push Flag</label>
-                <input type="text" class="form-control" formControlName="push_flag"
-                    [class.is-invalid]="(otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['required']) || (otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['pattern'])">
+                <select formControlName="push_flag" class="form-control" [class.is-invalid]="(otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['required']) || (otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['required']"
                     class="text-danger">Required</small>
@@ -184,8 +187,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Room Import Exist</label>
-                <input type="text" class="form-control" formControlName="roomimport_exists"
-                    [class.is-invalid]="(otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['required']) || (otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['pattern'])">
+                <select formControlName="roomimport_exists" class="form-control" [class.is-invalid]="(otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['required']) || (otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['required']"
                     class="text-danger">Required</small>
@@ -195,8 +201,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Calendar Exist</label>
-                <input type="text" class="form-control" formControlName="calendar_exists"
-                    [class.is-invalid]="(otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['required']) || (otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['pattern'])">
+                <select formControlName="calendar_exists" class="form-control" [class.is-invalid]="(otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['required']) || (otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['required']"
                     class="text-danger">Required</small>
@@ -206,8 +215,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Reservation Exist</label>
-                <input type="text" class="form-control" formControlName="reservation_exists"
-                    [class.is-invalid]="(otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['required']) || (otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['pattern'])">
+                <select formControlName="reservation_exists" class="form-control" [class.is-invalid]="(otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['required']) || (otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['required']"
                     class="text-danger">Required</small>
@@ -219,8 +231,11 @@
         <div class="row mb-2">
             <div class="col-sm-3">
                 <label for="propertyType">Review Exist</label>
-                <input type="text" class="form-control" formControlName="review_exists"
-                    [class.is-invalid]="(otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['required']) || (otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['pattern'])">
+                <select formControlName="review_exists" class="form-control" [class.is-invalid]="(otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['required']) || (otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['required']"
                     class="text-danger">Required</small>
@@ -230,8 +245,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Promotion Exist</label>
-                <input type="text" class="form-control" formControlName="promotion_exists"
-                    [class.is-invalid]="(otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['required']) || (otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['pattern'])">
+                <select formControlName="promotion_exists" class="form-control" [class.is-invalid]="(otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['required']) || (otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['required']"
                     class="text-danger">Required</small>
@@ -241,8 +259,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Content Exist</label>
-                <input type="text" class="form-control" formControlName="content_exists"
-                    [class.is-invalid]="(otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['required']) || (otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['pattern'])">
+                <select formControlName="content_exists" class="form-control" [class.is-invalid]="(otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['required']) || (otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['required']"
                     class="text-danger">Required</small>
@@ -252,8 +273,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Message Exist</label>
-                <input type="text" class="form-control" formControlName="message_exists"
-                    [class.is-invalid]="(otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['required']) || (otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['pattern'])">
+                <select formControlName="message_exists" class="form-control" [class.is-invalid]="(otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['required']) || (otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['required']"
                     class="text-danger">Required</small>
@@ -265,8 +289,11 @@
         <div class="row mb-2">
             <div class="col-sm-3">
                 <label for="propertyType">Room Import Active</label>
-                <input type="text" class="form-control" formControlName="roomimport_active"
-                    [class.is-invalid]="(otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['required']) || (otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['pattern'])">
+                <select formControlName="roomimport_active" class="form-control" [class.is-invalid]="(otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['required']) || (otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['required']"
                     class="text-danger">Required</small>
@@ -276,8 +303,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Calendar Active</label>
-                <input type="text" class="form-control" formControlName="calendar_active"
-                    [class.is-invalid]="(otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['required']) || (otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['pattern'])">
+                <select formControlName="calendar_active" class="form-control" [class.is-invalid]="(otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['required']) || (otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['required']"
                     class="text-danger">Required</small>
@@ -287,8 +317,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Reservation Active</label>
-                <input type="text" class="form-control" formControlName="reservation_active"
-                    [class.is-invalid]="(otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['required']) || (otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['pattern'])">
+                <select formControlName="reservation_active" class="form-control" [class.is-invalid]="(otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['required']) || (otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['required']"
                     class="text-danger">Required</small>
@@ -298,8 +331,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Review Active</label>
-                <input type="text" class="form-control" formControlName="review_active"
-                    [class.is-invalid]="(otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['required']) || (otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['pattern'])">
+                <select formControlName="review_active" class="form-control" [class.is-invalid]="(otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['required']) || (otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['required']"
                     class="text-danger">Required</small>
@@ -311,8 +347,11 @@
         <div class="row mb-2">
             <div class="col-sm-3">
                 <label for="propertyType">Promotion Active</label>
-                <input type="text" class="form-control" formControlName="promotion_active"
-                    [class.is-invalid]="(otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['required']) || (otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['pattern'])">
+                <select formControlName="promotion_active" class="form-control" [class.is-invalid]="(otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['required']) || (otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['required']"
                     class="text-danger">Required</small>
@@ -322,8 +361,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Content Active</label>
-                <input type="text" class="form-control" formControlName="content_active"
-                    [class.is-invalid]="(otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['required']) || (otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['pattern'])">
+                <select formControlName="content_active" class="form-control" [class.is-invalid]="(otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['required']) || (otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['required']"
                     class="text-danger">Required</small>
@@ -333,8 +375,11 @@
             </div>
             <div class="col-sm-3">
                 <label for="propertyType">Message Active</label>
-                <input type="text" class="form-control" formControlName="message_active"
-                    [class.is-invalid]="(otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['required']) || (otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['pattern'])">
+                <select formControlName="message_active" class="form-control" [class.is-invalid]="(otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['required']) || (otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['pattern'])">
+                    <option value="" [hidden]="true">Select</option>
+                    <option [value]="1">Yes</option>
+                    <option [value]="0">No</option>
+                </select>
                 <small
                     *ngIf="otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['required']"
                     class="text-danger">Required</small>

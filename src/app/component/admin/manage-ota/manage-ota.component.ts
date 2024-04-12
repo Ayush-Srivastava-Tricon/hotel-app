@@ -79,13 +79,12 @@ export class ManageOtaComponent {
    
    openModal() {
     this.showModal.ota = true;
-    this.otaModal.reset();
+    // this.otaModal.reset();
   }
 
   closeModal() {
-    this.showModal.owner = false;
+    this.showModal.ota = false;
     this.showModal.delete = false;
-    this.showModal.viewOwner = false;
     this.isEditModal = false;
     this.otaModal.reset();
   }
@@ -108,16 +107,19 @@ export class ManageOtaComponent {
   }
 
   addNewOtaDetails(){
+    console.log(this.otaModal.value);
+    
     if(this.otaModal.status == 'VALID'){
-      let params:any={
-        otaData:[this.otaModal.value]
-      };
-      this.formData.append('otaData', JSON.stringify(params));
+      // let params:any={
+      //   otaData:[this.otaModal.value]
+      // };
+      this.formData.append('otaData', JSON.stringify(this.otaModal.value));
       this.adminService.addOtaDetails(this.formData,(res:any)=>{
         if(res.status == 200){
-          this.showModal.property = false;
+          this.showModal.ota = false;
           this.otaModal.reset();
           this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
+          this.fetchOtaDetails();
         }
         else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });
@@ -134,15 +136,16 @@ export class ManageOtaComponent {
     if(this.otaModal.status == 'VALID'){
       const editModalObj: any = JSON.parse(JSON.stringify(this.otaModal.value));
       editModalObj['id'] = this.currentOtaId;
-         let params:any={
-        otaData:[editModalObj]
-      };
-      this.formData.append('otaData', JSON.stringify(params));
+      //    let params:any={
+      //   otaData:[editModalObj]
+      // };
+      this.formData.append('otaData', JSON.stringify(editModalObj));
       this.adminService.editOtaDetails(editModalObj,(res:any)=>{
         if(res.status == 200){
-          this.showModal.property = false;
+          this.showModal.ota = false;
           this.otaModal.reset();
           this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
+          this.fetchOtaDetails();
         }
         else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });

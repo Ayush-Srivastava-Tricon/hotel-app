@@ -21,6 +21,11 @@ const routes: Routes = [
         loadChildren:()=>import("./dashboard/dashboard.module").then(m=>m.DashboardModule)
       },
       {
+        path:'calendar-view/:id',
+        pathMatch:'full',
+        loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
+      },
+      {
         path:'**',
         redirectTo:'/dashboard'
       },

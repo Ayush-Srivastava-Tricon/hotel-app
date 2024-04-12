@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="col-sm-6"></div>
-      <div class="col-sm-3 text-end" *ngIf="isAdmin">
+      <div class="col-sm-3 text-end" *ngIf="isAdmin||isOwner">
           <select class="form-control-sm me-3" (change)="changeCalendarByProperty($event)">
             <ng-container *ngFor="let data of allPropertyList">
                 <option [selected]="data.property_id == loggedProperty.propertyId" [value]="data.property_id">{{data.property_name}}</option>

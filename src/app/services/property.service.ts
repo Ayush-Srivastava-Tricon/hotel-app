@@ -33,7 +33,7 @@ export class PropertyService extends BaseServiceService {
   }
 
   addOtaUserDetails(params:any,callback:any){
-    this.postData({},this.httpUrl['addOtaUser'],callback);
+    this.postData(params,this.httpUrl['addOtaUser'],callback);
   }
 
   editOtaUserDetails(params:AnimationPlayState,callback:any){

@@ -47,6 +47,7 @@ export class CalendarViewComponent {
   allPropertyList:any=[];
   loggedProperty: any = { 'isLoginProperty': false, 'propertyId': 0 };
   isAdmin:boolean=false;
+  isOwner:boolean=false;
 
   constructor(private _service: CalendarService, private fb: FormBuilder, private alertService: AlertService, private router: Router) {
     this.modalFieldForm = this.fb.group({
@@ -66,6 +67,7 @@ export class CalendarViewComponent {
 
   ngOnInit(): void {
     this.isAdmin = JSON.parse(<any>localStorage.getItem("isadmin"));
+    this.isOwner = JSON.parse(<any>localStorage.getItem("isowner"));
     if (localStorage.getItem("selectedPropertyId")) {
       this.loggedProperty.isLoginProperty = true;
       this.loggedProperty.propertyId = localStorage.getItem("selectedPropertyId");

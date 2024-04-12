@@ -27,6 +27,7 @@ export class ManageRoomsComponent {
     image: ''
   }];
   formData: any = new FormData();
+  currentPropertyId:any;
 
   constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private proService: PropertyService) {
     this.roomModal = this.fb.group(
@@ -54,6 +55,10 @@ export class ManageRoomsComponent {
 
   ngOnInit() {
     this.fetchAllRooms();
+    this.currentPropertyId = JSON.parse(<any>localStorage.getItem("selectedPropertyId"));
+    if(!this.currentPropertyId){
+      this.currentPropertyId = JSON.parse(<any>localStorage.getItem("userId"));
+    }
   }
 
   fetchAllRooms() {
@@ -62,7 +67,7 @@ export class ManageRoomsComponent {
       if (res.status == 200) {
         this.loader = false;
         this.roomsList = res.data;
-        this.roomModal.controls.property_id.setValue(res.data[0].property_id);
+        this.roomModal.controls.property_id.setValue(this.currentPropertyId);
 
       } else {
         this.roomsList = [];
@@ -74,7 +79,7 @@ export class ManageRoomsComponent {
   createNewRoom() {
 
     if (this.roomModal.status == "VALID") {
-      this.roomModal.controls.property_id.setValue(this.roomsList[0].property_id);
+      this.roomModal.controls.property_id.setValue(this.currentPropertyId);
       this.convertStringToNumber();
       const formData: any = new FormData();
 

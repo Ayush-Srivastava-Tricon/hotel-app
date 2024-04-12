@@ -50,7 +50,7 @@ export class AdminService extends BaseServiceService {
   }
 
   addOtaDetails(params: any, callback: any) {
-    this.postData(params, this.httpUrl['addOta'], callback)
+    this.postDataWithFile(params, this.httpUrl['addOta'], callback)
   }
 
   fetchOtaDetails(callback:any){
