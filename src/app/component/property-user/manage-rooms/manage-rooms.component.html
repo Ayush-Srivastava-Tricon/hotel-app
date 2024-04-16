@@ -20,11 +20,6 @@
                             <th>Room Name</th>
                             <th>Adult</th>
                             <th>Child</th>
-                            <th>Default Price</th>
-                            <th>Default Quantity</th>
-                            <th>Default Min</th>
-                            <th>Default Max</th>
-                            <th>Description</th>
                             <th>Parent Room Id</th>
                             <!-- <th>Non-Refundable</th> -->
                             <!-- <th>is PMS</th>
@@ -38,16 +33,6 @@
                     </thead>
                     <tbody>
                         <tr *ngIf="loader">
-                            <!-- <td class="tg-cly1">
-                        </td> -->
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
                             <td class="tg-cly1">
                             </td>
                             <td class="tg-cly1">
@@ -71,11 +56,6 @@
                             <td>{{item.room_name}}</td>
                             <td>{{item.adult}}</td>
                             <td>{{item.child}}</td>
-                            <td>{{item.default_price}}</td>
-                            <td>{{item.default_quantity}}</td>
-                            <td>{{item.default_min}}</td>
-                            <td>{{item.default_max}}</td>
-                            <td>{{item.description}}</td>
                             <td>{{item.parent_room_id}}</td>
                             <!-- <td>{{item.nonrefundable}}</td>
                         <td>{{item.is_pms ? item.is_pms : false}}</td>

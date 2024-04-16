@@ -4,6 +4,7 @@ import { count } from 'rxjs';
 import { AppConstants } from 'src/app/constants/app.constant';
 import { PropertyService } from 'src/app/services/property.service';
 import { AlertService } from 'src/app/shared/alert.service';
+import { environment } from './../../../../environments/environment.development';
 
 @Component({
   selector: 'app-manage-rooms',
@@ -90,10 +91,11 @@ export class ManageRoomsComponent {
       }
 
       this.proService.addRooms(formData, (res: any) => {
-        if (res.status == 200) {
+        if (res[0].status == 200) {
           // this.roomsList.push(this.roomModal.value);
           this.showModal.property = false;
           this.roomModal.reset();
+          this.imageArrayContainer = [];
           this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
         }
         else {
@@ -126,11 +128,26 @@ export class ManageRoomsComponent {
   }
 
   editRoomOpenModal(item: any) {
-    this.isEditModal = true;
-    this.roomModal.patchValue(item);
-    console.log(item);
-    this.showModal.property = true;
-    this.currentRoomId = item.room_id;
+    this.proService.getRoomDataToEdit(item.room_id,(res:any)=>{
+      if(res.status == 200){
+        this.isEditModal = true;
+        this.roomModal.patchValue(res.data[0]);
+        console.log(item);
+        this.showModal.property = true;
+        this.currentRoomId = item.room_id;
+        this.getUploadedImage(item.room_id);
+      }
+    })
+
+  }
+
+  getUploadedImage(roomId:any){
+      this.proService.getUploadedImageByRoom(roomId,(res:any)=>{
+        if(res.status == 200){
+          console.log(res);
+          
+        }
+      })
   }
 
   editRoom() {
@@ -138,7 +155,14 @@ export class ManageRoomsComponent {
       this.convertStringToNumber();
       const editModalObj: any = JSON.parse(JSON.stringify(this.roomModal.value));
       editModalObj['room_id'] = this.currentRoomId;
-      this.proService.editRoom(editModalObj, (res: any) => {
+
+      const formData: any = new FormData();
+      formData.append('roomData', JSON.stringify(editModalObj));
+
+      for (var i = 0; i < this.toUploadImagefile.length; i++) {
+        formData.append("fileKey[]", this.toUploadImagefile[i]);
+      }
+      this.proService.editRoom(formData, (res: any) => {
         if (res.status == 200) {
           this.showModal.property = false;
           this.isEditModal = false;
@@ -199,13 +223,18 @@ export class ManageRoomsComponent {
 
   uploadImage(event: any, idx: any) {
     let file = event.target.files[0];
-    let thumbFileName = <File>file.name;
-    const reader: any = new FileReader();
-    const imageSrc = URL.createObjectURL(file);
-    reader.readAsDataURL(file);
-    this.imageArrayContainer[idx].imageUrl = file.name;
-    this.imageArrayContainer[idx].thumbnailUrl = imageSrc;
-    this.toUploadImagefile.push(<File>file);
+    let filesize :any= ((file.size/1024)/1024).toFixed(4);
+    if(filesize<16){
+      const reader: any = new FileReader();
+      const imageSrc = URL.createObjectURL(file);
+      reader.readAsDataURL(file);
+      this.imageArrayContainer[idx].imageUrl = file.name;
+      this.imageArrayContainer[idx].thumbnailUrl = imageSrc;
+      this.toUploadImagefile.push(<File>file);
+    }else{
+      this.alertService.alert("error", "Size should be less than 16MB", "Error", { displayDuration: 2000, pos: 'top' });
+    }
+    
   }
 
   filterNullImages() {

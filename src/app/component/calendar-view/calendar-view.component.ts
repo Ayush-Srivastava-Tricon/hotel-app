@@ -91,7 +91,7 @@ export class CalendarViewComponent {
       if (res.status == 200) {
         console.log(res);
         this.mainData = res.responseData;
-        this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
+        this.alertService.alert(res.responseData.length> 0 ? "success" : 'error', res.message, "Success", { displayDuration: 2000, pos: 'top' });
         setTimeout(() => {
           this.renderCalendar();
         }, 0);

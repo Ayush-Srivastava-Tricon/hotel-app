@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AlertService } from 'src/app/shared/alert.service';
 import { PropertyService } from './../../../services/property.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-manage-ota-user',
@@ -18,16 +19,18 @@ export class ManageOtaUserComponent {
   formData:any = new FormData();
   currentOtaUserId:number=0;
   loggedInPropertyId:any;
+  otaDetailList:any=[];
 
-  constructor(private alertService: AlertService,private _service:PropertyService,private fb:FormBuilder){
+  constructor(private alertService: AlertService,private _service:PropertyService,private fb:FormBuilder,private adminService:AdminService){
     this.otaUserModal = this.fb.group({
       property_id:[''],
-      ota_user:[''],
-      ota_pass:[''],
-      ota_hotel_id:[''],
-      ota_other_id:[''] ,
-      currency:[''],
-      commission:[''],
+      ota_details_id:['',[Validators.required,]],
+      ota_user:['',[Validators.required,]],
+      ota_pass:['',[Validators.required,]],
+      ota_hotel_id:['',[Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      ota_other_id:['',[Validators.pattern(/^[0-9]+$/)]] ,
+      currency:['',],
+      commission:['',[Validators.required, Validators.pattern(/^[0-9]+$/)]],
       requester_ip:[''],
       update:[''],
       reservation:[''],
@@ -76,7 +79,16 @@ export class ManageOtaUserComponent {
 
   openModal() {
     this.showModal.otaUser = true;
+    this.fetchOtaDetails();
     // this.otaUserModal.reset();
+  }
+
+  fetchOtaDetails(){
+    this.adminService.fetchOtaDetails((res:any)=>{
+      if(res.status == 200){
+        this.otaDetailList = res.data;
+      }
+    })
   }
 
   closeModal() {
@@ -97,6 +109,7 @@ export class ManageOtaUserComponent {
     console.log(item);
     this.showModal.otaUser = true;
     this.currentOtaUserId = item.id;
+    this.fetchOtaDetails();
   }
 
 
@@ -116,7 +129,8 @@ export class ManageOtaUserComponent {
         if(res.status == 200){
           this.showModal.otaUser = false;
           this.otaUserModal.reset();
-          this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
+          this.fetchOtaUserDetail();
+          this.alertService.alert("success", res.message, "Success", { displayDuration: 3000, pos: 'top' });
         }
         else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });
@@ -130,6 +144,8 @@ export class ManageOtaUserComponent {
   }
 
   editOtaUser(){
+    console.log(this.otaUserModal.value);
+    
     if(this.otaUserModal.status == 'VALID'){
       const editModalObj: any = JSON.parse(JSON.stringify(this.otaUserModal.value));
       editModalObj['id'] = this.currentOtaUserId;
@@ -141,7 +157,9 @@ export class ManageOtaUserComponent {
         if(res.status == 200){
           this.showModal.otaUser = false;
           this.otaUserModal.reset();
-          this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
+          this.fetchOtaUserDetail();
+          this.showActionDropDown={};
+          this.alertService.alert("success", res.message, "Success", { displayDuration: 3000, pos: 'top' });
         }
         else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });

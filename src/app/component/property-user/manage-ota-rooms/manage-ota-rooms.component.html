@@ -1,1 +1,224 @@
-<p>manage-ota-rooms works!</p>
+<div class="container-fluid mt-2" *ngIf="!showModal.otaRoom">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 px-4">
+            <div class="table-wrapper shadow table-responsive ">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>List OTA <b>Rooms</b></h2>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
+                                data-toggle="modal"><span>Add OTA Rooms</span></a>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-shadow table-sm table-hover">
+                    <thead class="thead-dark">
+                        <tr class="table-row-rooms">
+                            <th>Property ID</th>
+                            <th>OTA User ID</th>
+                            <th>Room ID </th>
+                            <th>Room Name</th>
+                            <th>Occupancy</th>
+                            <th>Extra Adult Price</th>
+                            <th>Child Price </th>
+                            <th>Infant Price</th>
+                            <th>IP Address</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="loader">
+                            <!-- <td class="tg-cly1">
+                        </td> -->
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                        </tr>
+                        <tr *ngIf="otaRoomList.length==0 && !loader">
+                            <td colspan="19" class="text-center">
+                                No Data
+                            </td>
+                        </tr>
+                        <tr *ngFor="let item of otaRoomList;let idx = index;" class="text-center align-middle">
+                            <td>{{item.property_id}}</td>
+                            <td>{{item.ota_user_id}}</td>
+                            <td>{{item.room_id}}</td>
+                            <td>{{item.room_name}}</td>
+                            <td>{{item.occupancy}}</td>
+                            <td>{{item.extra_adult_price}}</td>
+                            <td>{{item.child_price}}</td>
+                            <td>{{item.infant_price}}</td>
+                            <td>{{item.requester_ip}}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <i class="btn btn-light btn-sm bi bi-three-dots-vertical"
+                                        (click)="showDropDown(idx)"></i>
+                                    <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
+                                        *ngIf="showActionDropDown[idx]">
+                                        <!-- <a class="dropdown-item">Change Status</a> -->
+                                        <a class="dropdown-item" (click)="editRoomOpenModal(item)">Edit OTA Room</a>
+                                        <a class="dropdown-item" (click)="deleteRoomModal(item.room_id,idx)">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-2" *ngIf="showModal.otaRoom">
+    <div class="my-3 ms-2 d-flex justify-content-between ">
+        <!-- <span class="h3">{{isEditModal? 'Edit':'Add'}} Room </span>
+        <a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageRoom()">Back To Manage Room</a> -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "
+                        (click)="backToManageRoom()">Back to Manage OTA Room</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} OTA Room</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="shadow p-4 rounded add-room-container">
+        <form [formGroup]="otaRoomModal">
+            <div class="row mb-2">
+                <div class="col-sm-6 mb-2">
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Room Name</label>
+                            <div class="col-sm-9">
+                                <select type="text" class="form-control" (change)="getRoomNameAndId($event)">
+                                    <option [hidden]="true" [value]="null">Select</option>
+                                    <option [value]="item|json" *ngFor="let item of roomList">{{item.room_name}}</option>
+                                </select>
+                                <small
+                                    *ngIf="otaRoomModal.controls.room_name.dirty && otaRoomModal.controls.room_name.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Occupancy</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" formControlName="occupancy">
+                                <small
+                                    *ngIf="otaRoomModal.controls.occupancy.dirty && otaRoomModal.controls.occupancy.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                <small
+                                    *ngIf="otaRoomModal.controls.occupancy.dirty && otaRoomModal.controls.occupancy.errors?.['pattern']"
+                                    class="text-danger">Only Alphabets</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Extra Adult Price</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" formControlName="extra_adult_price">
+                                <small
+                                    *ngIf="otaRoomModal.controls.extra_adult_price.dirty && otaRoomModal.controls.extra_adult_price.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                    <small
+                                    *ngIf="otaRoomModal.controls.extra_adult_price.dirty && otaRoomModal.controls.extra_adult_price.errors?.['pattern']"
+                                    class="text-danger">Only Numbers</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Requester IP</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" [readOnly]="true" formControlName="requester_ip"
+                                    [class.is-invalid]="(otaRoomModal.controls.requester_ip.dirty && otaRoomModal.controls.requester_ip.errors?.['required']) || (otaRoomModal.controls.requester_ip.dirty && otaRoomModal.controls.requester_ip.errors?.['pattern'])">
+                                <small
+                                    *ngIf="otaRoomModal.controls.requester_ip.dirty && otaRoomModal.controls.requester_ip.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                <small
+                                    *ngIf="otaRoomModal.controls.requester_ip.dirty && otaRoomModal.controls.requester_ip.errors?.['pattern']"
+                                    class="text-danger">Only Number</small>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-sm-6 mb-2">
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">OTA User Id</label>
+                            <div class="col-sm-9">
+                                <select type="text" class="form-control" formControlName="ota_user_id">
+                                    <option [hidden]="true" [value]="null">Select</option>
+                                    <option [value]="item.id" *ngFor="let item of otaUserList">{{item.ota_user}}</option>
+                                </select>
+                                <small
+                                    *ngIf="otaRoomModal.controls.ota_user_id.dirty && otaRoomModal.controls.ota_user_id.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Infant Price</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" formControlName="infant_price">
+                                <small
+                                    *ngIf="otaRoomModal.controls.infant_price.dirty && otaRoomModal.controls.infant_price.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                <small
+                                *ngIf="otaRoomModal.controls.infant_price.dirty && otaRoomModal.controls.infant_price.errors?.['pattern']"
+                                class="text-danger">Only Number</small>
+                                    
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Child Price</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" formControlName="child_price">
+                                <small
+                                    *ngIf="otaRoomModal.controls.child_price.dirty && otaRoomModal.controls.child_price.errors?.['required']"
+                                    class="text-danger">Required</small>
+                                <small
+                                    *ngIf="otaRoomModal.controls.child_price.dirty && otaRoomModal.controls.child_price.errors?.['pattern']"
+                                    class="text-danger">Only Number</small>
+                                    
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary"
+                        (click)="isEditModal ? editOtaRoom() :createNewOtaRoom()">{{isEditModal?'Edit':'Create'}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- DELETE Modal -->
+<div class="modal" *ngIf="showModal.delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content delete-modal">
+            <div class="modal-body">
+                <ng-container *ngIf="showModal.delete">
+                    <div class="modal-header flex-row">
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Do you really want to delete the Room ?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            (click)="closeModal()">Cancel</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteRoom()">Delete</button>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade in" *ngIf="showModal.delete"></div>

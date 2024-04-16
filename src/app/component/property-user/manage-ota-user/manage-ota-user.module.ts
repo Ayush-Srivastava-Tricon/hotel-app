@@ -11,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ManageOtaUserRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports:[ManageOtaUserComponent]
 })

@@ -55,9 +55,15 @@ export class BaseServiceService {
     'addRooms': 'hotelapi/rooms',
     'editRoom': 'hotelapi/rooms',
     'deleteRoom': 'hotelapi/rooms',
+    'getRoomDataToEdit': 'hotelapi/rooms',
+    'getUploadedImageByRoom': 'hotelapi/uploadFiles',
     'getOtaUserList': 'hotelapi/otausers',
     'addOtaUser': 'hotelapi/otausers',
     'editOtaUser': 'hotelapi/otausers',
+    'addOtaRoom': 'hotelapi/otarooms',
+    'fetchOtaRoom': 'hotelapi/otarooms',
+    'editOtaRoom': 'hotelapi/otarooms',
+    
   }
 
   constructor(public http: HttpClient) { }
@@ -82,10 +88,10 @@ export class BaseServiceService {
         console.log(error)
         if (error.status == 401) {
           this.handleRefreshToken(url, (res: any) => {
-            if (res.data) {
+            if (res) {
               console.log(res);
-              localStorage.setItem("token", res.data.Bearer);
-              this.getData({}, url, callback)
+              localStorage.setItem("token", res.Bearer);
+              this.getData({}, url, callback);
             }
           });
 
@@ -105,7 +111,7 @@ export class BaseServiceService {
       .set('Authorization', `Bearer ${refreshToken}`)
 
 
-    return this.http.get(environment.apiUrl + `refreshToken?role=${localStorage.getItem("roleId")}&user_id=${localStorage.getItem("userId")}`, { headers: headers }).subscribe((data: any) => callback(<any>data));
+    return this.http.get(environment.apiUrl + `hotelapi/refreshToken?role=${localStorage.getItem("roleId")}&user_id=${localStorage.getItem("userId")}`, { headers: headers }).subscribe((data: any) => callback(<any>data));
   }
 
 
