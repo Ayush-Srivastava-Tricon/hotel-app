@@ -13,6 +13,7 @@ export class AdminComponent {
 
 
   dropdown:any= {};
+  loggedUserData:any={};
   
   constructor(private router: Router, private authService: AuthService, private translate: TranslateService,private common:CommonService) { }
 
@@ -32,6 +33,9 @@ export class AdminComponent {
   }
 
   ngOnInit(){
+    this.loggedUserData = JSON.parse(<any>localStorage.getItem('loggedUserData'));
+    console.log(this.loggedUserData);
+    
     // this.common.bearerToken.next();
     // this.common.refreshToken.next();
     

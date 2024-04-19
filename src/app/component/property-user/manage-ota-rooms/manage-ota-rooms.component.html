@@ -16,6 +16,7 @@
                 <table class="table table-shadow table-sm table-hover">
                     <thead class="thead-dark">
                         <tr class="table-row-rooms">
+                            <th>OTA ROOM ID</th>
                             <th>Property ID</th>
                             <th>OTA User ID</th>
                             <th>Room ID </th>
@@ -42,6 +43,7 @@
                             <td class="tg-cly1"></td>
                             <td class="tg-cly1"></td>
                             <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
                         </tr>
                         <tr *ngIf="otaRoomList.length==0 && !loader">
                             <td colspan="19" class="text-center">
@@ -49,6 +51,7 @@
                             </td>
                         </tr>
                         <tr *ngFor="let item of otaRoomList;let idx = index;" class="text-center align-middle">
+                            <td>{{item.id}}</td>
                             <td>{{item.property_id}}</td>
                             <td>{{item.ota_user_id}}</td>
                             <td>{{item.room_id}}</td>

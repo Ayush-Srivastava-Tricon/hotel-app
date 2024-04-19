@@ -9,7 +9,7 @@ const routes: Routes = [
     children:[
       {
         path:'',
-        redirectTo:'manage-owner',
+        redirectTo:'dashboard',
         pathMatch:'full',
       },
      {

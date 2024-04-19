@@ -86,7 +86,7 @@ export class BaseServiceService {
     },
       (error: any) => {
         console.log(error)
-        if (error.status == 401) {
+        if (error.error.status == 401 && error.error.message == 'Expired token') {
           this.handleRefreshToken(url, (res: any) => {
             if (res) {
               console.log(res);
@@ -121,8 +121,23 @@ export class BaseServiceService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => callback(data), ((error: any) => callback(error))
-    );
+    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => {callback(data)},
+    (error: any) => {
+      console.log(error)
+      if (error.error.status == 401 && error.error.message == 'Expired token') {
+        this.handleRefreshToken(url, (res: any) => {
+          if (res) {
+            console.log(res);
+            localStorage.setItem("token", res.Bearer);
+            this.postData(data, url, callback);
+          }
+        });
+
+      }
+      if (error) {
+        callback(error);
+      }
+    })
   }
 
   postDataWithFile(data: any, url: any, callback: any) {
@@ -135,8 +150,23 @@ export class BaseServiceService {
       console.log(this.getTokenFromLocal());
       
 
-    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((dta: any) => callback(dta), ((error: any) => callback(error))
-    );
+    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((dta: any) => {callback(data)},
+    (error: any) => {
+      console.log(error)
+      if (error.error.status == 401 && error.error.message == 'Expired token') {
+        this.handleRefreshToken(url, (res: any) => {
+          if (res) {
+            console.log(res);
+            localStorage.setItem("token", res.Bearer);
+            this.postData(data, url, callback);
+          }
+        });
+
+      }
+      if (error) {
+        callback(error);
+      }
+    })
   }
 
 
@@ -146,8 +176,22 @@ export class BaseServiceService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.put(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => callback(data), ((error: any) => callback(error))
-    );
+    return this.http.put(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => {callback(data)},
+    (error: any) => {
+      console.log(error)
+      if (error.error.status == 401 && error.error.message == 'Expired token') {
+        this.handleRefreshToken(url, (res: any) => {
+          if (res) {
+            console.log(res);
+            localStorage.setItem("token", res.Bearer);
+            this.putData(data, url, callback);
+          }
+        });
+      }
+      if (error) {
+        callback(error);
+      }
+    })
 
   }
   deleteData(data: any, url: any, callback: any) {

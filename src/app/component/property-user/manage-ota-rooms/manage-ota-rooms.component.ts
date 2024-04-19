@@ -99,7 +99,7 @@ export class ManageOtaRoomsComponent {
     this.otaRoomModal.patchValue(item);
     console.log(item);
     this.showModal.otaRoom = true;
-    this.currentOtaRoomId = item.room_id;
+    this.currentOtaRoomId = item.id;
     this.fetchOtaUserList();
     this.fetchRoomList();
 
@@ -125,6 +125,7 @@ export class ManageOtaRoomsComponent {
           this.showModal.otaRoom = false;
           this.otaRoomModal.reset();
           this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
+          this.fetchOtaRoomList();
         }
         else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });

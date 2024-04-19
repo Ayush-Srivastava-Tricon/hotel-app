@@ -29,7 +29,9 @@
                     <label for="property">Property</label>
                 </ng-container>
             </div>
-            <button id="button" class="login-btn" [class.disabled]="!userType" (click)="login()">Submit</button>
+            
+            <button id="button" class="login-btn mb-2" [class.disabled]="!userType" (click)="login()">Submit</button>
+            <a href="javascript:void(0);" *ngIf="!isAdminLogin" class="text-decoration-none font-bold text-primary" style="z-index: 999;" [routerLink]="'/adminLogin'">Are you Admin ?</a>
         </div>
     </div>
 </div>

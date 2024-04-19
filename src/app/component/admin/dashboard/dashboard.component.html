@@ -1,13 +1,148 @@
 <div class="container-fluid">
+<ng-container>
     <div class="row">
-        <div class="col-sm-12">
-            <div class="display-6">
-                <marquee [scrollAmount]="10"> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cone" viewBox="0 0 16 16">
-                        <path d="M7.03 1.88c.252-1.01 1.688-1.01 1.94 0l2.905 11.62H14a.5.5 0 0 1 0 1H2a.5.5 0 0 1 0-1h2.125z"/>
-                      </svg> Under Construction
-                    </marquee>    
+        <div class="col-sm-7">
+            <div class="table-wrapper shadow ">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2 [innerHTML]="'list-property'|translate"></h2>
+                        </div>
+                        <div class="col-sm-6 d-flex">
+                                <select class="form-control mx-2" [(ngModel)]="searchConfig['searchType']">
+                                    <option selected="true" disabled>Select</option>
+                                    <option value="2">Owner</option>
+                                    <option value="3">Property</option>
+                                    <!-- <option value="name">Name</option> -->
+                                </select>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" [(ngModel)]="searchConfig['searchValue']">
+                                    <span class="input-group-text btn btn-danger" id="basic-addon1" (click)="searchById()"  [class.disabled]="!searchConfig['searchValue'] || searchConfig['searchType'] == 'Select'">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            class="bi bi-search" viewBox="0 0 16 16">
+                                            <path
+                                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-shadow table-lg table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <!-- <th>
+                                <span class="custom-checkbox">
+                                    <input type="checkbox" id="selectAll">
+                                    <label for="selectAll"></label>
+                                </span>
+                            </th> -->
+                            <th>Property ID</th>
+                            <th>Property Name</th>
+                            <th>City</th>
+                            <th>Owner Name</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="loader">
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                            <td class="tg-cly1">
+                            </td>
+                        </tr>
+
+                        <ng-container *ngIf="filteredList.length>0 && !loader">
+
+                            <tr *ngFor="let item of filteredList;let idx = index;">
+                                <!-- <td>
+                                    <span class="custom-checkbox">
+                                        <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                                        <label for="checkbox1"></label>
+                                    </span>
+                                </td> -->
+                                <td>{{item.property_id}}</td>
+                                <td>{{item.property_name}}</td>
+                                <td>{{item.city}}</td>
+                                <td>{{item.owner_name}}</td>
+                                <td>{{item.status == 1 ? 'Active' :'InActive'}}</td>
+                                <td> 
+                                    <a href="javascript:void(0);" (click)="viewFullDetails(idx,item.property_id)">
+                                        View Details
+                                    </a> 
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                    </tbody>
+                </table>
+                <!-- <div class="clearfix">
+                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                <ul class="pagination">
+                  <li class="page-item disabled"><a href="#">Previous</a></li>
+                  <li class="page-item"><a href="#" class="page-link">1</a></li>
+                  <li class="page-item"><a href="#" class="page-link">2</a></li>
+                  <li class="page-item active"><a href="#" class="page-link">3</a></li>
+                  <li class="page-item"><a href="#" class="page-link">4</a></li>
+                  <li class="page-item"><a href="#" class="page-link">5</a></li>
+                  <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+              </div> -->
+                <ng-container *ngIf="filteredList.length == 0 && !loader">
+                    <tr>
+                        <td colspan="8" class="text-center">No Data Found</td>
+                    </tr>
+                </ng-container>
             </div>
         </div>
+        <div class="col-sm-5">
+
+            <ng-container *ngIf="showFullDetailRight.showPanel">
+                <div class="row mb-4">
+                    <div class="col-sm-12">
+                        <div class="table-wrapper shadow h-100">
+                            <div class="h4 text-center">Property Details</div>
+                            <button class="btn btn-sm btn-danger"> <a href="javascript:void(0)"
+                                    class="text-light text-decoration-none" (click)="loginAsProperty()">Select
+                                    Property</a> </button>
+                            <div class="details mt-3">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Property Name : {{showFullDetailRight.details['property_name']}} </li>
+                                    <li class="list-group-item">Property Type : {{showFullDetailRight.details['property_type']}} </li>
+                                    <li class="list-group-item">Emai : {{showFullDetailRight.details['email']}} </li>
+                                    <li class="list-group-item">Owner Name: {{showFullDetailRight.details['owner_name']}} </li>
+                                    <li class="list-group-item">Address : {{showFullDetailRight.details['address']}}</li>
+                                    <li class="list-group-item">City : {{showFullDetailRight.details['city']}}</li>
+                                    <li class="list-group-item">State : {{showFullDetailRight.details['state']}}</li>
+                                    <li class="list-group-item">Country :  {{showFullDetailRight.details['country']}}</li>
+                                    <li class="list-group-item">Postal Code : {{showFullDetailRight.details['postal_code']}}</li>
+                                    <li class="list-group-item">Mobile : {{showFullDetailRight.details['mobile']}}</li>
+                                    <li class="list-group-item">Description : {{showFullDetailRight.details['description']}}</li>
+                                </ul>
+                            </div>        
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row ">
+                    <div class="col-sm-6">
+                    </div>
+                </div> -->
+
+            </ng-container>
+
+
+        </div>
     </div>
+</ng-container>
 </div>

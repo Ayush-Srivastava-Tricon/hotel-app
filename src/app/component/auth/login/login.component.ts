@@ -35,10 +35,10 @@ export class LoginComponent {
   }
 
   login(){
-      this.setUserLoggedIn();
       this.authService.login(this.userModal,(res:any)=>{
         if(res.status == 200){
               console.log(res);
+              this.setUserLoggedIn();
               this.setAccessToken(res);
               this.setUserAndRole(res);
               this.router.navigate([this.userType]);
@@ -61,6 +61,7 @@ export class LoginComponent {
     this.commonService.setRoleAndUser(data);
     localStorage.setItem("roleId",data.data.role)
     localStorage.setItem("userId",data.data.user_id)
+    localStorage.setItem("loggedUserData",JSON.stringify(data.data));
   }
 
   setUserLoggedIn(){

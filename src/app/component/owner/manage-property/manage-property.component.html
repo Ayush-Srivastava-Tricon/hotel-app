@@ -135,6 +135,11 @@
                                 <small
                                     *ngIf="propertyUserModal.controls.password.dirty && propertyUserModal.controls.password.errors?.['required']"
                                     class="text-danger">Required</small>
+                                <div *ngIf="propertyUserModal.controls.password.invalid && (propertyUserModal.controls.password.dirty || propertyUserModal.controls.password.touched)">
+                                    <div class="text-danger" *ngIf="propertyUserModal.controls.password.errors.required">Password is required.</div>
+                                    <div class="text-danger" *ngIf="propertyUserModal.controls.password.errors.minlength">Password must be at least 8 characters long.</div>
+                                    <div class="text-danger" *ngIf="propertyUserModal.controls.password.errors.invalidPassword">Password must contain at least one uppercase letter, one digit, and one special character.</div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row mb-2">

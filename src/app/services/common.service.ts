@@ -24,4 +24,12 @@ export class CommonService {
     this.userId = data.data.user_id;
 }
 
+validatePassword(control:any) {
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  if (!passwordRegex.test(control.value)) {
+    return { invalidPassword: true };
+  }
+  return null;
+}
+
 }

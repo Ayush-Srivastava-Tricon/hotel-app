@@ -97,6 +97,7 @@ export class ManageRoomsComponent {
           this.roomModal.reset();
           this.imageArrayContainer = [];
           this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
+          this.fetchAllRooms();
         }
         else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });

@@ -5,6 +5,7 @@ import { AlertService } from 'src/app/shared/alert.service';
 import { AdminService } from '../../../services/admin.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
 declare var homeLanguages: any;
 
 @Component({
@@ -20,19 +21,14 @@ export class ManageOwnerComponent {
   isEditModal: boolean = false;
   deleteRoomIndex: number = 0;
   loader: boolean = false;
-  searchConfig: any = { searchType: 'Select' };
-  filterBy: any = 'filter';
-  filteredOwnerList: any = [];
   isLangTranslating: boolean = false;
-  showFullDetailRight: any = {showPanel:false};
   allLang: any = [];
   selectedOwnerId:any;
   selectedPropertyId:any=0;
-
   showPassword:boolean=false;
 
   constructor(private router: Router, private fb: FormBuilder, private constants: AppConstants, 
-    private alertService: AlertService, private adminService: AdminService, 
+    private alertService: AlertService, private adminService: AdminService, private commonService:CommonService,
     private translate: TranslateService) {
     this.ownerModal = this.fb.group(
       {
@@ -41,7 +37,7 @@ export class ManageOwnerComponent {
         alternate_email: ['', [ Validators.email]],
         mobile: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
         alternate_mobile: ['', [Validators.pattern("^[0-9]*$")]],
-        password: ['', [Validators.required]],
+        password: ['', [Validators.required, Validators.minLength(8), this.commonService.validatePassword]],
       }
     )
   }
@@ -49,6 +45,7 @@ export class ManageOwnerComponent {
 
   ngOnInit() {
     this.setDefaultLang('en');
+    this.fetchOwnerList();
   }
 
 
@@ -67,11 +64,9 @@ export class ManageOwnerComponent {
   fetchOwnerList() {
     this.loader= true;
     this.adminService.fetchOwnerList((res: any) => {
-      if (res) {
+      if (res.status == 200) {
         this.loader= false;
-        console.log(res);
         this.ownerList = res.data;
-
       }
     })
   }
@@ -80,7 +75,6 @@ export class ManageOwnerComponent {
     if (this.ownerModal.status == "VALID") {
       this.adminService.addOwner(this.ownerModal.value, (res: any) => {
         if (res.status == 200) {
-          console.log(res);
           this.ownerList.push(this.ownerModal.value);
           this.showModal.owner = false;
           this.ownerModal.reset();
@@ -115,7 +109,6 @@ export class ManageOwnerComponent {
   editOwnerOpenModal(item: any) {
     this.isEditModal = true;
     this.ownerModal.patchValue(item);
-    console.log(item);
     this.showModal.owner = true;
     this.ownerModal.controls.password.removeValidators();
     this.ownerModal.controls.password.updateValueAndValidity("");
@@ -153,7 +146,6 @@ export class ManageOwnerComponent {
   deleteOwner() {
     this.adminService.deleteOwner(this.selectedOwnerId,(res:any)=>{
       if(res.status == 200){
-          console.log(res);
           this.ownerList.splice(this.deleteRoomIndex, 1);
           this.showModal.delete = false;
           this.deleteRoomIndex = 0;
@@ -164,36 +156,6 @@ export class ManageOwnerComponent {
     })
   }
 
-  searchById() {
-    this.loader = true;
-    let params: any = {
-      "search_for": +this.searchConfig['searchType'],
-      "param":this.searchConfig['searchValue']
-    };
-    this.loader = true;
-    this.adminService.filterByIdOrName(params, (res: any) => {
-      if (res.status == 200) {
-        console.log(res);
-        this.loader = false;
-        this.filteredOwnerList = res.data;
-        this.setAllPropertyListToLocal(res.data);
-      }
-      this.loader = false;
-    });
-
-    this.showFullDetailRight.showPanel=false;
-    this.showFullDetailRight.details={};
-
-  }
-
-  changeOptionFilterOrAddOwner(type: any) {
-    this.filteredOwnerList = [];
-    this.searchConfig = { searchType: 'Select' };
-    this.filterBy = type;
-    if(type =='owner'){
-      this.fetchOwnerList();
-    }
-  }
 
   onLangChange(event: any) {
     const selectedLangKey :any= event.target.value; 
@@ -202,8 +164,6 @@ export class ManageOwnerComponent {
       this.translate.use(targetLang);
     }else{
       const htmlContent:any = document.querySelector(".form-check-label");
-      console.log(htmlContent);
-      
       this.adminService.doGTranslate(htmlContent.innerText,selectedLangKey,(res:any)=>{
           if(res){
             console.log(res);
@@ -214,26 +174,13 @@ export class ManageOwnerComponent {
     
   }
 
-  viewFullDetails(idx:any,propertyId: any) {
-    this.showFullDetailRight.showPanel = true;  
-    this.showFullDetailRight['details'] = this.filteredOwnerList[idx];
-    this.selectedPropertyId  = propertyId;
-    
-  }
 
-  loginAsProperty() {
-    localStorage.setItem("selectedPropertyId",this.selectedPropertyId);
-    this.router.navigate(['/manager']);
-  }
+ 
 
   backToManageOwner() {
     this.showModal.owner = false;
-    this.filteredOwnerList = [];
-    this.searchConfig = { searchType: 'Select' };
-    this.filterBy = 'filter';
   }
 
-  setAllPropertyListToLocal(data:any){
-    localStorage.setItem("propertyList",JSON.stringify(data));
-  }
+  
+  
 }

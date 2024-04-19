@@ -4,6 +4,7 @@ import { AppConstants } from 'src/app/constants/app.constant';
 import { OwnerService } from 'src/app/services/owner.service';
 import { AlertService } from 'src/app/shared/alert.service';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-manage-property',
@@ -26,12 +27,15 @@ export class ManagePropertyComponent {
   selectedPropertyId:number=0;
   currentOwnerId:any;
 
-  constructor(private router:Router,private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private ownerService: OwnerService) {
+  constructor(private router:Router,private fb: FormBuilder, private constants: AppConstants, 
+    private alertService: AlertService, 
+    private ownerService: OwnerService,
+    private commonService:CommonService) {
     this.propertyUserModal = this.fb.group(
       {
         property_name: ['', [Validators.required]],
         email: ['', [Validators.required]],
-        password: ['', [Validators.required]],
+        password: ['', [Validators.required, Validators.minLength(8), this.commonService.validatePassword]],
         mobile: ['', [Validators.required]],
         property_type: ['', [Validators.required]],
         address: ['', [Validators.required]],
