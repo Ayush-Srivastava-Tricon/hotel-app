@@ -36,7 +36,7 @@ export class ManagePropertyComponent {
         property_name: ['', [Validators.required]],
         email: ['', [Validators.required]],
         password: ['', [Validators.required, Validators.minLength(8), this.commonService.validatePassword]],
-        mobile: ['', [Validators.required]],
+        mobile: ['', [Validators.required,Validators.pattern("^[0-9]*$")]],
         property_type: ['', [Validators.required]],
         address: ['', [Validators.required]],
         city: [{ value: '', disabled: true }, [Validators.required]],

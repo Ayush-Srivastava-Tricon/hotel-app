@@ -145,10 +145,14 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">Mobile</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" formControlName="mobile">
+                                <input type="text" maxlength="10" class="form-control" formControlName="mobile"
+                                [class.is-invalid]="propertyUserModal.controls.mobile.errors?.['[pattern]']">
                                 <small
                                     *ngIf="propertyUserModal.controls.mobile.dirty && propertyUserModal.controls.mobile.errors?.['required']"
                                     class="text-danger">Required</small>
+                                <small
+                                    *ngIf="propertyUserModal.controls.mobile.dirty && propertyUserModal.controls.mobile.errors?.['[pattern]']"
+                                    class="text-danger">Only Digits</small>
                             </div>
                         </div>
                         <div class="form-group row mb-2">

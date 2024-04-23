@@ -9,14 +9,13 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class OwnerComponent {
 
-  currentOwnerId:any=0;
-  currentPropertyUser:any;
+  loggedUserData:any={};
 
   constructor(private router:Router,private authService:AuthService){}
 
   ngOnInit(){
-    this.currentOwnerId = localStorage.getItem("userId");
-    this.currentOwnerId = localStorage.getItem("selectedPropertyId");
+    this.loggedUserData = JSON.parse(<any>localStorage.getItem('loggedUserData'));
+    console.log(this.loggedUserData);
   }
 
   logout(){

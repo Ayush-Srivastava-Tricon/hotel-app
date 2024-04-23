@@ -10,6 +10,7 @@ import { AdminService } from 'src/app/services/admin.service';
 export class PropertyUserComponent {
 
   currentPropertyId:any=0;
+  loggedUserData:any={};
 
   constructor(private router:Router,private adminService:AdminService){}
 
@@ -19,6 +20,7 @@ export class PropertyUserComponent {
     }else{
       this.currentPropertyId = localStorage.getItem("userId");
     }
+    this.loggedUserData = JSON.parse(<any>localStorage.getItem('loggedUserData'));
 
   }
 

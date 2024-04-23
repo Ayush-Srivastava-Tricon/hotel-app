@@ -35,9 +35,5 @@ export class AdminComponent {
   ngOnInit(){
     this.loggedUserData = JSON.parse(<any>localStorage.getItem('loggedUserData'));
     console.log(this.loggedUserData);
-    
-    // this.common.bearerToken.next();
-    // this.common.refreshToken.next();
-    
   }
 }

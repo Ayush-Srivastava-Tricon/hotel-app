@@ -51,7 +51,7 @@ export class CalendarViewComponent {
 
   constructor(private _service: CalendarService, private fb: FormBuilder, private alertService: AlertService, private router: Router) {
     this.modalFieldForm = this.fb.group({
-      "pr": ['', [Validators.pattern("^[0-9]*$")]],
+      "pr": ['', [Validators.pattern(/^\d*\.?\d*$/)]],
       "ss": ['',],
       "mn": ['', [Validators.maxLength(2), Validators.pattern("^[0-9]*$")]],
       "mx": ['', [Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
@@ -83,9 +83,9 @@ export class CalendarViewComponent {
     this.allPropertyList = JSON.parse(<any>localStorage.getItem("propertyList"));
   }
 
-  fetchCalendarData(nextButtonDate?: any) {
+  fetchCalendarData(nextButtonDate?: any,isFromDateRange?:boolean) {
     this.mainData = [];
-    let startEndDate: any = this.getStartAndEndDate(nextButtonDate);
+    let startEndDate: any = this.getStartAndEndDate(nextButtonDate,isFromDateRange);
     this.loader = true;
     this._service.getAllCalendarData(this.loggedProperty.propertyId, startEndDate, (res: any) => {
       if (res.status == 200) {
@@ -104,9 +104,12 @@ export class CalendarViewComponent {
     })
   }
 
-  getStartAndEndDate(nextButtonDate: any) {
+  getStartAndEndDate(nextButtonDate: any,isFromDateRange?:boolean) {
     let now: any;
-    if (nextButtonDate) {
+    if (isFromDateRange) {
+      now = new Date(nextButtonDate);
+    }
+    else if (nextButtonDate) {
       now = new Date(nextButtonDate).setDate(1);
       now = new Date(now);
     } else {
@@ -114,9 +117,9 @@ export class CalendarViewComponent {
     }
     let current;
     if (now.getMonth() == 11) {
-      current = new Date(now.getFullYear() + 1, 0, 1);
+      current = new Date(now.getFullYear() + 1, 0, now.getDate());
     } else {
-      current = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      current = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
     }
 
     return `start_date=${this.formatDate(now)}&end_date=${this.formatDate(current)}`;
@@ -126,15 +129,122 @@ export class CalendarViewComponent {
     this.selectDate = new Date(event.target.value);
     this.datesData = [];
 
-    this.fetchCalendarData(this.selectDate);
+    this.fetchCalendarData(this.selectDate,true);
     // this.renderCalendar(this.selectDate);
   }
+
+  // renderCalendar(selectedDate?: Date): void {
+  //   const monthNames: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  //   const weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  //   this.currentDate = selectedDate ? new Date(selectedDate) : this.currentDate ;
+  //   const currentMonth: number = this.currentDate.getMonth();
+  //   const currentYear: number = this.currentDate.getFullYear();
+  //   const todayDate: number = new Date().getDate();
+
+  //   const todayMonth: number = new Date().getMonth();
+  //   const todayYear: number = new Date().getFullYear();
+
+  //   const daysInMonth: number = new Date(currentYear, currentMonth + 1, 0).getDate();
+  //   let firstDayOfMonth: number = new Date(currentYear, currentMonth, this.currentDate.getDate()).getDay();
+
+  //   this.currentMonth = `${monthNames[currentMonth]} ${currentYear}`;
+  //   this.weekdaysWithDates = [];
+  //   this.datesData = [];
+
+  //   let dateIndex = 0;
+  //   let currentDayIndex = (firstDayOfMonth + (this.currentDate.getDate())) % 7;
+  //   const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+  //   const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+  //   this.nextDisplayMonth = `${monthNames[nextMonth]} ${nextYear}`;
+
+  //   const startDayOfMonth = selectedDate ? new Date(selectedDate).getDate() : 1;
+  //   for (let i = startDayOfMonth; i <= daysInMonth && dateIndex < 31; i++) {
+  //     const currentDayIndex = (firstDayOfMonth + (i - 1)) % 7;
+  //     const dayName = weekDays[currentDayIndex];
+  //     const date = i;
+  //     const isPassed = this.isDatePassed(this.formatDate(`${date}${monthNames[currentMonth]} ${currentYear}`));
+
+  //     this.weekdaysWithDates.push({
+  //       weekday: dayName,
+  //       date: date,
+  //       isPassed: isPassed,
+  //       formateDate: this.formatDate(`${date}${monthNames[currentMonth]} ${currentYear}`),
+  //       isSelectedDate: selectedDate && new Date(selectedDate).getDate() === date
+  //     });
+  //     this.datesData.push({ date: date, formateDate: this.formatDate(`${date}${monthNames[currentMonth]} ${currentYear}`), isDatePassed: isPassed });
+  //     dateIndex++;
+  //   }
+  //   // let begindateInx = 0;
+  //   let monthCounter = 1;
+  //   while (dateIndex < 31) {
+  //       const nextMonth = (currentMonth + monthCounter) % 12;
+  //       const nextYear = currentMonth + monthCounter > 11 ? currentYear + 1 : currentYear;
+  //       const nextMonthDays = new Date(nextYear, nextMonth + 1, 0).getDate();
+
+  //       for (let i = 1; i <= nextMonthDays && dateIndex < 31; i++) {
+  //           const dayName = weekDays[currentDayIndex % 7];
+  //           const isPassed = (nextYear === todayYear && nextMonth === todayMonth) ?
+  //               (i < todayDate) :
+  //               (nextYear < todayYear || (nextYear === todayYear && nextMonth < todayMonth));
+
+  //           this.weekdaysWithDates.push({
+  //               weekday: dayName,
+  //               date: i,
+  //               isPassed: isPassed,
+  //               formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`)
+  //           });
+  //           this.datesData.push({ date: i, formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`), isDatePassed: isPassed });
+  //           dateIndex++;
+  //           currentDayIndex++;
+  //       }
+
+  //       monthCounter++;
+  //   }
+  //   // while (dateIndex < 31) {
+
+  //   //   const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+  //   //   const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+
+  //   //   const currentDayIndex = (firstDayOfMonth + dateIndex) % 7;
+  //   //   const dayName = weekDays[currentDayIndex];
+  //   //   let date = dateIndex - daysInMonth + 1; // Start from 1st day of the current month if necessary
+  //   //   let monthToShow = monthNames[currentMonth];
+
+
+  //   //   let yearToShow = currentYear;
+
+  //   //   if (date <= 0) {
+  //   //     date += daysInMonth;
+  //   //     monthToShow = monthNames[currentMonth+1];
+  //   //     yearToShow = currentYear;
+  //   //   } else {
+  //   //     monthToShow = monthNames[nextMonth];
+  //   //     yearToShow = nextYear;
+  //   //   }
+
+  //   //   const isPassed = this.isDatePassed(this.formatDate(`${date}${monthToShow} ${yearToShow}`));
+
+  //   //   this.weekdaysWithDates.push({
+  //   //     weekday: dayName,
+  //   //     date: date,
+  //   //     isPassed: isPassed,
+  //   //     formateDate: this.formatDate(`${date}${monthToShow} ${yearToShow}`)
+  //   //   });
+
+  //   //   this.datesData.push({ date: date, formateDate: this.formatDate(`${date}${monthToShow} ${yearToShow}`), isDatePassed: isPassed });
+  //   //   dateIndex++;
+  //   // }
+  //   setTimeout(() => {
+  //     this.makeCalendarData();
+  //   }, 0);
+  // }
 
   renderCalendar(selectedDate?: Date): void {
     const monthNames: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    this.currentDate = selectedDate ? new Date(selectedDate) : this.currentDate ;
+    this.currentDate = selectedDate ? new Date(selectedDate) : this.currentDate;
     const currentMonth: number = this.currentDate.getMonth();
     const currentYear: number = this.currentDate.getFullYear();
     const todayDate: number = new Date().getDate();
@@ -142,76 +252,81 @@ export class CalendarViewComponent {
     const todayYear: number = new Date().getFullYear();
 
     const daysInMonth: number = new Date(currentYear, currentMonth + 1, 0).getDate();
-    const firstDayOfMonth: number = new Date(currentYear, currentMonth, 1).getDay();
+    let firstDayOfMonth: number = new Date(currentYear, currentMonth, 1).getDay();
+
     this.currentMonth = `${monthNames[currentMonth]} ${currentYear}`;
     this.weekdaysWithDates = [];
     this.datesData = [];
 
     let dateIndex = 0;
+    let dayCounter = selectedDate ? selectedDate.getDate() - 1 : 0;
+    let currentDayIndex = (firstDayOfMonth + dayCounter) % 7;
 
-    const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-    const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-    this.nextDisplayMonth = `${monthNames[nextMonth]} ${nextYear}`;
+    for (let i = selectedDate ? selectedDate.getDate() : 1; i <= daysInMonth && dateIndex < 31; i++) {
+        const dayName = weekDays[currentDayIndex % 7];
+        const date = i;
+        const isPassed = this.isDatePassed(this.formatDate(`${date} ${monthNames[currentMonth]} ${currentYear}`));
 
-    const startDayOfMonth = selectedDate ? new Date(selectedDate).getDate() : 1;
-    for (let i = startDayOfMonth; i <= daysInMonth && dateIndex < 31; i++) {
-      const currentDayIndex = (firstDayOfMonth + (i - 1)) % 7;
-      const dayName = weekDays[currentDayIndex];
-      const date = i;
-      const isPassed = (currentYear === todayYear && currentMonth === todayMonth) ?
-        (date < todayDate) :
-        (currentYear < todayYear || currentMonth < todayMonth);
-
-      this.weekdaysWithDates.push({
-        weekday: dayName,
-        date: date,
-        isPassed: isPassed,
-        formateDate: this.formatDate(`${date}${monthNames[currentMonth]} ${currentYear}`),
-        isSelectedDate: selectedDate && new Date(selectedDate).getDate() === date
-      });
-      this.datesData.push({ date: date, formateDate: this.formatDate(`${date}${monthNames[currentMonth]} ${currentYear}`), isDatePassed: isPassed });
-      dateIndex++;
+        this.weekdaysWithDates.push({
+            weekday: dayName,
+            date: date,
+            isPassed: isPassed,
+            formateDate: this.formatDate(`${date} ${monthNames[currentMonth]} ${currentYear}`),
+            isSelectedDate: selectedDate && selectedDate.getDate() === date
+        });
+        this.datesData.push({ date: date, formateDate: this.formatDate(`${date} ${monthNames[currentMonth]} ${currentYear}`), isDatePassed: isPassed });
+        dateIndex++;
+        currentDayIndex++;
     }
-    let begindateInx = 0;
-    while (begindateInx < (31 - dateIndex)) {
 
-      const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-      const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    let monthCounter = 1;
+    while (dateIndex < 31) {
+        const nextMonth = (currentMonth + monthCounter) % 12;
+        const nextYear = currentMonth + monthCounter > 11 ? currentYear + 1 : currentYear;
+        const nextMonthDays = new Date(nextYear, nextMonth + 1, 0).getDate();
 
-      const currentDayIndex = (firstDayOfMonth + begindateInx) % 7;
-      const dayName = weekDays[currentDayIndex];
-      let date = begindateInx - daysInMonth + 1; // Start from 1st day of the current month if necessary
-      let monthToShow = monthNames[currentMonth];
+        for (let i = 1; i <= nextMonthDays && dateIndex < 31; i++) {
+            const dayName = weekDays[currentDayIndex % 7];
+            const isPassed = (nextYear === todayYear && nextMonth === todayMonth) ?
+                (i < todayDate) :
+                (nextYear < todayYear || (nextYear === todayYear && nextMonth < todayMonth));
 
-
-      let yearToShow = currentYear;
-
-      if (date <= 0) {
-        date += daysInMonth;
-        monthToShow = monthNames[currentMonth + 1];
-        yearToShow = currentYear;
-      } else {
-        monthToShow = monthNames[nextMonth];
-        yearToShow = nextYear;
-      }
-
-      const isPassed = (nextYear === this.currentDate.getFullYear() && nextMonth === this.currentDate.getMonth()) ?
-        (date < todayDate) :
-        (nextYear < this.currentDate.getFullYear() || nextMonth < this.currentDate.getMonth());
-
-      this.weekdaysWithDates.push({
-        weekday: dayName,
-        date: date,
-        isPassed: isPassed,
-        formateDate: this.formatDate(`${date}${monthToShow} ${yearToShow}`)
-      });
-
-      this.datesData.push({ date: date, formateDate: this.formatDate(`${date}${monthToShow} ${yearToShow}`), isDatePassed: isPassed });
-      begindateInx++;
+            this.weekdaysWithDates.push({
+                weekday: dayName,
+                date: i,
+                isPassed: isPassed,
+                formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`)
+            });
+            this.datesData.push({ date: i, formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`), isDatePassed: isPassed });
+            dateIndex++;
+            currentDayIndex++;
+        }
+        monthCounter++;
     }
     setTimeout(() => {
-      this.makeCalendarData();
-    }, 0);
+          this.makeCalendarData();
+        }, 0);
+}
+
+  isDatePassed(date:any){
+    const inputDate = new Date(date);
+    const currentDate = this.todayDate;
+    const inputYear = inputDate.getFullYear();
+    const inputMonth = inputDate.getMonth();
+    const inputDay = inputDate.getDate();
+
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const currentDay = currentDate.getDate();
+    if (inputYear < currentYear) {
+        return true; 
+    } else if (inputYear === currentYear && inputMonth < currentMonth) {
+        return true; 
+    } else if (inputYear === currentYear && inputMonth === currentMonth && inputDay < currentDay) {
+        return true; 
+    }
+
+    return false;
   }
 
   extractEventData(allData: string): any {
@@ -351,14 +466,22 @@ export class CalendarViewComponent {
         'room_id': selectedRoomId,
         "data": [this.modalFieldForm.value]
       }
+      this.loader= true;
       this._service.updateCalendar(params, (res: any) => {
         if (res) {
+          this.loader = false;
+          this.dragEl = {};
           this.showModal = false;
+          this.selectDate=''
+          this.datesData=[];
+          this.currentDate=new Date();          
+          this.fetchCalendarData();
           this.alertService.alert("success", "Data Saved Successfully", "Success", { displayDuration: 2000, pos: 'top' });
           this.modalFieldForm.reset();
         }
       })
     } else {
+      this.loader= false;
       this.errorMsg = "Please Fill the fields";
       this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
     }
@@ -367,7 +490,10 @@ export class CalendarViewComponent {
   changeCalendarByProperty(event:any){
     localStorage.setItem("selectedPropertyId",JSON.parse(event.target.value));  
     this.loggedProperty.propertyId = event.target.value;
-    this.fetchCalendarData();
+    this.datesData = [];
+    this.selectDate ='';
+    this.currentDate = new Date();
+    this.fetchCalendarData(this.currentDate);
   }
 
   identify(index:any, item:any){

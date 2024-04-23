@@ -150,7 +150,7 @@ export class BaseServiceService {
       console.log(this.getTokenFromLocal());
       
 
-    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((dta: any) => {callback(data)},
+    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => {callback(data)},
     (error: any) => {
       console.log(error)
       if (error.error.status == 401 && error.error.message == 'Expired token') {

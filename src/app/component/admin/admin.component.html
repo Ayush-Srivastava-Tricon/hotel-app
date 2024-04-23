@@ -6,13 +6,13 @@
             </div>
             <div class="col-sm-10 text-end background-nav d-flex justify-content-end align-items-center">
                 <div class="me-3" id="navbarSupportedContent">
-                    <div class="text-light fs-4">Welcome, Admin
+                    <div class="text-light fs-4">Hi, {{loggedUserData.user_name|titlecase}}
                     </div>
                     <div class="text-light">
                         (
                             <small class="text-light">Last Login : {{loggedUserData.last_login_time|date:'yyyy-MM-dd, HH:mm:ss' }}</small>
                             <small class="text-light">, User Name : {{loggedUserData.user_name}}</small>
-                            <small class="text-light">, Role ID : {{loggedUserData.role}}</small>
+                            <small class="text-light">, Role : {{loggedUserData.role_name}}</small>
                         )
                     </div>
                     

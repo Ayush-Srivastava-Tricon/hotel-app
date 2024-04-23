@@ -37,7 +37,7 @@ export class ManageRoomsComponent {
         room_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]],
         adult: [0, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
         child: [0, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-        default_price: ['', [Validators.required, Validators.pattern(/^\d+\.\d{2}$/)]],
+        default_price: ['', [Validators.required,Validators.pattern(/^\d*\.?\d*$/)]],
         default_quantity: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
         default_min: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
         default_max: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
@@ -115,6 +115,8 @@ export class ManageRoomsComponent {
   openModal() {
     this.showModal.property = true;
     this.roomModal.reset();
+    this.isEditModal = false;
+
   }
 
   closeModal() {
@@ -144,9 +146,10 @@ export class ManageRoomsComponent {
 
   getUploadedImage(roomId:any){
       this.proService.getUploadedImageByRoom(roomId,(res:any)=>{
-        if(res.status == 200){
+        if(res){
           console.log(res);
-          
+        }else{
+          this.alertService.alert("error", "No Image Found", "Error", { displayDuration: 3000, pos: 'top' });
         }
       })
   }

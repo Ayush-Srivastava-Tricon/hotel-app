@@ -3,13 +3,21 @@
     <div class="container-fluid">
         <div class="row shadow ">
             <div class="col-sm-2 p-3 brand-container">
-                <a class="text-decoration-none home-link display-6 text-light" href="javascript:void(0);">E2X InfoTech</a>
+                <a class="text-decoration-none home-link text-light" href="javascript:void(0);">E2X InfoTech</a>
             </div>
-            <div class="col-sm-10 text-end p-3 background-nav">
-                <div class="h3 me-3" id="navbarSupportedContent">
-                    <div class="display-6 text-light">Hi,Owner</div>
+            <div class="col-sm-10 text-end background-nav d-flex justify-content-end align-items-center">
+                <div class="me-3" id="navbarSupportedContent">
+                    <div class="text-light fs-4">Hi, {{loggedUserData.user_name|titlecase}}
+                    </div>
+                    <div class="text-light">
+                        (
+                            <small class="text-light">Last Login : {{loggedUserData.last_login_time|date:'yyyy-MM-dd, HH:mm:ss' }}</small>
+                            <small class="text-light">, User Name : {{loggedUserData.user_name}}</small>
+                            <small class="text-light">, Role : {{loggedUserData.role_name}}</small>
+                        )
+                    </div>
+                    
                 </div>
-                <span class="text-light text-small me-3">(<span *ngIf="currentOwnerId">Owner-ID : {{currentOwnerId}}</span> <span *ngIf="currentOwnerId">, Property-ID :{{currentOwnerId}}</span>)</span>
             </div>
         </div>
     </div>

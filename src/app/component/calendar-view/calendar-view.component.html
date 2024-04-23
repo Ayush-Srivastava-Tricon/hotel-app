@@ -214,13 +214,13 @@
                   </legend>
                   <div class="row g-3">
                     <div class="col-md-12">
-                      <input type="text" class="form-control" formControlName='pr' id="price" [class.is-invalid]="modalFieldForm.controls.pr?.errors?.['pattern']">
+                      <input type="text" class="form-control" maxlength="12" formControlName='pr' id="price" [class.is-invalid]="modalFieldForm.controls.pr?.errors?.['pattern']">
                       <small class="text-danger"
                         *ngIf="modalFieldForm.controls.pr?.dirty && modalFieldForm.controls.pr?.errors?.['required'] ">Field
                         is required</small>
                       <small class="text-danger"
-                        *ngIf="modalFieldForm.controls.pr?.dirty && modalFieldForm.controls.pr?.errors?.['pattern']">
-                        Only Number</small>
+                        *ngIf="modalFieldForm.controls.pr?.dirty && modalFieldForm.controls.pr?.hasError('pattern')">
+                      Only Digits</small>
                     </div>
                   </div>
                 </fieldset>
