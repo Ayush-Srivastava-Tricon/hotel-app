@@ -130,115 +130,8 @@ export class CalendarViewComponent {
     this.datesData = [];
 
     this.fetchCalendarData(this.selectDate,true);
-    // this.renderCalendar(this.selectDate);
   }
 
-  // renderCalendar(selectedDate?: Date): void {
-  //   const monthNames: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  //   const weekDays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-  //   this.currentDate = selectedDate ? new Date(selectedDate) : this.currentDate ;
-  //   const currentMonth: number = this.currentDate.getMonth();
-  //   const currentYear: number = this.currentDate.getFullYear();
-  //   const todayDate: number = new Date().getDate();
-
-  //   const todayMonth: number = new Date().getMonth();
-  //   const todayYear: number = new Date().getFullYear();
-
-  //   const daysInMonth: number = new Date(currentYear, currentMonth + 1, 0).getDate();
-  //   let firstDayOfMonth: number = new Date(currentYear, currentMonth, this.currentDate.getDate()).getDay();
-
-  //   this.currentMonth = `${monthNames[currentMonth]} ${currentYear}`;
-  //   this.weekdaysWithDates = [];
-  //   this.datesData = [];
-
-  //   let dateIndex = 0;
-  //   let currentDayIndex = (firstDayOfMonth + (this.currentDate.getDate())) % 7;
-  //   const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-  //   const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-  //   this.nextDisplayMonth = `${monthNames[nextMonth]} ${nextYear}`;
-
-  //   const startDayOfMonth = selectedDate ? new Date(selectedDate).getDate() : 1;
-  //   for (let i = startDayOfMonth; i <= daysInMonth && dateIndex < 31; i++) {
-  //     const currentDayIndex = (firstDayOfMonth + (i - 1)) % 7;
-  //     const dayName = weekDays[currentDayIndex];
-  //     const date = i;
-  //     const isPassed = this.isDatePassed(this.formatDate(`${date}${monthNames[currentMonth]} ${currentYear}`));
-
-  //     this.weekdaysWithDates.push({
-  //       weekday: dayName,
-  //       date: date,
-  //       isPassed: isPassed,
-  //       formateDate: this.formatDate(`${date}${monthNames[currentMonth]} ${currentYear}`),
-  //       isSelectedDate: selectedDate && new Date(selectedDate).getDate() === date
-  //     });
-  //     this.datesData.push({ date: date, formateDate: this.formatDate(`${date}${monthNames[currentMonth]} ${currentYear}`), isDatePassed: isPassed });
-  //     dateIndex++;
-  //   }
-  //   // let begindateInx = 0;
-  //   let monthCounter = 1;
-  //   while (dateIndex < 31) {
-  //       const nextMonth = (currentMonth + monthCounter) % 12;
-  //       const nextYear = currentMonth + monthCounter > 11 ? currentYear + 1 : currentYear;
-  //       const nextMonthDays = new Date(nextYear, nextMonth + 1, 0).getDate();
-
-  //       for (let i = 1; i <= nextMonthDays && dateIndex < 31; i++) {
-  //           const dayName = weekDays[currentDayIndex % 7];
-  //           const isPassed = (nextYear === todayYear && nextMonth === todayMonth) ?
-  //               (i < todayDate) :
-  //               (nextYear < todayYear || (nextYear === todayYear && nextMonth < todayMonth));
-
-  //           this.weekdaysWithDates.push({
-  //               weekday: dayName,
-  //               date: i,
-  //               isPassed: isPassed,
-  //               formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`)
-  //           });
-  //           this.datesData.push({ date: i, formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`), isDatePassed: isPassed });
-  //           dateIndex++;
-  //           currentDayIndex++;
-  //       }
-
-  //       monthCounter++;
-  //   }
-  //   // while (dateIndex < 31) {
-
-  //   //   const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-  //   //   const nextYear = currentMonth === 11 ? currentYear + 1 : currentYear;
-
-  //   //   const currentDayIndex = (firstDayOfMonth + dateIndex) % 7;
-  //   //   const dayName = weekDays[currentDayIndex];
-  //   //   let date = dateIndex - daysInMonth + 1; // Start from 1st day of the current month if necessary
-  //   //   let monthToShow = monthNames[currentMonth];
-
-
-  //   //   let yearToShow = currentYear;
-
-  //   //   if (date <= 0) {
-  //   //     date += daysInMonth;
-  //   //     monthToShow = monthNames[currentMonth+1];
-  //   //     yearToShow = currentYear;
-  //   //   } else {
-  //   //     monthToShow = monthNames[nextMonth];
-  //   //     yearToShow = nextYear;
-  //   //   }
-
-  //   //   const isPassed = this.isDatePassed(this.formatDate(`${date}${monthToShow} ${yearToShow}`));
-
-  //   //   this.weekdaysWithDates.push({
-  //   //     weekday: dayName,
-  //   //     date: date,
-  //   //     isPassed: isPassed,
-  //   //     formateDate: this.formatDate(`${date}${monthToShow} ${yearToShow}`)
-  //   //   });
-
-  //   //   this.datesData.push({ date: date, formateDate: this.formatDate(`${date}${monthToShow} ${yearToShow}`), isDatePassed: isPassed });
-  //   //   dateIndex++;
-  //   // }
-  //   setTimeout(() => {
-  //     this.makeCalendarData();
-  //   }, 0);
-  // }
 
   renderCalendar(selectedDate?: Date): void {
     const monthNames: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -399,6 +292,15 @@ export class CalendarViewComponent {
     this.dragEl = {};
   }
 
+  resetDefault(){
+    this.dragEl = {};
+    this.showModal = false;
+    this.selectDate=''
+    this.datesData=[];
+    let selectedRangeDate: any = document.getElementById("date");
+    selectedRangeDate.value = '';
+  }
+
   selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number) {
     this.dragEl[`head${dIdx}${calIdx}`] = !this.dragEl[`head${dIdx}${calIdx}`];
   }
@@ -470,10 +372,7 @@ export class CalendarViewComponent {
       this._service.updateCalendar(params, (res: any) => {
         if (res) {
           this.loader = false;
-          this.dragEl = {};
-          this.showModal = false;
-          this.selectDate=''
-          this.datesData=[];
+          this.resetDefault();
           this.currentDate=new Date();          
           this.fetchCalendarData();
           this.alertService.alert("success", "Data Saved Successfully", "Success", { displayDuration: 2000, pos: 'top' });

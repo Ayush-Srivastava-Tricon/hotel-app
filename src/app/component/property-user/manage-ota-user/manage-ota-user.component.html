@@ -47,7 +47,7 @@
                                             *ngIf="showActionDropDown[idx]">
                                             <!-- <a class="dropdown-item">Change Status</a> -->
                                             <a class="dropdown-item" (click)="editOwnerOpenModal(item)">Edit OTA</a>
-                                            <!-- <a class="dropdown-item" (click)="deleteotaModal(item.owner_id,idx)">Delete</a> -->
+                                            <!-- <a class="dropdown-item" (click)="deleteotaUserModal(item.owner_id,idx)">Delete</a> -->
                                         </div>
                                     </div>
                                 </td>
@@ -66,179 +66,226 @@
     <div class="my-3 ms-2 d-flex justify-content-between ">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageOta()">Back to Manage OTA User</a></li>
-              <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} OTA User</li>
+                <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "
+                        (click)="backToManageOta()">Back to Manage OTA User</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} OTA User</li>
             </ol>
-          </nav>
+        </nav>
     </div>
     <div class="shadow p-4 rounded bg-white" [formGroup]="otaUserModal">
         <div class="row mb-2">
-            <div class="col-sm-3">
-                <label for="propertyType">OTA Username</label>
-                <input type="text" class="form-control" formControlName="ota_user"
-                    [class.is-invalid]="otaUserModal.controls.ota_user.dirty && otaUserModal.controls.ota_user.errors?.['required']">
-                <small
-                    *ngIf="otaUserModal.controls.ota_user.dirty && otaUserModal.controls.ota_user.errors?.['required']"
-                    class="text-danger">Required</small>
+
+            <div class="col-sm-6">
+                <fieldset class="border p-2">
+                    <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">General OTA
+                            Info
+                        </button> </legend>
+
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Username</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" formControlName="ota_user"
+                                [class.is-invalid]="otaUserModal.controls.ota_user.dirty && otaUserModal.controls.ota_user.errors?.['required']">
+                            <small
+                                *ngIf="otaUserModal.controls.ota_user.dirty && otaUserModal.controls.ota_user.errors?.['required']"
+                                class="text-danger">Required</small>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Password</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" formControlName="ota_pass"
+                                [class.is-invalid]="(otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['required']) || (otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['pattern'])">
+                            <small
+                                *ngIf="otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['required']"
+                                class="text-danger">Required</small>
+                            <small
+                                *ngIf="otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['pattern']"
+                                class="text-danger">Only Number</small>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Hotel Id</label>
+                        <div class="col-sm-9">
+                            <input type="email" class="form-control" formControlName="ota_hotel_id"
+                                [class.is-invalid]="(otaUserModal.controls.ota_hotel_id.dirty && otaUserModal.controls.ota_hotel_id.errors?.['required']) || (otaUserModal.controls.ota_hotel_id.dirty && otaUserModal.controls.ota_hotel_id.errors?.['pattern'])">
+                            <small
+                                *ngIf="otaUserModal.controls.ota_hotel_id.dirty && otaUserModal.controls.ota_hotel_id.errors?.['required']"
+                                class="text-danger">Required</small>
+                            <small
+                                *ngIf="otaUserModal.controls.ota_hotel_id.dirty && otaUserModal.controls.ota_hotel_id.errors?.['pattern']"
+                                class="text-danger">Only Number</small>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Other Id</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" formControlName="ota_other_id"
+                                [class.is-invalid]="(otaUserModal.controls.ota_other_id.dirty && otaUserModal.controls.ota_other_id.errors?.['required']) || (otaUserModal.controls.ota_other_id.dirty && otaUserModal.controls.ota_other_id.errors?.['pattern'])">
+                            <small
+                                *ngIf="otaUserModal.controls.ota_other_id.dirty && otaUserModal.controls.ota_other_id.errors?.['required']"
+                                class="text-danger">Required</small>
+                            <small
+                                *ngIf="otaUserModal.controls.ota_other_id.dirty && otaUserModal.controls.ota_other_id.errors?.['pattern']"
+                                class="text-danger">Only Number</small>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Detail ID</label>
+                        <div class="col-sm-9">
+                            <select formControlName="ota_details_id" class="form-control"
+                                [class.is-invalid]="(otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['required']) || (otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['pattern'])">
+                                <option value="" [hidden]="true">Select</option>
+                                <option [value]="item.id" *ngFor="let item of otaDetailList">{{item.name}}</option>
+                            </select>
+                            <small
+                                *ngIf="otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['required']"
+                                class="text-danger">Required</small>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
-            <div class="col-sm-3">
-                <label for="propertyType">OTA Password</label>
-                <input type="text" class="form-control" formControlName="ota_pass"
-                    [class.is-invalid]="(otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['required']) || (otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['pattern'])">
-                <small
-                    *ngIf="otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['required']"
-                    class="text-danger">Required</small>
-                <small
-                    *ngIf="otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['pattern']"
-                    class="text-danger">Only Number</small>
-            </div>
-            <div class="col-sm-3">
-                <label for="propertyType">OTA Hotel Id</label>
-                <input type="email" class="form-control" formControlName="ota_hotel_id"
-                    [class.is-invalid]="(otaUserModal.controls.ota_hotel_id.dirty && otaUserModal.controls.ota_hotel_id.errors?.['required']) || (otaUserModal.controls.ota_hotel_id.dirty && otaUserModal.controls.ota_hotel_id.errors?.['pattern'])">
-                <small
-                    *ngIf="otaUserModal.controls.ota_hotel_id.dirty && otaUserModal.controls.ota_hotel_id.errors?.['required']"
-                    class="text-danger">Required</small>
-                <small
-                    *ngIf="otaUserModal.controls.ota_hotel_id.dirty && otaUserModal.controls.ota_hotel_id.errors?.['pattern']"
-                    class="text-danger">Only Number</small>
-            </div>
-            <div class="col-sm-3">
-                <label for="propertyType">OTA Other Id</label>
-                <input type="text" class="form-control" formControlName="ota_other_id"
-                [class.is-invalid]="(otaUserModal.controls.ota_other_id.dirty && otaUserModal.controls.ota_other_id.errors?.['required']) || (otaUserModal.controls.ota_other_id.dirty && otaUserModal.controls.ota_other_id.errors?.['pattern'])">
-                <small *ngIf="otaUserModal.controls.ota_other_id.dirty && otaUserModal.controls.ota_other_id.errors?.['required']"
-                    class="text-danger">Required</small>
-                <small *ngIf="otaUserModal.controls.ota_other_id.dirty && otaUserModal.controls.ota_other_id.errors?.['pattern']"
-                    class="text-danger">Only Number</small>
-        
-        </div>
-        </div>
-        <div class="row mb-2">
-            <div class="col-sm-3">
-                <label for="propertyType">Currency</label>
-                <select formControlName="currency" class="form-control"
-                [class.is-invalid]="(otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['required']) || (otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['pattern'])">
-                   <option value="" [hidden]="true">Select</option>
-                   <option [value]="'INR'">INR</option>
-                   <option [value]="'USD'">USD</option>
-               </select>
-                <small
-                    *ngIf="otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['required']"
-                    class="text-danger">Required</small>
-                <small
-                    *ngIf="otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['pattern']"
-                    class="text-danger">Only Number</small>
-            </div>
-            <div class="col-sm-3">
-                <label for="propertyType">Commission</label>
-                <input type="text" formControlName="commission" class="form-control" [class.is-invalid]="(otaUserModal.controls.commission.dirty && otaUserModal.controls.commission.errors?.['required']) || (otaUserModal.controls.commission.dirty && otaUserModal.controls.commission.errors?.['pattern'])">
-                <small
-                    *ngIf="otaUserModal.controls.commission.dirty && otaUserModal.controls.commission.errors?.['required']"
-                    class="text-danger">Required</small>
-                <small
-                    *ngIf="otaUserModal.controls.commission.dirty && otaUserModal.controls.commission.errors?.['pattern']"
-                    class="text-danger">Only Number</small>
-            </div>
-            <div class="col-sm-3">
-                <label for="propertyType">Requester IP</label>
-                <input type="text" class="form-control" [readOnly]="true" formControlName="requester_ip"
-                    [class.is-invalid]="(otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['required']) || (otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['pattern'])">
-                <small
-                    *ngIf="otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['required']"
-                    class="text-danger">Required</small>
-                <small
-                    *ngIf="otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['pattern']"
-                    class="text-danger">Only Number</small>
-            </div>
-            <div class="col-sm-3">
-                <label for="propertyType">Update</label>
-                <select formControlName="update" class="form-control"
-                [class.is-invalid]="(otaUserModal.controls.update.dirty && otaUserModal.controls.update.errors?.['required']) || (otaUserModal.controls.update.dirty && otaUserModal.controls.update.errors?.['pattern'])">
-                   <option value="" [hidden]="true">Select</option>
-                   <option [value]="1">Yes</option>
-                   <option [value]="0">No</option>
-               </select>
-                <small
-                    *ngIf="otaUserModal.controls.update.dirty && otaUserModal.controls.update.errors?.['required']"
-                    class="text-danger">Required</small>
-            </div>
-        </div>
-        <div class="row mb-2">
-           
-           
-            <div class="col-sm-3">
-                <label for="propertyType">Reservation</label>
-                <select formControlName="reservation" class="form-control"
-                [class.is-invalid]="(otaUserModal.controls.reservation.dirty && otaUserModal.controls.reservation.errors?.['required']) || (otaUserModal.controls.reservation.dirty && otaUserModal.controls.reservation.errors?.['pattern'])">
-                   <option value="" [hidden]="true">Select</option>
-                   <option [value]="1">Yes</option>
-                   <option [value]="0">No</option>
-               </select>
-                <small
-                    *ngIf="otaUserModal.controls.reservation.dirty && otaUserModal.controls.reservation.errors?.['required']"
-                    class="text-danger">Required</small>
-            </div>
-            <div class="col-sm-3">
-                <label for="propertyType">Review</label>
-                <select formControlName="review" class="form-control"
-                 [class.is-invalid]="(otaUserModal.controls.review.dirty && otaUserModal.controls.review.errors?.['required']) || (otaUserModal.controls.review.dirty && otaUserModal.controls.review.errors?.['pattern'])">
-                    <option value="" [hidden]="true">Select</option>
-                    <option [value]="1">Yes</option>
-                    <option [value]="0">No</option>
-                </select>
-                <small
-                    *ngIf="otaUserModal.controls.review.dirty && otaUserModal.controls.review.errors?.['required']"
-                    class="text-danger">Required</small>
-            </div>
-            <div class="col-sm-3">
-                <label for="propertyType">Promotion</label>
-                <select formControlName="promotion" class="form-control" 
-                [class.is-invalid]="(otaUserModal.controls.promotion.dirty && otaUserModal.controls.promotion.errors?.['required']) || (otaUserModal.controls.promotion.dirty && otaUserModal.controls.promotion.errors?.['pattern'])">
-                    <option value="" [hidden]="true">Select</option>
-                    <option [value]="1">Yes</option>
-                    <option [value]="0">No</option>
-                </select>
-                <small
-                    *ngIf="otaUserModal.controls.promotion.dirty && otaUserModal.controls.promotion.errors?.['required']"
-                    class="text-danger">Required</small>
-            </div>
-            <div class="col-sm-3">
-                <label for="propertyType">Content</label>
-                <select formControlName="content" class="form-control"
-                [class.is-invalid]="(otaUserModal.controls.content.dirty && otaUserModal.controls.content.errors?.['required']) || (otaUserModal.controls.content.dirty && otaUserModal.controls.content.errors?.['pattern'])">
-                   <option value="" [hidden]="true">Select</option>
-                   <option [value]="1">Yes</option>
-                   <option [value]="0">No</option>
-               </select>
-                <small
-                    *ngIf="otaUserModal.controls.content.dirty && otaUserModal.controls.content.errors?.['required']"
-                    class="text-danger">Required</small>
-            </div>
-        </div>
-        <div class="row mb-2">
-            <div class="col-sm-3">
-                <label for="propertyType">Message</label>
-                <select formControlName="message" class="form-control"
-                [class.is-invalid]="(otaUserModal.controls.message.dirty && otaUserModal.controls.message.errors?.['required']) || (otaUserModal.controls.message.dirty && otaUserModal.controls.message.errors?.['pattern'])">
-                   <option value="" [hidden]="true">Select</option>
-                   <option [value]="1">Yes</option>
-                   <option [value]="0">No</option>
-               </select>
-                <small
-                    *ngIf="otaUserModal.controls.message.dirty && otaUserModal.controls.message.errors?.['required']"
-                    class="text-danger">Required</small>
-            </div>
-            <div class="col-sm-3">
-                <label for="ota_details_id">OTA Detail ID</label>
-                <select formControlName="ota_details_id" class="form-control"
-                [class.is-invalid]="(otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['required']) || (otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['pattern'])">
-                   <option value="" [hidden]="true">Select</option>
-                   <option [value]="item.id" *ngFor="let item of otaDetailList">{{item.name}}</option>
-               </select>
-                <small
-                    *ngIf="otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['required']"
-                    class="text-danger">Required</small>
+            <div class="col-sm-6">
+                <fieldset class="border p-2">
+                    <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Active
+                            Functions
+                        </button> </legend>
+
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">Currency</label>
+                        <div class="col-sm-9">
+                            <select formControlName="currency" class="form-control"
+                                [class.is-invalid]="(otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['required']) || (otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['pattern'])">
+                                <option value="" [hidden]="true">Select</option>
+                                <option [value]="'INR'">INR</option>
+                                <option [value]="'USD'">USD</option>
+                            </select>
+                            <small
+                                *ngIf="otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['required']"
+                                class="text-danger">Required</small>
+                            <small
+                                *ngIf="otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['pattern']"
+                                class="text-danger">Only Number</small>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">Commission</label>
+                        <div class="col-sm-9">
+                            <input type="text" formControlName="commission" class="form-control"
+                                [class.is-invalid]="(otaUserModal.controls.commission.dirty && otaUserModal.controls.commission.errors?.['required']) || (otaUserModal.controls.commission.dirty && otaUserModal.controls.commission.errors?.['pattern'])">
+                            <small
+                                *ngIf="otaUserModal.controls.commission.dirty && otaUserModal.controls.commission.errors?.['required']"
+                                class="text-danger">Required</small>
+                            <small
+                                *ngIf="otaUserModal.controls.commission.dirty && otaUserModal.controls.commission.errors?.['pattern']"
+                                class="text-danger">Only Number</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">Requester IP</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" [readOnly]="true" formControlName="requester_ip"
+                                [class.is-invalid]="(otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['required']) || (otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['pattern'])">
+                            <small
+                                *ngIf="otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['required']"
+                                class="text-danger">Required</small>
+                            <small
+                                *ngIf="otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['pattern']"
+                                class="text-danger">Only Number</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">Update</label>
+                        <div class="col-sm-9">
+                            <select formControlName="update" class="form-control"
+                                [class.is-invalid]="(otaUserModal.controls.update.dirty && otaUserModal.controls.update.errors?.['required']) || (otaUserModal.controls.update.dirty && otaUserModal.controls.update.errors?.['pattern'])">
+                                <option value="" [hidden]="true">Select</option>
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                            <small
+                                *ngIf="otaUserModal.controls.update.dirty && otaUserModal.controls.update.errors?.['required']"
+                                class="text-danger">Required</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">Reservation</label>
+                        <div class="col-sm-9">
+                            <select formControlName="reservation" class="form-control"
+                                [class.is-invalid]="(otaUserModal.controls.reservation.dirty && otaUserModal.controls.reservation.errors?.['required']) || (otaUserModal.controls.reservation.dirty && otaUserModal.controls.reservation.errors?.['pattern'])">
+                                <option value="" [hidden]="true">Select</option>
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                            <small
+                                *ngIf="otaUserModal.controls.reservation.dirty && otaUserModal.controls.reservation.errors?.['required']"
+                                class="text-danger">Required</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">Review</label>
+                        <div class="col-sm-9">
+                            <select formControlName="review" class="form-control"
+                                [class.is-invalid]="(otaUserModal.controls.review.dirty && otaUserModal.controls.review.errors?.['required']) || (otaUserModal.controls.review.dirty && otaUserModal.controls.review.errors?.['pattern'])">
+                                <option value="" [hidden]="true">Select</option>
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                            <small
+                                *ngIf="otaUserModal.controls.review.dirty && otaUserModal.controls.review.errors?.['required']"
+                                class="text-danger">Required</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">Promotion</label>
+                        <div class="col-sm-9">
+                            <select formControlName="promotion" class="form-control"
+                                [class.is-invalid]="(otaUserModal.controls.promotion.dirty && otaUserModal.controls.promotion.errors?.['required']) || (otaUserModal.controls.promotion.dirty && otaUserModal.controls.promotion.errors?.['pattern'])">
+                                <option value="" [hidden]="true">Select</option>
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                            <small
+                                *ngIf="otaUserModal.controls.promotion.dirty && otaUserModal.controls.promotion.errors?.['required']"
+                                class="text-danger">Required</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">Content</label>
+                        <div class="col-sm-9">
+                            <select formControlName="content" class="form-control"
+                                [class.is-invalid]="(otaUserModal.controls.content.dirty && otaUserModal.controls.content.errors?.['required']) || (otaUserModal.controls.content.dirty && otaUserModal.controls.content.errors?.['pattern'])">
+                                <option value="" [hidden]="true">Select</option>
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                            <small
+                                *ngIf="otaUserModal.controls.content.dirty && otaUserModal.controls.content.errors?.['required']"
+                                class="text-danger">Required</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="propertyName" class="col-sm-3 col-form-label">Message</label>
+                        <div class="col-sm-9">
+                            <select formControlName="message" class="form-control"
+                            [class.is-invalid]="(otaUserModal.controls.message.dirty && otaUserModal.controls.message.errors?.['required']) || (otaUserModal.controls.message.dirty && otaUserModal.controls.message.errors?.['pattern'])">
+                            <option value="" [hidden]="true">Select</option>
+                            <option [value]="1">Yes</option>
+                            <option [value]="0">No</option>
+                        </select>
+                        <small *ngIf="otaUserModal.controls.message.dirty && otaUserModal.controls.message.errors?.['required']"
+                            class="text-danger">Required</small>
+                        </div>
+                    </div>
+
+                </fieldset>
             </div>
         </div>
         <div class="row mt-3 mb-2">

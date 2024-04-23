@@ -87,19 +87,11 @@
     font-size: 12px !important;
     text-align: center !important;
     padding: 7px !important;
-    min-width: 50px !important;
+    width: 50px !important;
     height: 45px !important;
     vertical-align: middle;
   
   }
-
-  tr>td:first-child{
-    
-  }
-  
-  // .td {
-  //   width: 30px;
-  // }
   
   .hover-td:hover {
     opacity: 0.8;
