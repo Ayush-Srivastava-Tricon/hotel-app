@@ -89,7 +89,7 @@
                         </button> </legend>
 
                     <div class="form-group row mb-2">
-                        <label for="propertyName" class="col-sm-3 col-form-label">Name</label>
+                        <label for="propertyName" class="col-sm-3 col-form-label">Name <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" formControlName="name"
                                 [class.is-invalid]="otaModal.controls.name.dirty && otaModal.controls.name.errors?.['required']">

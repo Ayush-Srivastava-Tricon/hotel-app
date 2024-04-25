@@ -24,20 +24,20 @@ export class ManageOtaUserComponent {
   constructor(private alertService: AlertService,private _service:PropertyService,private fb:FormBuilder,private adminService:AdminService){
     this.otaUserModal = this.fb.group({
       property_id:[''],
-      ota_details_id:['',[Validators.required,]],
-      ota_user:['',[Validators.required,]],
-      ota_pass:['',[Validators.required,]],
-      ota_hotel_id:['',[Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      ota_details_id:['',[Validators.required]],
+      ota_user:['',[Validators.required]],
+      ota_pass:['',[Validators.required]],
+      ota_hotel_id:['',[Validators.pattern(/^[0-9]+$/)]],
       ota_other_id:['',[Validators.pattern(/^[0-9]+$/)]] ,
       currency:['',],
-      commission:['',[Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      requester_ip:[''],
-      update:[''],
-      reservation:[''],
-      review:[''] ,
-      promotion:[''],
-      content:[''],
-      message:['']
+      commission:['',[ Validators.pattern(/^[0-9]+$/)]],
+      requester_ip:['',Validators.required],
+      update:[1],
+      reservation:[1],
+      review:[1] ,
+      promotion:[0],
+      content:[0],
+      message:[0]
     
     })
   }

@@ -63,7 +63,7 @@
                             <td>{{item.child}}</td>
                             <td>{{item.parent_room_id}}</td>
                             <td>{{item.breakfast ? true : false}}</td>
-                            <td>{{item.nonrefundable ? false: false}}</td>
+                            <td>{{item.nonrefundable ? true: false}}</td>
                             <!-- <td>{{item.nonrefundable}}</td>
                         <td>{{item.is_pms ? item.is_pms : false}}</td>
                         <td>{{item.is_dorm ? item.is_dorm:false}}</td>
@@ -127,7 +127,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyType" class="col-sm-3 col-form-label">Room Name</label>
+                            <label for="propertyType" class="col-sm-3 col-form-label">Room Name  <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="room_name"
                                     [class.is-invalid]="(roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['required']) || (roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['pattern'])">
@@ -194,7 +194,7 @@
                                 Markups
                             </button> </legend>
                         <div class="form-group row mb-2">
-                            <label class="col-sm-3 col-form-label" for="default_price">Default Price</label>
+                            <label class="col-sm-3 col-form-label" for="default_price">Default Price <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" maxlength="12" class="form-control" formControlName="default_price"
                                     [class.is-invalid]="(roomModal.controls.default_price.dirty && roomModal.controls.default_price.errors?.['required']) || (roomModal.controls.default_price.dirty && roomModal.controls.default_price.errors?.['pattern'])">
@@ -356,13 +356,17 @@
                         <div class="image-container d-flex justify-content-start align-items-baseline flex-wrap ">
                             <ng-container *ngFor="let item of imageArrayContainer;let idx=index;">
                                 <div class="image-block m-2" (click)="selectImg(file)">
-                                    <img class="img-preview" [src]="item.thumbnailUrl">
+                                    <img class="img-preview" [src]="item.thumbnailUrl" *ngIf="!isEditModal">
+                                    <img class="img-preview" [src]="item.image_path+'/'+item.image_name" *ngIf="isEditModal">
                                     <input type="file" accept="image/*" (change)="uploadImage($event,idx)"
                                         accept="image/*" class="file" #file hidden>
-                                </div>
+                                    </div>
+                                    <div class="img-wrap">
+                                        <span class=" btn btn-sm btn-danger rounded-pill close" (click)="removeImg(item)" >&times;</span>
+                                    </div>
                             </ng-container>
                             <a class="text-decoration-none fs-6 mx-2" href="javascript:void(0);"
-                                [class.add-img-disabled]="!this.imageArrayContainer[this.imageArrayContainer.length-1]?.thumbnailUrl"
+                                
                                 (click)="addMoreImageSection()">Add More</a>
 
                         </div>

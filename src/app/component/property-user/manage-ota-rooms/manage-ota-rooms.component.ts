@@ -25,15 +25,15 @@ export class ManageOtaRoomsComponent {
   constructor(private _service: PropertyService,private fb:FormBuilder,private alertService:AlertService) { 
     this.otaRoomModal = this.fb.group({
         property_id:[''],
-        ota_user_id:[],
-        room_id:[''],
-        room_name: [''],
-        occupancy: ['',[Validators.required]],
-        extra_adult_price: ['',[Validators.required,]],
-        child_price: ['',[Validators.required,]],
-        infant_price: ['',[Validators.required,]],
+        ota_user_id:['',Validators.required],
+        room_id:['',Validators.required],
+        room_name: ['',Validators.required],
+        occupancy: ['',],
+        extra_adult_price: [''],
+        child_price: ['',],
+        infant_price: ['',],
         internal_room_id: [''],
-        requester_ip: ['']
+        requester_ip: ['',Validators.required]
     })
   }
 

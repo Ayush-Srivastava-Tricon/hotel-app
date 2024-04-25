@@ -104,7 +104,7 @@
         <div class="shadow p-4 rounded bg-white" [formGroup]="ownerModal">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <label for="propertyType">Name</label>
+                    <label for="propertyType">Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" formControlName="name"
                         [class.is-invalid]="ownerModal.controls.name.dirty && ownerModal.controls.name.errors?.['required']">
                     <small
@@ -112,7 +112,7 @@
                         class="text-danger">Required</small>
                 </div>
                 <div class="col-sm-6">
-                    <label for="propertyType">Email</label>
+                    <label for="propertyType">Email <span class="text-danger">*</span></label>
                     <input type="email" class="form-control" formControlName="email"
                         [class.is-invalid]="(ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['required']) || (ownerModal.controls.email.dirty && ownerModal.controls.email.errors?.['pattern'])">
                     <small
@@ -138,7 +138,7 @@
                 <div class="col-sm-6">
                     <ng-container *ngIf="!isEditModal">
                 
-                        <label for="propertyType">Password</label>
+                        <label for="propertyType">Password <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <input [type]="showPassword ?'text':'password'" class="form-control" formControlName="password"
                                 [class.is-invalid]="(ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['required']) || (ownerModal.controls.password.dirty && ownerModal.controls.password.errors?.['pattern'])">

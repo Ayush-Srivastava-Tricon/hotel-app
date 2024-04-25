@@ -29,19 +29,20 @@ export class ManageRoomsComponent {
   }];
   formData: any = new FormData();
   currentPropertyId:any;
+  removedImgId:any=[];
 
   constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private proService: PropertyService) {
     this.roomModal = this.fb.group(
       {
-        property_id: [''],
+        property_id: ['',Validators.required],
         room_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]],
-        adult: [0, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-        child: [0, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+        adult: [0, [ Validators.pattern(/^[0-9]+$/)]],
+        child: [0, [ Validators.pattern(/^[0-9]+$/)]],
         default_price: ['', [Validators.required,Validators.pattern(/^\d*\.?\d*$/)]],
-        default_quantity: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-        default_min: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-        default_max: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-        description: ['', Validators.required],
+        default_quantity: ['', [ Validators.pattern(/^[0-9]+$/)]],
+        default_min: ['', [ Validators.pattern(/^[0-9]+$/)]],
+        default_max: ['', [ Validators.pattern(/^[0-9]+$/)]],
+        description: ['',],
         parent_room_id: [null],
         nonrefundable: [''],
         is_pms: [false],
@@ -146,8 +147,9 @@ export class ManageRoomsComponent {
 
   getUploadedImage(roomId:any){
       this.proService.getUploadedImageByRoom(roomId,(res:any)=>{
-        if(res){
+        if(res.status === 200 && res.data.length>0){
           console.log(res);
+          this.imageArrayContainer = res.data;
         }else{
           this.alertService.alert("error", "No Image Found", "Error", { displayDuration: 3000, pos: 'top' });
         }
@@ -258,6 +260,10 @@ export class ManageRoomsComponent {
 
   addMoreImageSection() {
     this.imageArrayContainer.push({ thumbnailUrl: '', image: '' });
+  }
+
+  removeImg(idx:any){
+
   }
 }
 

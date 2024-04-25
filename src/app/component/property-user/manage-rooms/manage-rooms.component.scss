@@ -330,3 +330,15 @@ background: #ddd;
     pointer-events: none;
     color: gray;
   }
+
+  .img-wrap {
+    position: relative;
+  }
+  .img-wrap .close {
+    position: absolute;
+    top: -60px;
+    right: 0px;
+    z-index: 100;
+    font-size: 10px;
+    color: white;
+  }

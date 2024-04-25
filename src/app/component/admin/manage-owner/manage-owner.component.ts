@@ -35,7 +35,7 @@ export class ManageOwnerComponent {
         name: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         alternate_email: ['', [ Validators.email]],
-        mobile: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        mobile: ['', [ Validators.pattern("^[0-9]*$")]],
         alternate_mobile: ['', [Validators.pattern("^[0-9]*$")]],
         password: ['', [Validators.required, Validators.minLength(8), this.commonService.validatePassword]],
       }

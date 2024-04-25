@@ -89,7 +89,7 @@
                             </button> </legend>
                         
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Property Name</label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Property Name <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="property_name"
                                 [class.is-invalid]="propertyUserModal.controls.property_name.dirty && propertyUserModal.controls.property_name.errors?.['required']">
@@ -99,7 +99,7 @@
                             </div>
                         </div>    
                         <div class="form-group row">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Property Type</label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Property Type <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <select class="form-control" [class.is-invalid]="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']"  formControlName="property_type">
                                     <option [value]="null" [selected]="true" [hidden]="true">Select</option>
@@ -120,7 +120,7 @@
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Property Owner Info
                             </button> </legend>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Email</label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Email <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="email" class="form-control" formControlName="email">
                                 <small
@@ -129,7 +129,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2" *ngIf="!isEditModal">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Password</label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Password <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="password" class="form-control" formControlName="password">
                                 <small

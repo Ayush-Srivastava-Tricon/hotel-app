@@ -52,12 +52,20 @@ export class PropertyService extends BaseServiceService {
     this.getData({},this.httpUrl['fetchOtaRoom'],callback);
   }
 
+  fetchOtaRoomsById(userId:any,callback:any){
+    this.getData({},`${this.httpUrl['fetchOtaRoomById']}?ota_user_id=${userId}`,callback);
+  }
+
   addOtaRoom(params:any,callback:any){
     this.postData(params,this.httpUrl['addOtaRoom'],callback);
   }
 
   editOtaRoom(params:any,callback:any){
     this.putData(params,this.httpUrl['editOtaRoom'],callback);
+  }
+
+  setInternalMappingBetweenRoom(params:any,callback:any){
+    this.putData(params,this.httpUrl['mapping'],callback);
   }
 
   

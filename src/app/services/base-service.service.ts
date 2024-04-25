@@ -63,6 +63,8 @@ export class BaseServiceService {
     'addOtaRoom': 'hotelapi/otarooms',
     'fetchOtaRoom': 'hotelapi/otarooms',
     'editOtaRoom': 'hotelapi/otarooms',
+    'fetchOtaRoomById': 'hotelapi/otarooms/otaRoomByOtaUserId',
+    'mapping': 'hotelapi/otarooms/mapping',
     
   }
 

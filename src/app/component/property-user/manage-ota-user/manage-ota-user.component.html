@@ -82,7 +82,7 @@
                         </button> </legend>
 
                     <div class="form-group row mb-2">
-                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Username</label>
+                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Username <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" formControlName="ota_user"
                                 [class.is-invalid]="otaUserModal.controls.ota_user.dirty && otaUserModal.controls.ota_user.errors?.['required']">
@@ -92,7 +92,7 @@
                         </div>
                     </div>
                     <div class="form-group row mb-2">
-                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Password</label>
+                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Password <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" formControlName="ota_pass"
                                 [class.is-invalid]="(otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['required']) || (otaUserModal.controls.ota_pass.dirty && otaUserModal.controls.ota_pass.errors?.['pattern'])">
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="form-group row mb-2">
-                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Detail ID</label>
+                        <label for="propertyName" class="col-sm-3 col-form-label">OTA Detail ID <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <select formControlName="ota_details_id" class="form-control"
                                 [class.is-invalid]="(otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['required']) || (otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['pattern'])">
@@ -183,7 +183,7 @@
                     </div>
 
                     <div class="form-group row mb-2">
-                        <label for="propertyName" class="col-sm-3 col-form-label">Requester IP</label>
+                        <label for="propertyName" class="col-sm-3 col-form-label">Requester IP <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" [readOnly]="true" formControlName="requester_ip"
                                 [class.is-invalid]="(otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['required']) || (otaUserModal.controls.requester_ip.dirty && otaUserModal.controls.requester_ip.errors?.['pattern'])">
