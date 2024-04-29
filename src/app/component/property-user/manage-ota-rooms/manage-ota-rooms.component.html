@@ -102,10 +102,7 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">Room Name <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control" (change)="getRoomNameAndId($event)">
-                                    <option [hidden]="true" [value]="null">Select</option>
-                                    <option [value]="item|json" *ngFor="let item of roomList">{{item.room_name}}</option>
-                                </select>
+                                <input type="text" class="form-control" formControlName="room_name">
                                 <small
                                     *ngIf="otaRoomModal.controls.room_name.dirty && otaRoomModal.controls.room_name.errors?.['required']"
                                     class="text-danger">Required</small>

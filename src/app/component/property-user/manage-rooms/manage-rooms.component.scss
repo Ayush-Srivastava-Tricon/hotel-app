@@ -316,14 +316,13 @@ background: #ddd;
 }
 
 .image-container .image-block{
-    width: 80px;
-    height: 80px;
+    min-width:auto;
+    min-height: auto;
     border: 1px solid;
 
     .img-preview{
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
+      width: 100px;
+      height: 90px;
     }
   }
   .add-img-disabled{

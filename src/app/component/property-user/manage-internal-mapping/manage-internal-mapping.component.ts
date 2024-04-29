@@ -19,6 +19,8 @@ export class ManageInternalMappingComponent {
   selectedExternal:any=[];
 
   mapConfig:any={};
+  currentOtaUserId:number=0;
+
 
   constructor(private propertyService:PropertyService,private alert: AlertService){}
 
@@ -33,6 +35,7 @@ export class ManageInternalMappingComponent {
         this.internalRoomData = res.data;
         console.log(res.data);
         this.loader=false;
+        this.checkExisitingMappedRoom(this.externalRoomData);
       }else{
         this.loader=false;
       }
@@ -51,13 +54,14 @@ export class ManageInternalMappingComponent {
     })
   }
 
-  mapOta(userId:any,userName:any){
+  viewMapping(userId:any,userName:any){
       this.propertyService.fetchOtaRoomsById(userId,(res:any)=>{
         if(res.status == 200 && res.data.length>0){
           console.log(res);
           this.showMappingPage = true;
           this.externalRoomData = res.data;
           this.currentOtaUserName = userName;
+          this.currentOtaUserId = userId;
           this.fetchAllRooms();
         }else{
           console.log("no data");
@@ -66,7 +70,35 @@ export class ManageInternalMappingComponent {
       
   }
 
+  checkExisitingMappedRoom(exRoom:any){
+      exRoom.forEach((e:any)=>{
+        if(e.internal_room_id) {
+          this.selectedInternal.push({room_id:e.internal_room_id,room_name:e.internal_room_name});                     //room_name will be given in API
+          this.setSelectedIntRoomDisabled(e.internal_room_id);
+          this.selectedExternal.push({ota_rooms_id:e.ota_rooms_id,room_name:e.room_name});
+          this.setSelectedExtRoomDisabled(e.ota_rooms_id);
+        } 
+      })
+  }
+
+  setSelectedIntRoomDisabled(intRoomId:any){
+      let isExistRoom:any = this.internalRoomData.find((e:any)=>e.room_id == intRoomId);
+      if(isExistRoom){
+          isExistRoom['activeIntRoomMap']=true;
+      }
+      
+  }
+
+  setSelectedExtRoomDisabled(extRoomId:any){
+    let isExistRoom:any = this.externalRoomData.find((e:any)=>e.ota_rooms_id == extRoomId);
+    if(isExistRoom){
+        isExistRoom['activeIntRoomMap']=true;
+    }
+  }
+
   selectInternalRoomToMap(room:any){
+    console.log(room);
+    
       this.selectedInternal.push(room);
       this.internalRoomData.forEach((e:any)=>{
         if(e.room_id == room.room_id){
@@ -78,7 +110,7 @@ export class ManageInternalMappingComponent {
   selectExternalRoomToMap(room:any){
     this.selectedExternal.push(room);
     this.externalRoomData.forEach((e:any)=>{
-      if(e.room_id == room.room_id){
+      if(e.ota_rooms_id == room.ota_rooms_id){
         e['activeIntRoomMap'] = true;
       }
     })
@@ -121,8 +153,8 @@ export class ManageInternalMappingComponent {
 
   setActiveExtRoomToMap(room:any){
     room['activeMapping'] = true;
-    this.mapConfig['ota_rooms_id'] = +room.room_id;
-    this.mapConfig['ota_user_id'] = +room.id;
+    this.mapConfig['ota_rooms_id'] = +room.ota_rooms_id;
+    this.mapConfig['ota_user_id'] = +this.currentOtaUserId;
     this.setInternalMappingBetweenRoom();
   }
 

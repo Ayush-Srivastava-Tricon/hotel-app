@@ -21,7 +21,7 @@ export class PropertyService extends BaseServiceService {
   }
 
   editRoom(params:any,callback:any){
-    this.putData(params,this.httpUrl['editRoom'],callback);
+    this.updateDataWithFile(params,this.httpUrl['editRoom'],callback);
   }
 
   getRoomDataToEdit(id:any,callback:any){
@@ -34,6 +34,10 @@ export class PropertyService extends BaseServiceService {
 
   deleteRoom(roomId:any,callback:any){
     this.deleteData({},this.httpUrl['deleteRoom']+"/"+roomId,callback);
+  }
+
+  deleteUploadedFiles(params:any,callback:any){
+    this.deleteData(params,this.httpUrl['deleteUploadedFiles'],callback);
   }
 
   fetchOtaUserDetail(callback:any){

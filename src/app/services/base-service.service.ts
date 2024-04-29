@@ -53,10 +53,11 @@ export class BaseServiceService {
     //<========Property Service========>
     'getAllRooms': 'hotelapi/rooms',
     'addRooms': 'hotelapi/rooms',
-    'editRoom': 'hotelapi/rooms',
+    'editRoom': 'hotelapi/rooms/update',
     'deleteRoom': 'hotelapi/rooms',
     'getRoomDataToEdit': 'hotelapi/rooms',
     'getUploadedImageByRoom': 'hotelapi/uploadFiles',
+    'deleteUploadedFiles': 'hotelapi/uploadFiles',
     'getOtaUserList': 'hotelapi/otausers',
     'addOtaUser': 'hotelapi/otausers',
     'editOtaUser': 'hotelapi/otausers',
@@ -144,7 +145,6 @@ export class BaseServiceService {
 
   postDataWithFile(data: any, url: any, callback: any) {
     const headers = new HttpHeaders()
-      // .set('content-type', 'multipart/form-data')
       .set('Accept', 'application/json')
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
@@ -196,13 +196,39 @@ export class BaseServiceService {
     })
 
   }
+  
+  updateDataWithFile(data: any, url: any, callback: any) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
+
+    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => {callback(data)},
+    (error: any) => {
+      console.log(error)
+      if (error.error.status == 401 && error.error.message == 'Expired token') {
+        this.handleRefreshToken(url, (res: any) => {
+          if (res) {
+            console.log(res);
+            localStorage.setItem("token", res.Bearer);
+            this.putData(data, url, callback);
+          }
+        });
+      }
+      if (error) {
+        callback(error);
+      }
+    })
+
+  }
+
   deleteData(data: any, url: any, callback: any) {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.delete(environment.apiUrl + url, { headers: headers }).subscribe((data: any) => callback(data), ((error: any) => callback(error))
+    return this.http.delete(environment.apiUrl + url, { headers: headers ,body:data}).subscribe((data: any) => callback(data), ((error: any) => callback(error))
     );
 
   }

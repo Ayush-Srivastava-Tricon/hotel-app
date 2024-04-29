@@ -26,7 +26,6 @@ export class ManageOtaRoomsComponent {
     this.otaRoomModal = this.fb.group({
         property_id:[''],
         ota_user_id:['',Validators.required],
-        room_id:['',Validators.required],
         room_name: ['',Validators.required],
         occupancy: ['',],
         extra_adult_price: [''],
@@ -158,15 +157,6 @@ export class ManageOtaRoomsComponent {
     }
     console.log(this.otaRoomModal.value);
 
-  }
-
-  getRoomNameAndId(event:any){
-    console.log(event.target.value);
-    let roomData:any = JSON.parse(event.target.value);
-    this.otaRoomModal.controls.room_id.setValue(roomData.room_id);
-    this.otaRoomModal.controls.room_name.setValue(roomData.room_name);
-
-    
   }
 
   convertStringToNumber() {
