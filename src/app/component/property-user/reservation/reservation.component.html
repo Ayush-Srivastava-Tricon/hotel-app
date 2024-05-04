@@ -1,1 +1,644 @@
-<p>reservation works!</p>
+<div class="container-fluid mt-3" *ngIf="!showModal.reservation">
+    <div class="row mx-2">
+        <div class="col-sm-6 p-3">
+            <fieldset class="border p-4 shadow">
+                <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Search Reservation Availaibility
+                    </button> </legend>
+                    <div class="form-group row mb-2">
+                        <label for="propertyType" class="col-sm-4 col-form-label">Stay</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" [(ngModel)]="searchRoomAvailConfig['start_date']">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" [(ngModel)]="searchRoomAvailConfig['end_date']">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2 ">
+                        <label class="col-sm-4 " for="available">Show only available room</label>
+                        <div class="col-sm-8">
+                            <label class="switch">
+                                <input type="checkbox" id="available" [(ngModel)]="searchRoomAvailConfig['available']">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2 ">
+                        <label class="col-sm-4 " for="disc">Load discounts</label>
+                        <div class="col-sm-8">
+                            <label class="switch">
+                                <input type="checkbox" id="disc" [(ngModel)]="searchRoomAvailConfig['disc']">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2 ">
+                        <label class="col-sm-4 col-form-label">Load discounts</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <select class="form-control" [(ngModel)]="searchRoomAvailConfig['reservationType']">
+                                        <option value="normal"[selected]="true">Normal</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info">?</button>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="form-group row my-3 ">
+                        <label class="col-sm-4 col-form-label" for="room"></label>
+                        <div class="col-sm-8">
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-primary mx-2" [disabled]="!searchRoomAvailConfig['start_date'] || !searchRoomAvailConfig['end_date']" (click)="showAvailibility()">Search</button>
+                                <span class="spinner-border text-primary" *ngIf="loader"></span>
+                            </div>
+                        </div>
+                    </div>
+            </fieldset>
+           
+        </div>
+    </div>
+    <div class="row align-items-center my-3 mx-2 shadow p-3" *ngIf="reservationList?.length>0">
+        <div class="col-sm-6">
+            <h4>Search Result : {{reservationList?.length}}</h4>
+        </div>
+        <div class="col-sm-6 text-end">
+            <button class="btn btn-primary mx-2" (click)="addReservationNextStep()">Next -></button>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center" *ngIf="reservationList.length>0">
+        <div class="col-sm-12">
+            <ng-container *ngFor="let item of reservationList">
+            <div class="table-wrapper shadow table-responsive mb-2 ">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>{{item.parentRoom}}</b></h2>
+                        </div>
+                        <!-- <div class="col-sm-6">
+                            <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
+                                data-toggle="modal"><span>Add Reservation</span></a>
+                        </div> -->
+                    </div>
+                </div>
+                <table class="table table-shadow table-sm table-hover">
+                    <thead class="thead-dark">
+                        <tr class="table-row-rooms">
+                            <th>Room Name</th>
+                            <th>Adult</th>
+                            <th>Child</th>
+                            <th>Default Price</th>
+                            <th>Availibility</th>
+                            <th>Qunatity To Book</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="loader">
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                        </tr>
+                        <tr *ngIf="reservationList?.length==0 && !loader">
+                            <td colspan="7" class="text-center">
+                                No Data
+                            </td>
+                        </tr>
+                        <tr *ngFor="let room of item.rooms;let idx = index;" class="text-center align-middle">
+                            <td>{{room.room_name}}</td>
+                            <td>{{room.adult}}</td>
+                            <td>{{room.child}}</td>
+                            <td>{{room.default_price}}</td>
+                            <td>{{room.availability}}</td>
+                            <td>
+                                <select class="form-control-sm" (change)="selectAvailabilityReservation($event,room,item)" >
+                                    <option [selected]="true" value="''">Select</option>
+                                        <option [value]="id+1"  *ngFor="let item of [].constructor(+room.availability);let id = index;">{{id+1}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+
+
+        </div>
+    </div>
+
+    <div class="row align-items-center my-3 mx-2 shadow p-3" *ngIf="reservationList?.length>0">
+        <div class="col-sm-6"> </div>
+        <div class="col-sm-6 text-end">
+            <button class="btn btn-primary mx-2" (click)="addReservationNextStep()">Next -></button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-2" *ngIf="showModal.reservation">
+    <div class="my-3 ms-2 d-flex justify-content-between ">
+        <!-- <span class="h3">{{isEditModal? 'Edit':'Add'}} Reservation </span>
+        <a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageReservation()">Back To Manage Reservation</a> -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "
+                        (click)="backToManageReservation()">Back to Manage Reservation</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Reservation</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="add-room-container">
+        <div>
+            <div class="row mb-2 mx-2">
+                <div class="col-sm-6 mb-2 p-3">
+                    <fieldset class="border p-4 shadow mb-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Reservation
+                                Detail
+                            </button> </legend>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Reservation Type</label>
+                            <div class="col-sm-9">
+                                <strong>{{searchRoomAvailConfig.reservationType|titlecase}}</strong>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Reservation Code</label>
+                            <div class="col-sm-9">
+                               <strong></strong>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyType" class="col-sm-3 col-form-label">Reservation Status  <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <strong class="text-warning">Awaiting Confirmation</strong>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label class="col-sm-3 col-form-label" for="description">Stay</label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" [(ngModel)]="searchRoomAvailConfig.start_date" readonly>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" [(ngModel)]="searchRoomAvailConfig.end_date" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label class="col-sm-3 col-form-label" for="description">Guests <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label for="">
+                                            Adult
+                                            <input type="text" class="form-control" [(ngModel)]="guestTotalConfig.adult" (blur)="setAdultGuestReserve($event)" name="" id="">
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="">
+                                            Children
+                                            <input type="text" class="form-control" [(ngModel)]="guestTotalConfig.child" (blur)="setChildGuestReserve($event)"  name="" id="">
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="">
+                                            Baby
+                                            <input type="text" class="form-control" (blur)="setBabyGuestReserve($event)"  name="" id="" >
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label class="col-sm-3 col-form-label" for="description">Check-In <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <!-- <input type="text"> -->
+                            </div>  
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label class="col-sm-9 col-form-label">Estimated time of arrival {{todayDate|date}} (local time) <span class="text-danger">*</span></label>
+                            <div class="col-sm-3">
+                                <select class="form-control">
+                                    <option value="">i don't know</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline ">
+                            <label class="col-sm-4 " for="source">Source</label>
+                            <div class="col-sm-8">
+                                <label class="switch">
+                                    <input type="checkbox" id="source">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline ">
+                            <label class="col-sm-4 " for="color">Color</label>
+                            <div class="col-sm-8">
+                                <input type="color" id="color">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline ">
+                            <label class="col-sm-4 ">Total Grouped Reservation</label>
+                            <div class="col-sm-8">
+                                    <input type="text" [value]="533">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline ">
+                            <label class="col-sm-4 " for="tax">City Tax</label>
+                            <div class="col-sm-8">
+                                <input type="text" [value]="24.00">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline ">
+                            <label class="col-sm-4 " for="extra">Extra</label>
+                            <div class="col-sm-8">
+                                <input type="text" [value]="00">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline ">
+                            <label class="col-sm-4 " for="extra">Amount Due</label>
+                            <div class="col-sm-8">
+                                <input type="text" [value]="557.60">
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <fieldset class="border p-4 shadow mb-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Guest
+                            </button> </legend>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" [(ngModel)]="guestNameConfig.last_name" >
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control"  [(ngModel)]="guestNameConfig.first_name"  >
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control"  [(ngModel)]="guestNameConfig.email"  >
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Phone Number</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control"  [(ngModel)]="guestNameConfig.mobile"  >
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Language</label>
+                            <div class="col-sm-9">
+                                <select name="" id="" class="form-control" [(ngModel)]="guestNameConfig.language" >
+                                    <option value="it">Italian</option>
+                                    <option value="en">English</option>
+                                </select>
+                              
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Travel Agency/Corporate</label>
+                            <div class="col-sm-9">
+                                <select name="" id="" class="form-control"  [(ngModel)]="guestNameConfig.travel_agency">
+                                    <option value="it">Italian</option>
+                                    <option value="en">English</option>
+                                </select>
+                              
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-4 shadow mb-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Email
+                            </button> </legend>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9 text-end">
+                                <button class="btn btn-primary">?</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-4 shadow mb-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Guest List
+                            </button> </legend>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9 text-end mb-2">
+                                <button class="btn btn-info btn-sm">Adobe</button>
+                                <button class="btn btn-primary btn-sm mx-2" (click)="addMoreGuestInfo()">+</button>
+                                <button class="btn btn-danger btn-sm">?</button>
+                            </div>
+                            <ng-container *ngIf="addMoreGuestData.length>0">
+                                <div class="row" *ngFor="let item of addMoreGuestData;let idx = index">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h5>Guest :- {{idx+1}}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-3 align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">Last Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" [(ngModel)]="item.last_name" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-3 align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">First Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control"  [(ngModel)]="item.first_name"  >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-3 align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">Email</label>
+                                        <div class="col-sm-9">
+                                            <input type="email" class="form-control"  [(ngModel)]="item.email"  >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-3 align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">Phone Number</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" class="form-control"  [(ngModel)]="item.mobile"  >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-3 align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">Language</label>
+                                        <div class="col-sm-9">
+                                            <select name="" id="" class="form-control" [(ngModel)]="item.language" >
+                                                <option value="it">Italian</option>
+                                                <option value="en">English</option>
+                                            </select>
+                                          
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-3 align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">Travel Agency/Corporate</label>
+                                        <div class="col-sm-9">
+                                            <select name="" id="" class="form-control"  [(ngModel)]="item.travel_agency">
+                                                <option value="it">Italian</option>
+                                                <option value="en">English</option>
+                                            </select>
+                                          
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-4 shadow mb-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Payment Mode
+                            </button> </legend>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-7 col-form-label">Choose the preferred payment way for this reservation</label>
+                            <div class="col-sm-5 text-end">
+                                <select name="" id="" class="form-control" (change)="getPaymentDetails($event);">
+                                    <option [value]="" [selected]="true">Select</option>
+                                    <option [value]="mode.id" *ngFor="let mode of paymentModeList">{{mode.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-4 shadow mb-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Special Requests
+                            </button> </legend>
+                        <div class="form-group row mb-3 align-items-baseline">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Special Requests</label>
+                            <div class="col-sm-9 text-end">
+                                <button class="btn btn-danger btn-sm">?</button>
+                             
+                            </div>
+                            <div class="row my-2">
+                                <div class="col-sm-12">
+                                    <textarea [(ngModel)]="reservationPayloadDataConfig.reservationData.special_request" cols="90" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-sm-6 mb-2 p-3">
+                    <fieldset class="border p-4 shadow mb-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">View Mode
+                            </button> </legend>
+                        <div class="form-group row mb-3 align-items-baseline ">
+                            <label class="col-sm-4 " for="compact">Compact View</label>
+                            <div class="col-sm-8 text-center">
+                                <label class="switch">
+                                    <input type="checkbox" id="compact">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <ng-container *ngFor="let item of addReservationConfig;let idx=index; trackBy:trackBy">
+                        <fieldset class="border p-4 shadow mb-3">
+                            <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Room {{idx+1}}
+                                </button> </legend>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label class="col-sm-3 col-form-label" for="description">Stay</label>
+                                    <div class="col-sm-9">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <input type="date" class="form-control" readonly [(ngModel)]="item.start_date">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="date" class="form-control" readonly [(ngModel)]="item.end_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label class="col-sm-3 col-form-label" for="description">Guests <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <label for="" class="text-info">
+                                                    Adult
+                                                    <input type="number" class="form-control" [(ngModel)]="item.adult" name="" id="">
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="" class="text-info">
+                                                    Children
+                                                    <input type="number" class="form-control" [(ngModel)]="item.child"  name="" id="">
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="" class="text-info">
+                                                    Baby
+                                                    <input type="number" class="form-control"  name="" id="" >
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label class="col-sm-3 col-form-label" >Room Type</label>
+                                    <div class="col-sm-9">
+                                        <p class="text-info">{{item.parentRoom}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label class="col-sm-3 col-form-label" >Discount</label>
+                                    <div class="col-sm-9">
+                                        <p class="text-danger">Check invalid authentication ~ 20.00 EUR</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label class="col-sm-3 col-form-label" >Total Room</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" [(ngModel)]="item.avg_pr" class="form-control"> 
+                                    </div>
+                                    <div class="col-sm-1">EUR</div>
+                                </div>
+                        
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label class="col-sm-3 col-form-label" >Deposit <span class="text-danger">*</span> </label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control">
+                                    </div>
+                                    <div class="col-sm-1">EUR</div>
+                                </div>
+
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label class="col-sm-3 col-form-label" >Rate Plan</label>
+                                    <div class="col-sm-9">
+                                        <p class="text-info"> ? standard + 230.00 EUR</p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="text-info">These extras are normally mandatory for your customers, they will automatically added unless you remove them.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label for="propertyName" class="col-sm-3 col-form-label"> <h5 class="text-primary">Extra</h5></label>
+                                    <div class="col-sm-9 text-end">
+                                        <button class="btn btn-info btn-sm">+</button>
+                                        <button class="btn btn-primary btn-sm mx-2">Setting</button>
+                                        <button class="btn btn-danger btn-sm">?</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label for="propertyName" class="col-sm-3 col-form-label"> <h5 class="text-primary">Totals</h5></label>
+                                    <div class="col-sm-9 text-end">
+                                        <button class="btn btn-danger btn-sm">?</button>
+                                    </div>
+                                    <div class="form-group row align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">Room</label>
+                                        <div class="col-sm-9 text-center">
+                                            <p class="text-dark">230.00 +</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">Extras</label>
+                                        <div class="col-sm-9 text-center">
+                                            <p class="text-dark">0.0 -</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">Amount</label>
+                                        <div class="col-sm-9 text-center">
+                                            <p class="text-danger">230.00 =</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label">City Tax</label>
+                                        <div class="col-sm-9 text-center">
+                                            <p class="text-dark">12.00</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-baseline">
+                                        <label for="propertyName" class="col-sm-3 col-form-label opacity-50">Discount Value</label>
+                                        <div class="col-sm-9 text-center">
+                                            <p class="text-dark opacity-50">20.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                        </fieldset>
+
+                    </ng-container>
+                    <fieldset class="border p-4 shadow mb-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Voucher
+                            </button> </legend>
+                            <div class="form-group row mb-2 ">
+                                <label class="col-sm-4 " for="toProperty">Send voucher to property</label>
+                                <div class="col-sm-8 text-center">
+                                    <label class="switch">
+                                        <input type="checkbox" id="toProperty" >
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-2 ">
+                                <label class="col-sm-4 " for="toGuest">Send voucher to guest</label>
+                                <div class="col-sm-8 text-center">
+                                    <label class="switch">
+                                        <input type="checkbox" id="toGuest">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                    </fieldset>
+                </div>
+
+            </div>
+            <div class="row mt-3 mb-3">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary"
+                        (click)="isEditModal ? editReservation() :createNewReservation()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal" *ngIf="showModal.delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content delete-modal">
+            <div class="modal-body">
+                <ng-container *ngIf="showModal.delete">
+                    <div class="modal-header flex-row">
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Do you really want to delete the Reservation ?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            (click)="closeModal()">Cancel</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteReservation()">Delete</button>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade in" *ngIf="showModal.delete"></div>
+
+
+
+<!-- <div class="box" #box1 (click)="createLine()"></div>
+<div class="box" #box2 (click)="createLine()"></div>
+<svg #lineContainer></svg> -->

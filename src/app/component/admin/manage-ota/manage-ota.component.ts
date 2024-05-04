@@ -118,11 +118,11 @@ export class ManageOtaComponent {
         if(res.status == 200){
           this.showModal.ota = false;
           this.otaModal.reset();
-          this.alertService.alert("success", "New Room Created", "Success", { displayDuration: 3000, pos: 'top' });
+          this.alertService.alert("success", res.message, "Success", { displayDuration: 3000, pos: 'top' });
           this.fetchOtaDetails();
         }
         else {
-          this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });
+          this.alertService.alert("error",  res.message, "Error", { displayDuration: 3000, pos: 'top' });
         }
       });
     }

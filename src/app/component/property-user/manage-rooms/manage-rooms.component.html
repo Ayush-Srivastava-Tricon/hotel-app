@@ -62,8 +62,8 @@
                             <td>{{item.adult}}</td>
                             <td>{{item.child}}</td>
                             <td>{{item.parent_room_id}}</td>
-                            <td>{{item.breakfast ? true : false}}</td>
-                            <td>{{item.nonrefundable ? true: false}}</td>
+                            <td>{{item.breakfast == 1 ? true : false}}</td>
+                            <td>{{item.nonrefundable == 1 ? true: false}}</td>
                             <!-- <td>{{item.nonrefundable}}</td>
                         <td>{{item.is_pms ? item.is_pms : false}}</td>
                         <td>{{item.is_dorm ? item.is_dorm:false}}</td>
@@ -331,14 +331,15 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-9 col-form-label" for="breakfast">Breakfast</label>
-                                <div class="col-sm-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="breakfast"
-                                            [value]="roomModal.controls.breakfast.value" formControlName="breakfast">
-                                        <label class="col-sm-3 col-form-label" class="form-check-label"
-                                            for="breakfast"></label>
-                                    </div>
+                                <label class="col-sm-5 col-form-label" for="breakfast">Breakfast</label>
+                                <div class="col-sm-7">
+                                    <select type="text" class="form-control" formControlName="breakfast">
+                                        <option value="null">Select</option>
+                                        <option value="HF">Half Board</option>
+                                        <option value="FB">Full Board </option>
+                                        <option value="RO">Room Only </option>
+                                        <option value="BB">Bed Breakfast </option>
+                                    </select>
                                     <small
                                         *ngIf="roomModal.controls.breakfast.dirty && roomModal.controls.breakfast.errors?.['required']"
                                         class="text-danger">Required</small>
@@ -362,7 +363,7 @@
                                         accept="image/*" class="file" #file hidden>
                                     </div>
                                     <div class="img-wrap">
-                                        <span class=" btn btn-sm btn-danger rounded-pill close" (click)="removeImg(item,idx)" >&times;</span>
+                                        <span class=" btn btn-sm btn-danger rounded-pill close" (click)="removeImgConfirm(item,idx)" >&times;</span>
                                     </div>
                             </ng-container>
                             <a class="text-decoration-none fs-6 mx-2" href="javascript:void(0);"
@@ -406,13 +407,16 @@
                         <h4 class="modal-title w-100">Are you sure?</h4>
                         <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <p>Do you really want to delete the Room ?</p>
+                    <div class="modal-body" *ngIf="!showModal.deleteImage">
+                        <p>All related images will be deleted if you delete the image.  Are you sure ! still want to delete?</p>
+                    </div>
+                    <div class="modal-body" *ngIf="showModal.deleteImage">
+                        <p>Do you really want to delete the Image ?</p>
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button type="button" class="btn btn-danger" data-dismiss="modal"
                             (click)="closeModal()">Cancel</button>
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteRoom()">Delete</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="showModal.deleteImage ? deleteImage() :  deleteRoom()">Delete</button>
                     </div>
                 </ng-container>
             </div>

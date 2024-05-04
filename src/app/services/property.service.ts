@@ -72,5 +72,21 @@ export class PropertyService extends BaseServiceService {
     this.putData(params,this.httpUrl['mapping'],callback);
   }
 
+  fetchReservation(param:any,callback:any){
+    this.getData({},`${this.httpUrl['getReservation']}?property_id=${param.property_id}&start_date=${param.start_date}&end_date=${param.end_date}&available=${param.available}&disc=${param.disc}&reservationType=${param.reservationType}
+    `,callback);
+  }
+
+  getPaymentMethod(callback:any){
+    this.getData({},`${this.httpUrl['getPaymentMethod']}`,callback);
+  }
+  
+  getExtraFacility(callback:any){
+    this.getData({},`${this.httpUrl['getExtraFacility']}`,callback);
+  }
+
+  addReservationDetails(params:any,callback:any){
+    this.postData(params,this.httpUrl['addReservationDetails'],callback);
+  }
   
 }

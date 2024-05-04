@@ -29,6 +29,7 @@ export class ManageRoomsComponent {
   formData: any = new FormData();
   currentPropertyId:any;
   removedImgObj:any=[];
+  deleteImageConfig:any={};
 
   constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private proService: PropertyService) {
     this.roomModal = this.fb.group(
@@ -125,7 +126,10 @@ export class ManageRoomsComponent {
     this.showModal.property = false;
     this.showModal.delete = false;
     this.isEditModal = false;
+    this.showModal.deleteImage = false;
     this.roomModal.reset();
+    this.imageArrayContainer = [];
+    
   }
 
   showDropDown(idx: any) {
@@ -228,6 +232,7 @@ export class ManageRoomsComponent {
   backToManageRoom() {
     this.showModal.property = false;
     this.showActionDropDown = {};
+    this.imageArrayContainer = [];
   }
 
   convertStringToNumber() {
@@ -281,16 +286,23 @@ export class ManageRoomsComponent {
     this.imageArrayContainer.push({ thumbnailUrl: '', image: '' });
   }
 
-  removeImg(file:any,idx:any){
-      this.imageArrayContainer.splice(idx,1);
-      let obj:any={
-        ...file,
-        'property_id':this.currentPropertyId
-      }
-
-      this.removedImgObj.push(obj);
-      
-
+  removeImgConfirm(file:any,idx:any){
+      this.showModal.delete = true;
+      this.showModal.deleteImage = true;
+      this.deleteImageConfig.file = JSON.parse(JSON.stringify(file));
+      this.deleteImageConfig.idx = JSON.parse(JSON.stringify(idx));
   }
+
+  deleteImage(){
+    this.imageArrayContainer.splice(this.deleteImageConfig.idx,1);
+    let obj:any={
+      ...this.deleteImageConfig.file,
+      'property_id':this.currentPropertyId
+    }
+    this.removedImgObj.push(obj);
+    this.showModal.delete=false;
+    this.showModal.deleteImage=false;
+  }
+
 }
 

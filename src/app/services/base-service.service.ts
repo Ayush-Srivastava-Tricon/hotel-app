@@ -66,6 +66,10 @@ export class BaseServiceService {
     'editOtaRoom': 'hotelapi/otarooms',
     'fetchOtaRoomById': 'hotelapi/otarooms/otaRoomByOtaUserId',
     'mapping': 'hotelapi/otarooms/mapping',
+    'getReservation':'hotelapi/roomsForReservation',
+    'getPaymentMethod':'hotelapi/roomsForReservation/getPaymentMethod',
+    'getExtraFacility':'hotelapi/roomsForReservation/getExtraFacility',
+    'addReservationDetails':'hotelapi/roomsForReservation',
     
   }
 
@@ -199,7 +203,7 @@ export class BaseServiceService {
   
   updateDataWithFile(data: any, url: any, callback: any) {
     const headers = new HttpHeaders()
-      .set('content-type', 'application/json')
+      .set('Accept', 'application/json')
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 

@@ -306,7 +306,7 @@
   }
 
 
-  .selected-room-map {
+  .selected-room-map,.selected-internal-room-map {
     width: 250px;
     height: 90px;
     background: #ffff;
@@ -337,7 +337,7 @@
   }
 
   .internal-room-link,.external-room-link{
-    font-size: 15px;
+    font-size: 13px;
     &.disabled{
 
       pointer-events: none;
@@ -346,3 +346,90 @@
     }
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .arrow-map {
+    display: flex;
+    list-style: none;
+  }
+  .selected-room-map,.selected-internal-room-map {
+    padding: 10px 25px;
+    border: 1px solid black;
+    margin: 0 25px;
+    position: relative;
+  }
+  .selected-internal-room-map:after {
+    content: "";
+    height: 1px;
+    background: black;
+    width: 208px;
+    position: absolute;
+    right: -209px;
+    top: 50%;
+  }
+  .selected-internal-room-map:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 50%;
+    border-style: solid;
+    border-width: 7px 0 7px 20px;
+    border-color: transparent transparent transparent black;
+    right: -230px;
+    transform: translateY(-50%);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .boxes-container {
+    display: inline-block; /* Group boxes horizontally */
+  }
+  
+  .box {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ccc;
+    display: inline-block;
+  }

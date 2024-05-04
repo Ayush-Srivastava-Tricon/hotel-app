@@ -42,6 +42,10 @@ const routes: Routes = [
         pathMatch:'full',
         loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
       },
+      {
+        path:'manage-reservation',
+        loadChildren:()=>import("./reservation/reservation.module").then(m=>m.ReservationModule)
+      },
     ]
   }
 ];
