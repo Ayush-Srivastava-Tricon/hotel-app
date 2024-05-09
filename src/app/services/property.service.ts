@@ -89,4 +89,13 @@ export class PropertyService extends BaseServiceService {
     this.postData(params,this.httpUrl['addReservationDetails'],callback);
   }
   
+  getListOfReservation(params:any,callback:any){
+    this.postData(params,this.httpUrl['getListOfReservation'],callback);
+  }
+  
+  getSingleReservation(reservationId:any,callback:any){
+    this.getData({},this.httpUrl['getSingleReservation']+"/"+reservationId,callback);
+  }
+
+
 }

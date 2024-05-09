@@ -1,0 +1,18 @@
+<div class="detail-page-recreate-service-codes" (mouseleave)="showDropDown = false"
+*ngIf="inputConfig?.reservationPage && inputConfig?.reservation_status">
+<button class="drop-toggle btn flat" (click)="showDropDown=!showDropDown;toggleSelectedItem('reservation_status')">
+    <span *ngIf="reservationPageConfig.reservation_status.length<=0">Select</span>
+    <span *ngIf="reservationPageConfig.reservation_status.length>0" [ngClass]="{'hide-item':showSelectedData['reservation_status']}">
+        <ng-container *ngFor="let item of reservationPageConfig.reservation_status; let last = last"> {{ item.value
+            }}{{last ? '': ','}}</ng-container>
+    </span>
+    <i class="fa fa-angle-down"></i>
+</button>
+<div class="drop-show search-claim-dropdown" *ngIf="showDropDown">
+    <label *ngFor="let item of inputConfig.reservation_status;let idx = index">
+        <input type="checkbox" [(ngModel)]="item.checked"
+            (change)="getSelectedValue(item.checked,item,'reservation_status','reservation_status')" />
+        <span>{{item.value}}</span>
+    </label>
+</div>
+</div>

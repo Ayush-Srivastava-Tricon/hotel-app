@@ -1,76 +1,54 @@
 <div class="container-fluid mt-3" *ngIf="!showModal.reservation">
-    <div class="row mx-2">
-        <div class="col-sm-6 p-3">
-            <fieldset class="border p-4 shadow">
-                <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Search Reservation Availaibility
-                    </button> </legend>
-                    <div class="form-group row mb-2">
-                        <label for="propertyType" class="col-sm-4 col-form-label">Stay</label>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <input type="date" class="form-control" [(ngModel)]="searchRoomAvailConfig['start_date']">
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="date" class="form-control" [(ngModel)]="searchRoomAvailConfig['end_date']">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row mb-2 ">
-                        <label class="col-sm-4 " for="available">Show only available room</label>
-                        <div class="col-sm-8">
-                            <label class="switch">
-                                <input type="checkbox" id="available" [(ngModel)]="searchRoomAvailConfig['available']">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group row mb-2 ">
-                        <label class="col-sm-4 " for="disc">Load discounts</label>
-                        <div class="col-sm-8">
-                            <label class="switch">
-                                <input type="checkbox" id="disc" [(ngModel)]="searchRoomAvailConfig['disc']">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group row mb-2 ">
-                        <label class="col-sm-4 col-form-label">Load discounts</label>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <select class="form-control" [(ngModel)]="searchRoomAvailConfig['reservationType']">
-                                        <option value="normal"[selected]="true">Normal</option>
-                                        <option value="urgent">Urgent</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <button class="btn btn-info">?</button>
-                                </div>
-                            </div>
-                           
-                        </div>
-                    </div>
-                    <div class="form-group row my-3 ">
-                        <label class="col-sm-4 col-form-label" for="room"></label>
-                        <div class="col-sm-8">
-                            <div class="d-flex align-items-center">
-                                <button class="btn btn-primary mx-2" [disabled]="!searchRoomAvailConfig['start_date'] || !searchRoomAvailConfig['end_date']" (click)="showAvailibility()">Search</button>
-                                <span class="spinner-border text-primary" *ngIf="loader"></span>
-                            </div>
-                        </div>
-                    </div>
-            </fieldset>
-           
+    <div class="row mx-2  align-items-center p-3 shadow rounded" style="background-color: aliceblue;">
+        <div class="form-group col-md-2">
+            <label for="inputEmail4">Check In</label>
+            <input type="date" class="form-control" id="inputEmail4" [(ngModel)]="searchRoomAvailConfig['start_date']" placeholder="YYYY-MM-DD">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputPassword4">Check Out</label>
+            <input type="date" class="form-control" id="inputPassword4" [(ngModel)]="searchRoomAvailConfig['end_date']" placeholder="YYYY-MM-DD"> 
+        </div>
+        <div class="form-group col-md-2">
+            <label for="available">Show Available room</label>
+            <br>
+            <label class="switch">
+                <input type="checkbox" id="available" [(ngModel)]="searchRoomAvailConfig['available']">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="disc">Load discounts</label>
+            <br>
+            <label class="switch">
+                <input type="checkbox" id="disc" [(ngModel)]="searchRoomAvailConfig['disc']">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputPassword4">Reservation Type</label>
+            <select class="form-control" [(ngModel)]="searchRoomAvailConfig['reservationType']">
+                <option value="normal" [selected]="true">Normal</option>
+                <option value="urgent">Urgent</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2 mt-3 d-flex">
+            <button class="btn btn-warning rounded mx-2" (click)="showAvailibility()">Check Availibility</button>
+            <span class="spinner-border text-primary"  *ngIf="loader"></span>
         </div>
     </div>
-    <div class="row align-items-center my-3 mx-2 shadow p-3" *ngIf="reservationList?.length>0">
+            <div class="row align-items-center mx-2 p-3" *ngIf="reservationList?.length>0">
         <div class="col-sm-6">
-            <h4>Search Result : {{reservationList?.length}}</h4>
+            <h5>Search Result : {{reservationList?.length}}</h5>
         </div>
         <div class="col-sm-6 text-end">
-            <button class="btn btn-primary mx-2" (click)="addReservationNextStep()">Next -></button>
+            <button type="button" class="btn btn-info btn-lg mx-2" (click)="addReservationNextStep()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1">
+                    </path>
+                </svg>
+            </button>
         </div>
     </div>
     <div class="row justify-content-center align-items-center" *ngIf="reservationList.length>0">
@@ -82,10 +60,6 @@
                         <div class="col-sm-6">
                             <h2><b>{{item.parentRoom}}</b></h2>
                         </div>
-                        <!-- <div class="col-sm-6">
-                            <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
-                                data-toggle="modal"><span>Add Reservation</span></a>
-                        </div> -->
                     </div>
                 </div>
                 <table class="table table-shadow table-sm table-hover">
@@ -138,7 +112,14 @@
     <div class="row align-items-center my-3 mx-2 shadow p-3" *ngIf="reservationList?.length>0">
         <div class="col-sm-6"> </div>
         <div class="col-sm-6 text-end">
-            <button class="btn btn-primary mx-2" (click)="addReservationNextStep()">Next -></button>
+            <button type="button" class="btn btn-info btn-lg mx-2" (click)="addReservationNextStep()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1">
+                    </path>
+                </svg>
+            </button>
         </div>
     </div>
 </div>
@@ -227,11 +208,9 @@
                             </div>  
                         </div>
                         <div class="form-group row mb-3 align-items-baseline">
-                            <label class="col-sm-9 col-form-label">Estimated time of arrival {{todayDate|date}} (local time) <span class="text-danger">*</span></label>
-                            <div class="col-sm-3">
-                                <select class="form-control">
-                                    <option value="">i don't know</option>
-                                </select>
+                            <label class="col-sm-7 col-form-label">Estimated time of arrival {{todayDate|date}} (local time) <span class="text-danger">*</span></label>
+                            <div class="col-sm-5">
+                                <input type="time" class="form-control"  [(ngModel)]="reservationPayloadDataConfig.reservationData.arrival_estimate_time">
                             </div>
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
@@ -246,31 +225,31 @@
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 " for="color">Color</label>
                             <div class="col-sm-8">
-                                <input type="color" id="color">
+                                <input type="color" id="color" [(ngModel)]="reservationPayloadDataConfig.reservationData.colors">
                             </div>
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 ">Total Grouped Reservation</label>
                             <div class="col-sm-8">
-                                    <input type="text" [value]="533">
+                                   <span>533.00</span>
                             </div>
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 " for="tax">City Tax</label>
                             <div class="col-sm-8">
-                                <input type="text" [value]="24.00">
-                            </div>
+                                <span>533.00</span>
+                            </div>  
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 " for="extra">Extra</label>
                             <div class="col-sm-8">
-                                <input type="text" [value]="00">
+                                <span>533.00</span>
                             </div>
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 " for="extra">Amount Due</label>
                             <div class="col-sm-8">
-                                <input type="text" [value]="557.60">
+                                <span>533.00</span>
                             </div>
                         </div>
 
@@ -453,10 +432,10 @@
                                     <div class="col-sm-9">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <input type="date" class="form-control" readonly [(ngModel)]="item.start_date">
+                                                <input type="date" class="form-control" readonly [(ngModel)]="item.check_in">
                                             </div>
                                             <div class="col-sm-6">
-                                                <input type="date" class="form-control" readonly [(ngModel)]="item.end_date">
+                                                <input type="date" class="form-control" readonly [(ngModel)]="item.check_out">
                                             </div>
                                         </div>
                                     </div>
@@ -509,7 +488,7 @@
                                 <div class="form-group row mb-3 align-items-baseline">
                                     <label class="col-sm-3 col-form-label" >Deposit <span class="text-danger">*</span> </label>
                                     <div class="col-sm-8">
-                                        <input type="number" class="form-control">
+                                        <input type="number" class="form-control" [(ngModel)]="item.deposit">
                                     </div>
                                     <div class="col-sm-1">EUR</div>
                                 </div>
@@ -517,7 +496,7 @@
                                 <div class="form-group row mb-3 align-items-baseline">
                                     <label class="col-sm-3 col-form-label" >Rate Plan</label>
                                     <div class="col-sm-9">
-                                        <p class="text-info"> ? standard + 230.00 EUR</p>
+                                        <p class="text-info"> ? standard + {{item.avg_pr}} EUR</p>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -529,11 +508,29 @@
                                 <div class="form-group row mb-3 align-items-baseline">
                                     <label for="propertyName" class="col-sm-3 col-form-label"> <h5 class="text-primary">Extra</h5></label>
                                     <div class="col-sm-9 text-end">
-                                        <button class="btn btn-info btn-sm">+</button>
+                                        <button class="btn btn-info btn-sm" (click)="addExtraFacility(item);">+</button>
                                         <button class="btn btn-primary btn-sm mx-2">Setting</button>
                                         <button class="btn btn-danger btn-sm">?</button>
                                     </div>
                                 </div>
+
+                                <ng-container *ngIf="item?.showExtraFac">
+                                    <div class="mb-2">
+
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" (change)="selectExtraFac($event,'SPA',item)" [(ngModel)]="item.extra_facilities.SPA" type="checkbox" id="SPA" value="150">
+                                            <label class="form-check-label" for="SPA">SPA</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" (change)="selectExtraFac($event,'Pool',item)" [(ngModel)]="item.extra_facilities.Pool" type="checkbox" id="Pool" value="30">
+                                            <label class="form-check-label" for="Pool">Pool</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" (change)="selectExtraFac($event,'Jim',item)" [(ngModel)]="item.extra_facilities.Jim" type="checkbox" id="Gym" value="50">
+                                            <label class="form-check-label" for="Gym">Gym</label>
+                                        </div>
+                                    </div>
+                                </ng-container>
 
                                 <div class="form-group row mb-3 align-items-baseline">
                                     <label for="propertyName" class="col-sm-3 col-form-label"> <h5 class="text-primary">Totals</h5></label>
@@ -613,7 +610,7 @@
 
 
 <!-- Modal -->
-<div class="modal" *ngIf="showModal.delete">
+<div class="modal" *ngIf="showModal.delete||successReservationConfig.showAlert">
     <div class="modal-dialog" role="document">
         <div class="modal-content delete-modal">
             <div class="modal-body">
@@ -631,11 +628,16 @@
                         <button type="button" class="btn btn-outline-danger" (click)="deleteReservation()">Delete</button>
                     </div>
                 </ng-container>
+                <ng-container *ngIf="successReservationConfig.showAlert">
+                    <div class="p-3 bg-light">
+                        <div>Your Reservation Number is : <span class="h5 text-success">{{successReservationConfig.reservation_number}}</span></div>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </div>
 </div>
-<div class="modal-backdrop fade in" *ngIf="showModal.delete"></div>
+<div class="modal-backdrop fade in" *ngIf="showModal.delete||successReservationConfig.showAlert"></div>
 
 
 

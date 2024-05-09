@@ -70,6 +70,8 @@ export class BaseServiceService {
     'getPaymentMethod':'hotelapi/roomsForReservation/getPaymentMethod',
     'getExtraFacility':'hotelapi/roomsForReservation/getExtraFacility',
     'addReservationDetails':'hotelapi/roomsForReservation',
+    'getListOfReservation':'hotelapi/roomsForReservation/reservationListing',
+    'getSingleReservation':'hotelapi/roomsForReservation/reservationListing',
     
   }
 
@@ -88,7 +90,7 @@ export class BaseServiceService {
 
 
 
-    return this.http.get(environment.apiUrl + url, { headers: headers }).subscribe((data: any) => {
+    return this.http.get(environment.apiUrl + url, { headers: headers,params:data }).subscribe((data: any) => {
       callback(<any>data);
     },
       (error: any) => {

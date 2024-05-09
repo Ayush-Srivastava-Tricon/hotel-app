@@ -1,0 +1,105 @@
+/***
+    css for multi select drop down
+**/
+.drop-toggle{
+    background-color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    cursor: hand;
+    border: 1px solid #dee2e6 !important;
+    width: 249px;
+    text-align: left;
+    overflow: hidden;
+}
+.drop-toggle i{
+    float:right;
+}
+
+.drop-show {
+    padding: 4px;
+    width: 300px;
+    background-color: #FFF;
+    border: 1px solid #BABABA;
+    position: absolute;
+    z-index: 100;
+    -webkit-box-shadow: 0 6px 10px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 6px 10px rgba(0,0,0,.15);
+    box-shadow: 0 6px 10px rgba(0,0,0,.15);
+    margin-left: 1px;
+    height: 105px;
+    line-height: 30px;
+}
+.drop-show-team{
+    padding: 4px;
+    width: 300px;
+    background-color: #FFF;
+    border: 1px solid #BABABA;
+    position: absolute;
+    z-index: 100;
+    -webkit-box-shadow: 0 6px 10px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 6px 10px rgba(0,0,0,.15);
+    box-shadow: 0 6px 10px rgba(0,0,0,.15);
+    margin-left: 1px;
+    height: 105px;
+    overflow: scroll;
+}
+
+.drop-show label,.drop-show-team label{
+    display: flex;
+    font-size: 15px;
+    cursor: pointer;
+    align-items: center;
+}
+.drop-show label input,.drop-show-team label input{
+    vertical-align: top;
+}
+.drop-show label span,.drop-show-team label span{
+    display:inline-block;
+    margin-left: 5px;
+}
+
+.drop-show.no-css-search-claim{
+    height: 200px !important;
+    z-index: 9999;
+}
+
+.search-claims-offices.disabled{
+    opacity: 0.4;
+    pointer-events: none;
+
+}
+
+.hide-item{
+    height: 21px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+}
+
+.filter-box{
+    position: relative;
+    
+    .clearAll{
+        position: absolute;
+        top: -23px;
+        right: 8px;
+        font-size: 13px;
+        color: black;
+        font-weight: 700;
+        cursor: pointer;
+        line-height: normal;
+    }
+}
+
+.search-claim-dropdown{
+    height: auto!important;
+    width: auto;
+    min-width: 179px;
+}
+
+.detail-page-service-codes .drop-toggle,.detail-page-required-rebilling .drop-toggle{
+        width: 220px !important;
+}

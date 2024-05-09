@@ -49,7 +49,8 @@ export class ReservationComponent {
       "arrival_estimate_time": "",
       "cancellation_date": "",
       "created_by": "",
-      "property_id": ""
+      "property_id": "",
+      "colors":""
     },
   guestData:[],
   rooms:[],
@@ -64,6 +65,7 @@ export class ReservationComponent {
   }
 
   addMoreGuestData:any=[];
+  successReservationConfig:any={showAlert:false,alertMsg:''}
 
 
   constructor( private _service: PropertyService, private alert: AlertService) {
@@ -125,6 +127,7 @@ export class ReservationComponent {
 
   backToManageReservation() {
     this.showModal.reservation = false;
+    this.successReservationConfig={};
     this.showActionDropDown = {};
     this.addReservationConfig = [];
     this.reservationList = [];
@@ -158,24 +161,80 @@ export class ReservationComponent {
     let selectedQuantity: any = +event.target.value;
     if (this.addReservationConfig.length == 0) {
       for (let i = 0; i < selectedQuantity; i++) {
-        this.addReservationConfig.push({ ...selectedRoom, 'quantity': selectedQuantity, 'parentRoom': parentRoom.parentRoom, 'parentRoomId': parentRoom.parentRoomId, 'start_date': this.searchRoomAvailConfig.start_date, 'end_date': this.searchRoomAvailConfig.end_date });
+        this.addReservationConfig.push(
+          {
+            ...selectedRoom,
+            'quantity': selectedQuantity,
+            'parentRoom': parentRoom.parentRoom,
+            'parentRoomId': parentRoom.parentRoomId,
+            'check_in': this.searchRoomAvailConfig.start_date,
+            'check_out': this.searchRoomAvailConfig.end_date,
+            'internal_room_id':selectedRoom.room_id,
+            'discount_id':0,
+            'price':0,
+            'deposit':0,
+            'extra_facilities':{"SPA":0,"Jim":0,"Pool":0},
+            'cancellation_date':''
+          });
       }
     } else {
       let isExist: any = this.addReservationConfig.some((e: any) => e.room_id == selectedRoom.room_id);
       if (!isExist) {
         for (let i = 0; i < selectedQuantity; i++) {
-          this.addReservationConfig.push({ ...selectedRoom, 'quantity': selectedQuantity, 'parentRoom': parentRoom.parentRoom, 'parentRoomId': parentRoom.parentRoomId, 'start_date': this.searchRoomAvailConfig.start_date, 'end_date': this.searchRoomAvailConfig.end_date });
+          this.addReservationConfig.push(
+            {
+            ...selectedRoom,
+            'quantity': selectedQuantity,
+            'parentRoom': parentRoom.parentRoom,
+            'parentRoomId': parentRoom.parentRoomId,
+            'check_in': this.searchRoomAvailConfig.start_date,
+            'check_out': this.searchRoomAvailConfig.end_date,
+            'internal_room_id':selectedRoom.room_id,
+            'discount_id':0,
+            'price':0,
+            'deposit':0,
+            'extra_facilities':{"SPA":0,"Jim":0,"Pool":0},
+            'cancellation_date':''
+          });
         }
       } else {
         let notExistedReservationRooms = this.addReservationConfig.filter((e: any) => e.room_id != room.room_id);
         this.addReservationConfig = [];
         if (notExistedReservationRooms.length == 0) {
           for (let i = 0; i < selectedQuantity; i++) {
-            this.addReservationConfig.push({ ...selectedRoom, 'quantity': selectedQuantity, 'parentRoom': parentRoom.parentRoom, 'parentRoomId': parentRoom.parentRoomId, 'start_date': this.searchRoomAvailConfig.start_date, 'end_date': this.searchRoomAvailConfig.end_date });
+            this.addReservationConfig.push(
+              {
+                ...selectedRoom,
+                'quantity': selectedQuantity,
+                'parentRoom': parentRoom.parentRoom,
+                'parentRoomId': parentRoom.parentRoomId,
+                'check_in': this.searchRoomAvailConfig.start_date,
+                'check_out': this.searchRoomAvailConfig.end_date,
+                'internal_room_id':selectedRoom.room_id,
+                'discount_id':0,
+                'price':0,
+                'deposit':0,
+                'extra_facilities':{"SPA":0,"Jim":0,"Pool":0},
+                'cancellation_date':''
+              });
           }
         } else {
           for (let i = 0; i < selectedQuantity; i++) {
-            this.addReservationConfig.push({ ...selectedRoom, 'quantity': selectedQuantity, 'parentRoom': parentRoom.parentRoom, 'parentRoomId': parentRoom.parentRoomId, 'start_date': this.searchRoomAvailConfig.start_date, 'end_date': this.searchRoomAvailConfig.end_date });
+            this.addReservationConfig.push(
+              {
+                ...selectedRoom,
+                'quantity': selectedQuantity,
+                'parentRoom': parentRoom.parentRoom,
+                'parentRoomId': parentRoom.parentRoomId,
+                'check_in': this.searchRoomAvailConfig.start_date,
+                'check_out': this.searchRoomAvailConfig.end_date,
+                'internal_room_id':selectedRoom.room_id,
+                'discount_id':0,
+                'price':0,
+                'deposit':0,
+                'extra_facilities':{"SPA":0,"Jim":0,"Pool":0},
+                'cancellation_date':''
+              });
           }
           notExistedReservationRooms.forEach((e: any) => this.addReservationConfig.push(e));
 
@@ -246,7 +305,16 @@ export class ReservationComponent {
   }
 
   addMoreGuestInfo(){
-    this.addMoreGuestData.push(this.guestNameConfig);
+        this.addMoreGuestData.push(
+          {
+          "first_name": "",
+          "last_name": "",
+          "email": "",
+          "mobile": "",
+          "language": "",
+          "travel_agency": "",
+          "customer_type": 2
+        });
   }
 
   
@@ -256,15 +324,22 @@ export class ReservationComponent {
     this.setGuestData();
     this.setRoomsData();
     this.setPaymentMethodData();
-
+    
     setTimeout(() => {
       this._service.addReservationDetails(this.reservationPayloadDataConfig,(res:any)=>{
         if(res.status == 200){
           console.log(res);
+          this.alert.alert("success", res.message, "Success", { displayDuration: 3000, pos: 'top' });
+          this.successReservationConfig.showAlert=true;
+          this.successReservationConfig.alertMsg = res.reservation_number;
+          setTimeout(() => {
+            this.backToManageReservation();
+          }, 5000);
+        }else{
+          this.alert.alert("error", res.message, "Error", { displayDuration: 3000, pos: 'top' });
         }
       })
     }, 0);
-   
   
   } 
 
@@ -272,20 +347,47 @@ export class ReservationComponent {
     this.reservationPayloadDataConfig.reservationData.total_adult =  this.guestTotalConfig.adult;
     this.reservationPayloadDataConfig.reservationData.total_children =  this.guestTotalConfig.child;
     this.reservationPayloadDataConfig.reservationData.total_baby =  this.guestTotalConfig.baby;
-    this.reservationPayloadDataConfig.reservationData.check_in =  "2024-05-25";
-    this.reservationPayloadDataConfig.reservationData.check_out =  "2024-05-28";
-    this.reservationPayloadDataConfig.reservationData.arrival_estimate_time =  "12pm";
+    this.reservationPayloadDataConfig.reservationData.check_in =  this.searchRoomAvailConfig['start_date'];
+    this.reservationPayloadDataConfig.reservationData.check_out =  this.searchRoomAvailConfig['end_date'];
     this.reservationPayloadDataConfig.reservationData.cancellation_date =  "";
     this.reservationPayloadDataConfig.reservationData.created_by =  "Ayush";     
+    this.reservationPayloadDataConfig.reservationData.property_id = this.currentPropertyId;
+    this.reservationPayloadDataConfig.reservationData.total_room = this.addReservationConfig.length;
+
   }
 
   setGuestData(){
-        this.addMoreGuestData.push(this.guestNameConfig);
-        this.reservationPayloadDataConfig.guestData = this.addMoreGuestData;
+    if(this.addMoreGuestData.length > 0 ){
+      this.addMoreGuestData.push(this.guestNameConfig);
+      this.reservationPayloadDataConfig.guestData = this.addMoreGuestData;
+    }else{
+      this.reservationPayloadDataConfig.guestData = [this.guestNameConfig];
+
+    }
   }
 
   setRoomsData(){
-      this.reservationPayloadDataConfig.rooms = this.addReservationConfig;
+
+      let filterPayloadData :any =  this.addReservationConfig.map((e:any)=>{
+        return{
+          "internal_room_id":e.room_id,
+          "adult":e.adult,
+          "children":e.child,
+          "baby":e.baby,
+          "check_in":e.check_in,
+          "check_out":e.check_out,
+          "discount_id":e.discount_id,
+          "price":e.avg_pr,
+          "deposit":e.deposit,
+          "extra_facilities":e.extra_facilities,
+          "cancellation_date":e.cancellation_date
+      }
+  
+      });
+
+      
+
+      this.reservationPayloadDataConfig.rooms = filterPayloadData;
   }
 
   setPaymentMethodData(){
@@ -301,4 +403,16 @@ export class ReservationComponent {
     
   }
 
+  addExtraFacility(item:any){
+      
+      item[`showExtraFac`] = !item[`showExtraFac`];
+  }
+
+  selectExtraFac(event:any,type:any,item:any){
+      if(event.target.checked){
+          item.extra_facilities[type] = 150;
+      }else{
+        delete item.extra_facilities[type];
+      }
+  }
 }

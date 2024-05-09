@@ -46,6 +46,10 @@ const routes: Routes = [
         path:'manage-reservation',
         loadChildren:()=>import("./reservation/reservation.module").then(m=>m.ReservationModule)
       },
+      {
+        path:'list-reservation',
+        loadChildren:()=>import("./list-reservation/list-reservation.module").then(m=>m.ListReservationModule)
+      },
     ]
   }
 ];
