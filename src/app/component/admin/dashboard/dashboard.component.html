@@ -1,12 +1,12 @@
 <div class="container-fluid">
 <ng-container>
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-8">
             <div class="table-wrapper shadow ">
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h2 [innerHTML]="'list-property'|translate"></h2>
+                            <span class="title" [innerHTML]="'list-property'|translate"></span>
                         </div>
                         <div class="col-sm-6 d-flex">
                                 <select class="form-control mx-2" [(ngModel)]="searchConfig['searchType']">
@@ -105,7 +105,7 @@
                 </ng-container>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-4">
 
             <ng-container *ngIf="showFullDetailRight.showPanel">
                 <div class="row mb-4">
@@ -119,7 +119,7 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">Property Name : {{showFullDetailRight.details['property_name']}} </li>
                                     <li class="list-group-item">Property Type : {{showFullDetailRight.details['property_type']}} </li>
-                                    <li class="list-group-item">Emai : {{showFullDetailRight.details['email']}} </li>
+                                    <li class="list-group-item">Email : {{showFullDetailRight.details['email']}} </li>
                                     <li class="list-group-item">Owner Name: {{showFullDetailRight.details['owner_name']}} </li>
                                     <li class="list-group-item">Address : {{showFullDetailRight.details['address']}}</li>
                                     <li class="list-group-item">City : {{showFullDetailRight.details['city']}}</li>

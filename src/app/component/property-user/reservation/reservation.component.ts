@@ -1,5 +1,6 @@
 import { Component,} from '@angular/core';
 import {  FormControl } from '@angular/forms';
+import { AdminService } from 'src/app/services/admin.service';
 import { PropertyService } from 'src/app/services/property.service';
 import { AlertService } from 'src/app/shared/alert.service';
 
@@ -37,6 +38,8 @@ export class ReservationComponent {
 
   guestListData: any = [];
   guestTotalConfig: any = { adult: 0, child: 0, baby: 0 };
+  source:boolean=false;
+  otaDetailsList:any=[];
 
   reservationPayloadDataConfig:any={
     reservationData: {
@@ -68,7 +71,7 @@ export class ReservationComponent {
   successReservationConfig:any={showAlert:false,alertMsg:''}
 
 
-  constructor( private _service: PropertyService, private alert: AlertService) {
+  constructor( private _service: PropertyService, private alert: AlertService,private adminService:AdminService) {
    
   }
 
@@ -80,6 +83,7 @@ export class ReservationComponent {
 
   showAvailibility() {
     this.loader = true;
+    this.reservationList=[];
     this.searchRoomAvailConfig.available = this.searchRoomAvailConfig.available ? 1 : 0;
     this.searchRoomAvailConfig.disc = this.searchRoomAvailConfig.disc ? 1 : 0;
     this.searchRoomAvailConfig.property_id = this.currentPropertyId;
@@ -93,7 +97,7 @@ export class ReservationComponent {
       } else {
         this.reservationList = [];
         this.loader = false;
-        this.alert.alert("error", res.message, "Error", { displayDuration: 3000, pos: 'top' });
+        this.alert.alert("error", "No Rooms Found", "Error", { displayDuration: 3000, pos: 'top' });
       }
     })
   }
@@ -152,7 +156,16 @@ export class ReservationComponent {
       this.showModal.reservation = true;
       this.getGuestTotal();
       this.getPaymentMethod();
+      this.getOtaDetailsList();
     }
+  }
+
+  getOtaDetailsList(){
+    this.adminService.fetchOtaDetails((res:any)=>{
+      if(res.status == 200){
+        this.otaDetailsList = res.data;
+      }
+    })
   }
 
   selectAvailabilityReservation(event: any, room: any, parentRoom: any) {
@@ -334,7 +347,7 @@ export class ReservationComponent {
           this.successReservationConfig.alertMsg = res.reservation_number;
           setTimeout(() => {
             this.backToManageReservation();
-          }, 5000);
+          }, 10000);
         }else{
           this.alert.alert("error", res.message, "Error", { displayDuration: 3000, pos: 'top' });
         }
@@ -404,7 +417,6 @@ export class ReservationComponent {
   }
 
   addExtraFacility(item:any){
-      
       item[`showExtraFac`] = !item[`showExtraFac`];
   }
 

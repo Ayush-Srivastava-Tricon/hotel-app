@@ -43,11 +43,12 @@ export class ManageInternalMappingComponent {
   }
 
   fetchOtaUserDetail(){
+    this.loader=true;
     this.propertyService.fetchOtaUserDetail((res:any)=>{
       if(res.status == 200){
+        this.loader=false;
         this.otaUserData = res.data;
         console.log(res.data);
-        this.loader=false;
       }else{
         this.loader=false;
       }

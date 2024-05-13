@@ -28,19 +28,22 @@ export class ListReservationComponent {
   reservationPayloadDataConfig:any={
 
   }
-  editReservationConfig:any=[];
-
   roomAvailConfig:any={};
   guestTotalConfig:any={};
   todayDate:any = new Date();
   guestNameConfig:any={};
   addMoreGuestData:any=[];
   paymentModeList:any=[];
+  daysBetweenDates:any;
+
+
+  editReservationDataConfig:any={reservationData:{}};
 
   @ViewChild(MultiselectDropdownComponent) multiselect!:MultiselectDropdownComponent;
 
 
-  constructor(private _service:PropertyService,private adminService:AdminService,public constant:AppConstants,private alert:AlertService){}
+  constructor(private _service:PropertyService,private adminService:AdminService,public constant:AppConstants,private alert:AlertService){
+  }
 
   ngOnInit(){
     this.getListOfReservation();
@@ -70,20 +73,44 @@ export class ListReservationComponent {
 
 
   showDropDown(idx:any){
-      this.showActionDropDown[idx] = !this.showActionDropDown[idx];
+      this.showActionDropDown[idx] = !this.showActionDropDown[idx]; 
   }
 
   getSingleReservation(item:any){
       this._service.getSingleReservation(item.id,(res:any)=>{
         if(res.status == 200 && (res.responseData.rooms.length>0 || res.responseData.guestData.length > 0 || res.responseData.payments.length > 0 )){
           this.isEditReservation=true;
-          this.reservationPayloadDataConfig = res.responseData;
-        this.editReservationConfig = this.reservationPayloadDataConfig.rooms;
-        this.addMoreGuestData = this.reservationPayloadDataConfig.guestData;
+          window.scroll(0,0);
+          this.editReservationDataConfig = res.responseData;
+          this.editReservationDataConfig['reservationData'] = item;
+          this.editReservationDataConfig['reservationData']['reservation_id'] = item.id;
+          delete this.editReservationDataConfig['reservationData'].id;
+          this.editReservationDataConfig['reservationData']['cancellation_date'] = "";
+          this.calculateDaysBetweenDates(item);
+          this.getPaymentMethod();
         }else{
           this.alert.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' })
         };
       })
+  }
+
+  getPaymentMethod() {
+    this._service.getPaymentMethod((res: any) => {
+      if (res.status == 200) {
+        this.paymentModeList = res.data;
+      }
+    })
+  }
+
+  calculateDaysBetweenDates(reservationDetail: any) {
+    let date1 = new Date(reservationDetail.check_in);
+    let date2 = new Date(reservationDetail.check_out);
+
+    let Difference_In_Time = date2.getTime() - date1.getTime();
+
+    let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
+
+    this.daysBetweenDates = Difference_In_Days;
   }
 
   receiveChildEvent(event:any){
@@ -112,7 +139,7 @@ export class ListReservationComponent {
   clearReservationStatus(){
     this.constant.reservation_status.forEach((e:any)=>e.checked=false);
     this.searchConfig['reservation_status']= [];
-    this.multiselect.clearSelectedValues();
+    this.multiselect?.clearSelectedValues();
   }
 
   clearAllFilter(){
@@ -129,37 +156,40 @@ export class ListReservationComponent {
   backToListReservation(){
     this.isEditReservation=false;
     this.showActionDropDown={};
+    this.clearAllFilter();
+    this.getListOfReservation();
+
   }
 
   setAdultGuestReserve(event: any) {
 
     const totalAdults = +event.target.value;
-    const numRooms = this.editReservationConfig.length;
+    const numRooms = this.editReservationDataConfig.rooms.length;
     const baseAdultsPerRoom = Math.floor(totalAdults / numRooms);
     let remainingAdults = totalAdults % numRooms;
     let additionalAdultsRooms = remainingAdults;
 
-    this.editReservationConfig.forEach((room: any, index: any) => {
+    this.editReservationDataConfig.rooms.forEach((room: any, index: any) => {
       room.adult = baseAdultsPerRoom + (additionalAdultsRooms > 0 ? 1 : 0);
       additionalAdultsRooms = Math.max(0, additionalAdultsRooms - 1);
     });
 
-    console.log(this.editReservationConfig);
+    console.log(this.editReservationDataConfig.rooms);
   }
 
   setChildGuestReserve(event: any) {
     const totalAdults = +event.target.value;
-    const numRooms = this.editReservationConfig.length;
+    const numRooms = this.editReservationDataConfig.rooms.length;
     const baseAdultsPerRoom = Math.floor(totalAdults / numRooms);
     let remainingChild = totalAdults % numRooms;
     let additionalChildRooms = remainingChild;
 
-    this.editReservationConfig.forEach((room: any, index: any) => {
-      room.child = baseAdultsPerRoom + (additionalChildRooms > 0 ? 1 : 0);
+    this.editReservationDataConfig.rooms.forEach((room: any, index: any) => {
+      room.children = baseAdultsPerRoom + (additionalChildRooms > 0 ? 1 : 0);
       additionalChildRooms = Math.max(0, additionalChildRooms - 1);
     });
 
-    console.log(this.editReservationConfig);
+    console.log(this.editReservationDataConfig.rooms);
   }
 
   setBabyGuestReserve(event: any) {
@@ -167,11 +197,21 @@ export class ListReservationComponent {
 }
 
 addMoreGuestInfo(){
-
+      this.editReservationDataConfig.guestData.push(
+        {
+          "first_name": "",
+          "last_name": "",
+          "email": "",
+          "mobile": "",
+          "language": "",
+          "travel_agency": "",
+          "customer_type": 2
+        }
+      )
 }
 
 getPaymentDetails(event:any){
-
+    
 }
 
 trackBy(idx:any){
@@ -179,7 +219,7 @@ trackBy(idx:any){
 }
 
 addExtraFacility(item:any){
-
+  item[`showExtraFac`] = !item[`showExtraFac`];
 }
 
 selectExtraFac(event:any,typ:any,item:any){
@@ -187,6 +227,32 @@ selectExtraFac(event:any,typ:any,item:any){
 }
 
 editReservation(){
-  
+  this.reMakePayloadData();
+  console.log(this.editReservationDataConfig);
+      
 }
+
+reMakePayloadData(){
+    this.editReservationDataConfig.rooms.forEach((e:any)=>{
+        e['reserved_room_id'] = e.id;
+        delete e.id;
+        delete e.reservations_id;
+    })
+}
+
+copyCode(val: string){
+  const selBox = document.createElement('textarea');
+  selBox.style.position = 'fixed';
+  selBox.style.left = '0';
+  selBox.style.top = '0';
+  selBox.style.opacity = '0';
+  selBox.value = val;
+  document.body.appendChild(selBox);
+  selBox.focus();
+  selBox.select();
+  document.execCommand('copy');
+  document.body.removeChild(selBox);
+  this.alert.alert("success","Reseration Code Copied","Success",{ displayDuration: 1000, pos: 'top' })
+}
+
 }

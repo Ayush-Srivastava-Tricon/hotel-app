@@ -1,11 +1,11 @@
-<div class="container-fluid mt-2" *ngIf="!showModal.property">
+<div class="container-fluid" *ngIf="!showModal.property">
     <div class="row justify-content-center align-items-center">
         <div class="col-sm-12">
-            <div class="table-wrapper shadow table-responsive ">
+            <div class="table-wrapper shadow">
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h2>List <b>Rooms</b></h2>
+                            <span class="title">List <b>Rooms</b></span>
                         </div>
                         <div class="col-sm-6">
                             <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
@@ -118,8 +118,7 @@
                             <div class="col-sm-9">
                                 <select type="text" class="form-control" formControlName="parent_room_id">
                                     <option selected="true" value="null">Select</option>
-                                    <option value="1">Parent - 1 </option>
-                                    <option value="2">Parent - 2 </option>
+                                    <option [value]="room.room_id" *ngFor="let room of parentRooms">{{room.room_name}}</option>
                                 </select>
                                 <small
                                     *ngIf="roomModal.controls.parent_room_id.dirty && roomModal.controls.parent_room_id.errors?.['required']"
@@ -257,8 +256,7 @@
                 </div>
                 <div class="col-sm-5 flex-wrap">
                     <fieldset class="border p-2">
-                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Optional
-                                Radio Box
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Rate Plan
                             </button> </legend>
                         <div class="d-flex justify-content-around">
                             <div class="form-group row align-items-center">
@@ -358,7 +356,7 @@
                             <ng-container *ngFor="let item of imageArrayContainer;let idx=index;">
                                 <div class="image-block m-2" (click)="selectImg(file)">
                                     <img class="img-preview img-thumbnail" loading="lazy" [src]="item.thumbnailUrl? item.thumbnailUrl : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU'" *ngIf="!isEditModal" alt="">
-                                    <img class="img-preview img-thumbnail" loading="lazy" [src]="item.image_path ? item.image_path+'/'+item.image_name : item.thumbnailUrl"  *ngIf="isEditModal">
+                                    <img class="img-preview img-thumbnail" loading="lazy" *ngIf="isEditModal" [src]="item.image_path ? item.image_path+'/'+item.image_name : item.thumbnailUrl"  >
                                     <input type="file" accept="image/*" (change)="uploadImage($event,idx)"
                                         accept="image/*" class="file" #file hidden>
                                     </div>
@@ -415,7 +413,7 @@
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button type="button" class="btn btn-danger" data-dismiss="modal"
-                            (click)="closeModal()">Cancel</button>
+                            (click)="showModal.deleteImage ? closeDeleteImgModal() : closeModal()">Cancel</button>
                         <button type="button" class="btn btn-outline-danger" (click)="showModal.deleteImage ? deleteImage() :  deleteRoom()">Delete</button>
                     </div>
                 </ng-container>

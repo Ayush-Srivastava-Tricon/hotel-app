@@ -104,6 +104,9 @@ export class ManageOtaComponent {
 
   backToManageOta() {
     this.showModal.ota = false;
+    this.isEditModal = false;
+    this.showActionDropDown = {};
+    this.otaModal.reset();
   }
 
   addNewOtaDetails(){

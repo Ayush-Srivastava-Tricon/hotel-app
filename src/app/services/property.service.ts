@@ -96,6 +96,10 @@ export class PropertyService extends BaseServiceService {
   getSingleReservation(reservationId:any,callback:any){
     this.getData({},this.httpUrl['getSingleReservation']+"/"+reservationId,callback);
   }
+  
+  updateReservation(params:any,callback:any){
+    this.putData(params,this.httpUrl['updateReservation'],callback);
+  }
 
 
 }

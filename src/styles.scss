@@ -1,5 +1,5 @@
 :root{
-  --adminBlue: #435d7d;
+  --adminBlue: #5f9ea0;
 }
 
 // *{
@@ -111,7 +111,7 @@ h1{color:#e35154 !important; font-size:18px; margin-left:20px; margin-bottom:20p
 .alert-success {
   color: #fff;
   border-color: #539753;
-  background-color: #27cc35;
+  background-color: #4caf50;
 }
 
 .alert-error {
@@ -228,13 +228,13 @@ body {
   z-index: 1;
   min-width: 200px;
   background-color: white;
-  border: 1px solid #385e7d;
+  border: 1px solid #137d92;
   border-radius: 0px 13px 0px 0px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .dropdown-content a {
-  color: #385e7d;
+  color: #137d92;
   padding: 8px 10px;
   text-decoration: none;
   display: block;
@@ -242,7 +242,7 @@ body {
 }
 
 .dropdown-content a:hover {
-  background-color: #385e7d;
+  background-color: #137d92;
   color: #fff;
   border-radius: 0px 13px 0px 0px;
 }
@@ -327,4 +327,20 @@ input:checked + .slider:before {
 .dropdown-item{
   cursor: pointer;
   font-size: 14px;
+}
+
+.table-title{
+  border-radius: 50px !important;
+  padding-bottom: 16px !important;
+
+  .title{
+    font-size: 20px;
+    padding: 10px;
+    background: cadetblue;
+    color: white;
+  }
+}
+
+.table-wrapper{
+  background-color: whitesmoke !important;
 }

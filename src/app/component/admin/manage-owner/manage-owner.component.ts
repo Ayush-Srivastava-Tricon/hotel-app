@@ -179,6 +179,9 @@ export class ManageOwnerComponent {
 
   backToManageOwner() {
     this.showModal.owner = false;
+    this.isEditModal = false;
+    this.ownerModal.reset();
+    this.showActionDropDown={};
   }
 
   

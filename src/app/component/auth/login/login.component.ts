@@ -12,60 +12,64 @@ import { AlertService } from 'src/app/shared/alert.service';
 })
 export class LoginComponent {
 
-  userType:any='';
-  userModal:any={};
-  isAdminLogin:boolean=false;
+  userType: any = '';
+  userModal: any = {};
+  isAdminLogin: boolean = false;
+  loader: boolean = false;
 
-  constructor(private router : Router,private authService:AuthService,private alertService:AlertService,private commonService:CommonService){}
+  constructor(private router: Router, private authService: AuthService, private alertService: AlertService, private commonService: CommonService) { }
 
-  ngOnInit(){
+  ngOnInit() {
     console.log(this.router.url);
-    if(this.router.url.endsWith("/adminLogin")){
-      this.isAdminLogin=true;
-      this.selectUserType('admin',1);
+    if (this.router.url.endsWith("/adminLogin")) {
+      this.isAdminLogin = true;
+      this.selectUserType('admin', 1);
     }
-    
+
   }
 
-  selectUserType(userType:any,roleNum:number){
+  selectUserType(userType: any, roleNum: number) {
     localStorage.clear();
-    localStorage.setItem(`is${userType}`,'true');
-    this.userType=userType;
+    localStorage.setItem(`is${userType}`, 'true');
+    this.userType = userType;
     this.userModal['role'] = roleNum.toString();
   }
 
-  login(){
-      this.authService.login(this.userModal,(res:any)=>{
-        if(res.status == 200){
-              console.log(res);
-              this.setUserLoggedIn();
-              this.setAccessToken(res);
-              this.setUserAndRole(res);
-              this.router.navigate([this.userType]);
-              this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
-            }else{
-              this.alertService.alert("error",res.error.message, "Error", { displayDuration: 2000, pos: 'top' });      //need to be change
-        }
-      })
+  login() {
+    this.loader = true;
+    this.authService.login(this.userModal, (res: any) => {
+      if (res.status == 200) {
+        this.loader = false;
+        console.log(res);
+        this.setUserLoggedIn();
+        this.setAccessToken(res);
+        this.setUserAndRole(res);
+        this.router.navigate([this.userType]);
+        this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
+      } else {
+        this.loader = false;
+        this.alertService.alert("error", res.error.message, "Error", { displayDuration: 2000, pos: 'top' });      //need to be change
+      }
+    })
   }
 
-  setAccessToken(data:any){
-    localStorage.setItem("token",data.Bearer);
-    localStorage.setItem("refreshToken",data.RefreshToken);
-    this.authService.setAccessToken(data.Bearer,data.RefreshToken);
-    this.commonService.setAccessToken(data.Bearer,data.RefreshToken);
+  setAccessToken(data: any) {
+    localStorage.setItem("token", data.Bearer);
+    localStorage.setItem("refreshToken", data.RefreshToken);
+    this.authService.setAccessToken(data.Bearer, data.RefreshToken);
+    this.commonService.setAccessToken(data.Bearer, data.RefreshToken);
   }
 
-  setUserAndRole(data:any){
+  setUserAndRole(data: any) {
     this.authService.setRoleAndUser(data);
     this.commonService.setRoleAndUser(data);
-    localStorage.setItem("roleId",data.data.role)
-    localStorage.setItem("userId",data.data.user_id)
-    localStorage.setItem("loggedUserData",JSON.stringify(data.data));
+    localStorage.setItem("roleId", data.data.role)
+    localStorage.setItem("userId", data.data.user_id)
+    localStorage.setItem("loggedUserData", JSON.stringify(data.data));
   }
 
-  setUserLoggedIn(){
-    localStorage.setItem("isLoggedIn",'true');
+  setUserLoggedIn() {
+    localStorage.setItem("isLoggedIn", 'true');
   }
 
 

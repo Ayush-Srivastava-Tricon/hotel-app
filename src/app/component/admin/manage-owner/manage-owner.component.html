@@ -1,5 +1,5 @@
-<div class="container-fluid p-4 manage-owner-container">
-    <div class="row">
+<div class="container-fluid manage-owner-container">
+    <!-- <div class="row">
         <div class="col-sm-8">
         </div>
         <div class="col-sm-4 text-end">
@@ -12,7 +12,7 @@
                 </ng-container>
             </select>
         </div>
-    </div>
+    </div> -->
     <ng-container *ngIf="!showModal.owner">
         <div class="row justify-content-center align-items-center">
             <div class="col-sm-12">
@@ -20,7 +20,7 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h2>Owner <b>List</b></h2>
+                                <span class="title">Owner <b>List</b></span>
                             </div>
                             <div class="col-sm-6">
                                 <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success" data-toggle="modal"><span>Add New Owner</span></a>

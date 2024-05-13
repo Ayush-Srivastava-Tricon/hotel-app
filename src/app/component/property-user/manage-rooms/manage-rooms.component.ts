@@ -30,6 +30,7 @@ export class ManageRoomsComponent {
   currentPropertyId:any;
   removedImgObj:any=[];
   deleteImageConfig:any={};
+  parentRooms:any=[];
 
   constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private proService: PropertyService) {
     this.roomModal = this.fb.group(
@@ -119,7 +120,13 @@ export class ManageRoomsComponent {
     this.showModal.property = true;
     this.roomModal.reset();
     this.isEditModal = false;
+    this.getParentRoomId();
 
+  }
+
+  getParentRoomId(){
+    this.parentRooms = this.roomsList.filter((e:any)=>e.parent_room_id);
+    
   }
 
   closeModal() {
@@ -130,6 +137,10 @@ export class ManageRoomsComponent {
     this.roomModal.reset();
     this.imageArrayContainer = [];
     
+  }
+
+  closeDeleteImgModal(){
+    this.showModal.deleteImage = false;
   }
 
   showDropDown(idx: any) {
@@ -157,6 +168,10 @@ export class ManageRoomsComponent {
           console.log(res);
           this.imageArrayContainer = JSON.parse(JSON.stringify(res.data));
         }else{
+          this.imageArrayContainer = [{
+            thumbnailUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU',
+            image: ''
+            }];
           this.alertService.alert("error", "No Image Found", "Error", { displayDuration: 3000, pos: 'top' });
         }
       })
@@ -205,6 +220,7 @@ export class ManageRoomsComponent {
     this.proService.deleteUploadedFiles(this.removedImgObj,(res:any)=>{
       if(res.status == 200){
         console.log(res);
+        this.alertService.alert("error",res.message,"Success",{ displayDuration: 2000, pos: 'top' })
         
       }
     })
@@ -231,8 +247,12 @@ export class ManageRoomsComponent {
 
   backToManageRoom() {
     this.showModal.property = false;
+
     this.showActionDropDown = {};
-    this.imageArrayContainer = [];
+    this.imageArrayContainer = [{
+    thumbnailUrl: '',
+    image: ''
+      }];
   }
 
   convertStringToNumber() {
@@ -271,13 +291,6 @@ export class ManageRoomsComponent {
     return this.toUploadImagefile.filter((e: any) => e != null);
   }
 
-  // checkFileAlreadyExist(file:any){
-
-  //   this.toUploadImagefile.push(file.name);
-  //   if(this.toUploadImagefile)
-
-  // }
-
   selectImg(file: any) {
     file.click();
   }
@@ -302,6 +315,12 @@ export class ManageRoomsComponent {
     this.removedImgObj.push(obj);
     this.showModal.delete=false;
     this.showModal.deleteImage=false;
+    if(this.imageArrayContainer.length == 0){
+      this.imageArrayContainer = [{
+        thumbnailUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU',
+        image: ''
+          }];
+    }
   }
 
 }

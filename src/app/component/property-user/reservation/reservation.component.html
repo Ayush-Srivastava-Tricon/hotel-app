@@ -10,7 +10,7 @@
         </div>
         <div class="form-group col-md-2">
             <label for="available">Show Available room</label>
-            <br>
+            <br>    
             <label class="switch">
                 <input type="checkbox" id="available" [(ngModel)]="searchRoomAvailConfig['available']">
                 <span class="slider"></span>
@@ -27,12 +27,12 @@
         <div class="form-group col-md-2">
             <label for="inputPassword4">Reservation Type</label>
             <select class="form-control" [(ngModel)]="searchRoomAvailConfig['reservationType']">
-                <option value="normal" [selected]="true">Normal</option>
+                <option value="normal" selected="true">Normal</option>
                 <option value="urgent">Urgent</option>
             </select>
         </div>
         <div class="form-group col-md-2 mt-3 d-flex">
-            <button class="btn btn-warning rounded mx-2" (click)="showAvailibility()">Check Availibility</button>
+            <button class="btn btn-danger rounded-pill p-2 mx-2" (click)="showAvailibility()">Check Availibility</button>
             <span class="spinner-border text-primary"  *ngIf="loader"></span>
         </div>
     </div>
@@ -54,11 +54,11 @@
     <div class="row justify-content-center align-items-center" *ngIf="reservationList.length>0">
         <div class="col-sm-12">
             <ng-container *ngFor="let item of reservationList">
-            <div class="table-wrapper shadow table-responsive mb-2 ">
+            <div class="table-wrapper shadow mb-2 ">
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h2><b>{{item.parentRoom}}</b></h2>
+                            <span class="title"><b>{{item.parentRoom}}</b></span>
                         </div>
                     </div>
                 </div>
@@ -209,17 +209,30 @@
                         </div>
                         <div class="form-group row mb-3 align-items-baseline">
                             <label class="col-sm-7 col-form-label">Estimated time of arrival {{todayDate|date}} (local time) <span class="text-danger">*</span></label>
-                            <div class="col-sm-5">
-                                <input type="time" class="form-control"  [(ngModel)]="reservationPayloadDataConfig.reservationData.arrival_estimate_time">
+                            <div class="col-sm-5" >
+                                <select name="" id="" class="form-control" [(ngModel)]="reservationPayloadDataConfig.reservationData.arrival_estimate_time">
+                                    <option [selected]="true">Select</option>
+                                    <option value="I don't know">I don't know</option>
+                                    <option value="10:00 - 11:00">10:00 - 11:00</option>
+                                    <option value="11:00 - 12:00">11:00 - 12:00</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 " for="source">Source</label>
                             <div class="col-sm-8">
                                 <label class="switch">
-                                    <input type="checkbox" id="source">
+                                    <input type="checkbox" id="source" (change)="source = !source ; reservationPayloadDataConfig.reservationData.ota_details_id=null;">
                                     <span class="slider"></span>
                                 </label>
+                                <div class="row mt-2" *ngIf="source">
+                                    <div class="col-sm-12">
+                                        <select class="form-control" [(ngModel)]="reservationPayloadDataConfig.reservationData.ota_details_id">
+                                            <option value="" [selected]="true" [hidden]="true">Select Source</option>
+                                            <option [value]="item.id" *ngFor="let item of otaDetailsList">{{item.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
@@ -468,7 +481,7 @@
                                 <div class="form-group row mb-3 align-items-baseline">
                                     <label class="col-sm-3 col-form-label" >Room Type</label>
                                     <div class="col-sm-9">
-                                        <p class="text-info">{{item.parentRoom}}</p>
+                                        <p class="text-info">{{item.internal_room_name}}</p>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3 align-items-baseline">
@@ -509,7 +522,7 @@
                                     <label for="propertyName" class="col-sm-3 col-form-label"> <h5 class="text-primary">Extra</h5></label>
                                     <div class="col-sm-9 text-end">
                                         <button class="btn btn-info btn-sm" (click)="addExtraFacility(item);">+</button>
-                                        <button class="btn btn-primary btn-sm mx-2">Setting</button>
+                                        <button class="btn btn-primary btn-sm mx-2"><i class="bi bi-gear-fill"></i></button>
                                         <button class="btn btn-danger btn-sm">?</button>
                                     </div>
                                 </div>
@@ -630,7 +643,7 @@
                 </ng-container>
                 <ng-container *ngIf="successReservationConfig.showAlert">
                     <div class="p-3 bg-light">
-                        <div>Your Reservation Number is : <span class="h5 text-success">{{successReservationConfig.reservation_number}}</span></div>
+                        <div>Your Reservation Number is : <span class="h5 text-success">{{successReservationConfig.alertMsg}}</span></div>
                     </div>
                 </ng-container>
             </div>

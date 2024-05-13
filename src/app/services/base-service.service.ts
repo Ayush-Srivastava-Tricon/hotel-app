@@ -72,6 +72,7 @@ export class BaseServiceService {
     'addReservationDetails':'hotelapi/roomsForReservation',
     'getListOfReservation':'hotelapi/roomsForReservation/reservationListing',
     'getSingleReservation':'hotelapi/roomsForReservation/reservationListing',
+    'updateReservation':'hotelapi/roomsForReservation/updateReservation',
     
   }
 
