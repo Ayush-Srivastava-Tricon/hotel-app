@@ -115,9 +115,9 @@
                         *ngIf="dayData?.newData?.ctd"></i>
                     </td>
                     <td *ngIf="id == 3" class="hover-td"
-                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.ss,'active':dragEl['head'+dataIdx+calendarIdx],'text-light':dayData?.newData?.ss}"
+                      [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.ss == 'true'|| dayData?.newData?.ss == '1','active':dragEl['head'+dataIdx+calendarIdx],'text-light':dayData?.newData?.ss == 'true'|| dayData?.newData?.ss == '1'}"
                       (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"  (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id);dragEl['head'+dataIdx+calendarIdx]=true;"  >
-                      {{dayData?.newData?.pr}}
+                      {{dayData?.newData?.pr}}  
                     </td>
                   </ng-container>
                 </ng-container>
