@@ -146,9 +146,9 @@ export class ListReservationComponent {
     this.searchConfig = {
       "reservations_no": "", 
       "reservation_status":[], 
-      "ota_details_id":"", 
+      "ota_details_id":null, 
       "guest_email" : "",
-      "arrival_status" : "" 
+      "arrival_status" : null 
     };
     this.clearReservationStatus();
   }
