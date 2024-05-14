@@ -140,6 +140,7 @@ export class ManageRoomsComponent {
   }
 
   closeDeleteImgModal(){
+    this.showModal.delete=false;
     this.showModal.deleteImage = false;
   }
 
