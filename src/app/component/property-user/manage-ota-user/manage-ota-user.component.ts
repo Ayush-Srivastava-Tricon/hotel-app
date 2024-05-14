@@ -28,7 +28,7 @@ export class ManageOtaUserComponent {
       ota_user:['',[Validators.required]],
       ota_pass:['',[Validators.required]],
       ota_hotel_id:['',[Validators.pattern(/^[0-9]+$/)]],
-      ota_other_id:['',[Validators.pattern(/^[0-9]+$/)]] ,
+      ota_other_id:['',[Validators.pattern(/^[a-zA-Z0-9-_ ]+$/)]] ,
       currency:['',],
       commission:['',[ Validators.pattern(/^[0-9]+$/)]],
       requester_ip:['',Validators.required],
