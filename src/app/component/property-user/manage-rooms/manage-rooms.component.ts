@@ -156,6 +156,7 @@ export class ManageRoomsComponent {
     this.proService.getRoomDataToEdit(item.room_id,(res:any)=>{
       if(res.status == 200){
         this.isEditModal = true;
+        this.convertRatePlanIntoNumeric(res.data);
         this.roomModal.patchValue(res.data[0]);
         console.log(item);
         this.showModal.property = true;
@@ -165,6 +166,16 @@ export class ManageRoomsComponent {
       }
     })
 
+  }
+
+  convertRatePlanIntoNumeric(data:any){
+      data.forEach((e:any)=>{
+        e.nonrefundable = +e.nonrefundable;
+        e.is_pms = +e.is_pms;
+        e.is_dorm = +e.is_dorm;
+        e.cald_show = +e.cald_show;
+        e.be_show = +e.be_show;
+      })
   }
 
   getUploadedImage(roomId:any){
