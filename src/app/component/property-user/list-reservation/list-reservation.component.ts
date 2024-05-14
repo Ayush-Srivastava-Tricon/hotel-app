@@ -18,9 +18,9 @@ export class ListReservationComponent {
   searchConfig:any={
     "reservations_no": "", 
     "reservation_status":[], 
-    "ota_details_id":"", 
+    "ota_details_id":null, 
     "guest_email" : "",
-    "arrival_status" : "" 
+    "arrival_status" : null 
   };
   showActionDropDown:any={};
   otaDetailList:any=[];

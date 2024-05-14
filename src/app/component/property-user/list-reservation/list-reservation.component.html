@@ -17,7 +17,7 @@
             </div>
             <div class="col-sm-2">
                 <select class="form-control rounded-pill mx-2" [(ngModel)]="searchConfig['arrival_status']">
-                    <option [selected]="true" disabled>Select</option>
+                    <option selected="true" [value]="null" disabled>Select</option>
                     <option value="check_in">Check In</option>
                     <option value="check_out">Check Out</option>
                     <option value="create_time">Create Time</option>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-sm-2">
                 <select class="form-control rounded-pill mx-2" [(ngModel)]="searchConfig['ota_details_id']">
-                    <option [selected]="true" disabled>Select</option>
+                    <option elected="true" [value]="null" disabled>Select</option>
                     <ng-container *ngFor="let ota of otaDetailList">
                         <option [value]="ota.id">{{ota.name}}</option>
                     </ng-container>

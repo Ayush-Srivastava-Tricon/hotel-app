@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<!-- <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
             <div class="display-6">
@@ -10,4 +10,16 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
+<div class="container">
+    <div class="row">
+      <div class="col shadow">
+        <h2> <i class=""></i> Arrivals for {{todayDate|date: 'MMM,dd'}}</h2>
+        <p>No arrivals today!</p>
+        <i class="bi bi-airplane-landing"></i> </div>
+      <div class="col shadow">
+        <h2>Departures for {{todayDate|date: 'MMM,dd'}}</h2>
+        <p>No departures today!</p>
+        <i class="bi bi-airplane-takeoff"></i> </div>
+    </div>
+  </div>

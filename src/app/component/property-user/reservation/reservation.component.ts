@@ -77,9 +77,9 @@ export class ReservationComponent {
 
   ngOnInit() {
     // this.fetchReservation();
-    this.currentPropertyId = JSON.parse(<any>localStorage.getItem("userId"));
+    this.currentPropertyId = JSON.parse(<any>localStorage.getItem("selectedPropertyId")); 
     if(!this.currentPropertyId){
-      this.currentPropertyId = JSON.parse(<any>localStorage.getItem("selectedPropertyId"))
+      this.currentPropertyId = JSON.parse(<any>localStorage.getItem("userId"))
     }
   }
 
@@ -340,6 +340,7 @@ export class ReservationComponent {
     this.setGuestData();
     this.setRoomsData();
     this.setPaymentMethodData();
+    console.log(34);
     
     setTimeout(() => {
       this._service.addReservationDetails(this.reservationPayloadDataConfig,(res:any)=>{

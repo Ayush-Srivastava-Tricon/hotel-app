@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class DashboardComponent {
 
+  todayDate:any= new Date();
 
 
 }
