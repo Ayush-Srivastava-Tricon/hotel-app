@@ -21,7 +21,7 @@ export class ReservationComponent {
   currentPropertyId: number = 0;
   currentReservationId: number = 0;
   deleteReservationIndex: number = 0;
-  searchRoomAvailConfig: any = {};
+  searchRoomAvailConfig: any = {'available':true,'reservationType':'normal'};
   addReservationConfig: any = [];
   todayDate: any = new Date();
   paymentModeList: any = [];
@@ -77,7 +77,10 @@ export class ReservationComponent {
 
   ngOnInit() {
     // this.fetchReservation();
-    this.currentPropertyId = JSON.parse(<any>localStorage.getItem("selectedPropertyId"));
+    this.currentPropertyId = JSON.parse(<any>localStorage.getItem("userId"));
+    if(!this.currentPropertyId){
+      this.currentPropertyId = JSON.parse(<any>localStorage.getItem("selectedPropertyId"))
+    }
   }
 
 
@@ -88,7 +91,7 @@ export class ReservationComponent {
     this.searchRoomAvailConfig.disc = this.searchRoomAvailConfig.disc ? 1 : 0;
     this.searchRoomAvailConfig.property_id = this.currentPropertyId;
     this._service.fetchReservation(this.searchRoomAvailConfig, (res: any) => {
-      if (res.status == 200 && res.responseData?.displayData.length > 0) {
+      if (res.status == 200 && res.responseData?.displayData?.length > 0) {
         console.log(res);
         this.loader = false;
         this.reservationList = res.responseData.displayData;

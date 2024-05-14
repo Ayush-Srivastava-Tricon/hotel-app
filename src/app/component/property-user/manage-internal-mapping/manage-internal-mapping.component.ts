@@ -20,17 +20,22 @@ export class ManageInternalMappingComponent {
 
   mapConfig:any={};
   currentOtaUserId:number=0;
+  currentPropertyId:any;
 
 
   constructor(private propertyService:PropertyService,private alert: AlertService){}
 
   ngOnInit(){
+    this.currentPropertyId = JSON.parse(<any>localStorage.getItem("selectedPropertyId"));
+    if(!this.currentPropertyId){
+      this.currentPropertyId = JSON.parse(<any>localStorage.getItem("userId"));
+    }
     this.fetchOtaUserDetail();
   }
 
   fetchAllRooms(){
     this.loader=true;
-    this.propertyService.fetchAllRooms((res:any)=>{
+    this.propertyService.fetchAllRooms(this.currentPropertyId,(res:any)=>{
       if(res.status == 200){
         this.internalRoomData = res.data;
         console.log(res.data);
@@ -44,12 +49,13 @@ export class ManageInternalMappingComponent {
 
   fetchOtaUserDetail(){
     this.loader=true;
-    this.propertyService.fetchOtaUserDetail((res:any)=>{
-      if(res.status == 200){
+    this.propertyService.fetchOtaUserDetail(this.currentPropertyId,(res:any)=>{
+      if(res.status == 200 && res.data.length>0){
         this.loader=false;
         this.otaUserData = res.data;
         console.log(res.data);
       }else{
+        this.alert.alert("error", res.message, "Error", { displayDuration: 2000, pos: 'top' });
         this.loader=false;
       }
     })

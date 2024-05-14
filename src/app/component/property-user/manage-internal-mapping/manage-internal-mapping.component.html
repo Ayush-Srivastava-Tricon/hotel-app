@@ -27,6 +27,11 @@
                             <td class="tg-cly1"></td>
                             <td class="tg-cly1"></td>
                         </tr>
+                        <tr *ngIf="otaUserData.length==0 && !loader">
+                            <td colspan="5" class="text-center">
+                                No Data
+                            </td>
+                        </tr>
                         <ng-container *ngIf="otaUserData.length>0 && !loader">
 
                             <tr *ngFor="let item of otaUserData;let idx = index;" class="text-center align-middle">

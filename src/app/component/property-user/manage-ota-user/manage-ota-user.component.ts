@@ -53,13 +53,14 @@ export class ManageOtaUserComponent {
 
   fetchOtaUserDetail(){
     this.loader=true;
-    this._service.fetchOtaUserDetail((res:any)=>{
-      if(res.status == 200){
+    this._service.fetchOtaUserDetail(this.loggedInPropertyId,(res:any)=>{
+      if(res.status == 200 && res.data.length>0){
         this.otaUserList = res.data;
         this.loader=false;
       }else{
         this.otaUserList = [];
         this.loader=false;
+        this.alertService.alert("error", res.message, "Error", { displayDuration: 2000, pos: 'top' });
       }
     })
   }
@@ -104,17 +105,24 @@ export class ManageOtaUserComponent {
   }
 
   editOwnerOpenModal(item:any){
-    this.isEditModal = true;
-    this.otaUserModal.patchValue(item);
-    console.log(item);
-    this.showModal.otaUser = true;
-    this.currentOtaUserId = item.id;
-    this.fetchOtaDetails();
+    this._service.getOtaUserDetailById(item.id,(res:any)=>{
+      if(res.status == 200){
+        this.isEditModal = true;
+        this.otaUserModal.patchValue(res.data[0]);  
+        console.log(item);
+        this.showModal.otaUser = true;
+        this.currentOtaUserId = item.id;
+        this.fetchOtaDetails();
+      }
+    })
   }
 
 
   backToManageOta() {
     this.showModal.otaUser = false;
+    this.isEditModal=false;
+    this.otaUserModal.reset();
+    this.showActionDropDown={};
   }
 
   addNewOtaUser(){

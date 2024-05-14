@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/services/admin.service';
+import { AlertService } from 'src/app/shared/alert.service';
 
 @Component({
   selector: 'app-property-user',
@@ -12,7 +13,7 @@ export class PropertyUserComponent {
   currentPropertyId:any=0;
   loggedUserData:any={};
 
-  constructor(private router:Router,private adminService:AdminService){}
+  constructor(private router:Router,private adminService:AdminService,private alert:AlertService){}
 
   ngOnInit(){
     if(localStorage.getItem("selectedPropertyId")){
@@ -29,9 +30,11 @@ export class PropertyUserComponent {
       localStorage.removeItem("selectedPropertyId");
       localStorage.removeItem("propertyList");
       this.router.navigate(['/admin']);
+      this.alert.alert("error","Logged Out Successfully","Success",{ displayDuration: 2000, pos: 'top' })
     }else{
       localStorage.clear();
       this.router.navigate(['/login']);
+      this.alert.alert("error","Logged Out Successfully","Success",{ displayDuration: 2000, pos: 'top' })
     }
     
   }

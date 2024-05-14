@@ -11,8 +11,8 @@ export class PropertyService extends BaseServiceService {
     super(http)
   }
 
-  fetchAllRooms(callback:any){
-    this.getData({},this.httpUrl['getAllRooms'],callback);
+  fetchAllRooms(propertyid:any,callback:any){
+    this.getData({},`${this.httpUrl['getAllRooms']}?property_id=${propertyid}`,callback);
   }
 
   addRooms(params:any,callback:any){
@@ -40,8 +40,8 @@ export class PropertyService extends BaseServiceService {
     this.deleteData(params,this.httpUrl['deleteUploadedFiles'],callback);
   }
 
-  fetchOtaUserDetail(callback:any){
-    this.getData({},this.httpUrl['getOtaUserList'],callback);
+  fetchOtaUserDetail(loggedInPropertyId:any,callback:any){
+    this.getData({},`${this.httpUrl['getOtaUserList']}?property_id=${loggedInPropertyId}`,callback);
   }
 
   addOtaUserDetails(params:any,callback:any){
@@ -52,8 +52,12 @@ export class PropertyService extends BaseServiceService {
     this.putData(params,this.httpUrl['editOtaUser'],callback);
   }
 
-  fetchOtaRooms(callback:any){
-    this.getData({},this.httpUrl['fetchOtaRoom'],callback);
+  getOtaUserDetailById(otaUserId:any,callback:any){
+    this.getData({},this.httpUrl['getOtaUserList']+"/"+otaUserId,callback);
+  }
+
+  fetchOtaRooms(currentPropertyId:any,callback:any){
+    this.getData({},`${this.httpUrl['fetchOtaRoom']}?property_id=${currentPropertyId}`,callback);
   }
 
   fetchOtaRoomsById(userId:any,callback:any){

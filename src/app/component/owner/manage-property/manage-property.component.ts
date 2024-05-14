@@ -34,7 +34,7 @@ export class ManagePropertyComponent {
     this.propertyUserModal = this.fb.group(
       {
         property_name: ['', [Validators.required]],
-        email: ['', [Validators.required]],
+        email: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
         password: ['', [Validators.required, Validators.minLength(8), this.commonService.validatePassword]],
         mobile: ['', [Validators.pattern("^[0-9]*$")]],
         property_type: ['', [Validators.required]],
@@ -47,36 +47,43 @@ export class ManagePropertyComponent {
         amenities: ['', ],
         latitudes: ['', ],
         longitudes: ['',],
+        owner_id: ['',],
       }
     )
   }
 
   ngOnInit() {
-    this.fetchPropertyList();
     this.currentOwnerId = localStorage.getItem("userId");
+    this.fetchPropertyList();
   }
 
 
   fetchPropertyList() {
     this.loader = true;
-    this.ownerService.fetchPropertyList((res: any) => {
-      if (res.status == 200) {
+    this.ownerService.fetchPropertyList(this.currentOwnerId,(res: any) => {
+      if (res.status == 200 && res.data.length>0) {
         this.loader = false;
         this.propertyList = res.data;
         this.setAllPropertyListToLocal(res.data);
+      }else{
+        this.alertService.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' })
+        this.loader=false;
       }
     })
   }
 
   createNewProperty() {
     if (this.propertyUserModal.status == "VALID") {
+      this.loader=true;
+      this.propertyUserModal.controls.owner_id.setValue(this.currentOwnerId);
+      this.propertyUserModal.controls.owner_id.updateValueAndValidity();
       this.ownerService.addNewProperty(this.propertyUserModal.value, (res: any) => {
         if (res.status == 200) {
-          this.propertyList.push(this.propertyUserModal.value);
           this.showModal.property = false;
           this.propertyUserModal.reset();
           this.fetchPropertyList();
           this.alertService.alert("success", "New Property Created", "Success", { displayDuration: 3000, pos: 'top' });
+          this.loader=false;
         } else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });
         }
@@ -153,19 +160,21 @@ export class ManagePropertyComponent {
     this.propertyUserModal.patchValue(item);
     console.log(item);
     this.showModal.property = true;
-    this.propertyUserModal.controls.password.removeValidators();
-    this.propertyUserModal.controls.password.updateValueAndValidity("");
+    this.propertyUserModal.controls.password.clearValidators();
+    this.propertyUserModal.controls.password.updateValueAndValidity();
     this.selectedPropertyId = item.property_id;
   }
 
   editProperty() {
     if (this.propertyUserModal.status == "VALID") {
+      this.loader=true;
       delete this.propertyUserModal.value.password;
       const editModalObj:any = JSON.parse(JSON.stringify(this.propertyUserModal.value));
       editModalObj['property_id'] = +this.selectedPropertyId;
       editModalObj['owner_id'] = +this.currentOwnerId;
       this.ownerService.editProperty(editModalObj,(res:any)=>{
         if(res.status == 200){
+          this.loader=false;
           this.fetchPropertyList();
           this.showModal.property = false;
           this.isEditModal = false;

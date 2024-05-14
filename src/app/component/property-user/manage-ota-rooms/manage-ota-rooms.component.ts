@@ -37,16 +37,16 @@ export class ManageOtaRoomsComponent {
   }
 
   ngOnInit() {
-    this.fetchOtaRoomList();
     this.currentPropertyId = JSON.parse(<any>localStorage.getItem("selectedPropertyId"));
     if(!this.currentPropertyId){
       this.currentPropertyId = JSON.parse(<any>localStorage.getItem("userId"));
     }
+    this.fetchOtaRoomList();
   }
 
   fetchOtaRoomList() {
     this.loader=true;
-    this._service.fetchOtaRooms((res:any)=>{
+    this._service.fetchOtaRooms(this.currentPropertyId,(res:any)=>{
       if(res.status == 200){
         console.log(res);
         this.otaRoomList = res.data;
@@ -65,7 +65,7 @@ export class ManageOtaRoomsComponent {
   }
 
   fetchOtaUserList(){
-    this._service.fetchOtaUserDetail((res:any)=>{
+    this._service.fetchOtaUserDetail(this.currentPropertyId,(res:any)=>{
       if(res.status == 200){
         this.otaUserList = res.data;
       }
@@ -73,7 +73,7 @@ export class ManageOtaRoomsComponent {
   }
 
   fetchRoomList(){
-    this._service.fetchAllRooms((res:any)=>{
+    this._service.fetchAllRooms(this.currentPropertyId,(res:any)=>{
       if(res.status == 200){
         this.roomList = res.data;
       }

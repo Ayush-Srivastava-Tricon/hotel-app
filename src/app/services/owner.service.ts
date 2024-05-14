@@ -11,8 +11,8 @@ export class OwnerService extends BaseServiceService {
     super(http);
    }
 
-   fetchPropertyList(callback:any){
-    this.getData({},this.httpUrl['getAllProperty'],callback)
+   fetchPropertyList(currentOwnerId:any,callback:any){
+    this.getData({},`${this.httpUrl['getAllProperty']}?owner_id=${currentOwnerId}`,callback)
    }
 
    addNewProperty(param:any,callback:any){

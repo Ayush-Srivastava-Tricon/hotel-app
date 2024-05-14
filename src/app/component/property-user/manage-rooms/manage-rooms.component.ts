@@ -36,7 +36,7 @@ export class ManageRoomsComponent {
     this.roomModal = this.fb.group(
       {
         property_id: [''],
-        room_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z ]*$/)]],
+        room_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_ ]*$/)]],
         adult: [0, [ Validators.pattern(/^[0-9]+$/)]],
         child: [0, [ Validators.pattern(/^[0-9]+$/)]],
         default_price: ['', [Validators.required,Validators.pattern(/^\d*\.?\d*$/)]],
@@ -57,16 +57,16 @@ export class ManageRoomsComponent {
   }
 
   ngOnInit() {
-    this.fetchAllRooms();
     this.currentPropertyId = JSON.parse(<any>localStorage.getItem("selectedPropertyId"));
     if(!this.currentPropertyId){
       this.currentPropertyId = JSON.parse(<any>localStorage.getItem("userId"));
     }
+    this.fetchAllRooms();
   }
 
   fetchAllRooms() {
     this.loader = true;
-    this.proService.fetchAllRooms((res: any) => {
+    this.proService.fetchAllRooms(this.currentPropertyId,(res: any) => {
       if (res.status == 200) {
         this.loader = false;
         this.roomsList = res.data;

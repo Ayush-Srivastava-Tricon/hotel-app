@@ -75,10 +75,10 @@ export class ManageOwnerComponent {
     if (this.ownerModal.status == "VALID") {
       this.adminService.addOwner(this.ownerModal.value, (res: any) => {
         if (res.status == 200) {
-          this.ownerList.push(this.ownerModal.value);
           this.showModal.owner = false;
           this.ownerModal.reset();
           this.alertService.alert("success", "New Owner Added", "Success", { displayDuration: 2000, pos: 'top' });
+          this.fetchOwnerList();
         } else {
           this.alertService.alert("error", res.message, "Error", { displayDuration: 2000, pos: 'top' });
         }

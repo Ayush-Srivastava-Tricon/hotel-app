@@ -62,7 +62,7 @@
                             <td>{{item.adult}}</td>
                             <td>{{item.child}}</td>
                             <td>{{item.parent_room_id}}</td>
-                            <td>{{item.breakfast == 1 ? true : false}}</td>
+                            <td>{{item.breakfast}}</td>
                             <td>{{item.nonrefundable == 1 ? true: false}}</td>
                             <!-- <td>{{item.nonrefundable}}</td>
                         <td>{{item.is_pms ? item.is_pms : false}}</td>
@@ -135,7 +135,7 @@
                                     class="text-danger">Required</small>
                                 <small
                                     *ngIf="roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['pattern']"
-                                    class="text-danger">Only Alphabets</small>
+                                    class="text-danger">Only AlphaNumeric</small>
                             </div>
                         </div>
                         <div class="form-group row">
