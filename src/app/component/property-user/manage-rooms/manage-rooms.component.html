@@ -5,7 +5,7 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <span class="title">List <b>Rooms</b></span>
+                            <span class="title">List Rooms</span>
                         </div>
                         <div class="col-sm-6">
                             <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
@@ -258,77 +258,58 @@
                     <fieldset class="border p-2">
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Rate Plan
                             </button> </legend>
-                        <div class="d-flex justify-content-around">
-                            <div class="form-group row align-items-center">
-                                <label class="col-sm-9 col-form-label" for="nonrefundable">Non-Refundable</label>
-                                <div class="col-sm-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="nonrefundable"
-                                            formControlName="nonrefundable">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row align-items-center">
-                                <label class="col-sm-9 col-form-label" for="is_pms">is PMS</label>
-                                <div class="col-sm-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="is_pms"
-                                            [value]="roomModal.controls.is_pms.value" formControlName="is_pms">
-                                        <label class="col-sm-3 col-form-label" class="form-check-label"
-                                            for="is_pms"></label>
-                                    </div>
-                                    <small
-                                        *ngIf="roomModal.controls.is_pms.dirty && roomModal.controls.is_pms.errors?.['required']"
-                                        class="text-danger">Required</small>
-                                </div>
-                            </div>
-                            <div class="form-group row align-items-center">
-                                <label class="col-sm-9 col-form-label" for="is_dorm">is Dorm</label>
-                                <div class="col-sm-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="is_dorm"
-                                            [value]="roomModal.controls.is_dorm.value" formControlName="is_dorm">
-                                        <label class="col-sm-3 col-form-label" class="form-check-label"
-                                            for="is_dorm"></label>
-                                    </div>
-                                    <small
-                                        *ngIf="roomModal.controls.is_dorm.dirty && roomModal.controls.is_dorm.errors?.['required']"
-                                        class="text-danger">Required</small>
+                       
+                            <div class="form-group row">
+                                <label class="col-sm-4 " for="nonrefundable">Non-Refundable</label>
+                                <div class="col-sm-8 text-center">
+                                    <label class="switch">
+                                        <input type="checkbox" id="nonrefundable" formControlName="nonrefundable">
+                                        <span class="slider"></span>
+                                    </label>
                                 </div>
                             </div>
 
-                        </div>
-                        <div class="d-flex justify-content-around">
-                            <div class="form-group row">
-                                <label class="col-sm-9 col-form-label" for="cald_show">Cald Show &nbsp; &nbsp;
-                                    &nbsp; &nbsp; &nbsp; &nbsp;</label>
-                                <div class="col-sm-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="cald_show"
-                                            [value]="roomModal.controls.cald_show.value" formControlName="cald_show">
-                                        <label class="col-sm-3 col-form-label" class="form-check-label"
-                                            for="cald_show"></label>
-                                    </div>
-                                    <small
-                                        *ngIf="roomModal.controls.cald_show.dirty && roomModal.controls.cald_show.errors?.['required']"
-                                        class="text-danger">Required</small>
+                            <div class="form-group row my-1">
+                                <label class="col-sm-4 " for="is_pms">is PMS</label>
+                                <div class="col-sm-8 text-center">
+                                    <label class="switch">
+                                        <input type="checkbox" id="is_pms" formControlName="is_pms">
+                                        <span class="slider"></span>
+                                    </label>
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label class="col-sm-9 col-form-label" for="be_show">Be Show</label>
-                                <div class="col-sm-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="be_show"
-                                            [value]="roomModal.controls.be_show.value" formControlName="be_show">
-                                        <label class="col-sm-3 col-form-label" class="form-check-label"
-                                            for="be_show"></label>
-                                    </div>
-                                    <small
-                                        *ngIf="roomModal.controls.be_show.dirty && roomModal.controls.be_show.errors?.['required']"
-                                        class="text-danger">Required</small>
+                                <label class="col-sm-4 " for="is_dorm">is Dorm</label>
+                                <div class="col-sm-8 text-center">
+                                    <label class="switch">
+                                        <input type="checkbox" id="is_dorm" formControlName="is_dorm">
+                                        <span class="slider"></span>
+                                    </label>
                                 </div>
                             </div>
+
+                            <div class="form-group row my-1">
+                                <label class="col-sm-4 " for="cald_show">Cald Show</label>
+                                <div class="col-sm-8 text-center">
+                                    <label class="switch">
+                                        <input type="checkbox" id="cald_show" formControlName="cald_show">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
                             <div class="form-group row">
+                                <label class="col-sm-4 " for="be_show">Be Show</label>
+                                <div class="col-sm-8 text-center">
+                                    <label class="switch">
+                                        <input type="checkbox" id="be_show" formControlName="be_show">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                           
+                            <div class="form-group row my-1">
                                 <label class="col-sm-5 col-form-label" for="breakfast">Breakfast</label>
                                 <div class="col-sm-7">
                                     <select type="text" class="form-control" formControlName="breakfast">
@@ -343,7 +324,6 @@
                                         class="text-danger">Required</small>
                                 </div>
                             </div>
-                        </div>
                     </fieldset>
                 </div>
                 <div class="col-sm-4">

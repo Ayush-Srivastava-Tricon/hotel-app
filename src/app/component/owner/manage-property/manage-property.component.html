@@ -5,7 +5,7 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <span class="title">Property <b>List</b></span>
+                            <span class="title">Property List</span>
                         </div>
                         <div class="col-sm-6">
                             <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
@@ -16,7 +16,7 @@
                 <table class="table table-shadow table-sm table-hover">
                     <thead class="thead-dark">
                         <tr class="table-row-rooms">
-                            <th>Property ID</th>
+                            <th>ID</th>
                             <th>Property Name</th>
                             <th>City</th>
                             <th>Status</th>
@@ -122,7 +122,7 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">Email <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <input type="email" class="form-control" formControlName="email">
+                                <input type="email" class="form-control" formControlName="email" autocomplete="off">
                                 <small
                                     *ngIf="propertyUserModal.controls.email.dirty && propertyUserModal.controls.email.errors?.['required']"
                                     class="text-danger">Required</small>
@@ -134,7 +134,7 @@
                         <div class="form-group row mb-2" *ngIf="!isEditModal">
                             <label for="propertyName" class="col-sm-3 col-form-label">Password <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" formControlName="password">
+                                <input type="password" class="form-control" formControlName="password" autocomplete="off">
                                 <small
                                     *ngIf="propertyUserModal.controls.password.dirty && propertyUserModal.controls.password.errors?.['required']"
                                     class="text-danger">Required</small>
@@ -146,7 +146,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Mobile</label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Mobile <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" maxlength="10" class="form-control" formControlName="mobile"
                                 [class.is-invalid]="propertyUserModal.controls.mobile.errors?.['[pattern]']">
@@ -176,7 +176,7 @@
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Location
                             </button> </legend>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Country</label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Country <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <select type="text" class="form-control" (change)="getStateByCountry($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
@@ -191,7 +191,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">State</label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">State <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <select type="text" class="form-control" [disabled]="stateList.length==0" (change)="getCityByState($event)">
                                     <option [selected]="true" [hidden]="true">Select</option>
@@ -205,7 +205,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">City</label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">City <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <select type="text" class="form-control" loading="lazy" [disabled]="cityList.length==0" (change)="selectCity($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
@@ -219,7 +219,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Postal Code</label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Postal Code <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="postal_code">
                                 <small
@@ -279,7 +279,7 @@
             </div>
             <div class="row mt-3 mb-2">
                 <div class="col-sm-12 d-flex">
-                    <button type="submit" class="btn btn-primary"
+                    <button type="submit" class="btn btn-primary" [disabled]="loader"
                         (click)="isEditModal ? editProperty() :createNewProperty()">{{isEditModal?'Edit':'Create'}}</button> <span *ngIf="loader" class="mx-2 spinner-border text-primary"></span>
                 </div>
             </div>

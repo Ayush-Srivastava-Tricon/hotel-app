@@ -81,7 +81,6 @@ export class ManageRoomsComponent {
   }
 
   createNewRoom() {
-
     if (this.roomModal.status == "VALID") {
       this.loader=true;
       this.roomModal.controls.property_id.setValue(this.currentPropertyId);

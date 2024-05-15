@@ -88,7 +88,7 @@ export class CalendarViewComponent {
     let startEndDate: any = this.getStartAndEndDate(nextButtonDate,isFromDateRange);
     this.loader = true;
     this._service.getAllCalendarData(this.loggedProperty.propertyId, startEndDate, (res: any) => {
-      if (res.status == 200) {
+      if (res.status == 200 && res.responseData.length>0) {
         console.log(res);
         this.mainData = res.responseData;
         this.alertService.alert(res.responseData.length> 0 ? "success" : 'error', res.message, "Success", { displayDuration: 2000, pos: 'top' });
@@ -100,6 +100,9 @@ export class CalendarViewComponent {
         setTimeout(() => {
           this.renderCalendar(this.selectDate);
         }, 0);
+      } else{
+        this.mainData = [];
+        this.loader=false;
       }
     })
   }

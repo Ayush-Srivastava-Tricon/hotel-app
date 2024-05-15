@@ -36,13 +36,13 @@ export class ManagePropertyComponent {
         property_name: ['', [Validators.required]],
         email: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
         password: ['', [Validators.required, Validators.minLength(8), this.commonService.validatePassword]],
-        mobile: ['', [Validators.pattern("^[0-9]*$")]],
+        mobile: ['', [Validators.pattern("^[0-9]*$"),Validators.required]],
         property_type: ['', [Validators.required]],
         address: ['',],
-        city: [{ value: '', disabled: true },],
-        state: [{ value: '', disabled: true },],
-        country: ['',],
-        postal_code: ['', ],
+        city: [{ value: '', disabled: true },[Validators.required]],
+        state: [{ value: '', disabled: true },[Validators.required]],
+        country: ['',Validators.required],
+        postal_code: ['',Validators.required ],
         description: ['', ],
         amenities: ['', ],
         latitudes: ['', ],
@@ -66,7 +66,6 @@ export class ManagePropertyComponent {
         this.propertyList = res.data;
         this.setAllPropertyListToLocal(res.data);
       }else{
-        this.alertService.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' })
         this.loader=false;
       }
     })
@@ -86,10 +85,12 @@ export class ManagePropertyComponent {
           this.loader=false;
         } else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });
+          this.loader=false;
         }
       })
     } else {
       this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 3000, pos: 'top' });
+      this.loader=false;
     }
   }
 

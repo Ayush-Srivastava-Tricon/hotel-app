@@ -36,7 +36,7 @@
       <div class="col-sm-3">
         <div class="d-flex">
           <button class="btn btn-sm btn-primary text-light">Date Range</button>
-          <input type="date"  id= "date" class="form-control-sm mx-4" (change)="selectedDate($event)">
+          <input type="date" [disabled]="mainData.length == 0"  id= "date" class="form-control-sm mx-4" (change)="selectedDate($event)">
         </div>
       </div>
       <div class="col-sm-6"></div>
@@ -47,6 +47,9 @@
             </ng-container>
           </select>
       </div>
+    </div>
+    <div class="container-fluid text-center" *ngIf="!loader && mainData.length == 0">
+      <div class="display-1">No Rooms Found</div>
     </div>
     <div class="container-fluid" *ngIf="!loader">
       <div class="row my-2" style="background-color: antiquewhite;">
@@ -151,6 +154,7 @@
       </div>
     </div>
   </div>
+  
   <div class="modal" tabindex="-1" *ngIf="showModal">
     <div class="modal-dialog">
       <div class="modal-content">

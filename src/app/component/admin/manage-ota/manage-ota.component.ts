@@ -139,9 +139,6 @@ export class ManageOtaComponent {
     if(this.otaModal.status == 'VALID'){
       const editModalObj: any = JSON.parse(JSON.stringify(this.otaModal.value));
       editModalObj['id'] = this.currentOtaId;
-      //    let params:any={
-      //   otaData:[editModalObj]
-      // };
       this.formData.append('otaData', JSON.stringify(editModalObj));
       this.adminService.editOtaDetails(editModalObj,(res:any)=>{
         if(res.status == 200){

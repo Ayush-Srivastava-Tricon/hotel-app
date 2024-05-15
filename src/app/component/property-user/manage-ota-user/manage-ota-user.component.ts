@@ -30,7 +30,7 @@ export class ManageOtaUserComponent {
       ota_hotel_id:['',[Validators.pattern(/^[0-9]+$/)]],
       ota_other_id:['',[Validators.pattern(/^[a-zA-Z0-9-_ ]+$/)]] ,
       currency:['',],
-      commission:['',[ Validators.pattern(/^[0-9]+$/)]],
+      commission:['',],
       requester_ip:['',Validators.required],
       update:[1],
       reservation:[1],
@@ -60,7 +60,6 @@ export class ManageOtaUserComponent {
       }else{
         this.otaUserList = [];
         this.loader=false;
-        this.alertService.alert("error", res.message, "Error", { displayDuration: 2000, pos: 'top' });
       }
     })
   }
