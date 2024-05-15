@@ -7,16 +7,16 @@
                 <input type="text" class="form-control rounded-pill" [(ngModel)]="searchConfig['reservations_no']"
                     placeholder="Reservation number">
                 <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['reservations_no']"
-                    (click)="searchConfig['reservations_no']=''">(Clear)</div>
+                    (click)="searchConfig['reservations_no']=null">(Clear)</div>
             </div>
             <div class="col-sm-2">
                 <input type="text" class="form-control rounded-pill" [(ngModel)]="searchConfig['guest_email']"
                     placeholder="Guest email">
                 <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['guest_email']"
-                    (click)="searchConfig['guest_email']=''">(Clear)</div>
+                    (click)="searchConfig['guest_email']=null">(Clear)</div>
             </div>
             <div class="col-sm-2">
-                <select class="form-control rounded-pill mx-2" [(ngModel)]="searchConfig['arrival_status']">
+                <select class="form-select rounded-pill mx-2" [(ngModel)]="searchConfig['arrival_status']">
                     <option selected="true" [value]="null" disabled>Select All Arrivals</option>
                     <option value="check_in">Check In</option>
                     <option value="check_out">Check Out</option>
@@ -29,7 +29,7 @@
                     <option value="15_days">Next 15 days Arrivals</option>
                 </select>
                 <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['arrival_status']"
-                    (click)="searchConfig['arrival_status']=''">(Clear)</div>
+                    (click)="searchConfig['arrival_status']=null">(Clear)</div>
             </div>
             <div class="col-sm-2">
                 <app-multiselect-dropdown
@@ -40,14 +40,14 @@
 
             </div>
             <div class="col-sm-2">
-                <select class="form-control rounded-pill mx-2" [(ngModel)]="searchConfig['ota_details_id']">
+                <select class="form-select rounded-pill mx-2" [(ngModel)]="searchConfig['ota_details_id']">
                     <option elected="true" [value]="null" disabled>Select All Channel</option>
                     <ng-container *ngFor="let ota of otaDetailList">
                         <option [value]="ota.id">{{ota.name}}</option>
                     </ng-container>
                 </select>
                 <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['ota_details_id']"
-                    (click)="searchConfig['ota_details_id']=''">(Clear)</div>
+                    (click)="searchConfig['ota_details_id']=null">(Clear)</div>
             </div>
             <div class="col-sm-2 d-flex align-items-center mb-4">
                 <button type="button" class="btn btn-primary rounded-pill" (click)="searchByFilter()">

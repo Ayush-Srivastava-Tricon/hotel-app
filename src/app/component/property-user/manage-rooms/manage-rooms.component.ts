@@ -124,11 +124,10 @@ export class ManageRoomsComponent {
     this.roomModal.reset();
     this.isEditModal = false;
     this.getParentRoomId();
-
   }
 
   getParentRoomId(){
-    this.parentRooms = this.roomsList.filter((e:any)=>e.parent_room_id);
+    this.parentRooms = this.roomsList.filter((e:any)=>e.parent_room_id || e.parent_room_id == 0);
     
   }
 
@@ -343,6 +342,6 @@ export class ManageRoomsComponent {
           }];
     }
   }
-
+                               
 }
 

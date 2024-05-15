@@ -131,25 +131,50 @@ export class ManageInternalMappingComponent {
   }
 
   removeIntRoom(idx:any,roomId:any){
-    this.selectedInternal.splice(idx,1);
-    this.internalRoomData.forEach((e:any)=>{
-      if(e.room_id == roomId){
-        e['activeIntRoomMap'] = false;
-        e['activeMapping'] = false;
+   let params:any =  {
+      "ota_user_id": this.currentOtaUserId,
+      "internal_room_id":roomId
+    }
+    this.propertyService.unLinkInternalRoom(params,(res:any)=>{
+      if(res.status == 200){
+        this.selectedInternal.splice(idx,1);
+        this.internalRoomData.forEach((e:any)=>{
+          if(e.room_id == roomId){
+            e['activeIntRoomMap'] = false;
+            e['activeMapping'] = false;
+          }
+        })
+        this.alert.alert("error",res.message,"Success", { displayDuration: 2000, pos: 'top' });
+      }else{
+        this.alert.alert("error",res.message,"Error", { displayDuration: 2000, pos: 'top' });
       }
     })
-   
-
   }
   
-  removeExtRoom(idx:any,roomId:any){
-    this.selectedExternal.splice(idx,1);
-    this.externalRoomData.forEach((e:any)=>{
-      if(e.room_id == roomId){
-        e['activeIntRoomMap'] = false;
-        e['activeMapping'] = false;
+  removeExtRoom(idx:any,roomId:any,ota_rooms_id:any){
+
+    let params:any = 
+    {
+      "ota_rooms_id": ota_rooms_id,
+      "ota_user_id": this.currentOtaUserId
+    }
+    
+    this.propertyService.unLinkOtaRoom(params, (res: any) => {
+      if (res.status == 200) {
+        this.selectedExternal.splice(idx, 1);
+        this.externalRoomData.forEach((e: any) => {
+          if (e.room_id == roomId) {
+            e['activeIntRoomMap'] = false;
+            e['activeMapping'] = false;
+          }
+        })
+        this.alert.alert("error",res.message,"Success", { displayDuration: 2000, pos: 'top' });
+      }else{
+        this.alert.alert("error",res.message,"Error", { displayDuration: 2000, pos: 'top' });
       }
     })
+
+    
 
   }
 

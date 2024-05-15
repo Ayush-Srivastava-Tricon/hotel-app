@@ -73,6 +73,9 @@ export class BaseServiceService {
     'getListOfReservation':'hotelapi/roomsForReservation/reservationListing',
     'getSingleReservation':'hotelapi/roomsForReservation/reservationListing',
     'updateReservation':'hotelapi/roomsForReservation/updateReservation',
+    'unLinkInternalRoom':'hotelapi/otarooms/unlinkInternalRooms',
+    'unLinkOtaRoom':'hotelapi/otarooms/unlinkOtaRooms'
+
     
   }
 

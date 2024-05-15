@@ -104,6 +104,12 @@ export class PropertyService extends BaseServiceService {
   updateReservation(params:any,callback:any){
     this.putData(params,this.httpUrl['updateReservation'],callback);
   }
+  unLinkInternalRoom(params:any,callback:any){
+    this.putData(params,this.httpUrl['unLinkInternalRoom'],callback);
+  }
+  unLinkOtaRoom(params:any,callback:any){
+    this.putData(params,this.httpUrl['unLinkOtaRoom'],callback);
+  }
 
 
 }

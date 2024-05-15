@@ -1,7 +1,7 @@
 <div class="detail-page-recreate-service-codes" (mouseleave)="showDropDown = false"
 *ngIf="inputConfig?.reservationPage && inputConfig?.reservation_status">
 <button class="drop-toggle btn flat" (click)="showDropDown=!showDropDown;toggleSelectedItem('reservation_status')">
-    <span *ngIf="reservationPageConfig.reservation_status.length<=0">Select All Reservation</span>
+    <span class="clssic" *ngIf="reservationPageConfig.reservation_status.length<=0" >Select All Reservation</span>
     <span *ngIf="reservationPageConfig.reservation_status.length>0" [ngClass]="{'hide-item':showSelectedData['reservation_status']}">
         <ng-container *ngFor="let item of reservationPageConfig.reservation_status; let last = last"> {{ item.value
             }}{{last ? '': ','}}</ng-container>
