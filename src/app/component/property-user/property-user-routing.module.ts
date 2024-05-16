@@ -50,6 +50,10 @@ const routes: Routes = [
         path:'list-reservation',
         loadChildren:()=>import("./list-reservation/list-reservation.module").then(m=>m.ListReservationModule)
       },
+      {
+        path:'rate-plan',
+        loadChildren:()=>import("./rate-plan/rate-plan.module").then(m=>m.RatePlanModule)
+      },
     ]
   }
 ];
