@@ -72,10 +72,12 @@ export class CalendarViewComponent {
       this.loggedProperty.isLoginProperty = true;
       this.loggedProperty.propertyId = localStorage.getItem("selectedPropertyId");
       this.setDataToAllPropertyDropdown();
-      this.fetchCalendarData();
+      this.selectedDate({target:{value:this.formatDate(this.todayDate)}})
+      // this.fetchCalendarData();
     } else {
       this.loggedProperty.propertyId = localStorage.getItem("userId");
-      this.fetchCalendarData();
+      this.selectedDate({target:{value:this.formatDate(this.todayDate)}})
+      // this.fetchCalendarData();
     }
   }
 
@@ -129,6 +131,7 @@ export class CalendarViewComponent {
   }
 
   selectedDate(event: any) {
+    
     this.selectDate = new Date(event.target.value);
     this.datesData = [];
 
@@ -157,6 +160,7 @@ export class CalendarViewComponent {
     let dateIndex = 0;
     let dayCounter = selectedDate ? selectedDate.getDate() - 1 : 0;
     let currentDayIndex = (firstDayOfMonth + dayCounter) % 7;
+    this.nextDisplayMonth = monthNames[new Date(this.currentDate).getMonth() + 1 == 12 ? 0 : new Date(this.currentDate).getMonth() + 1];
 
     for (let i = selectedDate ? selectedDate.getDate() : 1; i <= daysInMonth && dateIndex < 31; i++) {
         const dayName = weekDays[currentDayIndex % 7];
@@ -400,6 +404,11 @@ export class CalendarViewComponent {
 
   identify(index:any, item:any){
     return item.id;
+  }
+
+  addClass(event:any){
+    console.log(event.source.element.nativeElement.classList.add('active'));
+    
   }
 }
 

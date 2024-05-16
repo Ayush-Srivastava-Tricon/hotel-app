@@ -181,9 +181,9 @@
                                 <select type="text" class="form-control" (change)="getStateByCountry($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let cty of countryList">
-                                        <option [value]="cty|json">{{cty.name}}</option>
+                                        <option [value]="cty|json" [selected]="cty.name == propertyUserModal.controls.country.value">{{cty.name}}</option>
                                     </ng-container>
-                    
+                                    
                                 </select>
                                 <small
                                     *ngIf="propertyUserModal.controls.country.dirty && propertyUserModal.controls.country.errors?.['required']"
@@ -193,10 +193,10 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">State <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control" [disabled]="stateList.length==0" (change)="getCityByState($event)">
+                                <select type="text" class="form-control"  (change)="getCityByState($event)">
                                     <option [selected]="true" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let state of stateList">
-                                        <option [value]="state|json">{{state.name}}</option>
+                                        <option [value]="state|json" [selected]="state.name == propertyUserModal.controls.state.value">{{state.name}}</option>
                                     </ng-container>
                                 </select>
                                 <small
@@ -207,10 +207,10 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">City <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control" loading="lazy" [disabled]="cityList.length==0" (change)="selectCity($event)">
+                                <select type="text" class="form-control" loading="lazy" (change)="selectCity($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let city of cityList">
-                                        <option [value]="city.name">{{city.name}}</option>
+                                        <option [value]="city.name" [selected]="city.name == propertyUserModal.controls.city.value">{{city.name}}</option>
                                     </ng-container>
                                 </select>
                                 <small

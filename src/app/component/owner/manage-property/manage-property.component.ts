@@ -39,8 +39,8 @@ export class ManagePropertyComponent {
         mobile: ['', [Validators.pattern("^[0-9]*$"),Validators.required]],
         property_type: ['', [Validators.required]],
         address: ['',],
-        city: [{ value: '', disabled: true },[Validators.required]],
-        state: [{ value: '', disabled: true },[Validators.required]],
+        city: ['',[Validators.required]],
+        state: ["",[Validators.required]],
         country: ['',Validators.required],
         postal_code: ['',Validators.required ],
         description: ['', ],
@@ -103,7 +103,7 @@ export class ManagePropertyComponent {
     this.ownerService.fetchState(+countryData.country_id, (res: any) => {
       if (res.status == 200) {
         this.stateList = res.data;
-        this.propertyUserModal.controls.state.enable();
+        // this.propertyUserModal.controls.state.enable();
       } else {
         this.stateList = [];
         this.cityList = [];
@@ -157,13 +157,24 @@ export class ManagePropertyComponent {
 
   editPropertyOpenModal(item: any) {
     this.isEditModal = true;
-    this.fetchCountry();
-    this.propertyUserModal.patchValue(item);
-    console.log(item);
+    this.fetchCountry((res:any)=>{
+      if(res){
+        let countryId:any =  this.getStateByExisitingCountryList(item.country);
+        this.getStateByCountry({target:{value:JSON.stringify(countryId[0])}})
+        this.propertyUserModal.patchValue(item);
+      }
+    });
+    
+    console.log(this.propertyUserModal.value);
+    
     this.showModal.property = true;
     this.propertyUserModal.controls.password.clearValidators();
     this.propertyUserModal.controls.password.updateValueAndValidity();
     this.selectedPropertyId = item.property_id;
+  }
+
+  getStateByExisitingCountryList(country:any){
+     return this.countryList.filter((item:any)=>item.name == country);
   }
 
   editProperty() {
@@ -233,10 +244,11 @@ export class ManagePropertyComponent {
     this.showActionDropDown= {};
   }
 
-  fetchCountry() {
+  fetchCountry(callback?:any) {
     this.ownerService.fetchCountry((res: any) => {
       if (res.status == 200) {
         this.countryList = res.data;
+        callback(true);
       }
     })
   }
