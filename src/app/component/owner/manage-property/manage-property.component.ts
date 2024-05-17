@@ -95,15 +95,13 @@ export class ManagePropertyComponent {
   }
 
   getStateByCountry(event: any) {
-    const countryData = JSON.parse(event.target.value);
-    this.countryId = +countryData.country_id;
-    this.propertyUserModal.controls.country.setValue(countryData.name);
+    this.countryId = event.target.value;
+    this.propertyUserModal.controls.country.setValue(this.countryId);
     this.propertyUserModal.controls.state.setValue('');
     this.propertyUserModal.controls.city.setValue('');
-    this.ownerService.fetchState(+countryData.country_id, (res: any) => {
+    this.ownerService.fetchState(this.countryId, (res: any) => {
       if (res.status == 200) {
         this.stateList = res.data;
-        // this.propertyUserModal.controls.state.enable();
       } else {
         this.stateList = [];
         this.cityList = [];
@@ -116,10 +114,10 @@ export class ManagePropertyComponent {
 
 
   getCityByState(event: any) {
-    const stateData = JSON.parse(event.target.value);
-    this.propertyUserModal.controls.state.setValue(stateData.name);
+    const stateId = event.target.value;
+    this.propertyUserModal.controls.state.setValue(stateId);
     this.propertyUserModal.controls.city.setValue('');
-    this.ownerService.fetchCity(this.countryId, +stateData.state_id, (res: any) => {
+    this.ownerService.fetchCity(this.countryId, +stateId, (res: any) => {
       if (res.status == 200) {
         this.cityList = res.data;
         this.propertyUserModal.controls.city.enable();
@@ -157,24 +155,15 @@ export class ManagePropertyComponent {
 
   editPropertyOpenModal(item: any) {
     this.isEditModal = true;
-    this.fetchCountry((res:any)=>{
-      if(res){
-        let countryId:any =  this.getStateByExisitingCountryList(item.country);
-        this.getStateByCountry({target:{value:JSON.stringify(countryId[0])}})
-        this.propertyUserModal.patchValue(item);
-      }
-    });
-    
-    console.log(this.propertyUserModal.value);
-    
+    this.fetchCountry();
+    this.getStateByCountry({target:{value:item.country}});
+    this.getCityByState({target:{value:item.state}});
+
     this.showModal.property = true;
     this.propertyUserModal.controls.password.clearValidators();
     this.propertyUserModal.controls.password.updateValueAndValidity();
     this.selectedPropertyId = item.property_id;
-  }
-
-  getStateByExisitingCountryList(country:any){
-     return this.countryList.filter((item:any)=>item.name == country);
+    this.propertyUserModal.patchValue(item);
   }
 
   editProperty() {
@@ -244,11 +233,10 @@ export class ManagePropertyComponent {
     this.showActionDropDown= {};
   }
 
-  fetchCountry(callback?:any) {
+  fetchCountry() {
     this.ownerService.fetchCountry((res: any) => {
       if (res.status == 200) {
         this.countryList = res.data;
-        callback(true);
       }
     })
   }

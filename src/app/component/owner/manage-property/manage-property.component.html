@@ -181,7 +181,7 @@
                                 <select type="text" class="form-control" (change)="getStateByCountry($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let cty of countryList">
-                                        <option [value]="cty|json" [selected]="cty.name == propertyUserModal.controls.country.value">{{cty.name}}</option>
+                                        <option [value]="cty.country_id" [selected]="cty.country_id == propertyUserModal.value.country">{{cty.name}}</option>
                                     </ng-container>
                                     
                                 </select>
@@ -196,7 +196,7 @@
                                 <select type="text" class="form-control"  (change)="getCityByState($event)">
                                     <option [selected]="true" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let state of stateList">
-                                        <option [value]="state|json" [selected]="state.name == propertyUserModal.controls.state.value">{{state.name}}</option>
+                                        <option [value]="state.state_id" [selected]="state.state_id == propertyUserModal.value.state">{{state.name}}</option>
                                     </ng-container>
                                 </select>
                                 <small
@@ -210,7 +210,7 @@
                                 <select type="text" class="form-control" loading="lazy" (change)="selectCity($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let city of cityList">
-                                        <option [value]="city.name" [selected]="city.name == propertyUserModal.controls.city.value">{{city.name}}</option>
+                                        <option [value]="city.city_id" [selected]="city.city_id == propertyUserModal.value.city">{{city.name}}</option>
                                     </ng-container>
                                 </select>
                                 <small
