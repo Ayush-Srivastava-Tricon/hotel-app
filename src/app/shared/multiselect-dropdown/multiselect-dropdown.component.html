@@ -1,18 +1,51 @@
 <div class="detail-page-recreate-service-codes" (mouseleave)="showDropDown = false"
-*ngIf="inputConfig?.reservationPage && inputConfig?.reservation_status">
-<button class="drop-toggle btn flat" (click)="showDropDown=!showDropDown;toggleSelectedItem('reservation_status')">
-    <span class="clssic" *ngIf="reservationPageConfig.reservation_status.length<=0" >Select All Reservation</span>
-    <span *ngIf="reservationPageConfig.reservation_status.length>0" [ngClass]="{'hide-item':showSelectedData['reservation_status']}">
-        <ng-container *ngFor="let item of reservationPageConfig.reservation_status; let last = last"> {{ item.value
-            }}{{last ? '': ','}}</ng-container>
-    </span>
-    <i class="fa fa-angle-down"></i>
-</button>
-<div class="drop-show search-claim-dropdown" *ngIf="showDropDown">
-    <label *ngFor="let item of inputConfig.reservation_status;let idx = index">
-        <input type="checkbox" [(ngModel)]="item.checked"
-            (change)="getSelectedValue(item.checked,item,'reservation_status','reservation_status')" />
-        <span>{{item.value}}</span>
-    </label>
+    *ngIf="inputConfig?.reservationPage && inputConfig?.reservation_status">
+    <button class="drop-toggle btn flat" (click)="showDropDown=!showDropDown;toggleSelectedItem('reservation_status')">
+        <span class="clssic" *ngIf="multiselectPageConfig.reservation_status.length<=0">Select All Reservation</span>
+        <span *ngIf="multiselectPageConfig.reservation_status.length>0"
+            [ngClass]="{'hide-item':showSelectedData['reservation_status']}">
+            <ng-container *ngFor="let item of multiselectPageConfig.reservation_status; let last = last"> {{ item.value
+                }}{{last ? '': ','}}</ng-container>
+        </span>
+        <i class="fa fa-angle-down"></i>
+    </button>
+    <div class="drop-show search-claim-dropdown" *ngIf="showDropDown">
+        <label *ngFor="let item of inputConfig.reservation_status;let idx = index">
+            <input type="checkbox" [(ngModel)]="item.checked"
+                (change)="getSelectedValue(item.checked,item,'reservation_status','reservation_status')" />
+            <span>{{item.value}}</span>
+        </label>
+    </div>
 </div>
+
+<!-- <-----------Rate plan Mutliselect Searchable Room----->
+<div class="search-claims-insuranceTypes filter-box" (mouseleave)="showDropDown = false"
+    *ngIf="inputConfig?.ratePlanPage && inputConfig?.parentRooms">
+    <span (click)="clearAll('parentRooms','getparentRooms')" *ngIf="multiselectPageConfig.parentRooms.length>0"
+        class="clearAll">(Clear All)</span>
+        <div class="d-block text-start mb-2"> 
+            <button class="drop-toggle btn flat" (click)="toggleSelectedItem('parentRooms')"
+            *ngIf="multiselectPageConfig?.parentRooms.length>0">
+            <span [ngClass]="{'hide-item':showSelectedData['parentRooms']}">
+                <ng-container *ngFor="let item of multiselectPageConfig.parentRooms; let last = last">
+                    <span *ngIf="item.checked"> {{ item.value}}{{last ? '': ','}}</span>
+                </ng-container>
+            </span>
+        </button>
+    </div>
+    <div>
+        <input type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="filterOptions('parentRooms', 'value')" class="no-css-input-box form-control">
+        <div class="drop-show no-css-search-claim" (mouseleave)="searchText=''" *ngIf="searchText">
+            <label for="selectAll" *ngIf="filteredOptions.parentRooms.length === 0">
+                No Data Found
+            </label>
+            <ng-container *ngIf="filteredOptions.parentRooms.length > 0">
+                <label *ngFor="let item of filteredOptions.parentRooms">
+                    <input type="checkbox" [(ngModel)]="item.checked" (change)="getSelectedValue(item.checked, item, 'parentRooms', 'parentRooms')" id="{{ item.value }}">
+                    <span>{{item.value}}</span>
+                </label>
+            </ng-container>
+        </div>
+    </div>
+    
 </div>

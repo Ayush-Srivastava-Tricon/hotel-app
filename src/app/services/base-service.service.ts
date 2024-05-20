@@ -74,7 +74,17 @@ export class BaseServiceService {
     'getSingleReservation':'hotelapi/roomsForReservation/reservationListing',
     'updateReservation':'hotelapi/roomsForReservation/updateReservation',
     'unLinkInternalRoom':'hotelapi/otarooms/unlinkInternalRooms',
-    'unLinkOtaRoom':'hotelapi/otarooms/unlinkOtaRooms'
+    'unLinkOtaRoom':'hotelapi/otarooms/unlinkOtaRooms',
+    'saveRatePlan':'hotelapi/rooms/createRateplan',
+    'savePMS':'hotelapi/rooms/createPMS',
+    'listPMSRooms':'hotelapi/rooms/listPMSRooms',
+    'listRatePlans':'hotelapi/rooms/listRatePlans',
+    'getSingleRateplan':'hotelapi/rooms/listRatePlans',
+    'updateRatePlans':'hotelapi/rooms/updateRatePlans',
+    'mapRatePlanWithRooms':'hotelapi/rooms/mapRatePlanWithRooms',
+    'deleteRatePlans':'hotelapi/rooms/deleteRatePlans',
+    'getSinglePMS':'hotelapi/rooms/listPMSRooms',
+    'updatePMSByHousekeeper':'hotelapi/rooms/updatePMSByHousekeeper',
 
     
   }

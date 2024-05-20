@@ -1,0 +1,176 @@
+<div class="container-fluid" *ngIf="!showModal.pms">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-sm-12">
+      <div class="table-wrapper shadow">
+        <div class="table-title">
+          <div class="row">
+            <div class="col-sm-6">
+              <span class="title">List PMS</span>
+            </div>
+            <div class="col-sm-6">
+              <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success" data-toggle="modal"><span>Add
+                  PMS</span></a>
+            </div>
+          </div>
+        </div>
+        <table class="table table-shadow table-sm table-hover">
+          <thead class="thead-dark">
+            <tr class="table-row-rooms">
+              <th>Parent Room ID</th>
+              <th>Name</th>
+              <th>Change Linen Freq.</th>
+              <th>Cleaning Freq.</th>
+              <th>Cleaning Status</th>
+              <th>Internal Notes</th>
+              <th>Last Cleaning Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="loader">
+              <td class="tg-cly1">
+              </td>
+              <td class="tg-cly1">
+              </td>
+              <td class="tg-cly1">
+              </td>
+              <td class="tg-cly1">
+              </td>
+              <td class="tg-cly1">
+              </td>
+              <td class="tg-cly1">
+              </td>
+              <td class="tg-cly1">
+              </td>
+              <td class="tg-cly1">
+              </td>
+            </tr>
+            <tr *ngIf="pmsData.length==0 && !loader">
+              <td colspan="19" class="text-center">
+                No Data
+              </td>
+            </tr>
+            <tr *ngFor="let item of pmsData;let idx = index;" class="text-center align-middle">
+              <td>{{item.parent_room_id}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.change_linen_frequency}}</td>
+              <td>{{item.cleaning_frequency}}</td>
+              <td>{{item.cleaning_status}}</td>
+              <td>{{item.internal_notes}}</td>
+              <td>{{item.last_cleaning_date ? (item.last_cleaning_date|date: "MM/dd") : todayDate|date: "MM/dd"}}</td>
+              <td>
+                <div class="dropdown">
+                  <i class="btn btn-light btn-sm bi bi-three-dots-vertical" (click)="showDropDown(idx)"></i>
+                  <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
+                    *ngIf="showActionDropDown[idx]">
+                    <!-- <a class="dropdown-item">Change Status</a> -->
+                    <a class="dropdown-item" (click)="editPMSOpenModal(item)">Edit Room</a>
+                    <a class="dropdown-item" (click)="deletePMSModal(item.id,idx)">Delete</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="container-fluid mt-2" *ngIf="showModal.pms">
+  <div class="my-3 ms-2 d-flex justify-content-between ">
+    <!-- <span class="h3">{{isEditModal? 'Edit':'Add'}} Room </span>
+    <a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageRoom()">Back To Manage Room</a> -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "
+            (click)="backToPMS()">Back to Manage PMS</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} PMS</li>
+      </ol>
+    </nav>
+  </div>
+
+<div class="container p-3 shadow my-3" *ngIf="showModal.pms">
+  <div class="form-group row ">
+    <label class="col-sm-5 col-form-label" for="usedType">Parent Room</label>
+    <div class="col-sm-7">
+      <select id="usedType" [(ngModel)]="pmsDataConfig.parent_room_id" name="usedType">
+        <option [value]="null" disabled>Select a value...</option>
+        <option [value]="item.room_id" *ngFor="let item of parentRooms">{{item.room_name}}</option>
+        <!-- Add other options here -->
+      </select>
+    </div>
+  </div>
+  <div class="form-group row ">
+    <label class="col-sm-5 col-form-label" for="name">Name <span class="text-danger">*</span></label>
+    <div class="col-sm-7">
+      <input type="text" id="name" [(ngModel)]="pmsDataConfig.name" name="name">
+    </div>
+  </div>
+  <div class="form-group row ">
+    <label class="col-sm-5 col-form-label" for="priority">Priority <span class="text-danger">*</span></label>
+    <div class="col-sm-7">
+      <input type="number" id="priority" [(ngModel)]="pmsDataConfig.priority" name="priority" min="1" max="100">
+    </div>
+  </div>
+  <div class="form-group row ">
+    <label class="col-sm-5 col-form-label" for="linenFrequency">Change linen frequency</label>
+    <div class="col-sm-7">
+      <input type="text" id="linenFrequency" [(ngModel)]="pmsDataConfig.change_linen_frequency" name="linenFrequency">
+    </div>
+  </div>
+  <div class="form-group row ">
+    <label class="col-sm-5 col-form-label" for="cleaningFrequency">Cleaning frequency</label>
+    <div class="col-sm-7">
+      <input type="text" id="cleaningFrequency" [(ngModel)]="pmsDataConfig.cleaning_frequency" name="cleaningFrequency">
+    </div>
+  </div>
+  <div class="form-group row ">
+    <label class="col-sm-5 col-form-label">Cleaning days</label>
+    <div class="col-sm-7">
+      <div class="cleaning-days flex-wrap">
+        <label class="col-sm-2 col-form-label" *ngFor="let day of ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']">
+          <input type="checkbox" name="cleaningDays{{day}}">
+          {{ day }}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row ">
+    <label class="col-sm-5 col-form-label" for="cleanStatus">Clean status</label>
+    <div class="col-sm-7">
+      <select id="cleanStatus" [(ngModel)]="pmsDataConfig.cleaning_status" name="cleanStatus">
+        <option [value]="null" [selected]="true">Select a value...</option>
+        <option value="dirty">Dirty</option>
+        <option value="clean">Clean</option>
+      </select>
+    </div>
+    <!-- Add status options here -->
+  </div>
+  <div class="form-group row ">
+    <label class="col-sm-5 col-form-label" for="lastCleaningTime">Last cleaning time</label>
+    <div class="col-sm-7">
+      <div class="last-cleaning-time">
+        <span>{{ pmsDataConfig.lastCleaningTime|date : 'hh:mm' }}</span>
+        <button type="button" (click)="setCurrentTime()"><i class="bi bi-alarm"></i> Set current time</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row ">
+    <label class="col-sm-5 col-form-label" for="internalNotes">Internal notes</label>
+    <div class="col-sm-7">
+      <textarea id="internalNotes" [(ngModel)]="pmsDataConfig.internal_notes" name="internalNotes"></textarea>
+    </div>
+  </div>
+  <div class="form-buttons">
+    <!-- <button type="button" class="btn btn-secondary">Close</button> -->
+    <!-- <button type="button" class="btn btn-danger">Delete</button> -->
+    <!-- <button type="button" class="btn btn-primary">Clone</button> -->
+    <div class="d-flex">
+      <button type="submit" class="btn btn-success" (click)="isEditModal ? editPMS() : savePMS()" [disabled]="loader">{{isEditModal? 'Edit':'Save'}}</button>
+      <div class="spinner-border text-primary" *ngIf="loader"></div>
+    </div>
+  </div>
+</div>

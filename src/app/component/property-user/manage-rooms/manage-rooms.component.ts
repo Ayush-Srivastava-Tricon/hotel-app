@@ -117,8 +117,6 @@ export class ManageRoomsComponent {
 
   }
 
-
-
   openModal() {
     this.showModal.property = true;
     this.roomModal.reset();

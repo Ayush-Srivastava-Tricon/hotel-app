@@ -54,6 +54,14 @@ const routes: Routes = [
         path:'rate-plan',
         loadChildren:()=>import("./rate-plan/rate-plan.module").then(m=>m.RatePlanModule)
       },
+      {
+        path:'manage-pms',
+        loadChildren:()=>import("./manage-pms/manage-pms.module").then(m=>m.ManagePmsModule)
+      },
+      {
+        path:'manage-housekeeping',
+        loadChildren:()=>import("./manage-housekeeping/manage-housekeeping.module").then(m=>m.ManageHousekeepingModule)
+      },
     ]
   }
 ];

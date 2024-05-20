@@ -281,54 +281,100 @@ box-shadow: none;
 background: #ddd;
 }
 
-.language-slider {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  justify-content: space-between;
-}
-
-.custom-slider-container {
-  overflow: hidden;
-  width: 500px; /* Adjust width as needed */
-  margin: 0 10px;
-}
-
-.custom-slider {
-  display: flex;
-  transition: transform 0.5s ease;
-}
-
-.flag {
-  min-width: 50px; /* Adjust width as needed */
-  cursor: pointer;
-  text-align: center;
-}
-
-.flag img {
-  width: 100%;
-  height: auto;
-}
-
-.language-form {
-  margin-top: 20px;
-}
-
-.language-form h2 {
-  margin-bottom: 10px;
-}
-
-.language-form div {
-  margin-bottom: 10px;
-}
-
-.language-form label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.language-form input {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-}
+.pms-form {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .cleaning-days {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .cleaning-days label {
+    display: flex;
+    align-items: center;
+  }
+  
+  .last-cleaning-time {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .last-cleaning-time button {
+    background: none;
+    border: none;
+    color: #d9534f;
+    cursor: pointer;
+  }
+  
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  
+  .btn-danger {
+    background-color: #d9534f;
+    color: #fff;
+  }
+  
+  .btn-primary {
+    background-color: #0275d8;
+    color: #fff;
+  }
+  
+  .btn-success {
+    background-color: #5cb85c;
+    color: #fff;
+  }
+  

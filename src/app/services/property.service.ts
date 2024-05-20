@@ -7,108 +7,150 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PropertyService extends BaseServiceService {
 
-  constructor(http:HttpClient) { 
+  constructor(http: HttpClient) {
     super(http)
   }
 
-  fetchAllRooms(propertyid:any,callback:any){
-    this.getData({},`${this.httpUrl['getAllRooms']}?property_id=${propertyid}`,callback);
+  fetchAllRooms(propertyid: any, callback: any) {
+    this.getData({}, `${this.httpUrl['getAllRooms']}?property_id=${propertyid}`, callback);
   }
 
-  addRooms(params:any,callback:any){
-   // this.postData(params,this.httpUrl['addRooms'],callback);
-    this.postDataWithFile(params,this.httpUrl['addRooms'],callback);
+  addRooms(params: any, callback: any) {
+    // this.postData(params,this.httpUrl['addRooms'],callback);
+    this.postDataWithFile(params, this.httpUrl['addRooms'], callback);
   }
 
-  editRoom(params:any,callback:any){
-    this.updateDataWithFile(params,this.httpUrl['editRoom'],callback);
+  editRoom(params: any, callback: any) {
+    this.updateDataWithFile(params, this.httpUrl['editRoom'], callback);
   }
 
-  getRoomDataToEdit(id:any,callback:any){
-    this.getData({},this.httpUrl['getRoomDataToEdit']+"/"+id,callback);
+  getRoomDataToEdit(id: any, callback: any) {
+    this.getData({}, this.httpUrl['getRoomDataToEdit'] + "/" + id, callback);
   }
 
-  getUploadedImageByRoom(roomId:any,callback:any){
-    this.getData({},this.httpUrl['getUploadedImageByRoom']+"/"+roomId,callback);
+  getUploadedImageByRoom(roomId: any, callback: any) {
+    this.getData({}, this.httpUrl['getUploadedImageByRoom'] + "/" + roomId, callback);
   }
 
-  deleteRoom(roomId:any,callback:any){
-    this.deleteData({},this.httpUrl['deleteRoom']+"/"+roomId,callback);
+  deleteRoom(roomId: any, callback: any) {
+    this.deleteData({}, this.httpUrl['deleteRoom'] + "/" + roomId, callback);
   }
 
-  deleteUploadedFiles(params:any,callback:any){
-    this.deleteData(params,this.httpUrl['deleteUploadedFiles'],callback);
+  deleteUploadedFiles(params: any, callback: any) {
+    this.deleteData(params, this.httpUrl['deleteUploadedFiles'], callback);
   }
 
-  fetchOtaUserDetail(loggedInPropertyId:any,callback:any){
-    this.getData({},`${this.httpUrl['getOtaUserList']}?property_id=${loggedInPropertyId}`,callback);
+  fetchOtaUserDetail(loggedInPropertyId: any, callback: any) {
+    this.getData({}, `${this.httpUrl['getOtaUserList']}?property_id=${loggedInPropertyId}`, callback);
   }
 
-  addOtaUserDetails(params:any,callback:any){
-    this.postData(params,this.httpUrl['addOtaUser'],callback);
+  addOtaUserDetails(params: any, callback: any) {
+    this.postData(params, this.httpUrl['addOtaUser'], callback);
   }
 
-  editOtaUserDetails(params:any,callback:any){
-    this.putData(params,this.httpUrl['editOtaUser'],callback);
+  editOtaUserDetails(params: any, callback: any) {
+    this.putData(params, this.httpUrl['editOtaUser'], callback);
   }
 
-  getOtaUserDetailById(otaUserId:any,callback:any){
-    this.getData({},this.httpUrl['getOtaUserList']+"/"+otaUserId,callback);
+  getOtaUserDetailById(otaUserId: any, callback: any) {
+    this.getData({}, this.httpUrl['getOtaUserList'] + "/" + otaUserId, callback);
   }
 
-  fetchOtaRooms(currentPropertyId:any,callback:any){
-    this.getData({},`${this.httpUrl['fetchOtaRoom']}?property_id=${currentPropertyId}`,callback);
+  fetchOtaRooms(currentPropertyId: any, callback: any) {
+    this.getData({}, `${this.httpUrl['fetchOtaRoom']}?property_id=${currentPropertyId}`, callback);
   }
 
-  fetchOtaRoomsById(userId:any,callback:any){
-    this.getData({},`${this.httpUrl['fetchOtaRoomById']}?ota_user_id=${userId}`,callback);
+  fetchOtaRoomsById(userId: any, callback: any) {
+    this.getData({}, `${this.httpUrl['fetchOtaRoomById']}?ota_user_id=${userId}`, callback);
   }
 
-  addOtaRoom(params:any,callback:any){
-    this.postData(params,this.httpUrl['addOtaRoom'],callback);
+  addOtaRoom(params: any, callback: any) {
+    this.postData(params, this.httpUrl['addOtaRoom'], callback);
   }
 
-  editOtaRoom(params:any,callback:any){
-    this.putData(params,this.httpUrl['editOtaRoom'],callback);
+  editOtaRoom(params: any, callback: any) {
+    this.putData(params, this.httpUrl['editOtaRoom'], callback);
   }
 
-  setInternalMappingBetweenRoom(params:any,callback:any){
-    this.putData(params,this.httpUrl['mapping'],callback);
+  setInternalMappingBetweenRoom(params: any, callback: any) {
+    this.putData(params, this.httpUrl['mapping'], callback);
   }
 
-  fetchReservation(param:any,callback:any){
-    this.getData({},`${this.httpUrl['getReservation']}?property_id=${param.property_id}&start_date=${param.start_date}&end_date=${param.end_date}&available=${param.available}&disc=${param.disc}&reservationType=${param.reservationType}
-    `,callback);
+  fetchReservation(param: any, callback: any) {
+    this.getData({}, `${this.httpUrl['getReservation']}?property_id=${param.property_id}&start_date=${param.start_date}&end_date=${param.end_date}&available=${param.available}&disc=${param.disc}&reservationType=${param.reservationType}
+    `, callback);
   }
 
-  getPaymentMethod(callback:any){
-    this.getData({},`${this.httpUrl['getPaymentMethod']}`,callback);
-  }
-  
-  getExtraFacility(callback:any){
-    this.getData({},`${this.httpUrl['getExtraFacility']}`,callback);
+  getPaymentMethod(callback: any) {
+    this.getData({}, `${this.httpUrl['getPaymentMethod']}`, callback);
   }
 
-  addReservationDetails(params:any,callback:any){
-    this.postData(params,this.httpUrl['addReservationDetails'],callback);
+  getExtraFacility(callback: any) {
+    this.getData({}, `${this.httpUrl['getExtraFacility']}`, callback);
   }
-  
-  getListOfReservation(params:any,callback:any){
-    this.postData(params,this.httpUrl['getListOfReservation'],callback);
+
+  addReservationDetails(params: any, callback: any) {
+    this.postData(params, this.httpUrl['addReservationDetails'], callback);
   }
-  
-  getSingleReservation(reservationId:any,callback:any){
-    this.getData({},this.httpUrl['getSingleReservation']+"/"+reservationId,callback);
+
+  getListOfReservation(params: any, callback: any) {
+    this.postData(params, this.httpUrl['getListOfReservation'], callback);
   }
-  
-  updateReservation(params:any,callback:any){
-    this.putData(params,this.httpUrl['updateReservation'],callback);
+
+  getSingleReservation(reservationId: any, callback: any) {
+    this.getData({}, this.httpUrl['getSingleReservation'] + "/" + reservationId, callback);
   }
-  unLinkInternalRoom(params:any,callback:any){
-    this.putData(params,this.httpUrl['unLinkInternalRoom'],callback);
+
+  updateReservation(params: any, callback: any) {
+    this.putData(params, this.httpUrl['updateReservation'], callback);
   }
-  unLinkOtaRoom(params:any,callback:any){
-    this.putData(params,this.httpUrl['unLinkOtaRoom'],callback);
+
+  unLinkInternalRoom(params: any, callback: any) {
+    this.putData(params, this.httpUrl['unLinkInternalRoom'], callback);
+  }
+
+  unLinkOtaRoom(params: any, callback: any) {
+    this.putData(params, this.httpUrl['unLinkOtaRoom'], callback);
+  }
+
+  saveRatePlan(params: any, callback: any) {
+    this.postData(params, this.httpUrl['saveRatePlan'], callback);
+  }
+
+  savePMS(params: any, callback: any) {
+    this.postData(params, this.httpUrl['savePMS'], callback);
+  }
+
+  listPMSRooms(property_id: any, callback: any) {
+    this.getData({}, `${this.httpUrl['listPMSRooms']}?property_id=${property_id}`, callback);
+  }
+
+  fetchRateplan(property_id: any, callback: any) {
+    this.getData({}, `${this.httpUrl['listRatePlans']}?property_id=${property_id}`, callback);
+  }
+
+  getSingleRateplan(ratePlanId: any, callback: any) {
+    this.getData({}, `${this.httpUrl['getSingleRateplan']}?rate_plan_id=${ratePlanId}`, callback);
+  }
+
+  updateRateplan(params: any, callback: any) {
+    this.putData(params, `${this.httpUrl['updateRatePlans']}`, callback);
+  }
+
+  mapRatePlan(params: any, callback: any) {
+    this.putData(params, `${this.httpUrl['mapRatePlanWithRooms']}`, callback);
+  }
+
+  deleteRatePlans(rateplan_id: any, callback: any) {
+    this.deleteData({}, `${this.httpUrl['deleteRatePlans']}/${rateplan_id}`, callback);
+  }
+
+  getSinglePMS(pmsId: any, callback: any) {
+    this.getData({}, `${this.httpUrl['getSinglePMS']}?pms_id=${pmsId}`, callback);
+  }
+
+  updatePMS(params:any,callback:any){
+    this.putData(params, `${this.httpUrl['updatePMSByHousekeeper']}`, callback);
   }
 
 

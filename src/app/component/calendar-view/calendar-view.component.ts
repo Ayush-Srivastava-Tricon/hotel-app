@@ -287,8 +287,11 @@ export class CalendarViewComponent {
         }
       })
       e['datesData'] = JSON.parse(JSON.stringify(this.datesData));
+      e['children'] = [{'name':e.room_name}];
     });
     this.loader = false;
+    console.log(this.mainData);
+    
   }
 
   closeModal() {
