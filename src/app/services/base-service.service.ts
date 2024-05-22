@@ -92,6 +92,7 @@ export class BaseServiceService {
     'getSingleKeeper': 'hotelapi/employee/listHouseKeepers',
     'deleteKeeper': 'hotelapi/employee',
     'mapPMSRoomsWithHouseKeeper': 'hotelapi/employee/mapPMSRoomsWithHouseKeeper',
+    'ratePlanForDrivedRoom': 'hotelapi/rooms/ratePlanForDrivedRoom',
 
 
   }

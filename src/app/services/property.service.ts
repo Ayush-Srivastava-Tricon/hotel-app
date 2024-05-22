@@ -181,5 +181,9 @@ export class PropertyService extends BaseServiceService {
     this.postData(params,this.httpUrl['mapPMSRoomsWithHouseKeeper'],callback);
   }
 
+  getRatePlanByParent(parentId:any,callback:any){
+    this.getData({},`${this.httpUrl['ratePlanForDrivedRoom']}/${parentId}`,callback);
+  }
+
 
 }

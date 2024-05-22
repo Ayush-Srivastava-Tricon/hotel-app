@@ -116,17 +116,29 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">Parent Room Id</label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control" formControlName="parent_room_id">
-                                    <option selected="true" value="null">Select</option>
-                                    <option [value]="room.room_id" *ngFor="let room of parentRooms">{{room.room_name}}</option>
+                                <select type="text" class="form-control" formControlName="parent_room_id" (change)="getRatePlanByParent($event)">
+                                    <option selected="true" value="0">Select</option>
+                                    <option [value]="room.room_id" *ngFor="let room of parentRooms">{{room.room_name}}
+                                    </option>
                                 </select>
                                 <small
                                     *ngIf="roomModal.controls.parent_room_id.dirty && roomModal.controls.parent_room_id.errors?.['required']"
                                     class="text-danger">Required</small>
                             </div>
                         </div>
+                        <div class="form-group row mb-2" *ngIf="ratePlans.length>0">
+                            <label for="propertyName" class="col-sm-3 col-form-label">Rate Plan</label>
+                            <div class="col-sm-9">
+                                <select type="text" class="form-control" formControlName="rate_plan_id">
+                                    <option selected="true" [value]="null" disabled>Select</option>
+                                    <option [value]="room.rate_plan_id" *ngFor="let room of ratePlans">{{room.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyType" class="col-sm-3 col-form-label">Room Name  <span class="text-danger">*</span></label>
+                            <label for="propertyType" class="col-sm-3 col-form-label">Room Name <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="room_name"
                                     [class.is-invalid]="(roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['required']) || (roomModal.controls.room_name.dirty && roomModal.controls.room_name.errors?.['pattern'])">
@@ -193,7 +205,8 @@
                                 Markups
                             </button> </legend>
                         <div class="form-group row mb-2">
-                            <label class="col-sm-3 col-form-label" for="default_price">Default Price <span class="text-danger">*</span></label>
+                            <label class="col-sm-3 col-form-label" for="default_price">Default Price <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" maxlength="12" class="form-control" formControlName="default_price"
                                     [class.is-invalid]="(roomModal.controls.default_price.dirty && roomModal.controls.default_price.errors?.['required']) || (roomModal.controls.default_price.dirty && roomModal.controls.default_price.errors?.['pattern'])">
@@ -258,72 +271,72 @@
                     <fieldset class="border p-2">
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Rate Plan
                             </button> </legend>
-                       
-                            <div class="form-group row">
-                                <label class="col-sm-4 " for="nonrefundable">Non-Refundable</label>
-                                <div class="col-sm-8 text-center">
-                                    <label class="switch">
-                                        <input type="checkbox" id="nonrefundable" formControlName="nonrefundable">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                            </div>
 
-                            <div class="form-group row my-1">
-                                <label class="col-sm-4 " for="is_pms">is PMS</label>
-                                <div class="col-sm-8 text-center">
-                                    <label class="switch">
-                                        <input type="checkbox" id="is_pms" formControlName="is_pms">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 " for="nonrefundable">Non-Refundable</label>
+                            <div class="col-sm-8 text-center">
+                                <label class="switch">
+                                    <input type="checkbox" id="nonrefundable" formControlName="nonrefundable">
+                                    <span class="slider"></span>
+                                </label>
                             </div>
+                        </div>
 
-                            <div class="form-group row">
-                                <label class="col-sm-4 " for="is_dorm">is Dorm</label>
-                                <div class="col-sm-8 text-center">
-                                    <label class="switch">
-                                        <input type="checkbox" id="is_dorm" formControlName="is_dorm">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
+                        <div class="form-group row my-1">
+                            <label class="col-sm-4 " for="is_pms">is PMS</label>
+                            <div class="col-sm-8 text-center">
+                                <label class="switch">
+                                    <input type="checkbox" id="is_pms" formControlName="is_pms">
+                                    <span class="slider"></span>
+                                </label>
                             </div>
+                        </div>
 
-                            <div class="form-group row my-1">
-                                <label class="col-sm-4 " for="cald_show">Cald Show</label>
-                                <div class="col-sm-8 text-center">
-                                    <label class="switch">
-                                        <input type="checkbox" id="cald_show" formControlName="cald_show">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 " for="is_dorm">is Dorm</label>
+                            <div class="col-sm-8 text-center">
+                                <label class="switch">
+                                    <input type="checkbox" id="is_dorm" formControlName="is_dorm">
+                                    <span class="slider"></span>
+                                </label>
                             </div>
+                        </div>
 
-                            <div class="form-group row">
-                                <label class="col-sm-4 " for="be_show">Be Show</label>
-                                <div class="col-sm-8 text-center">
-                                    <label class="switch">
-                                        <input type="checkbox" id="be_show" formControlName="be_show">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
+                        <div class="form-group row my-1">
+                            <label class="col-sm-4 " for="cald_show">Cald Show</label>
+                            <div class="col-sm-8 text-center">
+                                <label class="switch">
+                                    <input type="checkbox" id="cald_show" formControlName="cald_show">
+                                    <span class="slider"></span>
+                                </label>
                             </div>
-                           
-                            <div class="form-group row my-1">
-                                <label class="col-sm-5 col-form-label" for="breakfast">Breakfast</label>
-                                <div class="col-sm-7">
-                                    <select type="text" class="form-control" formControlName="breakfast">
-                                        <option value="null">Select</option>
-                                        <option value="HF">Half Board</option>
-                                        <option value="FB">Full Board </option>
-                                        <option value="RO">Room Only </option>
-                                        <option value="BB">Bed Breakfast </option>
-                                    </select>
-                                    <small
-                                        *ngIf="roomModal.controls.breakfast.dirty && roomModal.controls.breakfast.errors?.['required']"
-                                        class="text-danger">Required</small>
-                                </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 " for="be_show">Be Show</label>
+                            <div class="col-sm-8 text-center">
+                                <label class="switch">
+                                    <input type="checkbox" id="be_show" formControlName="be_show">
+                                    <span class="slider"></span>
+                                </label>
                             </div>
+                        </div>
+
+                        <div class="form-group row my-1">
+                            <label class="col-sm-5 col-form-label" for="breakfast">Breakfast</label>
+                            <div class="col-sm-7">
+                                <select type="text" class="form-control" formControlName="breakfast">
+                                    <option value="null">Select</option>
+                                    <option value="HF">Half Board</option>
+                                    <option value="FB">Full Board </option>
+                                    <option value="RO">Room Only </option>
+                                    <option value="BB">Bed Breakfast </option>
+                                </select>
+                                <small
+                                    *ngIf="roomModal.controls.breakfast.dirty && roomModal.controls.breakfast.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
                     </fieldset>
                 </div>
                 <div class="col-sm-4">
@@ -335,17 +348,20 @@
                         <div class="image-container d-flex justify-content-start align-items-baseline flex-wrap ">
                             <ng-container *ngFor="let item of imageArrayContainer;let idx=index;">
                                 <div class="image-block m-2" (click)="selectImg(file)">
-                                    <img class="img-preview img-thumbnail" loading="lazy" [src]="item.thumbnailUrl? item.thumbnailUrl : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU'" *ngIf="!isEditModal" alt="">
-                                    <img class="img-preview img-thumbnail" loading="lazy" *ngIf="isEditModal" [src]="item.image_path ? item.image_path+'/'+item.image_name : item.thumbnailUrl"  >
+                                    <img class="img-preview img-thumbnail" loading="lazy"
+                                        [src]="item.thumbnailUrl? item.thumbnailUrl : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU'"
+                                        *ngIf="!isEditModal" alt="">
+                                    <img class="img-preview img-thumbnail" loading="lazy" *ngIf="isEditModal"
+                                        [src]="item.image_path ? item.image_path+'/'+item.image_name : item.thumbnailUrl">
                                     <input type="file" accept="image/*" (change)="uploadImage($event,idx)"
                                         accept="image/*" class="file" #file hidden>
-                                    </div>
-                                    <div class="img-wrap">
-                                        <span class=" btn btn-sm btn-danger rounded-pill close" (click)="removeImgConfirm(item,idx)" >&times;</span>
-                                    </div>
+                                </div>
+                                <div class="img-wrap">
+                                    <span class=" btn btn-sm btn-danger rounded-pill close"
+                                        (click)="removeImgConfirm(item,idx)">&times;</span>
+                                </div>
                             </ng-container>
                             <a class="text-decoration-none fs-6 mx-2" href="javascript:void(0);"
-                                
                                 (click)="addMoreImageSection()">Add More</a>
 
                         </div>
@@ -356,7 +372,8 @@
             <div class="row mt-3 mb-2">
                 <div class="col-sm-12 d-flex">
                     <button type="submit" class="btn btn-primary"
-                        (click)="isEditModal ? editRoom() :createNewRoom()">{{isEditModal?'Edit':'Create'}}</button> <span *ngIf="loader" class="spinner-border text-primary mx-2"></span>
+                        (click)="isEditModal ? editRoom() :createNewRoom()">{{isEditModal?'Edit':'Create'}}</button>
+                    <span *ngIf="loader" class="spinner-border text-primary mx-2"></span>
                 </div>
             </div>
         </form>
@@ -386,7 +403,8 @@
                         <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
                     </div>
                     <div class="modal-body" *ngIf="!showModal.deleteImage">
-                        <p>All related images will be deleted if you delete the image.  Are you sure ! still want to delete?</p>
+                        <p>All related images will be deleted if you delete the image. Are you sure ! still want to
+                            delete?</p>
                     </div>
                     <div class="modal-body" *ngIf="showModal.deleteImage">
                         <p>Do you really want to delete the Image ?</p>
@@ -394,7 +412,8 @@
                     <div class="modal-footer justify-content-center">
                         <button type="button" class="btn btn-danger" data-dismiss="modal"
                             (click)="showModal.deleteImage ? closeDeleteImgModal() : closeModal()">Cancel</button>
-                        <button type="button" class="btn btn-outline-danger" (click)="showModal.deleteImage ? deleteImage() :  deleteRoom()">Delete</button>
+                        <button type="button" class="btn btn-outline-danger"
+                            (click)="showModal.deleteImage ? deleteImage() :  deleteRoom()">Delete</button>
                     </div>
                 </ng-container>
             </div>

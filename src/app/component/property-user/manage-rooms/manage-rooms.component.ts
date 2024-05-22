@@ -31,6 +31,7 @@ export class ManageRoomsComponent {
   removedImgObj:any=[];
   deleteImageConfig:any={};
   parentRooms:any=[];
+  ratePlans:any=[];
 
   constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private proService: PropertyService) {
     this.roomModal = this.fb.group(
@@ -44,7 +45,8 @@ export class ManageRoomsComponent {
         default_min: ['', [ Validators.pattern(/^[0-9]+$/)]],
         default_max: ['', [ Validators.pattern(/^[0-9]+$/)]],
         description: ['',],
-        parent_room_id: [null],
+        parent_room_id: [0],
+        rate_plan_id:[null],
         nonrefundable: [''],
         is_pms: [false],
         is_dorm: [false],
@@ -339,6 +341,15 @@ export class ManageRoomsComponent {
         image: ''
           }];
     }
+  }
+
+  getRatePlanByParent(event:any){
+      this.proService.getRatePlanByParent(event.target.value,(res:any)=>{
+        if(res.status ==200){
+          console.log(res);
+          this.ratePlans=res.data;
+        }
+      })
   }
                                
 }

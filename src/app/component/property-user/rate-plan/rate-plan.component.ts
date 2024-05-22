@@ -120,11 +120,12 @@ export class RatePlanComponent {
   save() {
     this.loader=true;
     if(this.ratepPlanModal.ratePlanData[0].name && this.ratepPlanModal.ratePlanData[0].treatment){
-      this.ratepPlanModal.ratePlanData[0]['property_id'] = this.currentPropertyId;
+      this.ratepPlanModal.ratePlanData[0]['property_id'] = +this.currentPropertyId;
       this._service.saveRatePlan(this.ratepPlanModal,(res:any)=>{
         if(res.status == 200){
           console.log(res);
           this.loader=false;
+          this.backToRateplan();
           this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' })
         }
       })
