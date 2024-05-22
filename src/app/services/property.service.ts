@@ -153,5 +153,9 @@ export class PropertyService extends BaseServiceService {
     this.putData(params, `${this.httpUrl['updatePMSByHousekeeper']}`, callback);
   }
 
+  deletePMS(roomId:any,callback:any){
+    this.deleteData({}, `${this.httpUrl['deletePMS']}/${roomId}`, callback);
+  }
+
 
 }

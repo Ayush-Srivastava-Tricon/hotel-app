@@ -14,7 +14,7 @@ export class ManagePmsComponent {
     name: '',
     priority: 0,
     change_linen_frequency: '',
-    cleaning_frequency: '',
+    cleaning_frequency: [],
     cleaning_status: null,
     internal_notes: '',
     // cleaningDays: {
@@ -39,6 +39,8 @@ export class ManagePmsComponent {
   showActionDropDown:any={};
   todayDate:any= new Date();
   currentPMSId:any=0;
+  weekdays: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  selectedDays: any= [];
   
   constructor(private _service:PropertyService,private alert:AlertService){}
 
@@ -67,6 +69,20 @@ export class ManagePmsComponent {
     // this.pmsDataConfig.lastCleaningTime = new Date().toISOString();
   }
 
+  selectWeek(event:any,day:any){
+    if(event.target.checked){
+      this.pmsDataConfig.cleaning_frequency.push(day);
+    }else{
+      if(this.pmsDataConfig.cleaning_frequency.includes(day)){
+        this.pmsDataConfig.cleaning_frequency.forEach((e:any,idx:any)=>{
+            if(e == day){
+              this.pmsDataConfig.cleaning_frequency.splice(idx,1);
+            }
+        })
+      }
+    }
+  }
+
   savePMS(){
     this.loader=true;
     this.pmsDataConfig.parent_room_id = +this.pmsDataConfig.parent_room_id;
@@ -83,13 +99,19 @@ export class ManagePmsComponent {
   
   openModal(){
     this.showModal.pms = true;
+    this.resetConfig();
+    this.isEditModal = false;
+    this.getParentRoomId();
+  }
+
+  resetConfig(){
     this.pmsDataConfig = JSON.parse(JSON.stringify(
       {
         parent_room_id: null,
         name: '',
         priority: 0,
         change_linen_frequency: '',
-        cleaning_frequency: '',
+        cleaning_frequency: [],
         cleaning_status: null,
         internal_notes: '',
         // cleaningDays: {
@@ -104,8 +126,6 @@ export class ManagePmsComponent {
         // lastCleaningTime: '',
       }
     ));
-    this.isEditModal = false;
-    this.getParentRoomId();
   }
 
   getParentRoomId() {
@@ -133,37 +153,60 @@ export class ManagePmsComponent {
         this.showModal.pms = true;
         this.getParentRoomId();
         this.pmsDataConfig = res.data[0];
+        this.pmsDataConfig.previous_cleaning_status = res.data[0].cleaning_status;
+        this.pmsDataConfig.previous_internal_notes = res.data[0].internal_notes;
+        this.pmsDataConfig.previous_last_cleaning_date =res.data[0].last_cleaning_date;
       }
     })
   }
 
   editPMS(){
-    let params:any={
-      "pms_room_id": +this.currentPMSId,
-      "name": this.pmsDataConfig.name,
-      "priority": this.pmsDataConfig.priority,
-      "change_linen_frequency": this.pmsDataConfig.change_linen_frequency,
-      "cleaning_frequency": this.pmsDataConfig.cleaning_frequency,
-      "cleaning_status": this.pmsDataConfig.cleaning_status,
-      "internal_notes": this.pmsDataConfig.internal_notes,
-      "previous_cleaning_status": this.pmsDataConfig.previous_cleaning_status,
-      "previous_internal_notes": this.pmsDataConfig.previous_internal_notes,
-      "previous_last_cleaning_date": ''
-    }
-
-    // this._service.updatePMS(params,(res:any)=>{
-    //   if(res.status == 200){
-    //     console.log(res);
-    //     this.backToPMS();
-    //     this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
-    //   }else{
-    //     this.alert.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' });
-    //   }
-    // })
+    // delete this.pmsDataConfig.parent_room_id;
+    delete this.pmsDataConfig.parent_room_name;
+    this.loader=true;
+    this.pmsDataConfig['pms_room_id'] = +this.pmsDataConfig.id;
+    delete this.pmsDataConfig.id;
+    delete this.pmsDataConfig.last_cleaning_date;
+    delete this.pmsDataConfig.update_time;
+    
+    this._service.updatePMS(this.pmsDataConfig,(res:any)=>{
+      if(res.status == 200){
+        this.loader=false;
+        console.log(res);
+        this.backToPMS();
+        this.resetConfig();
+        this.fetchPMS();
+        this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
+      }else{
+        this.loader=false;
+        this.alert.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' });
+      }
+    })
   }
 
-  deletePMSModal(id:any,idx:any){
-    
+  deletePMSModal(id:any){
+    this.currentPMSId = id;
+    this.showModal.delete=true;
+  }
+
+  deleteRoom(){
+      this._service.deletePMS(this.currentPMSId,(res:any)=>{
+        if(res.status = 200){
+          console.log(res);
+          this.showModal.delete=false;
+          this.resetConfig();
+          this.backToPMS();
+          this.fetchPMS();
+          this.alert.alert("error",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
+        }else{
+          this.showModal.delete=false;
+          this.alert.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' });
+        }
+      })
+  }
+
+  closeModal(){
+    this.showModal.delete=false;
   }
 
   backToPMS(){

@@ -65,7 +65,7 @@
                     *ngIf="showActionDropDown[idx]">
                     <!-- <a class="dropdown-item">Change Status</a> -->
                     <a class="dropdown-item" (click)="editPMSOpenModal(item)">Edit Room</a>
-                    <a class="dropdown-item" (click)="deletePMSModal(item.id,idx)">Delete</a>
+                    <a class="dropdown-item" (click)="deletePMSModal(item.id)">Delete</a>
                   </div>
                 </div>
               </td>
@@ -92,42 +92,54 @@
     </nav>
   </div>
 
-<div class="container p-3 shadow my-3" *ngIf="showModal.pms">
-  <div class="form-group row ">
-    <label class="col-sm-5 col-form-label" for="usedType">Parent Room</label>
-    <div class="col-sm-7">
-      <select id="usedType" [(ngModel)]="pmsDataConfig.parent_room_id" name="usedType">
-        <option [value]="null" disabled>Select a value...</option>
-        <option [value]="item.room_id" *ngFor="let item of parentRooms">{{item.room_name}}</option>
-        <!-- Add other options here -->
-      </select>
+  <div class="container p-3 shadow my-3" *ngIf="showModal.pms">
+    <div class="form-group row ">
+      <label class="col-sm-5 col-form-label" for="usedType">Parent Room</label>
+      <div class="col-sm-7">
+        <select id="usedType" [(ngModel)]="pmsDataConfig.parent_room_id" name="usedType">
+          <option [value]="null" disabled>Select a value...</option>
+          <option [value]="item.room_id" *ngFor="let item of parentRooms">{{item.room_name}}</option>
+          <!-- Add other options here -->
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="form-group row ">
-    <label class="col-sm-5 col-form-label" for="name">Name <span class="text-danger">*</span></label>
-    <div class="col-sm-7">
-      <input type="text" id="name" [(ngModel)]="pmsDataConfig.name" name="name">
+    <div class="form-group row ">
+      <label class="col-sm-5 col-form-label" for="name">Name <span class="text-danger">*</span></label>
+      <div class="col-sm-7">
+        <input type="text" id="name" [(ngModel)]="pmsDataConfig.name" name="name">
+      </div>
     </div>
-  </div>
-  <div class="form-group row ">
-    <label class="col-sm-5 col-form-label" for="priority">Priority <span class="text-danger">*</span></label>
-    <div class="col-sm-7">
-      <input type="number" id="priority" [(ngModel)]="pmsDataConfig.priority" name="priority" min="1" max="100">
+    <div class="form-group row ">
+      <label class="col-sm-5 col-form-label" for="priority">Priority <span class="text-danger">*</span></label>
+      <div class="col-sm-7">
+        <input type="number" id="priority" [(ngModel)]="pmsDataConfig.priority" name="priority" min="1" max="100">
+      </div>
     </div>
-  </div>
-  <div class="form-group row ">
-    <label class="col-sm-5 col-form-label" for="linenFrequency">Change linen frequency</label>
-    <div class="col-sm-7">
-      <input type="text" id="linenFrequency" [(ngModel)]="pmsDataConfig.change_linen_frequency" name="linenFrequency">
+    <div class="form-group row ">
+      <label class="col-sm-5 col-form-label" for="linenFrequency">Change linen frequency</label>
+      <div class="col-sm-7">
+        <select name="" id="" class="form-select" [(ngModel)]="pmsDataConfig.change_linen_frequency">
+          <option [value]="null" disabled>Select a value...</option>
+          <option value="{{idx+1}} days" *ngFor="let item of [].constructor(31);let idx= index;">
+            <span *ngIf="idx == 0">1 day</span>
+            <span *ngIf="idx>0">{{idx+1}} days</span>
+          </option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="form-group row ">
-    <label class="col-sm-5 col-form-label" for="cleaningFrequency">Cleaning frequency</label>
-    <div class="col-sm-7">
-      <input type="text" id="cleaningFrequency" [(ngModel)]="pmsDataConfig.cleaning_frequency" name="cleaningFrequency">
+    <div class="form-group row ">
+      <label class="col-sm-5 col-form-label" for="cleaningFrequency">Cleaning frequency</label>
+      <div class="col-sm-7">
+        <!-- <input type="text" id="cleaningFrequency" name="cleaningFrequency"> -->
+        <div class="d-flex justify-content-start text-center my-2">
+          <label *ngFor="let day of weekdays;let idx=index;">
+            <input type="checkbox" [checked]="pmsDataConfig.cleaning_frequency.includes(day)"
+              (change)="selectWeek($event,day)" /> {{ day }}
+          </label>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="form-group row ">
+    <!-- <div class="form-group row ">
     <label class="col-sm-5 col-form-label">Cleaning days</label>
     <div class="col-sm-7">
       <div class="cleaning-days flex-wrap">
@@ -137,19 +149,19 @@
         </label>
       </div>
     </div>
-  </div>
-  <div class="form-group row ">
-    <label class="col-sm-5 col-form-label" for="cleanStatus">Clean status</label>
-    <div class="col-sm-7">
-      <select id="cleanStatus" [(ngModel)]="pmsDataConfig.cleaning_status" name="cleanStatus">
-        <option [value]="null" [selected]="true">Select a value...</option>
-        <option value="dirty">Dirty</option>
-        <option value="clean">Clean</option>
-      </select>
+  </div> -->
+    <div class="form-group row ">
+      <label class="col-sm-5 col-form-label" for="cleanStatus">Clean status</label>
+      <div class="col-sm-7">
+        <select id="cleanStatus" [(ngModel)]="pmsDataConfig.cleaning_status" name="cleanStatus">
+          <option [value]="null" [selected]="true" disabled>Select a value...</option>
+          <option value="cleaned">Cleaned</option>
+          <option value="to_clean">To Clean</option>
+        </select>
+      </div>
+      <!-- Add status options here -->
     </div>
-    <!-- Add status options here -->
-  </div>
-  <div class="form-group row ">
+    <!-- <div class="form-group row ">
     <label class="col-sm-5 col-form-label" for="lastCleaningTime">Last cleaning time</label>
     <div class="col-sm-7">
       <div class="last-cleaning-time">
@@ -157,20 +169,47 @@
         <button type="button" (click)="setCurrentTime()"><i class="bi bi-alarm"></i> Set current time</button>
       </div>
     </div>
-  </div>
-  <div class="form-group row ">
-    <label class="col-sm-5 col-form-label" for="internalNotes">Internal notes</label>
-    <div class="col-sm-7">
-      <textarea id="internalNotes" [(ngModel)]="pmsDataConfig.internal_notes" name="internalNotes"></textarea>
+  </div> -->
+    <div class="form-group row ">
+      <label class="col-sm-5 col-form-label" for="internalNotes">Internal notes</label>
+      <div class="col-sm-7">
+        <textarea id="internalNotes" [(ngModel)]="pmsDataConfig.internal_notes" name="internalNotes"></textarea>
+      </div>
     </div>
-  </div>
-  <div class="form-buttons">
-    <!-- <button type="button" class="btn btn-secondary">Close</button> -->
-    <!-- <button type="button" class="btn btn-danger">Delete</button> -->
-    <!-- <button type="button" class="btn btn-primary">Clone</button> -->
-    <div class="d-flex">
-      <button type="submit" class="btn btn-success" (click)="isEditModal ? editPMS() : savePMS()" [disabled]="loader">{{isEditModal? 'Edit':'Save'}}</button>
-      <div class="spinner-border text-primary" *ngIf="loader"></div>
+    <div class="form-buttons">
+      <!-- <button type="button" class="btn btn-secondary">Close</button> -->
+      <!-- <button type="button" class="btn btn-danger">Delete</button> -->
+      <!-- <button type="button" class="btn btn-primary">Clone</button> -->
+      <div class="d-flex align-items-center">
+        <button type="submit" class="btn btn-success" (click)="isEditModal ? editPMS() : savePMS()"
+          [disabled]="loader">{{isEditModal? 'Edit':'Save'}}</button>
+        <div class="spinner-border text-primary mx-2" *ngIf="loader"></div>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- DELETE Modal -->
+<div class="modal" *ngIf="showModal.delete">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content delete-modal">
+          <div class="modal-body">
+              <ng-container *ngIf="showModal.delete">
+                  <div class="modal-header flex-row">
+                      <h4 class="modal-title w-100">Are you sure?</h4>
+                      <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                      <p>Do you really want to delete the Room ?</p>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal"
+                          (click)="closeModal()">Cancel</button>
+                      <button type="button" class="btn btn-outline-danger" (click)="deleteRoom()">Delete</button>
+                  </div>
+              </ng-container>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="modal-backdrop fade in" *ngIf="showModal.delete"></div>

@@ -85,6 +85,7 @@ export class BaseServiceService {
     'deleteRatePlans':'hotelapi/rooms/deleteRatePlans',
     'getSinglePMS':'hotelapi/rooms/listPMSRooms',
     'updatePMSByHousekeeper':'hotelapi/rooms/updatePMSByHousekeeper',
+    'deletePMS':'hotelapi/rooms/deletePMS',
 
     
   }
