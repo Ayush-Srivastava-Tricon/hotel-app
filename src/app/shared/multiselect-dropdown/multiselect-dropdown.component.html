@@ -58,7 +58,7 @@
 <div class="detail-page-recreate-service-codes" (mouseleave)="showDropDown = false"
     *ngIf="inputConfig?.houseKeepePage && inputConfig?.pmsData">
     <button class="drop-toggle btn flat" (click)="showDropDown=!showDropDown;toggleSelectedItem('pmsData')">
-        <span class="clssic" *ngIf="multiselectPageConfig.pmsData.length<=0">Select All Reservation</span>
+        <span class="clssic" *ngIf="multiselectPageConfig.pmsData.length<=0">Select PMS Room</span>
         <span *ngIf="multiselectPageConfig.pmsData.length>0"
             [ngClass]="{'hide-item':showSelectedData['pmsData']}">
             <ng-container *ngFor="let item of multiselectPageConfig.pmsData; let last = last"> {{ item.value
