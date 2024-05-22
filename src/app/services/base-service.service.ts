@@ -66,28 +66,34 @@ export class BaseServiceService {
     'editOtaRoom': 'hotelapi/otarooms',
     'fetchOtaRoomById': 'hotelapi/otarooms/otaRoomByOtaUserId',
     'mapping': 'hotelapi/otarooms/mapping',
-    'getReservation':'hotelapi/roomsForReservation',
-    'getPaymentMethod':'hotelapi/roomsForReservation/getPaymentMethod',
-    'getExtraFacility':'hotelapi/roomsForReservation/getExtraFacility',
-    'addReservationDetails':'hotelapi/roomsForReservation',
-    'getListOfReservation':'hotelapi/roomsForReservation/reservationListing',
-    'getSingleReservation':'hotelapi/roomsForReservation/reservationListing',
-    'updateReservation':'hotelapi/roomsForReservation/updateReservation',
-    'unLinkInternalRoom':'hotelapi/otarooms/unlinkInternalRooms',
-    'unLinkOtaRoom':'hotelapi/otarooms/unlinkOtaRooms',
-    'saveRatePlan':'hotelapi/rooms/createRateplan',
-    'savePMS':'hotelapi/rooms/createPMS',
-    'listPMSRooms':'hotelapi/rooms/listPMSRooms',
-    'listRatePlans':'hotelapi/rooms/listRatePlans',
-    'getSingleRateplan':'hotelapi/rooms/listRatePlans',
-    'updateRatePlans':'hotelapi/rooms/updateRatePlans',
-    'mapRatePlanWithRooms':'hotelapi/rooms/mapRatePlanWithRooms',
-    'deleteRatePlans':'hotelapi/rooms/deleteRatePlans',
-    'getSinglePMS':'hotelapi/rooms/listPMSRooms',
-    'updatePMSByHousekeeper':'hotelapi/rooms/updatePMSByHousekeeper',
-    'deletePMS':'hotelapi/rooms/deletePMS',
+    'getReservation': 'hotelapi/roomsForReservation',
+    'getPaymentMethod': 'hotelapi/roomsForReservation/getPaymentMethod',
+    'getExtraFacility': 'hotelapi/roomsForReservation/getExtraFacility',
+    'addReservationDetails': 'hotelapi/roomsForReservation',
+    'getListOfReservation': 'hotelapi/roomsForReservation/reservationListing',
+    'getSingleReservation': 'hotelapi/roomsForReservation/reservationListing',
+    'updateReservation': 'hotelapi/roomsForReservation/updateReservation',
+    'unLinkInternalRoom': 'hotelapi/otarooms/unlinkInternalRooms',
+    'unLinkOtaRoom': 'hotelapi/otarooms/unlinkOtaRooms',
+    'saveRatePlan': 'hotelapi/rooms/createRateplan',
+    'savePMS': 'hotelapi/rooms/createPMS',
+    'listPMSRooms': 'hotelapi/rooms/listPMSRooms',
+    'listRatePlans': 'hotelapi/rooms/listRatePlans',
+    'getSingleRateplan': 'hotelapi/rooms/listRatePlans',
+    'updateRatePlans': 'hotelapi/rooms/updateRatePlans',
+    'mapRatePlanWithRooms': 'hotelapi/rooms/mapRatePlanWithRooms',
+    'deleteRatePlans': 'hotelapi/rooms/deleteRatePlans',
+    'getSinglePMS': 'hotelapi/rooms/listPMSRooms',
+    'updatePMSByHousekeeper': 'hotelapi/rooms/updatePMSByHousekeeper',
+    'deletePMS': 'hotelapi/rooms/deletePMS',
+    'createHouseKeeper': 'hotelapi/employee/createHouseKeeper',
+    'updateHouseKeeper': 'hotelapi/employee/updateHouseKeeper',
+    'listHouseKeepers': 'hotelapi/employee/listHouseKeepers',
+    'getSingleKeeper': 'hotelapi/employee/listHouseKeepers',
+    'deleteKeeper': 'hotelapi/employee',
+    'mapPMSRoomsWithHouseKeeper': 'hotelapi/employee/mapPMSRoomsWithHouseKeeper',
 
-    
+
   }
 
   constructor(public http: HttpClient) { }
@@ -105,7 +111,7 @@ export class BaseServiceService {
 
 
 
-    return this.http.get(environment.apiUrl + url, { headers: headers,params:data }).subscribe((data: any) => {
+    return this.http.get(environment.apiUrl + url, { headers: headers, params: data }).subscribe((data: any) => {
       callback(<any>data);
     },
       (error: any) => {
@@ -145,23 +151,23 @@ export class BaseServiceService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => {callback(data)},
-    (error: any) => {
-      console.log(error)
-      if (error.error.status == 401 && error.error.message == 'Expired token') {
-        this.handleRefreshToken(url, (res: any) => {
-          if (res) {
-            console.log(res);
-            localStorage.setItem("token", res.Bearer);
-            this.postData(data, url, callback);
-          }
-        });
+    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => { callback(data) },
+      (error: any) => {
+        console.log(error)
+        if (error.error.status == 401 && error.error.message == 'Expired token') {
+          this.handleRefreshToken(url, (res: any) => {
+            if (res) {
+              console.log(res);
+              localStorage.setItem("token", res.Bearer);
+              this.postData(data, url, callback);
+            }
+          });
 
-      }
-      if (error) {
-        callback(error);
-      }
-    })
+        }
+        if (error) {
+          callback(error);
+        }
+      })
   }
 
   postDataWithFile(data: any, url: any, callback: any) {
@@ -170,26 +176,26 @@ export class BaseServiceService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-      console.log(this.getTokenFromLocal());
-      
+    console.log(this.getTokenFromLocal());
 
-    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => {callback(data)},
-    (error: any) => {
-      console.log(error)
-      if (error.error.status == 401 && error.error.message == 'Expired token') {
-        this.handleRefreshToken(url, (res: any) => {
-          if (res) {
-            console.log(res);
-            localStorage.setItem("token", res.Bearer);
-            this.postData(data, url, callback);
-          }
-        });
 
-      }
-      if (error) {
-        callback(error);
-      }
-    })
+    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => { callback(data) },
+      (error: any) => {
+        console.log(error)
+        if (error.error.status == 401 && error.error.message == 'Expired token') {
+          this.handleRefreshToken(url, (res: any) => {
+            if (res) {
+              console.log(res);
+              localStorage.setItem("token", res.Bearer);
+              this.postData(data, url, callback);
+            }
+          });
+
+        }
+        if (error) {
+          callback(error);
+        }
+      })
   }
 
 
@@ -199,47 +205,47 @@ export class BaseServiceService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.put(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => {callback(data)},
-    (error: any) => {
-      console.log(error)
-      if (error.error.status == 401 && error.error.message == 'Expired token') {
-        this.handleRefreshToken(url, (res: any) => {
-          if (res) {
-            console.log(res);
-            localStorage.setItem("token", res.Bearer);
-            this.putData(data, url, callback);
-          }
-        });
-      }
-      if (error) {
-        callback(error);
-      }
-    })
+    return this.http.put(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => { callback(data) },
+      (error: any) => {
+        console.log(error)
+        if (error.error.status == 401 && error.error.message == 'Expired token') {
+          this.handleRefreshToken(url, (res: any) => {
+            if (res) {
+              console.log(res);
+              localStorage.setItem("token", res.Bearer);
+              this.putData(data, url, callback);
+            }
+          });
+        }
+        if (error) {
+          callback(error);
+        }
+      })
 
   }
-  
+
   updateDataWithFile(data: any, url: any, callback: any) {
     const headers = new HttpHeaders()
       .set('Accept', 'application/json')
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => {callback(data)},
-    (error: any) => {
-      console.log(error)
-      if (error.error.status == 401 && error.error.message == 'Expired token') {
-        this.handleRefreshToken(url, (res: any) => {
-          if (res) {
-            console.log(res);
-            localStorage.setItem("token", res.Bearer);
-            this.putData(data, url, callback);
-          }
-        });
-      }
-      if (error) {
-        callback(error);
-      }
-    })
+    return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => { callback(data) },
+      (error: any) => {
+        console.log(error)
+        if (error.error.status == 401 && error.error.message == 'Expired token') {
+          this.handleRefreshToken(url, (res: any) => {
+            if (res) {
+              console.log(res);
+              localStorage.setItem("token", res.Bearer);
+              this.putData(data, url, callback);
+            }
+          });
+        }
+        if (error) {
+          callback(error);
+        }
+      })
 
   }
 
@@ -249,7 +255,7 @@ export class BaseServiceService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    return this.http.delete(environment.apiUrl + url, { headers: headers ,body:data}).subscribe((data: any) => callback(data), ((error: any) => callback(error))
+    return this.http.delete(environment.apiUrl + url, { headers: headers, body: data }).subscribe((data: any) => callback(data), ((error: any) => callback(error))
     );
 
   }

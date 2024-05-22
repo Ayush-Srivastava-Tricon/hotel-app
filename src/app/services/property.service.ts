@@ -157,5 +157,29 @@ export class PropertyService extends BaseServiceService {
     this.deleteData({}, `${this.httpUrl['deletePMS']}/${roomId}`, callback);
   }
 
+  createHousekeeper(params:any,callback:any){
+    this.postData(params,this.httpUrl['createHouseKeeper'],callback)
+  }
+
+  updateHouseKeeper(params:any,callback:any){
+    this.putData(params,this.httpUrl['updateHouseKeeper'],callback)
+  }
+
+  listHouseKeepers(property_id:any,callback:any){
+    this.getData({},`${this.httpUrl['listHouseKeepers']}?property_id=${property_id}`,callback)
+  }
+
+  getSingleKeeper(housekeeperid:any,callback:any){
+    this.getData({},`${this.httpUrl['listHouseKeepers']}?house_keeper_id=${housekeeperid}`,callback)
+  }
+
+  deleteKeeper(keeperId:any,callback:any){
+    this.deleteData({}, `${this.httpUrl['deleteKeeper']}/${keeperId}`, callback);
+  }
+
+  mapPMSRoomsWithHouseKeeper(params:any,callback:any){
+    this.postData(params,this.httpUrl['mapPMSRoomsWithHouseKeeper'],callback);
+  }
+
 
 }

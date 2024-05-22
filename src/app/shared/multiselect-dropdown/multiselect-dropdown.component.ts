@@ -10,7 +10,7 @@ export class MultiselectDropdownComponent {
   @Input() inputConfig:any;
   @Output() emitToParent:any = new EventEmitter();
   showDropDown:boolean=false;
-  multiselectPageConfig:any={reservation_status:[],parentRooms:[]};
+  multiselectPageConfig:any={reservation_status:[],parentRooms:[],pmsData:[]};
   showSelectedData:any={};
   filteredOptions:any={};
   searchText:any='';
@@ -51,6 +51,23 @@ ngOnInit(){
           if (e.value == value.value) {
             this.multiselectPageConfig.parentRooms.splice(idx, 1);
             this.emitToParent.emit({action:'selectedParentRoom',value:this.multiselectPageConfig.parentRooms.map((e:any)=>{return e.room_id})});
+          }
+        });
+        
+      }
+    }
+     if (type === 'pmsData'){
+      if (status) {
+        let isExist = this.multiselectPageConfig.pmsData.some((ele:any)=>ele.value.toUpperCase() == value.value.toUpperCase() && ele.checked == value.checked);
+        if(!isExist){
+          this.multiselectPageConfig.pmsData.push(value);
+          this.emitToParent.emit({action:'getPMSRoom',value:this.multiselectPageConfig.pmsData.map((e:any)=>{return e.id})});
+        }
+      } else {
+        this.multiselectPageConfig.pmsData.forEach((e: any, idx: any) => {
+          if (e.value == value.value) {
+            this.multiselectPageConfig.pmsData.splice(idx, 1);
+            this.emitToParent.emit({action:'getPMSRoom',value:this.multiselectPageConfig.pmsData.map((e:any)=>{return e.id})});
           }
         });
         

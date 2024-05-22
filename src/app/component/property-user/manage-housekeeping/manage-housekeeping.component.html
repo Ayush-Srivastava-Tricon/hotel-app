@@ -1,1 +1,179 @@
-<p>manage-housekeeping works!</p>
+<div class="container-fluid" *ngIf="!showModal.housekeeping">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-sm-12">
+        <div class="table-wrapper shadow">
+          <div class="table-title">
+            <div class="row">
+              <div class="col-sm-6">
+                <span class="title">List HouseKeepers</span>
+              </div>
+              <div class="col-sm-6">
+                <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success" data-toggle="modal"><span>Add
+                    Housekeeper</span></a>
+              </div>
+            </div>
+          </div>
+          <table class="table table-shadow table-sm table-hover">
+            <thead class="thead-dark">
+              <tr class="table-row-rooms">
+                <th>Name</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="loader">
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+              </tr>
+              <tr *ngIf="housekeeperData.length==0 && !loader">
+                <td colspan="19" class="text-center">
+                  No Data
+                </td>
+              </tr>
+              <tr *ngFor="let item of housekeeperData;let idx = index;" class="text-center align-middle">
+                <td>{{item.name}}</td>
+                <td>{{item.gender}}</td>
+                <td>{{item.dob}}</td>
+                <td>{{item.mobile}}</td>
+                <td>{{item.email}}</td>
+                <td>
+                  <div class="dropdown">
+                    <i class="btn btn-light btn-sm bi bi-three-dots-vertical" (click)="showDropDown(idx)"></i>
+                    <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
+                      *ngIf="showActionDropDown[idx]">
+                      <!-- <a class="dropdown-item">Change Status</a> -->
+                      <a class="dropdown-item" (click)="editKeeperOpenModal(item)">Edit Keeper</a>
+                      <a class="dropdown-item" (click)="mapKeeperModal(item.id)">Map with PMS</a>
+                      <a class="dropdown-item" (click)="deleteKeeperModal(item.id)">Delete</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-fluid mt-2" *ngIf="showModal.housekeeping">
+    <div class="my-3 ms-2 d-flex justify-content-between ">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "
+              (click)="backToKeeper()">Back to Manage Housekeeper </a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Housekeeper</li>
+        </ol>
+      </nav>
+    </div>
+  
+    <div class="container p-3 shadow my-3" *ngIf="showModal.housekeeping">
+      <div class="form-group row ">
+        <label class="col-sm-5 col-form-label" for="name">Name <span class="text-danger">*</span></label>
+        <div class="col-sm-7">
+          <input type="text" id="name" [(ngModel)]="housekeeperDataConfig.name" name="name">
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-sm-5 col-form-label" for="priority">Gender <span class="text-danger">*</span></label>
+        <div class="col-sm-7">
+            <select  class="form-select" [(ngModel)]="housekeeperDataConfig.gender">
+                <option [value]="null">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-sm-5 col-form-label" for="linenFrequency">Dob</label>
+        <div class="col-sm-7">
+            <input type="date" id="name" [(ngModel)]="housekeeperDataConfig.dob" name="name">
+           
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-sm-5 col-form-label" for="cleaningFrequency">Mobile</label>
+        <div class="col-sm-7">
+          <input type="number" maxlength="10" id="name" [(ngModel)]="housekeeperDataConfig.mobile" name="name">
+         
+        </div>
+      </div>
+      <div class="form-group row ">
+        <label class="col-sm-5 col-form-label" for="cleanStatus">Email</label>
+        <div class="col-sm-7">
+            <input type="email" id="name" [(ngModel)]="housekeeperDataConfig.email" name="name">
+          
+        </div>
+      </div>
+    
+      <div class="form-buttons">
+        <div class="d-flex align-items-center">
+          <button type="submit" class="btn btn-success" (click)="isEditModal ? editPMS() : savePMS()"
+            [disabled]="loader">{{isEditModal? 'Edit':'Save'}}</button>
+          <div class="spinner-border text-primary mx-2" *ngIf="loader"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- DELETE Modal -->
+  <div class="modal" *ngIf="showModal.delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content delete-modal">
+            <div class="modal-body">
+                <ng-container *ngIf="showModal.delete">
+                    <div class="modal-header flex-row">
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Do you really want to delete the Keeper ?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            (click)="closeModal()">Cancel</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteRoom()">Delete</button>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showModal.map">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content delete-modal">
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h5 class="modal-title">Map HouseKeeper</h5>
+                    <button type="button" class="btn btn-light btn-sm" (click)="closeModal()">
+                      <span >&times;</span>
+                    </button>
+                  </div>
+                  <div class="row my-4">
+                    <div class="col-sm-12" *ngIf="pmsData.length>0">
+                        <app-multiselect-dropdown [inputConfig]="{houseKeepePage:true,pmsData:pmsData}"
+                        (emitToParent)="receiveChildEvent($event)"></app-multiselect-dropdown>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 d-flex">
+                        <button class="btn btn-success" [disabled]="loader" (click)="mapHousekeeper()">Map</button>
+                        <div class="spinner-border text-primary mx-2" *ngIf="loader"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  <div class="modal-backdrop fade in" *ngIf="showModal.delete||showModal.map"></div>

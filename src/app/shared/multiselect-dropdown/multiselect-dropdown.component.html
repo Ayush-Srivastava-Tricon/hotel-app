@@ -23,8 +23,8 @@
     *ngIf="inputConfig?.ratePlanPage && inputConfig?.parentRooms">
     <span (click)="clearAll('parentRooms','getparentRooms')" *ngIf="multiselectPageConfig.parentRooms.length>0"
         class="clearAll">(Clear All)</span>
-        <div class="d-block text-start mb-2"> 
-            <button class="drop-toggle btn flat" (click)="toggleSelectedItem('parentRooms')"
+    <div class="d-block text-start mb-2">
+        <button class="drop-toggle btn flat" (click)="toggleSelectedItem('parentRooms')"
             *ngIf="multiselectPageConfig?.parentRooms.length>0">
             <span [ngClass]="{'hide-item':showSelectedData['parentRooms']}">
                 <ng-container *ngFor="let item of multiselectPageConfig.parentRooms; let last = last">
@@ -34,18 +34,43 @@
         </button>
     </div>
     <div>
-        <input type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="filterOptions('parentRooms', 'value')" class="no-css-input-box form-control">
+        <input type="text" placeholder="Search..." [(ngModel)]="searchText"
+            (input)="filterOptions('parentRooms', 'value')" class="no-css-input-box form-control">
         <div class="drop-show no-css-search-claim" (mouseleave)="searchText=''" *ngIf="searchText">
             <label for="selectAll" *ngIf="filteredOptions.parentRooms.length === 0">
                 No Data Found
             </label>
             <ng-container *ngIf="filteredOptions.parentRooms.length > 0">
                 <label *ngFor="let item of filteredOptions.parentRooms">
-                    <input type="checkbox" [(ngModel)]="item.checked" (change)="getSelectedValue(item.checked, item, 'parentRooms', 'parentRooms')" id="{{ item.value }}">
+                    <input type="checkbox" [(ngModel)]="item.checked"
+                        (change)="getSelectedValue(item.checked, item, 'parentRooms', 'parentRooms')"
+                        id="{{ item.value }}">
                     <span>{{item.value}}</span>
                 </label>
             </ng-container>
         </div>
     </div>
-    
+
+</div>
+
+
+<!-- <-------------Housekeeping PMS Room--------->
+<div class="detail-page-recreate-service-codes" (mouseleave)="showDropDown = false"
+    *ngIf="inputConfig?.houseKeepePage && inputConfig?.pmsData">
+    <button class="drop-toggle btn flat" (click)="showDropDown=!showDropDown;toggleSelectedItem('pmsData')">
+        <span class="clssic" *ngIf="multiselectPageConfig.pmsData.length<=0">Select All Reservation</span>
+        <span *ngIf="multiselectPageConfig.pmsData.length>0"
+            [ngClass]="{'hide-item':showSelectedData['pmsData']}">
+            <ng-container *ngFor="let item of multiselectPageConfig.pmsData; let last = last"> {{ item.value
+                }}{{last ? '': ','}}</ng-container>
+        </span>
+        <i class="fa fa-angle-down"></i>
+    </button>
+    <div class="drop-show search-claim-dropdown" *ngIf="showDropDown">
+        <label *ngFor="let item of inputConfig.pmsData;let idx = index">
+            <input type="checkbox" [(ngModel)]="item.checked"
+                (change)="getSelectedValue(item.checked,item,'pmsData','pmsData')" />
+            <span>{{item.value}}</span>
+        </label>
+    </div>
 </div>

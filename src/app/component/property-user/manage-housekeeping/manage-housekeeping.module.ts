@@ -3,13 +3,17 @@ import { CommonModule } from '@angular/common';
 
 import { ManageHousekeepingRoutingModule } from './manage-housekeeping-routing.module';
 import { ManageHousekeepingComponent } from './manage-housekeeping.component';
+import { FormsModule } from '@angular/forms';
+import { MultiselectDropdownModule } from 'src/app/shared/multiselect-dropdown/multiselect-dropdown.module';
 
 
 @NgModule({
   declarations: [ManageHousekeepingComponent],
   imports: [
     CommonModule,
-    ManageHousekeepingRoutingModule
+    ManageHousekeepingRoutingModule,
+    FormsModule,
+    MultiselectDropdownModule
   ],
   exports:[ManageHousekeepingComponent]
 })
