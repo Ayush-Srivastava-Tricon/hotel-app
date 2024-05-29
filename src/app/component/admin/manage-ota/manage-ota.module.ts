@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ManageOtaRoutingModule } from './manage-ota-routing.module';
 import { ManageOtaComponent } from './manage-ota.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ManageOtaRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    TranslateModule
   ],
   exports:[ManageOtaComponent]
 })

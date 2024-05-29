@@ -44,10 +44,10 @@ export class CalendarViewComponent {
   selectedStartDate: any;
   selectedEndDate: any;
   timeoutId: any = null;
-  allPropertyList:any=[];
+  allPropertyList: any = [];
   loggedProperty: any = { 'isLoginProperty': false, 'propertyId': 0 };
-  isAdmin:boolean=false;
-  isOwner:boolean=false;
+  isAdmin: boolean = false;
+  isOwner: boolean = false;
 
   constructor(private _service: CalendarService, private fb: FormBuilder, private alertService: AlertService, private router: Router) {
     this.modalFieldForm = this.fb.group({
@@ -72,28 +72,28 @@ export class CalendarViewComponent {
       this.loggedProperty.isLoginProperty = true;
       this.loggedProperty.propertyId = localStorage.getItem("selectedPropertyId");
       this.setDataToAllPropertyDropdown();
-      this.selectedDate({target:{value:this.formatDate(this.todayDate)}})
+      this.selectedDate({ target: { value: this.formatDate(this.todayDate) } })
       // this.fetchCalendarData();
     } else {
       this.loggedProperty.propertyId = localStorage.getItem("userId");
-      this.selectedDate({target:{value:this.formatDate(this.todayDate)}})
+      this.selectedDate({ target: { value: this.formatDate(this.todayDate) } })
       // this.fetchCalendarData();
     }
   }
 
-  setDataToAllPropertyDropdown(){
+  setDataToAllPropertyDropdown() {
     this.allPropertyList = JSON.parse(<any>localStorage.getItem("propertyList"));
   }
 
-  fetchCalendarData(nextButtonDate?: any,isFromDateRange?:boolean) {
+  fetchCalendarData(nextButtonDate?: any, isFromDateRange?: boolean) {
     this.mainData = [];
-    let startEndDate: any = this.getStartAndEndDate(nextButtonDate,isFromDateRange);
+    let startEndDate: any = this.getStartAndEndDate(nextButtonDate, isFromDateRange);
     this.loader = true;
     this._service.getAllCalendarData(this.loggedProperty.propertyId, startEndDate, (res: any) => {
-      if (res.status == 200 && res.responseData.length>0) {
+      if (res.status == 200 && res.responseData.length > 0) {
         console.log(res);
         this.mainData = res.responseData;
-        this.alertService.alert(res.responseData.length> 0 ? "success" : 'error', res.message, "Success", { displayDuration: 2000, pos: 'top' });
+        this.alertService.alert(res.responseData.length > 0 ? "success" : 'error', res.message, "Success", { displayDuration: 2000, pos: 'top' });
         setTimeout(() => {
           this.renderCalendar(this.selectDate);
         }, 0);
@@ -102,14 +102,14 @@ export class CalendarViewComponent {
         setTimeout(() => {
           this.renderCalendar(this.selectDate);
         }, 0);
-      } else{
+      } else {
         this.mainData = [];
-        this.loader=false;
+        this.loader = false;
       }
     })
   }
 
-  getStartAndEndDate(nextButtonDate: any,isFromDateRange?:boolean) {
+  getStartAndEndDate(nextButtonDate: any, isFromDateRange?: boolean) {
     let now: any;
     if (isFromDateRange) {
       now = new Date(nextButtonDate);
@@ -131,11 +131,11 @@ export class CalendarViewComponent {
   }
 
   selectedDate(event: any) {
-    
+
     this.selectDate = new Date(event.target.value);
     this.datesData = [];
 
-    this.fetchCalendarData(this.selectDate,true);
+    this.fetchCalendarData(this.selectDate, true);
   }
 
 
@@ -163,52 +163,52 @@ export class CalendarViewComponent {
     this.nextDisplayMonth = monthNames[new Date(this.currentDate).getMonth() + 1 == 12 ? 0 : new Date(this.currentDate).getMonth() + 1];
 
     for (let i = selectedDate ? selectedDate.getDate() : 1; i <= daysInMonth && dateIndex < 31; i++) {
-        const dayName = weekDays[currentDayIndex % 7];
-        const date = i;
-        const isPassed = this.isDatePassed(this.formatDate(`${date} ${monthNames[currentMonth]} ${currentYear}`));
+      const dayName = weekDays[currentDayIndex % 7];
+      const date = i;
+      const isPassed = this.isDatePassed(this.formatDate(`${date} ${monthNames[currentMonth]} ${currentYear}`));
 
-        this.weekdaysWithDates.push({
-            weekday: dayName,
-            date: date,
-            isPassed: isPassed,
-            formateDate: this.formatDate(`${date} ${monthNames[currentMonth]} ${currentYear}`),
-            isSelectedDate: selectedDate && selectedDate.getDate() === date
-        });
-        this.datesData.push({ date: date, formateDate: this.formatDate(`${date} ${monthNames[currentMonth]} ${currentYear}`), isDatePassed: isPassed });
-        dateIndex++;
-        currentDayIndex++;
+      this.weekdaysWithDates.push({
+        weekday: dayName,
+        date: date,
+        isPassed: isPassed,
+        formateDate: this.formatDate(`${date} ${monthNames[currentMonth]} ${currentYear}`),
+        isSelectedDate: selectedDate && selectedDate.getDate() === date
+      });
+      this.datesData.push({ date: date, formateDate: this.formatDate(`${date} ${monthNames[currentMonth]} ${currentYear}`), isDatePassed: isPassed });
+      dateIndex++;
+      currentDayIndex++;
     }
 
     let monthCounter = 1;
     while (dateIndex < 31) {
-        const nextMonth = (currentMonth + monthCounter) % 12;
-        const nextYear = currentMonth + monthCounter > 11 ? currentYear + 1 : currentYear;
-        const nextMonthDays = new Date(nextYear, nextMonth + 1, 0).getDate();
+      const nextMonth = (currentMonth + monthCounter) % 12;
+      const nextYear = currentMonth + monthCounter > 11 ? currentYear + 1 : currentYear;
+      const nextMonthDays = new Date(nextYear, nextMonth + 1, 0).getDate();
 
-        for (let i = 1; i <= nextMonthDays && dateIndex < 31; i++) {
-            const dayName = weekDays[currentDayIndex % 7];
-            const isPassed = (nextYear === todayYear && nextMonth === todayMonth) ?
-                (i < todayDate) :
-                (nextYear < todayYear || (nextYear === todayYear && nextMonth < todayMonth));
+      for (let i = 1; i <= nextMonthDays && dateIndex < 31; i++) {
+        const dayName = weekDays[currentDayIndex % 7];
+        const isPassed = (nextYear === todayYear && nextMonth === todayMonth) ?
+          (i < todayDate) :
+          (nextYear < todayYear || (nextYear === todayYear && nextMonth < todayMonth));
 
-            this.weekdaysWithDates.push({
-                weekday: dayName,
-                date: i,
-                isPassed: isPassed,
-                formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`)
-            });
-            this.datesData.push({ date: i, formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`), isDatePassed: isPassed });
-            dateIndex++;
-            currentDayIndex++;
-        }
-        monthCounter++;
+        this.weekdaysWithDates.push({
+          weekday: dayName,
+          date: i,
+          isPassed: isPassed,
+          formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`)
+        });
+        this.datesData.push({ date: i, formateDate: this.formatDate(`${i} ${monthNames[nextMonth]} ${nextYear}`), isDatePassed: isPassed });
+        dateIndex++;
+        currentDayIndex++;
+      }
+      monthCounter++;
     }
     setTimeout(() => {
-          this.makeCalendarData();
-        }, 0);
-}
+      this.makeCalendarData();
+    }, 0);
+  }
 
-  isDatePassed(date:any){
+  isDatePassed(date: any) {
     const inputDate = new Date(date);
     const currentDate = this.todayDate;
     const inputYear = inputDate.getFullYear();
@@ -219,11 +219,11 @@ export class CalendarViewComponent {
     const currentMonth = currentDate.getMonth();
     const currentDay = currentDate.getDate();
     if (inputYear < currentYear) {
-        return true; 
+      return true;
     } else if (inputYear === currentYear && inputMonth < currentMonth) {
-        return true; 
+      return true;
     } else if (inputYear === currentYear && inputMonth === currentMonth && inputDay < currentDay) {
-        return true; 
+      return true;
     }
 
     return false;
@@ -242,7 +242,7 @@ export class CalendarViewComponent {
 
   previousMonth(): void {
     this.currentDate = new Date(this.currentDate);
-    this.selectDate ='';
+    this.selectDate = '';
     this.datesData = [];
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.fetchCalendarData(this.formatDate(this.currentDate));
@@ -253,7 +253,7 @@ export class CalendarViewComponent {
   nextMonth(): void {
     this.currentDate = new Date(this.currentDate);
     this.datesData = [];
-    this.selectDate ='';
+    this.selectDate = '';
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.fetchCalendarData(this.formatDate(this.currentDate));
     let selectedRangeDate: any = document.getElementById("date");
@@ -275,6 +275,8 @@ export class CalendarViewComponent {
   }
 
   makeCalendarData() {
+    this.createChildrenArray();
+
     this.mainData.forEach((e: any) => {
       e.data.forEach((item: any) => {
         for (let i = 0; i < this.datesData.length; i++) {
@@ -287,11 +289,41 @@ export class CalendarViewComponent {
         }
       })
       e['datesData'] = JSON.parse(JSON.stringify(this.datesData));
-      e['children'] = [{'name':e.room_name}];
     });
     this.loader = false;
+
     console.log(this.mainData);
-    
+  }
+
+  createChildrenArray() {
+    const rooms: any = {};
+    this.mainData.forEach((obj: any) => {
+      if (obj.parent_room_id !== null && rooms[obj.parent_room_id]) {
+        rooms[obj.parent_room_id].children.push(obj);
+      } else {
+        const room = { ...obj, children: [] };
+        rooms[obj.room_id] = room;
+      }
+    });
+
+    this.mainData = JSON.parse(JSON.stringify(Object.values(rooms)));
+
+    this.mainData.forEach((e: any) => {
+      e.children.forEach((ele: any) => {
+
+        ele.data.forEach((item: any) => {
+          for (let i = 0; i < this.datesData.length; i++) {
+            if (new Date(item.date).setHours(0, 0, 0, 0) == new Date(this.datesData[i].formateDate).setHours(0, 0, 0, 0)) {
+              this.datesData[i]['newData'] = item;
+              this.datesData[i].newData['resource'] = ele.room_id;
+              this.datesData[i].newData['start'] = item.date;
+              break;
+            }
+          }
+        })
+        ele['datesData'] = JSON.parse(JSON.stringify(this.datesData));
+      })
+    });
   }
 
   closeModal() {
@@ -302,17 +334,18 @@ export class CalendarViewComponent {
     this.dragEl = {};
   }
 
-  resetDefault(){
+  resetDefault() {
     this.dragEl = {};
     this.showModal = false;
-    this.selectDate=''
-    this.datesData=[];
+    this.selectDate = ''
+    this.datesData = [];
     let selectedRangeDate: any = document.getElementById("date");
     selectedRangeDate.value = '';
   }
 
-  selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number) {
-    this.dragEl[`head${dIdx}${calIdx}`] = !this.dragEl[`head${dIdx}${calIdx}`];
+  selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number,isDerive:any='') {
+
+    this.dragEl[`head${dIdx}${calIdx}${isDerive}`] = !this.dragEl[`head${dIdx}${calIdx}${isDerive}`];
   }
 
   handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any) {
@@ -378,42 +411,39 @@ export class CalendarViewComponent {
         'room_id': selectedRoomId,
         "data": [this.modalFieldForm.value]
       }
-      this.loader= true;
+      this.loader = true;
       this._service.updateCalendar(params, (res: any) => {
         if (res) {
           this.loader = false;
           this.resetDefault();
-          this.currentDate=new Date();          
-          this.fetchCalendarData();
+          this.currentDate = new Date();
+          this.selectedDate({ target: { value: this.formatDate(this.todayDate) } })
           this.alertService.alert("success", "Data Saved Successfully", "Success", { displayDuration: 2000, pos: 'top' });
           this.modalFieldForm.reset();
         }
       })
     } else {
-      this.loader= false;
+      this.loader = false;
       this.errorMsg = "Please Fill the fields";
       this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
     }
   }
 
-  changeCalendarByProperty(event:any){
-    localStorage.setItem("selectedPropertyId",JSON.parse(event.target.value));  
+  changeCalendarByProperty(event: any) {
+    localStorage.setItem("selectedPropertyId", JSON.parse(event.target.value));
     this.loggedProperty.propertyId = event.target.value;
     this.datesData = [];
-    this.selectDate ='';
+    this.selectDate = '';
     this.currentDate = new Date();
     this.fetchCalendarData(this.currentDate);
   }
 
-  identify(index:any, item:any){
+  identify(index: any, item: any) {
     return item.id;
   }
 
-  addClass(event:any){
+  addClass(event: any) {
     console.log(event.source.element.nativeElement.classList.add('active'));
-    
+
   }
 }
-
-
-

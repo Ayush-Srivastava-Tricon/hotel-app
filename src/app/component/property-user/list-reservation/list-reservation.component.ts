@@ -20,7 +20,7 @@ export class ListReservationComponent {
     "reservation_status":[], 
     "ota_details_id":null, 
     "guest_email" : "",
-    "arrival_status" : null 
+    "arrival_status" : "3_days" 
   };
   showActionDropDown:any={};
   otaDetailList:any=[];
@@ -35,7 +35,7 @@ export class ListReservationComponent {
   addMoreGuestData:any=[];
   paymentModeList:any=[];
   daysBetweenDates:any;
-
+  currentPropertyId:number=0;
 
   editReservationDataConfig:any={reservationData:{}};
 
@@ -46,6 +46,11 @@ export class ListReservationComponent {
   }
 
   ngOnInit(){
+    this.currentPropertyId = JSON.parse(<any>localStorage.getItem("selectedPropertyId")); 
+    if(!this.currentPropertyId){
+      this.currentPropertyId = JSON.parse(<any>localStorage.getItem("userId"))
+    }
+    this.searchConfig['property_id'] = this.currentPropertyId;
     this.getListOfReservation();
     this.getOtaDetailList();
   }
@@ -53,6 +58,7 @@ export class ListReservationComponent {
 
   getListOfReservation(){
     this.loader=true;
+    this.searchConfig['property_id'] = this.currentPropertyId;
     this._service.getListOfReservation(this.searchConfig,(res:any)=>{
       if(res.status == 200){
         this.reservtionList = res.data;
@@ -123,6 +129,7 @@ export class ListReservationComponent {
 
   searchByFilter(){
     this.loader=true;
+    this.searchConfig['property_id'] = this.currentPropertyId;
     this._service.getListOfReservation(this.searchConfig,(res:any)=>{
       if(res.status == 200 && res.data.length> 0){
         this.reservtionList = res.data;
@@ -130,7 +137,7 @@ export class ListReservationComponent {
       } else{
           this.reservtionList =[];
           this.loader=false;
-          this.alert.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' })
+          this.alert.alert("error",res.message,"Success",{ displayDuration: 2000, pos: 'top' })
         }
     })
     

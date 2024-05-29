@@ -14,6 +14,7 @@ export class MultiselectDropdownComponent {
   showSelectedData:any={};
   filteredOptions:any={};
   searchText:any='';
+  togggleDropdown:boolean=false;
 
 constructor(){}
 
@@ -112,6 +113,12 @@ filterOptions(filterProperty: any, sortBy?: any) {
       return optionValue.toLowerCase().includes(searchTextLower);
     });
   }
+}
+
+toggleDropdown(prop:any){
+    this.filteredOptions[prop]= this.inputConfig[prop];
+    this.togggleDropdown = true;
+    
 }
 
 

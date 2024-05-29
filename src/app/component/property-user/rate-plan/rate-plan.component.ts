@@ -126,6 +126,7 @@ export class RatePlanComponent {
           console.log(res);
           this.loader=false;
           this.backToRateplan();
+          this.fetchRateplan();
           this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' })
         }
       })
@@ -254,4 +255,6 @@ export class RatePlanComponent {
       }
     })
   }
+
+
 }

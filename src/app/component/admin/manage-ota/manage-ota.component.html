@@ -144,7 +144,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Push Flag</label>
                         <div class="col-sm-9">
-                            <select formControlName="push_flag" class="form-control"
+                            <select formControlName="push_flag" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['required']) || (otaModal.controls.push_flag.dirty && otaModal.controls.push_flag.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -207,7 +207,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Room Import Exist</label>
                         <div class="col-sm-9">
-                            <select formControlName="roomimport_exists" class="form-control"
+                            <select formControlName="roomimport_exists" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['required']) || (otaModal.controls.roomimport_exists.dirty && otaModal.controls.roomimport_exists.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -224,7 +224,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Calendar Exist</label>
                         <div class="col-sm-9">
-                            <select formControlName="calendar_exists" class="form-control"
+                            <select formControlName="calendar_exists" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['required']) || (otaModal.controls.calendar_exists.dirty && otaModal.controls.calendar_exists.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -241,7 +241,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Reservation Exist</label>
                         <div class="col-sm-9">
-                            <select formControlName="reservation_exists" class="form-control"
+                            <select formControlName="reservation_exists" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['required']) || (otaModal.controls.reservation_exists.dirty && otaModal.controls.reservation_exists.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -258,7 +258,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Review Exist</label>
                         <div class="col-sm-9">
-                            <select formControlName="review_exists" class="form-control"
+                            <select formControlName="review_exists" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['required']) || (otaModal.controls.review_exists.dirty && otaModal.controls.review_exists.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -275,7 +275,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Promotion Exist</label>
                         <div class="col-sm-9">
-                            <select formControlName="promotion_exists" class="form-control"
+                            <select formControlName="promotion_exists" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['required']) || (otaModal.controls.promotion_exists.dirty && otaModal.controls.promotion_exists.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -292,7 +292,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Content Exist</label>
                         <div class="col-sm-9">
-                            <select formControlName="content_exists" class="form-control"
+                            <select formControlName="content_exists" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['required']) || (otaModal.controls.content_exists.dirty && otaModal.controls.content_exists.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -309,7 +309,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Message Exist</label>
                         <div class="col-sm-9">
-                            <select formControlName="message_exists" class="form-control"
+                            <select formControlName="message_exists" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['required']) || (otaModal.controls.message_exists.dirty && otaModal.controls.message_exists.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -335,7 +335,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Room Import Active</label>
                         <div class="col-sm-9">
-                            <select formControlName="roomimport_active" class="form-control"
+                            <select formControlName="roomimport_active" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['required']) || (otaModal.controls.roomimport_active.dirty && otaModal.controls.roomimport_active.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -352,7 +352,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Calendar Active</label>
                         <div class="col-sm-9">
-                            <select formControlName="calendar_active" class="form-control"
+                            <select formControlName="calendar_active" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['required']) || (otaModal.controls.calendar_active.dirty && otaModal.controls.calendar_active.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -369,7 +369,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Reservation Active</label>
                         <div class="col-sm-9">
-                            <select formControlName="reservation_active" class="form-control"
+                            <select formControlName="reservation_active" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['required']) || (otaModal.controls.reservation_active.dirty && otaModal.controls.reservation_active.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -386,7 +386,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Review Active</label>
                         <div class="col-sm-9">
-                            <select formControlName="review_active" class="form-control"
+                            <select formControlName="review_active" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['required']) || (otaModal.controls.review_active.dirty && otaModal.controls.review_active.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -403,7 +403,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Promotion Active</label>
                         <div class="col-sm-9">
-                            <select formControlName="promotion_active" class="form-control"
+                            <select formControlName="promotion_active" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['required']) || (otaModal.controls.promotion_active.dirty && otaModal.controls.promotion_active.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -420,7 +420,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Content Active</label>
                         <div class="col-sm-9">
-                            <select formControlName="content_active" class="form-control"
+                            <select formControlName="content_active" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['required']) || (otaModal.controls.content_active.dirty && otaModal.controls.content_active.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -437,7 +437,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Message Active</label>
                         <div class="col-sm-9">
-                            <select formControlName="message_active" class="form-control"
+                            <select formControlName="message_active" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['required']) || (otaModal.controls.message_active.dirty && otaModal.controls.message_active.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -462,7 +462,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Alotment</label>
                         <div class="col-sm-9">
-                            <select formControlName="alotment" class="form-control"
+                            <select formControlName="alotment" class="form-select"
                                 [class.is-invalid]="(otaModal.controls.alotment.dirty && otaModal.controls.alotment.errors?.['required']) || (otaModal.controls.alotment.dirty && otaModal.controls.alotment.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -477,7 +477,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Price</label>
                         <div class="col-sm-9">
-                            <select formControlName="price" class="form-control"
+                            <select formControlName="price" class="form-select"
                             [class.is-invalid]="(otaModal.controls.price.dirty && otaModal.controls.price.errors?.['required']) || (otaModal.controls.price.dirty && otaModal.controls.price.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -492,7 +492,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Min Stay</label>
                         <div class="col-sm-9">
-                            <select formControlName="price" class="form-control"
+                            <select formControlName="minstay" class="form-select"
                             [class.is-invalid]="(otaModal.controls.minstay.dirty && otaModal.controls.minstay.errors?.['required']) || (otaModal.controls.minstay.dirty && otaModal.controls.minstay.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -507,7 +507,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Max Stay</label>
                         <div class="col-sm-9">
-                            <select formControlName="price" class="form-control"
+                            <select formControlName="maxstay" class="form-select"
                             [class.is-invalid]="(otaModal.controls.maxstay.dirty && otaModal.controls.maxstay.errors?.['required']) || (otaModal.controls.maxstay.dirty && otaModal.controls.maxstay.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -522,7 +522,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">StopSell</label>
                         <div class="col-sm-9">
-                            <select formControlName="price" class="form-control"
+                            <select formControlName="stopsell" class="form-select"
                             [class.is-invalid]="(otaModal.controls.stopsell.dirty && otaModal.controls.stopsell.errors?.['required']) || (otaModal.controls.stopsell.dirty && otaModal.controls.stopsell.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -537,7 +537,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Close to Arrival</label>
                         <div class="col-sm-9">
-                            <select formControlName="price" class="form-control"
+                            <select formControlName="cta" class="form-select"
                             [class.is-invalid]="(otaModal.controls.cta.dirty && otaModal.controls.cta.errors?.['required']) || (otaModal.controls.cta.dirty && otaModal.controls.cta.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -552,7 +552,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Close to Departure</label>
                         <div class="col-sm-9">
-                            <select formControlName="price" class="form-control"
+                            <select formControlName="ctd" class="form-select"
                             [class.is-invalid]="(otaModal.controls.ctd.dirty && otaModal.controls.ctd.errors?.['required']) || (otaModal.controls.ctd.dirty && otaModal.controls.ctd.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -567,7 +567,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Cut Off</label>
                         <div class="col-sm-9">
-                            <select formControlName="price" class="form-control"
+                            <select formControlName="cutoff" class="form-select"
                             [class.is-invalid]="(otaModal.controls.cutoff.dirty && otaModal.controls.cutoff.errors?.['required']) || (otaModal.controls.cutoff.dirty && otaModal.controls.cutoff.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>

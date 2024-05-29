@@ -21,15 +21,12 @@
               <th>Change Linen Freq.</th>
               <th>Cleaning Freq.</th>
               <th>Cleaning Status</th>
-              <th>Internal Notes</th>
               <th>Last Cleaning Date</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="loader">
-              <td class="tg-cly1">
-              </td>
               <td class="tg-cly1">
               </td>
               <td class="tg-cly1">
@@ -56,8 +53,7 @@
               <td>{{item.change_linen_frequency}}</td>
               <td>{{item.cleaning_frequency}}</td>
               <td>{{item.cleaning_status}}</td>
-              <td>{{item.internal_notes}}</td>
-              <td>{{item.last_cleaning_date ? (item.last_cleaning_date|date: "MM/dd") : todayDate|date: "MM/dd"}}</td>
+              <td>{{item.last_cleaning_date ? (item.last_cleaning_date|date: "dd/MM/yyyy") : todayDate|date: "dd/MM/yyyy"}}</td>
               <td>
                 <div class="dropdown">
                   <i class="btn btn-light btn-sm bi bi-three-dots-vertical" (click)="showDropDown(idx)"></i>
@@ -96,7 +92,7 @@
     <div class="form-group row ">
       <label class="col-sm-5 col-form-label" for="usedType">Parent Room</label>
       <div class="col-sm-7">
-        <select id="usedType" [(ngModel)]="pmsDataConfig.parent_room_id" name="usedType">
+        <select class="form-select" id="usedType" [(ngModel)]="pmsDataConfig.parent_room_id" name="usedType">
           <option [value]="null" disabled>Select a value...</option>
           <option [value]="item.room_id" *ngFor="let item of parentRooms">{{item.room_name}}</option>
           <!-- Add other options here -->
@@ -130,12 +126,12 @@
     <div class="form-group row ">
       <label class="col-sm-5 col-form-label" for="cleaningFrequency">Cleaning frequency</label>
       <div class="col-sm-7">
-        <!-- <input type="text" id="cleaningFrequency" name="cleaningFrequency"> -->
-        <div class="d-flex justify-content-start text-center my-2">
-          <label *ngFor="let day of weekdays;let idx=index;">
-            <input type="checkbox" [checked]="pmsDataConfig.cleaning_frequency.includes(day)"
-              (change)="selectWeek($event,day)" /> {{ day }}
-          </label>
+        <div class="weekdays-container">
+          <div *ngFor="let day of weekdays" class="border"
+               [ngClass]="{'selected': isSelected(day),'shadow':isSelected(day)}"
+               (click)="selectDay(day)">
+            {{ day }}
+          </div>
         </div>
       </div>
     </div>
@@ -153,7 +149,7 @@
     <div class="form-group row ">
       <label class="col-sm-5 col-form-label" for="cleanStatus">Clean status</label>
       <div class="col-sm-7">
-        <select id="cleanStatus" [(ngModel)]="pmsDataConfig.cleaning_status" name="cleanStatus">
+        <select id="cleanStatus" class="form-select" [(ngModel)]="pmsDataConfig.cleaning_status" name="cleanStatus">
           <option [value]="null" [selected]="true" disabled>Select a value...</option>
           <option value="cleaned">Cleaned</option>
           <option value="to_clean">To Clean</option>
@@ -177,9 +173,6 @@
       </div>
     </div>
     <div class="form-buttons">
-      <!-- <button type="button" class="btn btn-secondary">Close</button> -->
-      <!-- <button type="button" class="btn btn-danger">Delete</button> -->
-      <!-- <button type="button" class="btn btn-primary">Clone</button> -->
       <div class="d-flex align-items-center">
         <button type="submit" class="btn btn-success" (click)="isEditModal ? editPMS() : savePMS()"
           [disabled]="loader">{{isEditModal? 'Edit':'Save'}}</button>

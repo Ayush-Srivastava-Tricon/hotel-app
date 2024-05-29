@@ -129,7 +129,13 @@
   }
   
   .active{
-    background-color: lightblue;
+    background-color: lightblue !important;
+    cursor: pointer;
+  }
+  .activeChild{
+    background-color: var(--adminBlue);
+    cursor: pointer;
+    color: white !important;
   }
 
   #style-7::-webkit-scrollbar-track

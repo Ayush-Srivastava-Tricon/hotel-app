@@ -44,6 +44,7 @@ export class LoginComponent {
         this.setUserLoggedIn();
         this.setAccessToken(res);
         this.setUserAndRole(res);
+        this.setDefaultLang();
         this.router.navigate([this.userType]);
         this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
       } else {
@@ -70,6 +71,10 @@ export class LoginComponent {
 
   setUserLoggedIn() {
     localStorage.setItem("isLoggedIn", 'true');
+  }
+
+  setDefaultLang(){
+    localStorage.setItem("defaultLang","es");
   }
 
 

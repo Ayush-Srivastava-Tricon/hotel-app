@@ -41,7 +41,7 @@
             </div>
             <div class="col-sm-2">
                 <select class="form-select rounded-pill mx-2" [(ngModel)]="searchConfig['ota_details_id']">
-                    <option elected="true" [value]="null" disabled>Select All Channel</option>
+                    <option elected="true" [value]="null" disabled>All Channel</option>
                     <ng-container *ngFor="let ota of otaDetailList">
                         <option [value]="ota.id">{{ota.name}}</option>
                     </ng-container>
@@ -106,6 +106,9 @@
                             <td class="tg-cly1">
                             </td>
                         </tr>
+                        <tr *ngIf="reservtionList.length==0 && !loader">
+                        <td colspan="7" class="text-center">No Data Found</td>
+                    </tr>
                         <ng-container *ngFor="let item of reservtionList;let idx = index;">
                             <tr class="table-row-rooms" *ngIf="!loader">
                                 <td>{{item.reservations_no}}</td>
@@ -288,7 +291,7 @@
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 " for="color">Reservation Label</label>
                             <div class="col-sm-8">
-                                   <select class="form-control">
+                                   <select class="form-select">
                                     <option value="">Select a value...</option>
                                    </select>
                                 </div>
@@ -349,7 +352,7 @@
                                     <div class="form-group row mb-3 align-items-baseline">
                                         <label for="propertyName" class="col-sm-3 col-form-label">Language</label>
                                         <div class="col-sm-9">
-                                            <select name="" id="" class="form-control" [(ngModel)]="item.language">
+                                            <select name="" id="" class="form-select" [(ngModel)]="item.language">
                                                 <option value="it">Italian</option>
                                                 <option value="en">English</option>
                                             </select>
@@ -360,7 +363,7 @@
                                         <label for="propertyName" class="col-sm-3 col-form-label">Travel
                                             Agency/Corporate</label>
                                         <div class="col-sm-9">
-                                            <select name="" id="" class="form-control" [(ngModel)]="item.travel_agency">
+                                            <select name="" id="" class="form-select" [(ngModel)]="item.travel_agency">
                                                 <option value="it">Italian</option>
                                                 <option value="en">English</option>
                                             </select>

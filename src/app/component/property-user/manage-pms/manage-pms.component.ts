@@ -69,20 +69,6 @@ export class ManagePmsComponent {
     // this.pmsDataConfig.lastCleaningTime = new Date().toISOString();
   }
 
-  selectWeek(event:any,day:any){
-    if(event.target.checked){
-      this.pmsDataConfig.cleaning_frequency.push(day);
-    }else{
-      if(this.pmsDataConfig.cleaning_frequency.includes(day)){
-        this.pmsDataConfig.cleaning_frequency.forEach((e:any,idx:any)=>{
-            if(e == day){
-              this.pmsDataConfig.cleaning_frequency.splice(idx,1);
-            }
-        })
-      }
-    }
-  }
-
   savePMS(){
     this.loader=true;
     this.pmsDataConfig.parent_room_id = +this.pmsDataConfig.parent_room_id;
@@ -212,5 +198,18 @@ export class ManagePmsComponent {
   backToPMS(){
       this.showModal.pms = false;
       this.showActionDropDown = {};
+  }
+
+  selectDay(day: string) {
+    if (this.selectedDays.includes(day)) {
+      this.selectedDays = this.selectedDays.filter((d:any) => d !== day);
+    } else {
+      this.selectedDays.push(day);
+    }
+    console.log(this.selectedDays);
+  }
+
+  isSelected(day: string): boolean {
+    return this.selectedDays.includes(day);
   }
 }

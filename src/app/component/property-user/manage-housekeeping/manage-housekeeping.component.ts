@@ -53,15 +53,18 @@ export class ManageHousekeepingComponent {
   }
 
 
-  savePMS(){
+  saveHousekeeping(){
     this.loader=true;
     this.housekeeperDataConfig['property_id'] = this.currentPropertyId;
     this._service.createHousekeeper(this.housekeeperDataConfig,(res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
         this.fetchHousekeepers();
         this.backToKeeper();
+        this.loader=false;
+      }else{
+        this.alert.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' });
+        this.loader=false;
       }
     })
   }
@@ -100,7 +103,7 @@ export class ManageHousekeepingComponent {
     })
   }
 
-  editPMS(){
+  editHousekeeping(){
     this.loader=true;
     this._service.updateHouseKeeper(this.housekeeperDataConfig,(res:any)=>{
       if(res.status == 200){

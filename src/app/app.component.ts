@@ -13,4 +13,9 @@ export class AppComponent {
     // googleTranslateElementInit();
   }
 
+  changeLang(event:any){
+    console.log(event);
+    
+  }
+
 }

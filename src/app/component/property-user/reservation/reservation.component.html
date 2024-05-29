@@ -26,7 +26,7 @@
         </div>
         <div class="form-group col-md-2">
             <label for="inputPassword4">Reservation Type</label>
-            <select class="form-control" [(ngModel)]="searchRoomAvailConfig['reservationType']">
+            <select class="form-select" [(ngModel)]="searchRoomAvailConfig['reservationType']">
                 <option value="normal" selected="true">Normal</option>
                 <option value="urgent">Urgent</option>
             </select>
@@ -94,7 +94,7 @@
                             <td>{{room.default_price}}</td>
                             <td>{{room.availability}}</td>
                             <td>
-                                <select class="form-control-sm" (change)="selectAvailabilityReservation($event,room,item)" >
+                                <select class="form-select-sm" (change)="selectAvailabilityReservation($event,room,item)" >
                                     <option [selected]="true" value="''">Select</option>
                                         <option [value]="id+1"  *ngFor="let item of [].constructor(+room.availability);let id = index;">{{id+1}}</option>
                                 </select>
@@ -210,7 +210,7 @@
                         <div class="form-group row mb-3 align-items-baseline">
                             <label class="col-sm-7 col-form-label">Estimated time of arrival {{todayDate|date}} (local time) <span class="text-danger">*</span></label>
                             <div class="col-sm-5" >
-                                <select name="" id="" class="form-control" [(ngModel)]="reservationPayloadDataConfig.reservationData.arrival_estimate_time">
+                                <select name="" id="" class="form-select" [(ngModel)]="reservationPayloadDataConfig.reservationData.arrival_estimate_time">
                                     <option [selected]="true">Select</option>
                                     <option value="I don't know">I don't know</option>
                                     <option value="10:00 - 11:00">10:00 - 11:00</option>
@@ -227,7 +227,7 @@
                                 </label>
                                 <div class="row mt-2" *ngIf="source">
                                     <div class="col-sm-12">
-                                        <select class="form-control" [(ngModel)]="reservationPayloadDataConfig.reservationData.ota_details_id">
+                                        <select class="form-select" [(ngModel)]="reservationPayloadDataConfig.reservationData.ota_details_id">
                                             <option value="" [selected]="true" [hidden]="true">Select Source</option>
                                             <option [value]="item.id" *ngFor="let item of otaDetailsList">{{item.name}}</option>
                                         </select>
@@ -297,7 +297,7 @@
                         <div class="form-group row mb-3 align-items-baseline">
                             <label for="propertyName" class="col-sm-3 col-form-label">Language</label>
                             <div class="col-sm-9">
-                                <select name="" id="" class="form-control" [(ngModel)]="guestNameConfig.language" >
+                                <select name="" id="" class="form-select" [(ngModel)]="guestNameConfig.language" >
                                     <option value="it">Italian</option>
                                     <option value="en">English</option>
                                 </select>
@@ -307,7 +307,7 @@
                         <div class="form-group row mb-3 align-items-baseline">
                             <label for="propertyName" class="col-sm-3 col-form-label">Travel Agency/Corporate</label>
                             <div class="col-sm-9">
-                                <select name="" id="" class="form-control"  [(ngModel)]="guestNameConfig.travel_agency">
+                                <select name="" id="" class="form-select"  [(ngModel)]="guestNameConfig.travel_agency">
                                     <option value="it">Italian</option>
                                     <option value="en">English</option>
                                 </select>
@@ -369,7 +369,7 @@
                                     <div class="form-group row mb-3 align-items-baseline">
                                         <label for="propertyName" class="col-sm-3 col-form-label">Language</label>
                                         <div class="col-sm-9">
-                                            <select name="" id="" class="form-control" [(ngModel)]="item.language" >
+                                            <select name="" id="" class="form-select" [(ngModel)]="item.language" >
                                                 <option value="it">Italian</option>
                                                 <option value="en">English</option>
                                             </select>
@@ -379,7 +379,7 @@
                                     <div class="form-group row mb-3 align-items-baseline">
                                         <label for="propertyName" class="col-sm-3 col-form-label">Travel Agency/Corporate</label>
                                         <div class="col-sm-9">
-                                            <select name="" id="" class="form-control"  [(ngModel)]="item.travel_agency">
+                                            <select name="" id="" class="form-select"  [(ngModel)]="item.travel_agency">
                                                 <option value="it">Italian</option>
                                                 <option value="en">English</option>
                                             </select>
@@ -397,7 +397,7 @@
                         <div class="form-group row mb-3 align-items-baseline">
                             <label for="propertyName" class="col-sm-7 col-form-label">Choose the preferred payment way for this reservation</label>
                             <div class="col-sm-5 text-end">
-                                <select name="" id="" class="form-control" (change)="getPaymentDetails($event);">
+                                <select name="" id="" class="form-select" (change)="getPaymentDetails($event);">
                                     <option [value]="" [selected]="true">Select</option>
                                     <option [value]="mode.id" *ngFor="let mode of paymentModeList">{{mode.name}}</option>
                                 </select>

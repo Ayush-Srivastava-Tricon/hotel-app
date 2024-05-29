@@ -135,7 +135,7 @@
                                 </div>
                                 <div>
                                     <label for="" class="d-flex align-items-center ">End:
-                                        <input type="date" class="form-control mx-2"
+                                        <input type="date" [disabled]="!ratepPlanModal.ratePlanData[0].start_date" [min]="ratepPlanModal.ratePlanData[0].start_date"  class="form-control mx-2" 
                                             [(ngModel)]="ratepPlanModal.ratePlanData[0].end_date">
                                     </label>
                                 </div>

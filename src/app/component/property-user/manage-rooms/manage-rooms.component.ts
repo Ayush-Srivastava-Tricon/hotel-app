@@ -127,7 +127,7 @@ export class ManageRoomsComponent {
   }
 
   getParentRoomId(){
-    this.parentRooms = this.roomsList.filter((e:any)=>e.parent_room_id || e.parent_room_id == 0);
+    this.parentRooms = this.roomsList.filter((e:any)=>e.parent_room_id && e.parent_room_id == 0);
     
   }
 

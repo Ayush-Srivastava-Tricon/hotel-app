@@ -81,7 +81,7 @@
       <div class="form-group row ">
         <label class="col-sm-5 col-form-label" for="name">Name <span class="text-danger">*</span></label>
         <div class="col-sm-7">
-          <input type="text" id="name" [(ngModel)]="housekeeperDataConfig.name" name="name">
+          <input type="text" id="name" [(ngModel)]="housekeeperDataConfig.name" name="name" placeholder="Enter Name">
         </div>
       </div>
       <div class="form-group row ">
@@ -95,30 +95,30 @@
         </div>
       </div>
       <div class="form-group row ">
-        <label class="col-sm-5 col-form-label" for="linenFrequency">Dob</label>
+        <label class="col-sm-5 col-form-label" for="linenFrequency">Dob <span class="text-danger">*</span></label>
         <div class="col-sm-7">
             <input type="date" id="name" [(ngModel)]="housekeeperDataConfig.dob" name="name">
            
         </div>
       </div>
       <div class="form-group row ">
-        <label class="col-sm-5 col-form-label" for="cleaningFrequency">Mobile</label>
+        <label class="col-sm-5 col-form-label" for="cleaningFrequency">Mobile <span class="text-danger">*</span></label>
         <div class="col-sm-7">
-          <input type="number" maxlength="10" id="name" [(ngModel)]="housekeeperDataConfig.mobile" name="name">
+          <input type="text" maxlength="10" id="name" [(ngModel)]="housekeeperDataConfig.mobile" name="name" placeholder="XXX-XXX-XXXX">
          
         </div>
       </div>
       <div class="form-group row ">
-        <label class="col-sm-5 col-form-label" for="cleanStatus">Email</label>
+        <label class="col-sm-5 col-form-label" for="cleanStatus">Email <span class="text-danger">*</span></label>
         <div class="col-sm-7">
-            <input type="email" id="name" [(ngModel)]="housekeeperDataConfig.email" name="name">
+            <input type="email" id="name" [(ngModel)]="housekeeperDataConfig.email" name="name" placeholder="someone@gmail.com">
           
         </div>
       </div>
     
       <div class="form-buttons">
         <div class="d-flex align-items-center">
-          <button type="submit" class="btn btn-success" (click)="isEditModal ? editPMS() : savePMS()"
+          <button type="submit" class="btn btn-success" (click)="isEditModal ? editHousekeeping() : saveHousekeeping()"
             [disabled]="loader">{{isEditModal? 'Edit':'Save'}}</button>
           <div class="spinner-border text-primary mx-2" *ngIf="loader"></div>
         </div>

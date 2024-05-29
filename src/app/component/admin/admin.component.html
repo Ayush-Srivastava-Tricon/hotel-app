@@ -72,6 +72,14 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
+                <li>
+                    <select class="form-select rounded-pill shadow" (change)="changeLang($event)">
+                        <option value="null" [selected]="true" disabled>Select Lang...</option>
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="ni">Nigeria</option>
+                    </select>
+                </li>
                 <li class="nav-item">
                     <a href="javascript:void(0);" (click)="logout()" class="nav-link" routerLinkActive="active-tab"
                         #rla="routerLinkActive">

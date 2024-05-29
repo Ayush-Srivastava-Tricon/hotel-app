@@ -116,7 +116,7 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">Parent Room Id</label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control" formControlName="parent_room_id" (change)="getRatePlanByParent($event)">
+                                <select type="text" class="form-select" formControlName="parent_room_id" (change)="getRatePlanByParent($event)">
                                     <option selected="true" value="0">Select</option>
                                     <option [value]="room.room_id" *ngFor="let room of parentRooms">{{room.room_name}}
                                     </option>
@@ -129,7 +129,7 @@
                         <div class="form-group row mb-2" *ngIf="ratePlans.length>0">
                             <label for="propertyName" class="col-sm-3 col-form-label">Rate Plan</label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control" formControlName="rate_plan_id">
+                                <select type="text" class="form-select" formControlName="rate_plan_id">
                                     <option selected="true" [value]="null" disabled>Select</option>
                                     <option [value]="room.rate_plan_id" *ngFor="let room of ratePlans">{{room.name}}
                                     </option>
@@ -205,7 +205,7 @@
                                 Markups
                             </button> </legend>
                         <div class="form-group row mb-2">
-                            <label class="col-sm-3 col-form-label" for="default_price">Default Price <span
+                            <label class="col-sm-3 col-form-label" for="default_price">Price <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" maxlength="12" class="form-control" formControlName="default_price"
@@ -221,7 +221,7 @@
 
                         </div>
                         <div class="form-group row mb-2">
-                            <label class="col-sm-3 col-form-label" for="country">Default Quantity</label>
+                            <label class="col-sm-3 col-form-label" for="country">Quantity</label>
                             <div class="col-sm-9">
 
                                 <input type="text" maxlength="3" class="form-control" formControlName="default_quantity"
@@ -236,7 +236,7 @@
 
                         </div>
                         <div class="form-group row mb-2">
-                            <label class="col-sm-3 col-form-label" for="country">Default Min</label>
+                            <label class="col-sm-3 col-form-label" for="country">Min</label>
                             <div class="col-sm-9">
 
                                 <input type="text" maxlength="2" class="form-control" formControlName="default_min"
@@ -252,7 +252,7 @@
                         </div>
                         <div class="form-group row mb-2">
 
-                            <label class="col-sm-3 col-form-label" for="country">Default Max</label>
+                            <label class="col-sm-3 col-form-label" for="country">Max</label>
                             <div class="col-sm-9">
 
                                 <input type="text" maxlength="3" class="form-control" formControlName="default_max"
@@ -325,7 +325,7 @@
                         <div class="form-group row my-1">
                             <label class="col-sm-5 col-form-label" for="breakfast">Breakfast</label>
                             <div class="col-sm-7">
-                                <select type="text" class="form-control" formControlName="breakfast">
+                                <select type="text" class="form-select" formControlName="breakfast">
                                     <option value="null">Select</option>
                                     <option value="HF">Half Board</option>
                                     <option value="FB">Full Board </option>

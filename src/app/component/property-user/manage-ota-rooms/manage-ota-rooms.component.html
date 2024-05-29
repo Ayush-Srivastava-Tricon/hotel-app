@@ -150,7 +150,7 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">OTA User Id <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control" formControlName="ota_user_id">
+                                <select type="text" class="form-select" formControlName="ota_user_id">
                                     <option [hidden]="true" [value]="null">Select</option>
                                     <option [value]="item.id" *ngFor="let item of otaUserList">{{item.ota_user}}</option>
                                 </select>

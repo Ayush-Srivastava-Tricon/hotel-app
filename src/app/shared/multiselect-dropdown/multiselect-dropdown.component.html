@@ -24,7 +24,7 @@
     <span (click)="clearAll('parentRooms','getparentRooms')" *ngIf="multiselectPageConfig.parentRooms.length>0"
         class="clearAll">(Clear All)</span>
     <div class="d-block text-start mb-2">
-        <button class="drop-toggle btn flat" (click)="toggleSelectedItem('parentRooms')"
+        <button class="drop-toggle btn flat rate-plan" (click)="toggleSelectedItem('parentRooms')"
             *ngIf="multiselectPageConfig?.parentRooms.length>0">
             <span [ngClass]="{'hide-item':showSelectedData['parentRooms']}">
                 <ng-container *ngFor="let item of multiselectPageConfig.parentRooms; let last = last">
@@ -34,9 +34,9 @@
         </button>
     </div>
     <div>
-        <input type="text" placeholder="Search..." [(ngModel)]="searchText"
-            (input)="filterOptions('parentRooms', 'value')" class="no-css-input-box form-control">
-        <div class="drop-show no-css-search-claim" (mouseleave)="searchText=''" *ngIf="searchText">
+        <input type="text" placeholder="Search..."  [(ngModel)]="searchText"
+            (input)="filterOptions('parentRooms', 'value')" (click)="toggleDropdown('parentRooms')" class="no-css-input-box form-select">
+        <div class="drop-show no-css-search-claim overflow-y" (mouseleave)="searchText='';togggleDropdown=false;" *ngIf="searchText||togggleDropdown">
             <label for="selectAll" *ngIf="filteredOptions.parentRooms.length === 0">
                 No Data Found
             </label>
@@ -57,7 +57,7 @@
 <!-- <-------------Housekeeping PMS Room--------->
 <div class="detail-page-recreate-service-codes" (mouseleave)="showDropDown = false"
     *ngIf="inputConfig?.houseKeepePage && inputConfig?.pmsData">
-    <button class="drop-toggle btn flat" (click)="showDropDown=!showDropDown;toggleSelectedItem('pmsData')">
+    <button class="drop-toggle btn flat pms-map" (click)="showDropDown=!showDropDown;toggleSelectedItem('pmsData')">
         <span class="clssic" *ngIf="multiselectPageConfig.pmsData.length<=0">Select PMS Room</span>
         <span *ngIf="multiselectPageConfig.pmsData.length>0"
             [ngClass]="{'hide-item':showSelectedData['pmsData']}">

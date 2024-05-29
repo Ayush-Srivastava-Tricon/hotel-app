@@ -18,8 +18,8 @@
                         <tr class="table-row-rooms">
                             <th>ID</th>
                             <th>Property Name</th>
-                            <th>City</th>
-                            <th>Status</th>
+                            <th>Property Type</th>
+                            <th>State</th>
                             <th>Calendar View</th>
                             <th>Action</th>
                         </tr>
@@ -36,16 +36,14 @@
                             </td>
                             <td class="tg-cly1">
                             </td>
-                            <td class="tg-cly1">
-                            </td>
                         </tr>
                         <ng-container *ngIf="propertyList.length>0 && !loader">
 
                             <tr *ngFor="let item of propertyList;let idx = index;" class="text-center align-middle">
                                 <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar(item.property_id)">{{item.property_id}}</a></td>
                                 <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar(item.property_id)">{{item.property_name|titlecase}}</a> </td>
-                                <td>{{item.city}}</td>
-                                <td>{{item.status == 1 ? 'Active' : 'InActive'}}</td>
+                                <td>{{item.property_type}}</td>
+                                <td>{{item.state_name}}</td>
                                 <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar(item.property_id)">View Calendar</a> </td>
                                 <td>
                                     <div class="dropdown">
@@ -101,7 +99,7 @@
                         <div class="form-group row">
                             <label for="propertyName" class="col-sm-3 col-form-label">Property Type <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select class="form-control" [class.is-invalid]="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']"  formControlName="property_type">
+                                <select class="form-select" [class.is-invalid]="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']"  formControlName="property_type">
                                     <option [value]="null" [selected]="true" [hidden]="true">Select</option>
                                     <option value="APT">Apartment</option>
                                     <option value="COT">Cottage</option>
@@ -178,7 +176,7 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">Country <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control" (change)="getStateByCountry($event)">
+                                <select type="text" class="form-select" (change)="getStateByCountry($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let cty of countryList">
                                         <option [value]="cty.country_id" [selected]="cty.country_id == propertyUserModal.value.country">{{cty.name}}</option>
@@ -193,7 +191,7 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">State <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control"  (change)="getCityByState($event)">
+                                <select type="text" class="form-select"  (change)="getCityByState($event)">
                                     <option [selected]="true" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let state of stateList">
                                         <option [value]="state.state_id" [selected]="state.state_id == propertyUserModal.value.state">{{state.name}}</option>
@@ -207,7 +205,7 @@
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">City <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-control" loading="lazy" (change)="selectCity($event)">
+                                <select type="text" class="form-select" loading="lazy" (change)="selectCity($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let city of cityList">
                                         <option [value]="city.city_id" [selected]="city.city_id == propertyUserModal.value.city">{{city.name}}</option>

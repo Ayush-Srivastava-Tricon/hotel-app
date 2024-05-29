@@ -138,7 +138,7 @@ export class ReservationComponent {
     this.showActionDropDown = {};
     this.addReservationConfig = [];
     this.reservationList = [];
-    this.searchRoomAvailConfig = {};
+    this.searchRoomAvailConfig = JSON.parse(JSON.stringify({'available':true,'reservationType':'normal'}));
   }
 
   closeModal() {

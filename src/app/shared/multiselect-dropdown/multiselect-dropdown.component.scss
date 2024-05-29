@@ -7,7 +7,8 @@
     padding: 5px 10px;
     cursor: hand;
     border: 1px solid #dee2e6 !important;
-    width: 500px;
+    width: 250px;
+    border-radius: 30px;
     text-align: left;
     overflow: hidden;
 }
@@ -26,7 +27,6 @@
     -moz-box-shadow: 0 6px 10px rgba(0,0,0,.15);
     box-shadow: 0 6px 10px rgba(0,0,0,.15);
     margin-left: 1px;
-    height: 105px;
     line-height: 30px;
 }
 .drop-show-team{
@@ -58,9 +58,10 @@
     margin-left: 5px;
 }
 
-.drop-show.no-css-search-claim{
+.drop-show.no-css-search-claim.overflow-y{
     height: 200px !important;
     z-index: 9999;
+    overflow-y: scroll;
 }
 
 .search-claims-offices.disabled{
@@ -75,6 +76,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     margin-right: 10px;
+    display: block;
 }
 
 .filter-box{
@@ -98,6 +100,10 @@
     min-width: 179px;
 }
 
-.detail-page-service-codes .drop-toggle,.detail-page-required-rebilling .drop-toggle{
+.detail-page-service-codes .drop-toggle.flat,.detail-page-required-rebilling .drop-toggle.flat{
         width: 220px !important;
+}
+
+.drop-toggle.rate-plan,.drop-toggle.pms-map{
+    width: 600px !important;
 }

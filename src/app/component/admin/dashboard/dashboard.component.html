@@ -9,7 +9,7 @@
                             <span class="title" [innerHTML]="'list-property'|translate"></span>
                         </div>
                         <div class="col-sm-6 d-flex">
-                                <select class="form-control mx-2" [(ngModel)]="searchConfig['searchType']">
+                                <select class="form-select mx-2" [(ngModel)]="searchConfig['searchType']">
                                     <option selected="true" disabled>Select</option>
                                     <option value="2">Owner</option>
                                     <option value="3">Property</option>
@@ -39,11 +39,11 @@
                                 </span>
                             </th> -->
                             <th>ID</th>
-                            <th>Property Name</th>
-                            <th>City</th>
-                            <th>Owner Name</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th [innerHTML]="'property_name'|translate"></th>
+                            <th [innerHTML]="'city'|translate"></th>
+                            <th [innerHTML]="'owner_name'|translate"></th>
+                            <th [innerHTML]="'status'|translate"></th>
+                            <th [innerHTML]="'action'|translate"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,7 +78,7 @@
                                 <td>{{item.status == 1 ? 'Active' :'InActive'}}</td>
                                 <td> 
                                     <a href="javascript:void(0);" (click)="viewFullDetails(idx,item.property_id)">
-                                        View Details
+                                       {{'view_details'|translate}}
                                     </a> 
                                 </td>
                             </tr>

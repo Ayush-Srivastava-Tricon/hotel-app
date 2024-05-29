@@ -138,7 +138,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">OTA Detail ID <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
-                            <select formControlName="ota_details_id" class="form-control"
+                            <select formControlName="ota_details_id" class="form-select"
                                 [class.is-invalid]="(otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['required']) || (otaUserModal.controls.ota_details_id.dirty && otaUserModal.controls.ota_details_id.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="item.id" *ngFor="let item of otaDetailList">{{item.name}}</option>
@@ -159,7 +159,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Currency</label>
                         <div class="col-sm-9">
-                            <select formControlName="currency" class="form-control"
+                            <select formControlName="currency" class="form-select"
                                 [class.is-invalid]="(otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['required']) || (otaUserModal.controls.currency.dirty && otaUserModal.controls.currency.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="'INR'">INR</option>
@@ -204,7 +204,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Update</label>
                         <div class="col-sm-9">
-                            <select formControlName="update" class="form-control"
+                            <select formControlName="update" class="form-select"
                                 [class.is-invalid]="(otaUserModal.controls.update.dirty && otaUserModal.controls.update.errors?.['required']) || (otaUserModal.controls.update.dirty && otaUserModal.controls.update.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -219,7 +219,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Reservation</label>
                         <div class="col-sm-9">
-                            <select formControlName="reservation" class="form-control"
+                            <select formControlName="reservation" class="form-select"
                                 [class.is-invalid]="(otaUserModal.controls.reservation.dirty && otaUserModal.controls.reservation.errors?.['required']) || (otaUserModal.controls.reservation.dirty && otaUserModal.controls.reservation.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -234,7 +234,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Review</label>
                         <div class="col-sm-9">
-                            <select formControlName="review" class="form-control"
+                            <select formControlName="review" class="form-select"
                                 [class.is-invalid]="(otaUserModal.controls.review.dirty && otaUserModal.controls.review.errors?.['required']) || (otaUserModal.controls.review.dirty && otaUserModal.controls.review.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -249,7 +249,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Promotion</label>
                         <div class="col-sm-9">
-                            <select formControlName="promotion" class="form-control"
+                            <select formControlName="promotion" class="form-select"
                                 [class.is-invalid]="(otaUserModal.controls.promotion.dirty && otaUserModal.controls.promotion.errors?.['required']) || (otaUserModal.controls.promotion.dirty && otaUserModal.controls.promotion.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -264,7 +264,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Content</label>
                         <div class="col-sm-9">
-                            <select formControlName="content" class="form-control"
+                            <select formControlName="content" class="form-select"
                                 [class.is-invalid]="(otaUserModal.controls.content.dirty && otaUserModal.controls.content.errors?.['required']) || (otaUserModal.controls.content.dirty && otaUserModal.controls.content.errors?.['pattern'])">
                                 <option value="" [hidden]="true">Select</option>
                                 <option [value]="1">Yes</option>
@@ -279,7 +279,7 @@
                     <div class="form-group row mb-2">
                         <label for="propertyName" class="col-sm-3 col-form-label">Message</label>
                         <div class="col-sm-9">
-                            <select formControlName="message" class="form-control"
+                            <select formControlName="message" class="form-select"
                             [class.is-invalid]="(otaUserModal.controls.message.dirty && otaUserModal.controls.message.errors?.['required']) || (otaUserModal.controls.message.dirty && otaUserModal.controls.message.errors?.['pattern'])">
                             <option value="" [hidden]="true">Select</option>
                             <option [value]="1">Yes</option>

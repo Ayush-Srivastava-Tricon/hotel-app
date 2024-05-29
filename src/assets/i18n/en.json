@@ -2,5 +2,16 @@
 {
     "add-owner":"Add Owner",
     "search-owner":"Search Property",
-    "list-property":"List Properties"
+    "list-property":"List Properties",
+    "property_name":"Property Name",
+    "city":"City",
+    "owner_name":"Owner Name",
+    "status":"Status",
+    "action":"Action",
+    "view_details":"View Details", 
+    "owner_list":"Owner List" ,
+    "add_new_owner":"Add New Owner",
+    "name":"Name",
+    "email":"Email"
+
 }
