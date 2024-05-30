@@ -48,6 +48,7 @@ export class CalendarViewComponent {
   loggedProperty: any = { 'isLoginProperty': false, 'propertyId': 0 };
   isAdmin: boolean = false;
   isOwner: boolean = false;
+  isDeriveModalActive:boolean=false;
 
   constructor(private _service: CalendarService, private fb: FormBuilder, private alertService: AlertService, private router: Router) {
     this.modalFieldForm = this.fb.group({
@@ -362,7 +363,7 @@ export class CalendarViewComponent {
     this.dragEl[`head${dIdx}${calIdx}${isDerive}`] = !this.dragEl[`head${dIdx}${calIdx}${isDerive}`];
   }
 
-  handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any) {
+  handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any,isDeriveModalActive:boolean) {
     if (this.timeoutId !== null) {            //this part will run if double clicked within 200ms
       clearTimeout(this.timeoutId);
       this.timeoutId = null;
@@ -387,6 +388,7 @@ export class CalendarViewComponent {
 
       }, 200);
     }
+    this.isDeriveModalActive=isDeriveModalActive;
   }
 
   openModal(data: any, roomName: any, endDate?: any, roomId?: any) {

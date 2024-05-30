@@ -105,19 +105,19 @@
                       <td *ngIf="id == 0" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'bg-success':dayData?.newData?.al ,'text-light':dayData?.newData?.al , 'bg-danger': !(dayData?.newData?.al) || dayData?.newData?.al == 0 ,'active':dragEl['head'+dataIdx+calendarIdx] }"
                         (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :'' "
-                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id);dragEl['head'+dataIdx+calendarIdx]=true;">
+                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;">
                         {{dayData?.newData?.al }}
                       </td>
                       <td *ngIf="id == 1" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
                         (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"
-                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id);dragEl['head'+dataIdx+calendarIdx]=true;">
+                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;">
                         {{dayData?.newData?.mn }} - {{dayData?.newData?.mx }}
                       </td>
                       <td *ngIf="id == 2" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
                         (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"
-                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id);dragEl['head'+dataIdx+calendarIdx]=true;">
+                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;">
                         <i class="bi bi-box-arrow-in-right text-danger mx-1 " style="font-size: 20px;"
                           *ngIf="dayData?.newData?.cta"></i>
                         <i class="bi bi-box-arrow-right text-danger mx-1 " style="font-size: 20px;"
@@ -126,7 +126,7 @@
                       <td *ngIf="id == 3" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.ss == 'true'|| dayData?.newData?.ss == '1','active':dragEl['head'+dataIdx+calendarIdx],'text-light':dayData?.newData?.ss == 'true'|| dayData?.newData?.ss == '1'}"
                         (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"
-                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id);dragEl['head'+dataIdx+calendarIdx]=true;">
+                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;">
                         {{dayData?.newData?.pr}}
                       </td>
                     </ng-container>
@@ -147,7 +147,7 @@
                       <td class="hover-td"
                       [ngClass]="{'disabled':childData.isDatePassed,'bg-danger':childData?.newData?.ss == 'true'|| childData?.newData?.ss == '1','activeChild':dragEl['head'+childIdx+childrenIdx+'child'],'text-light':childData?.newData?.ss == 'true'|| childData?.newData?.ss == '1'}"
                         (mouseover)="dragEventStart? selectCalendarDateRange(childData.formateDate,childIdx,childrenIdx,'child') :''"
-                        (click)="handleClickEvent(childData.formateDate,childData?.newData,child.room_name,child.room_id);dragEl['head'+childIdx+childrenIdx+'child']=true;"
+                        (click)="handleClickEvent(childData.formateDate,childData?.newData,child.room_name,child.room_id,true);dragEl['head'+childIdx+childrenIdx+'child']=true;"
                       >
                         {{childData?.newData?.pr}}
                       </td>
@@ -224,7 +224,7 @@
                     {{modalFieldForm.controls.al.value}}) </button> </legend>
                 <div class="row g-3">
                   <div class="col-md-12">
-                    <input type="text" formControlName='al' class="form-control" id="start"
+                    <input type="text" formControlName='al' class="form-control" id="start " [ngClass]="{'opacity-50':isDeriveModalActive}"  [readonly]="isDeriveModalActive"
                       [class.is-invalid]="modalFieldForm.controls.al?.errors?.['pattern']">
                     <small class="text-danger"
                       *ngIf="modalFieldForm.controls.al?.dirty && modalFieldForm.controls.al?.errors?.['required'] ">Field
@@ -257,7 +257,7 @@
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="min">Min</label>
-                    <input type="text" min="1" max="99" maxlength="2" class="form-control" formControlName="mn"
+                    <input type="text" [ngClass]="{'opacity-50':isDeriveModalActive}"  [readonly]="isDeriveModalActive" min="1" max="99" maxlength="2" class="form-control" formControlName="mn"
                       id="price" [class.is-invalid]="modalFieldForm.controls.mn?.errors?.['pattern']">
                     <small class="text-danger"
                       *ngIf="modalFieldForm.controls.mn?.dirty && modalFieldForm.controls.mn?.errors?.['required'] ">Field
@@ -268,7 +268,7 @@
                   </div>
                   <div class="col-md-6">
                     <label for="min">Max</label>
-                    <input type="text" min="1" max="999" maxlength="3" class="form-control" formControlName="mx"
+                    <input type="text" [ngClass]="{'opacity-50':isDeriveModalActive}"  [readonly]="isDeriveModalActive" min="1" max="999" maxlength="3" class="form-control" formControlName="mx"
                       id="price" [class.is-invalid]="modalFieldForm.controls.mx?.errors?.['pattern']">
                     <small class="text-danger"
                       *ngIf="modalFieldForm.controls.mx?.dirty && modalFieldForm.controls.mx?.errors?.['required'] ">Field
@@ -317,17 +317,17 @@
                     </div>
                     <div class="col-md-7">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" [value]="true"
+                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive" [value]="true"
                           [checked]="modalFieldForm.get('cta').value === true" formControlName="cta">
                         <label class="form-check-label" for="cin1">Yes</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" [value]="false"
+                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive" [value]="false"
                           [checked]="modalFieldForm.get('cta').value === false" formControlName="cta">
                         <label class="form-check-label" for="cin2">No</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio">
+                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive">
                         <label class="form-check-label" for="cin">Calendar Unchange</label>
                       </div>
                     </div>
@@ -339,17 +339,17 @@
                     </div>
                     <div class="col-md-7">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio"
+                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive"
                           [checked]="modalFieldForm.get('ctd').value === true" [value]="true" formControlName="ctd">
                         <label class="form-check-label" for="cout1">Yes</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio"
+                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive"
                           [checked]="modalFieldForm.get('ctd').value === false" [value]="false" formControlName="ctd">
                         <label class="form-check-label" for="cout2">No</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio">
+                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive">
                         <label class="form-check-label" for="cout3">Calendar Unchange</label>
                       </div>
                     </div>
@@ -361,7 +361,7 @@
                     </div>
                     <div class="col-md-7">
                       <div class="form-check form-check-inline">
-                        <input class="form-control" type="text" formControlName="cu"
+                        <input class="form-control" type="text" [readonly]="isDeriveModalActive" formControlName="cu"
                           [class.is-invalid]="modalFieldForm.controls.cu?.errors?.['pattern']">
                         <small class="text-danger"
                           *ngIf="modalFieldForm.controls.cu?.dirty && modalFieldForm.controls.cu?.errors?.['required'] ">Field
