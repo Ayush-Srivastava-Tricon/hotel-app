@@ -149,7 +149,7 @@
                         (mouseover)="dragEventStart? selectCalendarDateRange(childData.formateDate,childIdx,childrenIdx,'child') :''"
                         (click)="handleClickEvent(childData.formateDate,childData?.newData,child.room_name,child.room_id);dragEl['head'+childIdx+childrenIdx+'child']=true;"
                       >
-                        {{childData.newData.pr}}
+                        {{childData?.newData?.pr}}
                       </td>
                     </ng-container>
                   </tr>

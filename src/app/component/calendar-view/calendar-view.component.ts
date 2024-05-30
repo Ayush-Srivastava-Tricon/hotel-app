@@ -242,22 +242,36 @@ export class CalendarViewComponent {
 
   previousMonth(): void {
     this.currentDate = new Date(this.currentDate);
-    this.selectDate = '';
-    this.datesData = [];
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
-    this.fetchCalendarData(this.formatDate(this.currentDate));
-    let selectedRangeDate: any = document.getElementById("date");
-    selectedRangeDate.value = '';
+    this.datesData = [];
+    if(this.currentDate.setHours(0,0,0,0) != new Date().setHours(0,0,0,0)){
+      this.selectDate = '';
+      let selectedRangeDate: any = document.getElementById("date");
+      selectedRangeDate.value = '';
+      this.fetchCalendarData(this.formatDate(this.currentDate),false);
+    }else{
+      this.selectDate = new Date();
+      let selectedRangeDate: any = document.getElementById("date");
+      selectedRangeDate.value =  this.formatDate(this.selectDate);
+      this.fetchCalendarData(this.formatDate(this.currentDate),true);
+    }
   }
 
   nextMonth(): void {
     this.currentDate = new Date(this.currentDate);
-    this.datesData = [];
-    this.selectDate = '';
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-    this.fetchCalendarData(this.formatDate(this.currentDate));
-    let selectedRangeDate: any = document.getElementById("date");
-    selectedRangeDate.value = '';
+    this.datesData = [];
+    if(this.currentDate.setHours(0,0,0,0) != new Date().setHours(0,0,0,0)){
+      this.selectDate = '';
+      let selectedRangeDate: any = document.getElementById("date");
+      selectedRangeDate.value = '';
+      this.fetchCalendarData(this.formatDate(this.currentDate),false);
+    }else{
+      this.selectDate = new Date();
+      let selectedRangeDate: any = document.getElementById("date");
+      selectedRangeDate.value =  this.formatDate(this.selectDate);
+      this.fetchCalendarData(this.formatDate(this.currentDate),true);
+    }
   }
 
   formatDate(date: any) {
