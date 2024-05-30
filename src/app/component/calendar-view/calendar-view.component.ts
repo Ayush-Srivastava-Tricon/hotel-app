@@ -389,6 +389,7 @@ export class CalendarViewComponent {
       }, 200);
     }
     this.isDeriveModalActive=isDeriveModalActive;
+    this.isDeriveModalActive ?  this.setModalFieldDisable() :  this.setModalFieldEnable();
   }
 
   openModal(data: any, roomName: any, endDate?: any, roomId?: any) {
@@ -462,4 +463,24 @@ export class CalendarViewComponent {
     console.log(event.source.element.nativeElement.classList.add('active'));
 
   }
+
+  setModalFieldDisable(){
+    this.modalFieldForm.controls.cta.disable();
+    this.modalFieldForm.controls.ctd.disable();
+    this.modalFieldForm.controls.cu.disable();
+    this.modalFieldForm.controls.al.disable();
+    this.modalFieldForm.controls.mx.disable();
+    this.modalFieldForm.controls.mn.disable();
+  }
+
+  setModalFieldEnable(){
+    this.modalFieldForm.controls.cta.enable();
+    this.modalFieldForm.controls.ctd.enable();
+    this.modalFieldForm.controls.cu.enable();
+    this.modalFieldForm.controls.al.enable();
+    this.modalFieldForm.controls.mx.enable();
+    this.modalFieldForm.controls.mn.enable();
+  }
+
+
 }

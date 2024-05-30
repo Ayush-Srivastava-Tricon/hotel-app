@@ -224,7 +224,7 @@
                     {{modalFieldForm.controls.al.value}}) </button> </legend>
                 <div class="row g-3">
                   <div class="col-md-12">
-                    <input type="text" formControlName='al' class="form-control" id="start " [ngClass]="{'opacity-50':isDeriveModalActive}"  [readonly]="isDeriveModalActive"
+                    <input type="text" formControlName='al' class="form-control" id="start "
                       [class.is-invalid]="modalFieldForm.controls.al?.errors?.['pattern']">
                     <small class="text-danger"
                       *ngIf="modalFieldForm.controls.al?.dirty && modalFieldForm.controls.al?.errors?.['required'] ">Field
@@ -257,7 +257,7 @@
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="min">Min</label>
-                    <input type="text" [ngClass]="{'opacity-50':isDeriveModalActive}"  [readonly]="isDeriveModalActive" min="1" max="99" maxlength="2" class="form-control" formControlName="mn"
+                    <input type="text"  min="1" max="99" maxlength="2" class="form-control" formControlName="mn"
                       id="price" [class.is-invalid]="modalFieldForm.controls.mn?.errors?.['pattern']">
                     <small class="text-danger"
                       *ngIf="modalFieldForm.controls.mn?.dirty && modalFieldForm.controls.mn?.errors?.['required'] ">Field
@@ -268,7 +268,7 @@
                   </div>
                   <div class="col-md-6">
                     <label for="min">Max</label>
-                    <input type="text" [ngClass]="{'opacity-50':isDeriveModalActive}"  [readonly]="isDeriveModalActive" min="1" max="999" maxlength="3" class="form-control" formControlName="mx"
+                    <input type="text" [disabled]="isDeriveModalActive" min="1" max="999" maxlength="3" class="form-control" formControlName="mx"
                       id="price" [class.is-invalid]="modalFieldForm.controls.mx?.errors?.['pattern']">
                     <small class="text-danger"
                       *ngIf="modalFieldForm.controls.mx?.dirty && modalFieldForm.controls.mx?.errors?.['required'] ">Field
@@ -305,7 +305,7 @@
                         <label class="form-check-label" for="ss2">No</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio">
+                        <input class="form-check-input" type="radio" [disabled]="isDeriveModalActive">
                         <label class="form-check-label" for="ss3">Calendar Unchange</label>
                       </div>
                     </div>
@@ -317,17 +317,17 @@
                     </div>
                     <div class="col-md-7">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive" [value]="true"
+                        <input class="form-check-input" type="radio"  [value]="true"
                           [checked]="modalFieldForm.get('cta').value === true" formControlName="cta">
                         <label class="form-check-label" for="cin1">Yes</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive" [value]="false"
+                        <input class="form-check-input" type="radio"  [value]="false"
                           [checked]="modalFieldForm.get('cta').value === false" formControlName="cta">
                         <label class="form-check-label" for="cin2">No</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive">
+                        <input class="form-check-input" type="radio"  [disabled]="isDeriveModalActive">
                         <label class="form-check-label" for="cin">Calendar Unchange</label>
                       </div>
                     </div>
@@ -339,17 +339,17 @@
                     </div>
                     <div class="col-md-7">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive"
+                        <input class="form-check-input" type="radio" 
                           [checked]="modalFieldForm.get('ctd').value === true" [value]="true" formControlName="ctd">
                         <label class="form-check-label" for="cout1">Yes</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive"
+                        <input class="form-check-input" type="radio" 
                           [checked]="modalFieldForm.get('ctd').value === false" [value]="false" formControlName="ctd">
                         <label class="form-check-label" for="cout2">No</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" [attr.disabled]="isDeriveModalActive">
+                        <input class="form-check-input" type="radio"  [disabled]="isDeriveModalActive">
                         <label class="form-check-label" for="cout3">Calendar Unchange</label>
                       </div>
                     </div>
@@ -361,7 +361,7 @@
                     </div>
                     <div class="col-md-7">
                       <div class="form-check form-check-inline">
-                        <input class="form-control" type="text" [readonly]="isDeriveModalActive" formControlName="cu"
+                        <input class="form-control" type="text" formControlName="cu"
                           [class.is-invalid]="modalFieldForm.controls.cu?.errors?.['pattern']">
                         <small class="text-danger"
                           *ngIf="modalFieldForm.controls.cu?.dirty && modalFieldForm.controls.cu?.errors?.['required'] ">Field
