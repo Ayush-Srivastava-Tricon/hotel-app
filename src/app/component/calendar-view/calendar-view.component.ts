@@ -244,7 +244,7 @@ export class CalendarViewComponent {
     this.currentDate = new Date(this.currentDate);
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.datesData = [];
-    if(this.currentDate.setHours(0,0,0,0) != new Date().setHours(0,0,0,0)){
+    if((this.currentDate.getMonth()+1) != (new Date().getMonth()+1)){
       this.selectDate = '';
       let selectedRangeDate: any = document.getElementById("date");
       selectedRangeDate.value = '';
@@ -253,7 +253,7 @@ export class CalendarViewComponent {
       this.selectDate = new Date();
       let selectedRangeDate: any = document.getElementById("date");
       selectedRangeDate.value =  this.formatDate(this.selectDate);
-      this.fetchCalendarData(this.formatDate(this.currentDate),true);
+      this.fetchCalendarData(this.formatDate(this.selectDate),true);
     }
   }
 
@@ -261,7 +261,7 @@ export class CalendarViewComponent {
     this.currentDate = new Date(this.currentDate);
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.datesData = [];
-    if(this.currentDate.setHours(0,0,0,0) != new Date().setHours(0,0,0,0)){
+    if((this.currentDate.getMonth()+1) != (new Date().getMonth()+1)){
       this.selectDate = '';
       let selectedRangeDate: any = document.getElementById("date");
       selectedRangeDate.value = '';
@@ -270,7 +270,7 @@ export class CalendarViewComponent {
       this.selectDate = new Date();
       let selectedRangeDate: any = document.getElementById("date");
       selectedRangeDate.value =  this.formatDate(this.selectDate);
-      this.fetchCalendarData(this.formatDate(this.currentDate),true);
+      this.fetchCalendarData(this.formatDate(this.selectDate),true);
     }
   }
 
