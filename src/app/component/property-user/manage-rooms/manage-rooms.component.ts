@@ -38,22 +38,32 @@ export class ManageRoomsComponent {
       {
         property_id: [''],
         room_name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_ ]*$/)]],
-        adult: [0, [ Validators.pattern(/^[0-9]+$/)]],
-        child: [0, [ Validators.pattern(/^[0-9]+$/)]],
-        default_price: ['', [Validators.required,Validators.pattern(/^\d*\.?\d*$/)]],
-        default_quantity: ['', [ Validators.pattern(/^[0-9]+$/)]],
-        default_min: ['', [ Validators.pattern(/^[0-9]+$/)]],
-        default_max: ['', [ Validators.pattern(/^[0-9]+$/)]],
+        adult: [0, [Validators.pattern(/^[0-9]+$/)]],
+        child: [0, [Validators.pattern(/^[0-9]+$/)]],
+        default_price: ['', [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]],
+        default_quantity: ['', [Validators.pattern(/^[0-9]+$/)]],
+        default_min: ['', [Validators.pattern(/^[0-9]+$/)]],
+        default_max: ['', [Validators.pattern(/^[0-9]+$/)]],
         description: ['',],
-        parent_room_id: [0],
-        rate_plan_id:[null],
+        parent_room_id: [''],
+        rate_plan_id: [null],
         nonrefundable: [''],
         is_pms: [false],
         is_dorm: [false],
         cald_show: [false],
         be_show: [false],
         breakfast: [false],
-        // is_active:[true],
+        price_type: ['Price'],
+        price: [0],
+        disp_on_booking_engine:[1],
+        disp_on_octosite:[1],
+        disp_on_calendar:[1],
+        disp_on_add_reservation:[1],
+        room_counted_on_stats:[1],
+        can_change_avail:['true'],
+        can_change_stay:[1],
+        can_change_restriction:[1],
+        can_change_stopsale:[1]
       }
     )
   }
@@ -83,6 +93,8 @@ export class ManageRoomsComponent {
   }
 
   createNewRoom() {
+  console.log(this.roomModal.value);
+  
     if (this.roomModal.status == "VALID") {
       this.loader=true;
       this.roomModal.controls.property_id.setValue(this.currentPropertyId);
@@ -161,6 +173,9 @@ export class ManageRoomsComponent {
         this.currentRoomId = item.room_id;
         this.toUploadImagefile = JSON.parse(JSON.stringify([]));
         this.getUploadedImage(item.room_id);
+        if(res.data[0].parent_room_id){
+          this.getParentRoomId();
+        }
       }
     })
 
@@ -173,6 +188,7 @@ export class ManageRoomsComponent {
         e.is_dorm = +e.is_dorm;
         e.cald_show = +e.cald_show;
         e.be_show = +e.be_show;
+        e.parent_room_id = +e.parent_room_id;
       })
   }
 
@@ -344,12 +360,54 @@ export class ManageRoomsComponent {
   }
 
   getRatePlanByParent(event:any){
+    if(event.target.value){
       this.proService.getRatePlanByParent(event.target.value,(res:any)=>{
         if(res.status ==200){
           console.log(res);
           this.ratePlans=res.data;
+          this.setDefaultDerivationRuleValue();
         }
       })
+    }else{
+      this.ratePlans=[];
+      this.roomModal.controls.parent_room_id.setValue("");
+      this.roomModal.controls.parent_room_id.updateValueAndValidity();
+    }
+  }
+
+  setPriceTypeForDeriveRoom(priceType:any){
+    this.roomModal.controls.price_type.setValue(priceType);
+    this.roomModal.controls.price_type.updateValueAndValidity();
+  }
+
+  setDefaultDerivationRuleValue(){
+    this.roomModal.controls.disp_on_booking_engine.setValue(true);
+    this.roomModal.controls.disp_on_booking_engine.updateValueAndValidity();
+
+    this.roomModal.controls.disp_on_octosite.setValue(true);
+    this.roomModal.controls.disp_on_octosite.updateValueAndValidity();
+
+    this.roomModal.controls.disp_on_calendar.setValue(true);
+    this.roomModal.controls.disp_on_calendar.updateValueAndValidity();
+
+    this.roomModal.controls.disp_on_add_reservation.setValue(true);
+    this.roomModal.controls.disp_on_add_reservation.updateValueAndValidity();
+
+    this.roomModal.controls.room_counted_on_stats.setValue(true);
+    this.roomModal.controls.room_counted_on_stats.updateValueAndValidity();
+
+    this.roomModal.controls.can_change_avail.setValue(true);
+    this.roomModal.controls.can_change_avail.updateValueAndValidity();
+
+    this.roomModal.controls.can_change_stay.setValue(true);
+    this.roomModal.controls.can_change_stay.updateValueAndValidity();
+
+    this.roomModal.controls.can_change_restriction.setValue(true);
+    this.roomModal.controls.can_change_restriction.updateValueAndValidity();
+
+    this.roomModal.controls.can_change_stopsale.setValue(true);
+    this.roomModal.controls.can_change_stopsale.updateValueAndValidity();
+
   }
                                
 }

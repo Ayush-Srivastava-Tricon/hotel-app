@@ -285,10 +285,10 @@ background: #ddd;
 .add-room-container{
     background-color: whitesmoke;
 
-    .col-sm-6{
+    fieldset{
       background-color: white;
-      padding: 20px;
-      height: 285px;
+      padding: 10px;
+      height: 350px;
     }
 }
 
@@ -318,3 +318,23 @@ background: #ddd;
     font-size: 10px;
     color: white;
   }
+
+
+  .price-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .btn-active {
+    background-color: #007bff;
+    color: white;
+  }
+  

@@ -105,19 +105,20 @@
         </nav>
     </div>
 
-    <div class="shadow p-4 rounded add-room-container">
+    <div class="p-2 add-room-container">
         <form [formGroup]="roomModal">
             <div class="row mb-2">
                 <div class="col-sm-6 mb-2">
-                    <fieldset class="border p-2">
+                    <fieldset class="shadow border p-3">
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Room
                                 Detail
                             </button> </legend>
                         <div class="form-group row mb-2">
                             <label for="propertyName" class="col-sm-3 col-form-label">Parent Room Id</label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-select" formControlName="parent_room_id" (change)="getRatePlanByParent($event)">
-                                    <option selected="true" value="0">Select</option>
+                                <select type="text" class="form-select" formControlName="parent_room_id"
+                                    (change)="getRatePlanByParent($event)">
+                                    <option selected="true" value="">Select</option>
                                     <option [value]="room.room_id" *ngFor="let room of parentRooms">{{room.room_name}}
                                     </option>
                                 </select>
@@ -162,9 +163,10 @@
                         </div>
 
                     </fieldset>
+
                 </div>
                 <div class="col-sm-6 mb-2">
-                    <fieldset class="border p-2">
+                    <fieldset class="shadow border p-3">
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Person
                             </button> </legend>
                         <div class="form-group row mb-2">
@@ -198,9 +200,136 @@
                 </div>
 
             </div>
-            <div class="row mb-2 bg-white p-2">
+            <div class="row mb-3 pb-3" *ngIf="roomModal.controls.parent_room_id.value">
+                <div class="col-sm-6 flex-wrap">
+                    <fieldset class="shadow border p-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Derivation
+                                Rules
+                            </button> </legend>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" for="propertyType">Price</label>
+                            <div class="col-sm-9">
+                                <div class="price-input-container">
+                                    <div class="input-group">
+                                        <button class="btn border" [ngClass]="{'btn-active':roomModal.controls.price_type.value?.includes('Not')}" (click)="setPriceTypeForDeriveRoom('Not derived')"><i class="bi bi-paperclip"></i> Not derived</button>
+                                        <button class="btn border" [ngClass]="{'btn-active':roomModal.controls.price_type.value === 'Price'}" (click)="setPriceTypeForDeriveRoom('Price')"><i class="bi bi-arrows-vertical"></i> Fixed value</button>
+                                        <button class="btn border" [ngClass]="{'btn-active':roomModal.controls.price_type.value === 'Percentage'}" (click)="setPriceTypeForDeriveRoom('Percentage')">% Percentage</button>
+                                    </div>
+                                    <div class="rounded-pill">
+                                        <input type="number" class="form-control" placeholder="Enter Price"  formControlName="price">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row my-1">
+                            <label class="col-sm-3 col-form-label" for="can_change_avail">Availability</label>
+                            <div class="col-sm-9">
+                                <label class="switch">
+                                    <input type="checkbox" id="can_change_avail" [checked]="roomModal.controls?.can_change_avail?.value " formControlName="can_change_avail">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" for="can_change_stay">Length of stay</label>
+                            <div class="col-sm-9">
+                                <label class="switch">
+                                    <input type="checkbox" id="can_change_stay" [checked]="roomModal.controls?.can_change_stay?.value " formControlName="can_change_stay">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row my-1">
+                            <label class="col-sm-3 col-form-label" for="can_change_restriction">Restriction</label>
+                            <div class="col-sm-9">
+                                <label class="switch">
+                                    <input type="checkbox" id="can_change_restriction" [checked]="roomModal.controls?.can_change_restriction?.value " formControlName="can_change_restriction">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" for="can_change_stopsale" >Stop Sale</label>
+                            <div class="col-sm-9">
+                                <label class="switch">
+                                    <input type="checkbox" id="can_change_stopsale" [checked]="roomModal.controls?.can_change_stopsale?.value " formControlName="can_change_stopsale">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="col-sm-6 mb-2 flex-wrap">
+                    <fieldset class="shadow border p-3">
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Show/Hide
+                            </button> </legend>
+
+
+                        <div class="form-group row">
+                            <label class="col-sm-9 col-form-label" for="disp_on_booking_engine">Display on Booking Engine</label>
+                            <div class="col-sm-3">
+                                <label class="switch">
+                                    <input type="checkbox" id="disp_on_booking_engine" [checked]="roomModal.controls?.disp_on_booking_engine?.value " formControlName="disp_on_booking_engine">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row my-1">
+                            <label class="col-sm-9 col-form-label" for="disp_on_octosite">Display on OctoSite</label>
+                            <div class="col-sm-3">
+                                <label class="switch">
+                                    <input type="checkbox" id="disp_on_octosite" [checked]="roomModal.controls?.disp_on_octosite?.value " formControlName="disp_on_octosite">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-9 col-form-label" for="disp_on_calendar">Display on Calendar page</label>
+                            <div class="col-sm-3">
+                                <label class="switch">
+                                    <input type="checkbox" id="disp_on_calendar" [checked]="roomModal.controls?.disp_on_calendar?.value " formControlName="disp_on_calendar">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row my-1">
+                            <label class="col-sm-9 col-form-label" for="room_counted_on_stats">Room counted in the
+                                statistics</label>
+                            <div class="col-sm-3">
+                                <label class="switch">
+                                    <input type="checkbox" id="room_counted_on_stats" [checked]="roomModal.controls?.room_counted_on_stats?.value " formControlName="room_counted_on_stats">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-9 col-form-label" for="disp_on_add_reservation">Add reservation</label>
+                            <div class="col-sm-3">
+                                <label class="switch">
+                                    <input type="checkbox" id="disp_on_add_reservation" [checked]="roomModal.controls?.disp_on_add_reservation?.value " formControlName="disp_on_add_reservation">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="row mb-2">
                 <div class="col-sm-3 mb-2 ">
-                    <fieldset class="border p-2">
+                    <fieldset class="shadow border p-3">
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Default
                                 Markups
                             </button> </legend>
@@ -268,7 +397,7 @@
                     </fieldset>
                 </div>
                 <div class="col-sm-5 flex-wrap">
-                    <fieldset class="border p-2">
+                    <fieldset class="shadow border p-3">
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Rate Plan
                             </button> </legend>
 
@@ -340,7 +469,7 @@
                     </fieldset>
                 </div>
                 <div class="col-sm-4">
-                    <fieldset class="border p-2">
+                    <fieldset class="shadow border p-3">
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Upload
                                 Room Image
                             </button> </legend>
