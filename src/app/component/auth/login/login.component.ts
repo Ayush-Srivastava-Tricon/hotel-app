@@ -74,7 +74,7 @@ export class LoginComponent {
   }
 
   setDefaultLang(){
-    localStorage.setItem("defaultLang","es");
+    localStorage.setItem("defaultLang","en");
   }
 
 

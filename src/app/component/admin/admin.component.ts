@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { CommonService } from 'src/app/services/common.service';
 import {TranslationService} from "./../../services/translation.service";
+import { HttpClient } from '@angular/common/http';
+import { AlertService } from 'src/app/shared/alert.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -14,7 +15,7 @@ export class AdminComponent {
   dropdown:any= {};
   loggedUserData:any={};
   
-  constructor(private router: Router, private authService: AuthService, private translate:TranslationService,private common:CommonService) { }
+  constructor(private router: Router, private authService: AuthService, private translate:TranslationService,private alert:AlertService,private http:HttpClient) { }
 
   logout() {
     const role_id:any = this.authService.roleId ? this.authService.roleId : JSON.parse(<any>localStorage.getItem("roleId"));
@@ -52,4 +53,6 @@ export class AdminComponent {
   changeLang(event:any){
     this.translate.setLanguage(event.target.value);
   }
+
+
 }

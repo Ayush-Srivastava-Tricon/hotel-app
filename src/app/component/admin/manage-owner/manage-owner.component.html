@@ -1,4 +1,4 @@
-<div class="container-fluid manage-owner-container">
+<div class="container-fluid">
     <ng-container *ngIf="!showModal.owner">
         <div class="row justify-content-center align-items-center">
             <div class="col-sm-12">
@@ -6,10 +6,10 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-6">
-                                <span class="title">{{'owner_list'|translate}}</span>
+                                <span class="title">{{'OWNER_LIST'|translate}}</span>
                             </div>
                             <div class="col-sm-6">
-                                <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success" data-toggle="modal"><span>{{'add_new_owner'|translate}}</span></a>
+                                <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success" data-toggle="modal"><span>{{'ADD_NEW_OWNER'|translate}}</span></a>
                               </div>
                         </div>
                     </div>
@@ -17,13 +17,13 @@
                     <thead class="thead-dark">
                         <tr class="table-row-rooms">
                             <th>Id</th>
-                            <th>{{'name'|translate  }}</th>
-                            <th>{{'email'|translate}}</th>
-                            <th>Alternate Email</th>
-                            <th>Mobile</th>
-                            <th>Alternate Mobile</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>{{'NAME'|translate}}</th>
+                            <th>{{'EMAIL'|translate}}</th>
+                            <th>{{"ALTERNATE_EMAIL"|translate}}</th>
+                            <th>{{"MOBILE"|translate}}</th>
+                            <th>{{"ALTERNATE_MOBILE"|translate}}</th>
+                            <th>{{"STATUS"|translate}}</th>
+                            <th>{{"ACTION"|translate}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +62,7 @@
                                         <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
                                             *ngIf="showActionDropDown[idx]">
                                             <!-- <a class="dropdown-item">Change Status</a> -->
-                                            <a class="dropdown-item" (click)="editOwnerOpenModal(item)">Edit Owner</a>
+                                            <a class="dropdown-item" (click)="editOwnerOpenModal(item)">{{"EDIT_OWNER"|translate}}</a>
                                             <!-- <a class="dropdown-item" (click)="deleteOwnerModal(item.owner_id,idx)">Delete</a> -->
                                         </div>
                                     </div>
@@ -79,9 +79,9 @@
     </ng-container>
    
     <ng-container *ngIf="showModal.owner">
-        <div class="my-3 ms-2 d-flex justify-content-between ">
+        <div class="my-3 ms-2 d-flex justify-content-between bg-light p-2">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb m-0">
                   <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageOwner()">Back to Manage Owner</a></li>
                   <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Owner</li>
                 </ol>
