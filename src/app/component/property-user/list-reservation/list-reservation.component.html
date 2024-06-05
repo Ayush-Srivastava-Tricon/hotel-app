@@ -643,16 +643,16 @@
                             <div class="form-group row mb-3 align-items-baseline">
                                 <label class="col-sm-3 col-form-label" >PMS <span class="text-danger">*</span> </label>
                                 <div class="col-sm-9">
-                                    <select class="form-select">
-                                        <option value="" [selected]="true">Select....</option>
-                                        <option value="" *ngFor="let item of pmsRoomList">{{item.name}}</option>
+                                    <select class="form-select" (change)="selectPmsRoom($event,item)">
+                                        <option [value]="''" [selected]="true">Select....</option>
+                                        <option [value]="{'pms_room_id':item.pms_room_id,'index':idx}|json" [id]="idx" [disabled]="item.isSelected" *ngFor="let item of pmsRoomList;let idx= index ">{{item.name}}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group row mb-3 align-items-baseline">
                                 <label class="col-sm-3 col-form-label">Rate Plan</label>
-                                <div class="col-sm-9">
+                                <div class="col-sm-9">  
                                     <p class="text-info"> ? standard + {{item.avg_pr}} EUR</p>
                                 </div>
                                 <div class="row">

@@ -39,6 +39,7 @@ export class ListReservationComponent {
 
   editReservationDataConfig:any={reservationData:{}};
   pmsRoomList:any=[];
+  pmsRoomMapConfig:any=[];
 
 
   @ViewChild(MultiselectDropdownComponent) multiselect!:MultiselectDropdownComponent;
@@ -247,7 +248,8 @@ reMakePayloadData(){
         e['reserved_room_id'] = e.id;
         delete e.id;
         delete e.reservations_id;
-    })
+    });
+    this.editReservationDataConfig['pmsAssigned'] = this.pmsRoomMapConfig;
 }
 
 copyCode(val: string){
@@ -269,9 +271,44 @@ getAvailablePMSRoom(data:any){
   this._service.getAvailablePMSRoom(data.internal_room_id,data.check_in.split(" ")[0],(res:any)=>{
     if(res.status == 200){
       console.log(res);
-      this.pmsRoomList = res.data;
+      this.pmsRoomList = res.data.map((e:any)=>{return {...e,isSelected:false}});
     }
   })
+}
+
+selectPmsRoom(event:any,reservationData:any){
+  if(event.target.value){
+    let value:any =  JSON.parse(event.target.value)
+
+    if(this.pmsRoomMapConfig.length == 0){
+      this.pmsRoomMapConfig.push({
+        'pms_room_id':value.pms_room_id,
+        "internal_room_id":reservationData.internal_room_id,
+        "check_in":reservationData.check_in,
+        "check_out":reservationData.check_out,
+        "reservation_id":reservationData.reservations_id
+      });
+    }else{
+      let isExist:any = this.pmsRoomMapConfig.some((e:any)=>e.pms_room_id == value.pms_room_id);
+      if(!isExist){
+        this.pmsRoomMapConfig.push({
+          'pms_room_id':value.pms_room_id,
+          "internal_room_id":reservationData.internal_room_id,
+          "check_in":reservationData.check_in,
+          "check_out":reservationData.check_out,
+          "reservation_id":reservationData.reservations_id
+        });
+      }else{
+        //
+      }
+    }
+    this.pmsRoomList[value.index].isSelected = true;
+  }else{
+   this.pmsRoomList.forEach((e:any)=>e.isSelected = false);
+  }
+
+  console.log(this.pmsRoomMapConfig);
+  
 }
 
 }
