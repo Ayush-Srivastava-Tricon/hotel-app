@@ -297,10 +297,6 @@ export class CalendarViewComponent {
             this.datesData[i]['newData'] = item;
             this.datesData[i].newData['resource'] = e.room_id;
             this.datesData[i].newData['start'] = item.date;
-            this.datesData[i].newData['can_change_avail'] = e.can_change_avail;
-            this.datesData[i].newData['can_change_restriction'] = e.can_change_restriction;
-            this.datesData[i].newData['can_change_stay'] = e.can_change_stay;
-            this.datesData[i].newData['can_change_stopsale'] = e.can_change_stopsale;
             break;
           }
         }
@@ -334,10 +330,10 @@ export class CalendarViewComponent {
               this.datesData[i]['newData'] = item;
               this.datesData[i].newData['resource'] = ele.room_id;
               this.datesData[i].newData['start'] = item.date;
-              this.datesData[i].newData['can_change_avail'] = e.can_change_avail;
-              this.datesData[i].newData['can_change_restriction'] = e.can_change_restriction;
-              this.datesData[i].newData['can_change_stay'] = e.can_change_stay;
-              this.datesData[i].newData['can_change_stopsale'] = e.can_change_stopsale;
+              this.datesData[i].newData['map_change_avail'] = e.map_change_avail;
+              this.datesData[i].newData['map_change_stay'] = e.map_change_stay;
+              this.datesData[i].newData['map_change_restriction'] = e.map_change_restriction;
+              this.datesData[i].newData['map_change_stopsale'] = e.map_change_stopsale;
               this.datesData[i].newData['parent_room_id'] = ele.parent_room_id;
               break;
             }
@@ -365,9 +361,9 @@ export class CalendarViewComponent {
     selectedRangeDate.value = '';
   }
 
-  selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number, isDerive: any = '') {
+  selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number,calendarIdx:any='', isDerive: any = '') {
 
-    this.dragEl[`head${dIdx}${calIdx}${isDerive}`] = !this.dragEl[`head${dIdx}${calIdx}${isDerive}`];
+    this.dragEl[`head${dIdx}${calIdx}${calendarIdx}${isDerive}`] = !this.dragEl[`head${dIdx}${calIdx}${calendarIdx}${isDerive}`];
   }
 
   handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any, isDeriveModalActive: boolean) {
@@ -396,7 +392,12 @@ export class CalendarViewComponent {
       }, 200);
     }
     this.isDeriveModalActive = isDeriveModalActive;
-    this.isDeriveModalActive ? this.setModalFieldDisable(dayData) : this.setModalFieldEnable(dayData);
+   
+    if(this.isDeriveModalActive){
+      this.toggleModalFieldDisableEnable(dayData);
+    }else{
+      this.setModalFieldEnable();
+    }
   }
 
   openModal(data: any, roomName: any, endDate?: any, roomId?: any) {
@@ -476,38 +477,25 @@ export class CalendarViewComponent {
 
   }
 
-  setModalFieldDisable(item:any) {
-
-    // switch(true){
-    //   case (item.can_change_avail || item.can_change_avail == 1 || item.can_change_avail == '1'):
-    //         this.modalFieldForm.controls.al.enable();
-    //         break;
-    //   case (item.can_change_stay || item.can_change_stay == 1 || item.can_change_stay == '1'):
-    //         this.modalFieldForm.controls.mx.enable();
-    //         this.modalFieldForm.controls.mn.enable();
-    //         break;
-    //   case (item.can_change_restriction || item.can_change_restriction == 1 || item.can_change_restriction == '1'):
-    //         this.modalFieldForm.controls.cta.enable();
-    //         this.modalFieldForm.controls.ctd.enable();
-    //         this.modalFieldForm.controls.cu.enable();
-    //         break;
-
-    // }
-
-    // if(item.can_change_avail || item.can_change_avail == 1 || item.can_change_avail == '1'){
-    //   this.modalFieldForm.controls.al.enable();
-    // }else{
-    //   this.modalFieldForm.controls.al.disable();
-    // }
-
-    this.modalFieldForm.controls.cta.disable();
-    this.modalFieldForm.controls.ctd.disable();
-    this.modalFieldForm.controls.cu.disable();
-    this.modalFieldForm.controls.mx.disable();
-    this.modalFieldForm.controls.mn.disable();
+  toggleModalFieldDisableEnable(item:any){
+    if(item.map_change_avail == '1'){
+      this.modalFieldForm.controls.al.disable();
+    }
+    if(item.map_change_restriction == '1'){
+      this.modalFieldForm.controls.cta.disable();
+      this.modalFieldForm.controls.ctd.disable();
+      this.modalFieldForm.controls.cu.disable();
+    }
+    if(item.map_change_stopsale == '1'){
+      this.modalFieldForm.controls.ss.disable();
+    }
+    if(item.map_change_stay == '1'){
+      this.modalFieldForm.controls.mx.disable();
+      this.modalFieldForm.controls.mn.disable();
+    }
   }
 
-  setModalFieldEnable(item:any) {
+  setModalFieldEnable() {
     this.modalFieldForm.controls.cta.enable();
     this.modalFieldForm.controls.ctd.enable();
     this.modalFieldForm.controls.cu.enable();

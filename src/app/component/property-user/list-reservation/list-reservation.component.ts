@@ -38,6 +38,8 @@ export class ListReservationComponent {
   currentPropertyId:number=0;
 
   editReservationDataConfig:any={reservationData:{}};
+  pmsRoomList:any=[];
+
 
   @ViewChild(MultiselectDropdownComponent) multiselect!:MultiselectDropdownComponent;
 
@@ -94,6 +96,7 @@ export class ListReservationComponent {
           this.editReservationDataConfig['reservationData']['cancellation_date'] = "";
           this.calculateDaysBetweenDates(item);
           this.getPaymentMethod();
+          this.getAvailablePMSRoom(res.responseData.rooms[0]);
         }else{
           this.alert.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' })
         };
@@ -260,6 +263,15 @@ copyCode(val: string){
   document.execCommand('copy');
   document.body.removeChild(selBox);
   this.alert.alert("success","Reseration Code Copied","Success",{ displayDuration: 1000, pos: 'top' })
+}
+
+getAvailablePMSRoom(data:any){
+  this._service.getAvailablePMSRoom(data.internal_room_id,data.check_in.split(" ")[0],(res:any)=>{
+    if(res.status == 200){
+      console.log(res);
+      this.pmsRoomList = res.data;
+    }
+  })
 }
 
 }

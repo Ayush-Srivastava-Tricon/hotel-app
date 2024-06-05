@@ -63,12 +63,10 @@ export class ReservationComponent {
     "payment_date":"",
     "received_by":"Shikhar Sir",
   }
-
-  
   }
 
   addMoreGuestData:any=[];
-  successReservationConfig:any={showAlert:false,alertMsg:''}
+  successReservationConfig:any={showAlert:false,alertMsg:''};
 
 
   constructor( private _service: PropertyService, private alert: AlertService,private adminService:AdminService) {
@@ -431,4 +429,6 @@ export class ReservationComponent {
         delete item.extra_facilities[type];
       }
   }
+
+  
 }

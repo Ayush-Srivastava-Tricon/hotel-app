@@ -145,9 +145,9 @@
                     </td>
                     <ng-container *ngFor="let childData of child?.datesData;let childIdx = index;">
                       <td class="hover-td"
-                      [ngClass]="{'disabled':childData.isDatePassed,'bg-danger':childData?.newData?.ss == 'true'|| childData?.newData?.ss == '1','activeChild':dragEl['head'+childIdx+childrenIdx+'child'],'text-light':childData?.newData?.ss == 'true'|| childData?.newData?.ss == '1'}"
-                        (mouseover)="dragEventStart? selectCalendarDateRange(childData.formateDate,childIdx,childrenIdx,'child') :''"
-                        (click)="handleClickEvent(childData.formateDate,childData?.newData,child.room_name,child.room_id,true);dragEl['head'+childIdx+childrenIdx+'child']=true;"
+                      [ngClass]="{'disabled':childData.isDatePassed,'bg-danger':childData?.newData?.ss == 'true'|| childData?.newData?.ss == '1','activeChild':dragEl['head'+childIdx+childrenIdx+calendarIdx+'child'],'text-light':childData?.newData?.ss == 'true'|| childData?.newData?.ss == '1'}"
+                        (mouseover)="dragEventStart? selectCalendarDateRange(childData.formateDate,childIdx,childrenIdx,calendarIdx,'child') :''"
+                        (click)="handleClickEvent(childData.formateDate,childData?.newData,child.room_name,child.room_id,true);dragEl['head'+childIdx+childrenIdx+calendarIdx+'child']=true;"
                       >
                         {{childData?.newData?.pr}}
                       </td>
@@ -268,7 +268,7 @@
                   </div>
                   <div class="col-md-6">
                     <label for="min">Max</label>
-                    <input type="text" [disabled]="isDeriveModalActive" min="1" max="999" maxlength="3" class="form-control" formControlName="mx"
+                    <input type="text" min="1" max="999" maxlength="3" class="form-control" formControlName="mx"
                       id="price" [class.is-invalid]="modalFieldForm.controls.mx?.errors?.['pattern']">
                     <small class="text-danger"
                       *ngIf="modalFieldForm.controls.mx?.dirty && modalFieldForm.controls.mx?.errors?.['required'] ">Field

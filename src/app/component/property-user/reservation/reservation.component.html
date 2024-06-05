@@ -6,7 +6,7 @@
         </div>
         <div class="form-group col-md-2">
             <label for="inputPassword4">Check Out</label>
-            <input type="date" class="form-control" id="inputPassword4" [(ngModel)]="searchRoomAvailConfig['end_date']" placeholder="YYYY-MM-DD"> 
+            <input type="date" class="form-control" [min]="searchRoomAvailConfig['start_date']" id="inputPassword4" [(ngModel)]="searchRoomAvailConfig['end_date']" placeholder="YYYY-MM-DD"> 
         </div>
         <div class="form-group col-md-2">
             <label for="available">Show Available room</label>
@@ -126,8 +126,6 @@
 
 <div class="container-fluid mt-2" *ngIf="showModal.reservation">
     <div class="my-3 ms-2 d-flex justify-content-between ">
-        <!-- <span class="h3">{{isEditModal? 'Edit':'Add'}} Reservation </span>
-        <a href="javascript:void(0);" class="text-decoration-none" (click)="backToManageReservation()">Back To Manage Reservation</a> -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "
@@ -181,19 +179,19 @@
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <label for="">
+                                        <label class="text-center">
                                             Adult
                                             <input type="text" class="form-control" [(ngModel)]="guestTotalConfig.adult" (blur)="setAdultGuestReserve($event)" name="" id="">
                                         </label>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label for="">
+                                        <label class="text-center">
                                             Children
                                             <input type="text" class="form-control" [(ngModel)]="guestTotalConfig.child" (blur)="setChildGuestReserve($event)"  name="" id="">
                                         </label>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label for="">
+                                        <label class="text-center">
                                             Baby
                                             <input type="text" class="form-control" (blur)="setBabyGuestReserve($event)"  name="" id="" >
                                         </label>
@@ -518,8 +516,8 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row mb-3 align-items-baseline">
-                                    <label for="propertyName" class="col-sm-3 col-form-label"> <h5 class="text-primary">Extra</h5></label>
+                                <div class="form-group row mb-3 align-items-center border rounded-pill py-2 bg-light">
+                                    <label for="propertyName" class="col-sm-3 col-form-label"> <h5 class="text-primary m-0">Extra</h5></label>
                                     <div class="col-sm-9 text-end">
                                         <button class="btn btn-info btn-sm" (click)="addExtraFacility(item);">+</button>
                                         <button class="btn btn-primary btn-sm mx-2"><i class="bi bi-gear-fill"></i></button>
@@ -651,9 +649,3 @@
     </div>
 </div>
 <div class="modal-backdrop fade in" *ngIf="showModal.delete||successReservationConfig.showAlert"></div>
-
-
-
-<!-- <div class="box" #box1 (click)="createLine()"></div>
-<div class="box" #box2 (click)="createLine()"></div>
-<svg #lineContainer></svg> -->

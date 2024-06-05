@@ -184,6 +184,10 @@ export class PropertyService extends BaseServiceService {
   getRatePlanByParent(parentId:any,callback:any){
     this.getData({},`${this.httpUrl['ratePlanForDrivedRoom']}/${parentId}`,callback);
   }
+  
+  getAvailablePMSRoom(parentId:any,checkIn:any,callback:any){
+    this.getData({},`${this.httpUrl['getAvailablePmsRooms']}?parent_room_id=${parentId}&check_in_date=${checkIn}`,callback);
 
+  }
 
 }
