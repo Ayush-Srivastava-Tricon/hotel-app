@@ -141,6 +141,10 @@ export class PropertyService extends BaseServiceService {
     this.putData(params, `${this.httpUrl['mapRatePlanWithRooms']}`, callback);
   }
 
+  listMappedRoomWithRatePlan(rate_plan_id: any, callback: any) {
+    this.getData({}, `${this.httpUrl['listMappedRatePlans']}/${rate_plan_id}`, callback);
+  }
+
   deleteRatePlans(rateplan_id: any, callback: any) {
     this.deleteData({}, `${this.httpUrl['deleteRatePlans']}/${rateplan_id}`, callback);
   }

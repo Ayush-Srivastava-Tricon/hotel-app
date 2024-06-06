@@ -326,14 +326,15 @@ export class CalendarViewComponent {
 
         ele.data.forEach((item: any) => {
           for (let i = 0; i < this.datesData.length; i++) {
-            if (new Date(item.date).setHours(0, 0, 0, 0) == new Date(this.datesData[i].formateDate).setHours(0, 0, 0, 0)) {
+            if (new Date(item.date).setHours(0, 0, 0, 0) == new Date(this.datesData[i].formateDate).setHours(0, 0, 0, 0) && ele.parent_room_id == e.room_id) {
               this.datesData[i]['newData'] = item;
               this.datesData[i].newData['resource'] = ele.room_id;
               this.datesData[i].newData['start'] = item.date;
-              this.datesData[i].newData['map_change_avail'] = e.map_change_avail;
-              this.datesData[i].newData['map_change_stay'] = e.map_change_stay;
-              this.datesData[i].newData['map_change_restriction'] = e.map_change_restriction;
-              this.datesData[i].newData['map_change_stopsale'] = e.map_change_stopsale;
+              this.datesData[i].newData['map_change_avail'] = ele.map_change_avail;
+              this.datesData[i].newData['map_change_stay'] = ele.map_change_stay;
+              this.datesData[i].newData['map_change_restriction'] = ele.map_change_restriction;
+              this.datesData[i].newData['map_change_stopsale'] = ele.map_change_stopsale;
+              this.datesData[i].newData['derivedPriceType'] = ele.derivedPriceType;
               this.datesData[i].newData['parent_room_id'] = ele.parent_room_id;
               break;
             }
@@ -493,6 +494,9 @@ export class CalendarViewComponent {
       this.modalFieldForm.controls.mx.disable();
       this.modalFieldForm.controls.mn.disable();
     }
+    if(item.derivedPriceType.toLowerCase() == 'not derived' ){
+      this.modalFieldForm.controls.pr.disable();
+    }
   }
 
   setModalFieldEnable() {
@@ -502,6 +506,7 @@ export class CalendarViewComponent {
     this.modalFieldForm.controls.al.enable();
     this.modalFieldForm.controls.mx.enable();
     this.modalFieldForm.controls.mn.enable();
+    this.modalFieldForm.controls.pr.enable();
   }
 
 

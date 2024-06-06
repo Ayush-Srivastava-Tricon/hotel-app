@@ -39,6 +39,7 @@ export class RatePlanComponent {
     jp: { src: 'http://via.placeholder.com/50x50?text=Product1', name: 'Japanese', placeholder: '日本語のテキストを入力してください' },
   };
   languages: any = ['en', 'it', 'fr', 'es', 'de', 'ru', 'pt', 'nl', 'jp'];
+  ratePlanId:any =1
   selectedLanguage = 'en';
   selectedLanguageData: any = {};
   translateX = 0;
@@ -57,6 +58,7 @@ export class RatePlanComponent {
   constructor(private _service: PropertyService,private alert:AlertService) { }
 
   ngOnInit() {
+   
     if (localStorage.getItem("selectedPropertyId")) {
       this.currentPropertyId = localStorage.getItem("selectedPropertyId");
     } else {
@@ -80,24 +82,49 @@ export class RatePlanComponent {
       })
   }
 
-  fetchParentRoom() {
+  fetchParentRoom(dataFromExistingMap?:any) {
     this._service.fetchAllRooms(this.currentPropertyId, (res: any) => {
       if (res.status == 200) {
-        this.parentRoomData = res.data.filter((e: any) => e.parent_room_id || e.parent_room_id == 0).map((e: any) => { return { 'value': e.room_name, 'checked': false, 'room_id': e.room_id } });
+        if(!dataFromExistingMap?.id){
+          this.parentRoomData = res.data.filter((e: any) => e.parent_room_id || e.parent_room_id == 0).map((e: any) => { return { 'value': e.room_name, 'checked': false, 'room_id': e.room_id } });
+        }else{
+          this.parentRoomData = res.data
+          .filter((e: any) => e.parent_room_id || e.parent_room_id == 0)
+          .map((e:any)=>{
+            return {
+              'value': e.room_name, 'checked': dataFromExistingMap.parent_room_id.some((ele:any)=>ele == e.room_id), 'room_id': e.room_id
+            }
+        });
+          console.log(this.parentRoomData);
+          
+        }
       }
-    })
+    })  
   }
+
+  listMappedRoomWithRatePlan(rateplan_id:any){
+    this._service.listMappedRoomWithRatePlan(rateplan_id, (res: any) => {
+      if (res.status == 200 && res.data.length>0) {
+        console.log(res);
+        this.fetchParentRoom(res.data[0]);
+      }
+    })  
+      
+    }
 
 
   selectLanguage(lang: string): void {
     this.selectedLanguage = lang;
     this.selectedLanguageData = this.languageData[lang];
-    let newLangModel: any = {
-      package_name: '',
-      title: '',
-      description: ''
+    if(!(lang in this.ratepPlanModal.ratePlanData[0].language)){
+      let newLangModel: any = {
+        package_name: '',
+        title: '',
+        description: ''
+      }
+      this.ratepPlanModal.ratePlanData[0].language[lang] = newLangModel;
+
     }
-    this.ratepPlanModal.ratePlanData[0].language[lang] = newLangModel;
   }
 
   prev(): void {
@@ -161,7 +188,6 @@ export class RatePlanComponent {
 
   openModal(){
     this.showModal.rateplan = true;
-    this.resetModal();
     this.isEditModal = false;
     this.fetchParentRoom();
   }
@@ -236,7 +262,7 @@ export class RatePlanComponent {
   }
 
   mapOpenModal(rateplan_id:any,idx:any){
-    this.fetchParentRoom();
+    this.listMappedRoomWithRatePlan(rateplan_id);
     this.mapRatePlanWithRoomsConfig.rate_plan_id = rateplan_id;
     this.showModal.map= true;
   }

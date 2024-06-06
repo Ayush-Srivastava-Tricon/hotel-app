@@ -32,6 +32,7 @@ export class ManageRoomsComponent {
   deleteImageConfig:any={};
   parentRooms:any=[];
   ratePlans:any=[];
+  defaultAltImg:any='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU';
 
   constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private proService: PropertyService) {
     this.roomModal = this.fb.group(
@@ -60,10 +61,10 @@ export class ManageRoomsComponent {
         disp_on_calendar:[1],
         disp_on_add_reservation:[1],
         room_counted_on_stats:[1],
-        can_change_avail:['true'],
-        can_change_stay:[1],
-        can_change_restriction:[1],
-        can_change_stopsale:[1]
+        map_change_avail:['true'],
+        map_change_stay:[1],
+        map_change_restriction:[1],
+        map_change_stopsale:[1]
       }
     )
   }
@@ -140,6 +141,10 @@ export class ManageRoomsComponent {
 
   getParentRoomId(){
     this.parentRooms = this.roomsList.filter((e:any)=>e.parent_room_id && e.parent_room_id == 0);
+    if(this.isEditModal){
+      this.getRatePlanByParent({target:{value:this.roomModal.controls.parent_room_id.value}});
+
+    }
     
   }
 
@@ -148,6 +153,7 @@ export class ManageRoomsComponent {
     this.showModal.delete = false;
     this.isEditModal = false;
     this.showModal.deleteImage = false;
+    this.ratePlans=[];
     this.roomModal.reset();
     this.imageArrayContainer = [];
     
@@ -168,7 +174,7 @@ export class ManageRoomsComponent {
         this.isEditModal = true;
         this.convertRatePlanIntoNumeric(res.data);
         this.roomModal.patchValue(res.data[0]);
-        console.log(item);
+        console.log(res.data[0]);
         this.showModal.property = true;
         this.currentRoomId = item.room_id;
         this.toUploadImagefile = JSON.parse(JSON.stringify([]));
@@ -199,7 +205,7 @@ export class ManageRoomsComponent {
           this.imageArrayContainer = JSON.parse(JSON.stringify(res.data));
         }else{
           this.imageArrayContainer = [{
-            thumbnailUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU',
+            thumbnailUrl: this.defaultAltImg,
             image: ''
             }];
           this.alertService.alert("error", "No Image Found", "Error", { displayDuration: 3000, pos: 'top' });
@@ -283,7 +289,7 @@ export class ManageRoomsComponent {
 
   backToManageRoom() {
     this.showModal.property = false;
-
+    this.closeModal();
     this.showActionDropDown = {};
     this.imageArrayContainer = [{
     thumbnailUrl: '',
@@ -332,7 +338,7 @@ export class ManageRoomsComponent {
   }
 
   addMoreImageSection() {
-    this.imageArrayContainer.push({ thumbnailUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU', image: '' });
+    this.imageArrayContainer.push({ thumbnailUrl: this.defaultAltImg, image: '' });
   }
 
   removeImgConfirm(file:any,idx:any){
@@ -344,11 +350,14 @@ export class ManageRoomsComponent {
 
   deleteImage(){
     this.imageArrayContainer.splice(this.deleteImageConfig.idx,1);
+    this.toUploadImagefile.splice(this.deleteImageConfig.idx,1);
     let obj:any={
       ...this.deleteImageConfig.file,
       'property_id':this.currentPropertyId
     }
-    this.removedImgObj.push(obj);
+    if(this.isEditModal){
+      this.removedImgObj.push(obj);
+    }
     this.showModal.delete=false;
     this.showModal.deleteImage=false;
     if(this.imageArrayContainer.length == 0){
@@ -378,6 +387,7 @@ export class ManageRoomsComponent {
   setPriceTypeForDeriveRoom(priceType:any){
     this.roomModal.controls.price_type.setValue(priceType);
     this.roomModal.controls.price_type.updateValueAndValidity();
+    priceType.toLowerCase() == 'not derived' ?  this.roomModal.controls.price.disable() :  this.roomModal.controls.price.enable();
   }
 
   setDefaultDerivationRuleValue(){
@@ -396,17 +406,17 @@ export class ManageRoomsComponent {
     this.roomModal.controls.room_counted_on_stats.setValue(true);
     this.roomModal.controls.room_counted_on_stats.updateValueAndValidity();
 
-    this.roomModal.controls.can_change_avail.setValue(true);
-    this.roomModal.controls.can_change_avail.updateValueAndValidity();
+    this.roomModal.controls.map_change_avail.setValue(true);
+    this.roomModal.controls.map_change_avail.updateValueAndValidity();
 
-    this.roomModal.controls.can_change_stay.setValue(true);
-    this.roomModal.controls.can_change_stay.updateValueAndValidity();
+    this.roomModal.controls.map_change_stay.setValue(true);
+    this.roomModal.controls.map_change_stay.updateValueAndValidity();
 
-    this.roomModal.controls.can_change_restriction.setValue(true);
-    this.roomModal.controls.can_change_restriction.updateValueAndValidity();
+    this.roomModal.controls.map_change_restriction.setValue(true);
+    this.roomModal.controls.map_change_restriction.updateValueAndValidity();
 
-    this.roomModal.controls.can_change_stopsale.setValue(true);
-    this.roomModal.controls.can_change_stopsale.updateValueAndValidity();
+    this.roomModal.controls.map_change_stopsale.setValue(true);
+    this.roomModal.controls.map_change_stopsale.updateValueAndValidity();
 
   }
                                

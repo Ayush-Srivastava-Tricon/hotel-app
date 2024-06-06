@@ -94,6 +94,7 @@ export class BaseServiceService {
     'mapPMSRoomsWithHouseKeeper': 'hotelapi/employee/mapPMSRoomsWithHouseKeeper',
     'ratePlanForDrivedRoom': 'hotelapi/rooms/ratePlanForDrivedRoom',
     'getAvailablePmsRooms': 'hotelapi/roomsForReservation/getAvailablePmsRooms',
+    'listMappedRatePlans': 'hotelapi/rooms/listMappedRatePlans',
 
 
   }

@@ -118,8 +118,8 @@
                             <div class="col-sm-9">
                                 <select type="text" class="form-select" formControlName="parent_room_id"
                                     (change)="getRatePlanByParent($event)">
-                                    <option selected="true" value="">Select</option>
-                                    <option [value]="room.room_id" *ngFor="let room of parentRooms">{{room.room_name}}
+                                    <option selected="true" value="" [disabled]="isEditModal">Select</option>
+                                    <option [value]="room.room_id" [disabled]="isEditModal && (room.room_id != roomModal.controls.parent_room_id.value)" *ngFor="let room of parentRooms">{{room.room_name}}
                                     </option>
                                 </select>
                                 <small
@@ -225,40 +225,40 @@
                         </div>
 
                         <div class="form-group row my-1">
-                            <label class="col-sm-3 col-form-label" for="can_change_avail">Availability</label>
+                            <label class="col-sm-3 col-form-label" for="map_change_avail">Availability</label>
                             <div class="col-sm-9">
                                 <label class="switch">
-                                    <input type="checkbox" id="can_change_avail" [checked]="roomModal.controls?.can_change_avail?.value " formControlName="can_change_avail">
+                                    <input type="checkbox" id="map_change_avail" [checked]="roomModal.controls?.map_change_avail?.value " formControlName="map_change_avail">
                                     <span class="slider"></span>
                                 </label>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label" for="can_change_stay">Length of stay</label>
+                            <label class="col-sm-3 col-form-label" for="map_change_stay">Length of stay</label>
                             <div class="col-sm-9">
                                 <label class="switch">
-                                    <input type="checkbox" id="can_change_stay" [checked]="roomModal.controls?.can_change_stay?.value " formControlName="can_change_stay">
+                                    <input type="checkbox" id="map_change_stay" [checked]="roomModal.controls?.map_change_stay?.value " formControlName="map_change_stay">
                                     <span class="slider"></span>
                                 </label>
                             </div>
                         </div>
 
                         <div class="form-group row my-1">
-                            <label class="col-sm-3 col-form-label" for="can_change_restriction">Restriction</label>
+                            <label class="col-sm-3 col-form-label" for="map_change_restriction">Restriction</label>
                             <div class="col-sm-9">
                                 <label class="switch">
-                                    <input type="checkbox" id="can_change_restriction" [checked]="roomModal.controls?.can_change_restriction?.value " formControlName="can_change_restriction">
+                                    <input type="checkbox" id="map_change_restriction" [checked]="roomModal.controls?.map_change_restriction?.value " formControlName="map_change_restriction">
                                     <span class="slider"></span>
                                 </label>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label" for="can_change_stopsale" >Stop Sale</label>
+                            <label class="col-sm-3 col-form-label" for="map_change_stopsale" >Stop Sale</label>
                             <div class="col-sm-9">
                                 <label class="switch">
-                                    <input type="checkbox" id="can_change_stopsale" [checked]="roomModal.controls?.can_change_stopsale?.value " formControlName="can_change_stopsale">
+                                    <input type="checkbox" id="map_change_stopsale" [checked]="roomModal.controls?.map_change_stopsale?.value " formControlName="map_change_stopsale">
                                     <span class="slider"></span>
                                 </label>
                             </div>
@@ -478,7 +478,7 @@
                             <ng-container *ngFor="let item of imageArrayContainer;let idx=index;">
                                 <div class="image-block m-2" (click)="selectImg(file)">
                                     <img class="img-preview img-thumbnail" loading="lazy"
-                                        [src]="item.thumbnailUrl? item.thumbnailUrl : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU'"
+                                        [src]="item.thumbnailUrl? item.thumbnailUrl : this.defaultAltImg"
                                         *ngIf="!isEditModal" alt="">
                                     <img class="img-preview img-thumbnail" loading="lazy" *ngIf="isEditModal"
                                         [src]="item.image_path ? item.image_path+'/'+item.image_name : item.thumbnailUrl">
@@ -490,8 +490,10 @@
                                         (click)="removeImgConfirm(item,idx)">&times;</span>
                                 </div>
                             </ng-container>
-                            <a class="text-decoration-none fs-6 mx-2" href="javascript:void(0);"
-                                (click)="addMoreImageSection()">Add More</a>
+                            <button   (click)="addMoreImageSection()" class="btn btn-success" [disabled]="(imageArrayContainer[imageArrayContainer.length-1].thumbnailUrl == defaultAltImg || !imageArrayContainer[imageArrayContainer.length-1].thumbnailUrl) && !imageArrayContainer[imageArrayContainer.length-1].image_id">
+                                <a class="text-decoration-none fs-6 mx-2 text-white btn-sm" href="javascript:void(0);" 
+                              >Add</a>
+                            </button>
 
                         </div>
 
@@ -500,7 +502,7 @@
             </div>
             <div class="row mt-3 mb-2">
                 <div class="col-sm-12 d-flex">
-                    <button type="submit" class="btn btn-primary"
+                    <button type="submit" class="btn btn-primary" [disabled]="loader"
                         (click)="isEditModal ? editRoom() :createNewRoom()">{{isEditModal?'Edit':'Create'}}</button>
                     <span *ngIf="loader" class="spinner-border text-primary mx-2"></span>
                 </div>
