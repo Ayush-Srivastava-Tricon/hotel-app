@@ -341,9 +341,11 @@ export class ReservationComponent {
     console.log(34);
     
     setTimeout(() => {
+      this.loader=true;
       this._service.addReservationDetails(this.reservationPayloadDataConfig,(res:any)=>{
         if(res.status == 200){
           console.log(res);
+          this.loader=false;
           this.alert.alert("success", res.message, "Success", { displayDuration: 3000, pos: 'top' });
           this.successReservationConfig.showAlert=true;
           this.successReservationConfig.alertMsg = res.reservation_number;
@@ -351,7 +353,8 @@ export class ReservationComponent {
             this.backToManageReservation();
           }, 10000);
         }else{
-          this.alert.alert("error", res.message, "Error", { displayDuration: 3000, pos: 'top' });
+          this.alert.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 3000, pos: 'top' });
+          this.loader=false;
         }
       })
     }, 0);
