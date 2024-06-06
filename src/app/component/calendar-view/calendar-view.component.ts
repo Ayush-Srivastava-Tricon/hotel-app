@@ -464,9 +464,7 @@ export class CalendarViewComponent {
     localStorage.setItem("selectedPropertyId", JSON.parse(event.target.value));
     this.loggedProperty.propertyId = event.target.value;
     this.datesData = [];
-    this.selectDate = '';
-    this.currentDate = new Date();
-    this.fetchCalendarData(this.currentDate);
+    this.fetchCalendarData(this.formatDate(this.selectDate), true);
   }
 
   identify(index: any, item: any) {
