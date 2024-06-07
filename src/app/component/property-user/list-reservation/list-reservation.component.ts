@@ -95,6 +95,11 @@ export class ListReservationComponent {
           this.editReservationDataConfig['reservationData']['reservation_id'] = item.id;
           delete this.editReservationDataConfig['reservationData'].id;
           this.editReservationDataConfig['reservationData']['cancellation_date'] = "";
+          this.editReservationDataConfig['reservationData']['property_id'] = this.currentPropertyId;
+          this.editReservationDataConfig['reservationData']['created_by'] = this.editReservationDataConfig['reservationData'].guest_name;
+          delete this.editReservationDataConfig['reservationData'].guest_name;
+          delete this.editReservationDataConfig['reservationData'].reservations_no;
+          this.editReservationDataConfig['reservationData']['property_id'] = this.currentPropertyId;
           this.calculateDaysBetweenDates(item);
           this.getPaymentMethod();
           this.getAvailablePMSRoom(res.responseData.rooms[0]);
@@ -108,6 +113,7 @@ export class ListReservationComponent {
     this._service.getPaymentMethod((res: any) => {
       if (res.status == 200) {
         this.paymentModeList = res.data;
+        this.editReservationDataConfig.payments;
       }
     })
   }
@@ -222,7 +228,17 @@ addMoreGuestInfo(){
 }
 
 getPaymentDetails(event:any){
-    
+ 
+}
+
+setPaymentsData(){
+  this.editReservationDataConfig.payments = this.editReservationDataConfig.payments.map((e:any)=>{return {
+    "payment_id":e.id,
+    "payment_method_id":e.payment_method_id,
+    "paid_amt":e.paid_amt,
+    "payment_date":e.payment_date,
+    "received_by":e.received_by
+  }});
 }
 
 trackBy(idx:any){
@@ -239,6 +255,19 @@ selectExtraFac(event:any,typ:any,item:any){
 
 editReservation(){
   this.reMakePayloadData();
+  setTimeout(()=>{
+    this.loader=true;
+    this._service.updateReservation(this.editReservationDataConfig,(res:any)=>{
+      if(res.status == 200){
+        this.loader=false;
+        this.editReservationDataConfig={};
+        this.backToListReservation();
+        this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
+      }else{
+        this.alert.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' });
+      }
+    })
+  },0)
   console.log(this.editReservationDataConfig);
       
 }
@@ -248,8 +277,25 @@ reMakePayloadData(){
         e['reserved_room_id'] = e.id;
         delete e.id;
         delete e.reservations_id;
+        delete e.internal_room_name;
+        delete e.ota_room_id;
+        delete e.reservation_status;
     });
     this.editReservationDataConfig['pmsAssigned'] = this.pmsRoomMapConfig;
+    delete this.editReservationDataConfig['reservationData'].reservation_status;
+    this.setPaymentsData();
+    this.setGuestData();
+}
+
+setGuestData(){
+  this.editReservationDataConfig.guestData.forEach((e:any)=>{
+    e['guest_id'] = e.id;
+    delete e.id;
+    delete e.reservations_id;
+    delete e.reservations_no;
+    delete e.status;
+    delete e.add_time;
+  })
 }
 
 copyCode(val: string){
