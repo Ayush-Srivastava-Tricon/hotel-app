@@ -264,7 +264,7 @@ editReservation(){
         this.backToListReservation();
         this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
       }else{
-        this.alert.alert("error",res.message,"Error",{ displayDuration: 2000, pos: 'top' });
+        this.alert.alert("error",res.error ? res.error.message : res.message,"Error",{ displayDuration: 2000, pos: 'top' });
       }
     })
   },0)

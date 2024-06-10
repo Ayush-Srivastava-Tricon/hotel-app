@@ -79,6 +79,8 @@
                                         *ngIf="showActionDropDown[idx]">
                                         <!-- <a class="dropdown-item">Change Status</a> -->
                                         <a class="dropdown-item" (click)="editRoomOpenModal(item)">Edit Room</a>
+                                        <a class="dropdown-item" *ngIf="item.parent_room_id && item.parent_room_id !=0 " (click)="applyDerivationRule(item)">Apply Derivation Rule</a>
+
                                         <a class="dropdown-item" (click)="deleteRoomModal(item.room_id,idx)">Delete</a>
                                     </div>
                                 </div>
@@ -318,6 +320,16 @@
                             <div class="col-sm-3">
                                 <label class="switch">
                                     <input type="checkbox" id="disp_on_add_reservation" [checked]="roomModal.controls?.disp_on_add_reservation?.value " formControlName="disp_on_add_reservation">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row my-1">
+                            <label class="col-sm-9 col-form-label" for="apply_derivation_rule">Apply Derivation Rule</label>
+                            <div class="col-sm-3">
+                                <label class="switch">
+                                    <input type="checkbox" id="apply_derivation_rule" [checked]="roomModal.controls?.apply_derivation_rule?.value " formControlName="apply_derivation_rule">
                                     <span class="slider"></span>
                                 </label>
                             </div>

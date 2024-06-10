@@ -64,7 +64,8 @@ export class ManageRoomsComponent {
         map_change_avail:['true'],
         map_change_stay:[1],
         map_change_restriction:[1],
-        map_change_stopsale:[1]
+        map_change_stopsale:[1],
+        apply_derivation_rule:[0],
       }
     )
   }
@@ -419,6 +420,9 @@ export class ManageRoomsComponent {
     this.roomModal.controls.map_change_stopsale.updateValueAndValidity();
 
   }
-                               
+                 
+  applyDerivationRule(item:any){
+
+  }
 }
 

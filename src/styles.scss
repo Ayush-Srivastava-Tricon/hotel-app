@@ -307,12 +307,12 @@ body {
 }
 
 input:checked + .slider {
-  background-color: #007bff;
-  border: 1px solid #007bff;
+  background-color: #5f9ea0;
+  border: 1px solid #5f9ea0;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #007bff;
+  box-shadow: 0 0 1px #5f9ea0;
 }
 
 input:checked + .slider:before {

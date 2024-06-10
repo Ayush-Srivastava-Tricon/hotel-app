@@ -10,6 +10,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient} from '@angular/common/http';
 import "../app/constants/javascript.variable";
 import { ChangePasswordComponent } from './shared/change-password/change-password.component';
+
+const isProduction:boolean = window.location.href.includes("hotel-app") ? true : false;
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,5 +37,5 @@ import { ChangePasswordComponent } from './shared/change-password/change-passwor
 })
 export class AppModule { }
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http,`./${isProduction ? 'hotel-app/' : ''}assets/i18n/`, '.json');
 }
