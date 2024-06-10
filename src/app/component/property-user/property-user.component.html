@@ -1,124 +1,109 @@
 <ng-container>
     <div class="container-fluid">
-        <div class="row shadow ">
-            <div class="col-sm-2 p-3 brand-container">
-                <a class="text-decoration-none home-link text-light" href="javascript:void(0);">E2X InfoTech</a>
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 background-nav ">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-5 d-none d-sm-inline">E2X InfoTech</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" routerLink="/manager/dashboard"
+                                class="nav-link text-light align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <span class="ms-4 d-none d-sm-inline">{{'DASHBOARD'|translate}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" routerLink="/manager/calendar-view"
+                                class="nav-link text-light px-0 align-middle">
+                                <i class="fs-4 bi-calendar3"></i> <span class="ms-4 d-none d-sm-inline">Calendar View</span></a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" routerLink="/manager/manage-internal-mapping"
+                                class="nav-link text-light px-0 align-middle">
+                                <i class="fs-4 bi bi-building-fill"></i> <span class="ms-4 d-none d-sm-inline">{{'MANAGE_INTERNAL_MAPPING'|translate}}</span></a>
+                        </li>
+                        <li>
+                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link text-light px-0 align-middle">
+                                <i class="fs-4 bi bi-kanban"></i> <span class="ms-4 d-none d-sm-inline">Manage Room</span> </a>
+                            <ul class="collapse nav flex-column ms-4" style="list-style: circle;" id="submenu3" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="javascript:void(0)" routerLink="/manager/manage-room" class="text-light nav-link px-0"> <span class="d-none d-sm-inline">Go to Room</span></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" routerLink="/manager/rate-plan" class="text-light nav-link px-0"> <span class="d-none d-sm-inline">Manage Rate Plan</span></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" routerLink="/manager/manage-pms" class=" text-light nav-link px-0"> <span class="d-none d-sm-inline">Manage PMS</span></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" routerLink="/manager/manage-housekeeping" class="text-light nav-link px-0"> <span class="d-none d-sm-inline">Manage HouseKeeping</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#submenu4" data-bs-toggle="collapse" class="nav-link text-light px-0 align-middle">
+                                <i class="fs-4 bi bi-kanban"></i> <span class="ms-4 d-none d-sm-inline">Manage OTA User</span> </a>
+                            <ul class="collapse nav flex-column ms-4" style="list-style:circle" id="submenu4" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="javascript:void(0)" routerLink="/manager/manage-ota-user" class="text-light nav-link px-0"> <span class="d-none d-sm-inline">Add/Edit User</span></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" routerLink="/manager/manage-ota-rooms" class="text-light nav-link px-0"> <span class="d-none d-sm-inline">Manage OTA Rooms</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#submenu5" data-bs-toggle="collapse" class="nav-link text-light px-0 align-middle">
+                                <i class="fs-4 bi bi-kanban"></i> <span class="ms-4 d-none d-sm-inline">Manage Reservation</span> </a>
+                            <ul class="collapse nav flex-column ms-4" style="list-style:circle" id="submenu5" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="javascript:void(0)" routerLink="/manager/list-reservation" class="text-light nav-link px-0"> <span class="d-none d-sm-inline">List Reservation</span></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" routerLink="/manager/manage-reservation" class="text-light nav-link px-0"> <span class="d-none d-sm-inline">Add Reservation</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" (click)="logout()" class="nav-link text-light px-0 align-middle">
+                                <i class="fs-4 bi bi-door-closed"></i> <span class="ms-4 d-none d-sm-inline">{{'LOGOUT'|translate}}</span></a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-sm-10 text-end background-nav d-flex justify-content-end align-items-center">
-                <div class="me-3" id="navbarSupportedContent">
-                    <div class="text-light fs-4">Hi, {{loggedUserData.user_name|titlecase}}
-                    </div>
-                    <div class="text-light">
-                        (
-                            <small class="text-light" *ngIf="loggedUserData.last_login_time">Last Login : {{loggedUserData.last_login_time|date:'dd MMMM yyyy, HH:mm' }}, </small>
-                            <!-- <small class="text-light">, User Name : {{loggedUserData.user_name|titlecase}}</small> -->
+            <div class="col table-responsive">
+                <div class="row py-1 background-nav ">
+                    <div class="col-sm-12 text-end">
+                        <div class="text-light fs-4">Hi, {{loggedUserData.user_name|titlecase}}</div>
+                        <div class="text-light">
+                            (
+                            <small class="text-light">Last Login : {{loggedUserData.last_login_time|date:'dd MMMM yyyy, HH:mm' }}</small>
+                            <!-- <small class="text-light">, User Name : {{loggedUserData.user_name}}</small> -->
                             <!-- <small class="text-light">, Role : {{loggedUserData.role_name}}</small> -->
                             <small class="text-light"> Property-ID : {{currentPropertyId}}</small>
-                        )
+                            )
+                        </div>
                     </div>
-                    
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-sm-2 my-2">
+                        <select class="form-select rounded-pill shadow" (change)="changeLang($event)">
+                            <option value="null" [selected]="true" disabled>Select Lang...</option>
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="ni">Nigeria</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <router-outlet></router-outlet>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse ps-2 d-flex justify-content-between " id="navbarNav">
-                    <ul class="navbar-nav nav-container">
-                        <li class="nav-item active">
-                            <div class="paste-button">
-                                <button class="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
-                                        <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                                        <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/>
-                                      </svg> Dashboard &nbsp; ▼</button>
-                                <div class="dropdown-content">
-                                    <a routerLink="/manager/dashboard"  href="javascript:void(0);">Go to Dashboard</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item active">
-                            <div class="paste-button">
-                                <button class="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
-                                        <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                                        <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/>
-                                      </svg> Manage Room &nbsp; ▼</button>
-                                <div class="dropdown-content">
-                                    <a routerLink="/manager/manage-room" href="javascript:void(0);">Go to Room</a>
-                                    <a routerLink="/manager/rate-plan" href="javascript:void(0);">Manage Rate Plan</a>
-                                    <a routerLink="/manager/manage-pms" href="javascript:void(0);">Manage PMS</a>
-                                    <a routerLink="/manager/manage-housekeeping" href="javascript:void(0);">Manage HouseKeeping</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item active">
-                            <div class="paste-button">
-                                <button class="button">
-                                    <svg xmlns="http://www  .w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
-                                        <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"/>
-                                        <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
-                                      </svg> Calendar View &nbsp; ▼</button>
-                                <div class="dropdown-content">
-                                    <a routerLink="/manager/calendar-view" href="javascript:void(0);">Go to View</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item active">
-                            <div class="paste-button">
-                                <button class="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
-                                        <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                                        <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/>
-                                      </svg> Manage OTA User &nbsp; ▼</button>
-                                <div class="dropdown-content">
-                                    <a routerLink="/manager/manage-ota-user" href="javascript:void(0);">Add/Edit User</a>
-                                    <a routerLink="/manager/manage-ota-rooms" href="javascript:void(0);">Manage OTA Room</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item active">
-                            <div class="paste-button">
-                                <button class="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
-                                        <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                                        <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/>
-                                      </svg> Manage Internal Mapping &nbsp; ▼</button>
-                                <div class="dropdown-content">
-                                    <a routerLink="/manager/manage-internal-mapping" href="javascript:void(0);">View</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item active">
-                            <div class="paste-button">
-                                <button class="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-kanban" viewBox="0 0 16 16">
-                                        <path d="M13.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm-11-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
-                                        <path d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1z"/>
-                                      </svg> Manage Reservation &nbsp; ▼</button>
-                                <div class="dropdown-content">
-                                    <a routerLink="/manager/list-reservation" href="javascript:void(0);">List Reservation</a>
-                                    <a routerLink="/manager/manage-reservation" href="javascript:void(0);">Add Reservation</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="javascript:void(0);" (click)="logout()" class="nav-link me-2"
-                                routerLinkActive="active-tab" #rla="routerLinkActive">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-                                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                                  </svg>
-                                LogOut
-                            </a>
-                        </li>
-                        </ul>
-                </div>
-            </nav>
-        <router-outlet></router-outlet>
+    
+    
 </ng-container>

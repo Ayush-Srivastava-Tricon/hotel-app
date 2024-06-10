@@ -6,23 +6,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class CommonService {
 
-  public bearerToken : any = new BehaviorSubject("");
-  public refreshToken : any = new BehaviorSubject("");
-  public roleId : any = new BehaviorSubject("");
-  public userId : any = new BehaviorSubject("");
-
 
   constructor() { }
 
-  setAccessToken(token:any,refreshToken:any){
-    this.bearerToken = token;
-    this.refreshToken = refreshToken;
-  }
-
-  setRoleAndUser(data:any){
-    this.roleId = data.data.role;
-    this.userId = data.data.user_id;
-}
 
 validatePassword(control:any) {
   const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;

@@ -65,7 +65,7 @@ export class ManageRoomsComponent {
         map_change_stay:[1],
         map_change_restriction:[1],
         map_change_stopsale:[1],
-        apply_derivation_rule:[0],
+        // apply_derivation_rule:[0],
       }
     )
   }

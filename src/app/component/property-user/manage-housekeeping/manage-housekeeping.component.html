@@ -119,7 +119,7 @@
       <div class="form-buttons">
         <div class="d-flex align-items-center">
           <button type="submit" class="btn btn-success" (click)="isEditModal ? editHousekeeping() : saveHousekeeping()"
-            [disabled]="loader">{{isEditModal? 'Edit':'Save'}}</button>
+            [disabled]="loader">{{isEditModal? 'Update':'Save'}}</button>
           <div class="spinner-border text-primary mx-2" *ngIf="loader"></div>
         </div>
       </div>

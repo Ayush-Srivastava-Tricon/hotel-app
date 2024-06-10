@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseServiceService } from './base-service.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -192,6 +192,15 @@ export class PropertyService extends BaseServiceService {
   getAvailablePMSRoom(parentId:any,checkIn:any,callback:any){
     this.getData({},`${this.httpUrl['getAvailablePmsRooms']}?parent_room_id=${parentId}&check_in_date=${checkIn}`,callback);
 
+  }
+
+  fetchRealTimeWeather(params:any,callback:any){
+    const apiUrl:any = 'https://weatherapi-com.p.rapidapi.com/current.json';
+    const headers:any = new HttpHeaders()
+    .set('x-rapidapi-key', '82f6a5ff3cmshc9f47800346a992p147817jsn85cf192dce5c')
+    .set('x-rapidapi-host', 'weatherapi-com.p.rapidapi.com');
+    
+    return this.http.get(`${apiUrl}?q=${params}`,{headers}).subscribe((data:any)=>callback(data));
   }
 
 }

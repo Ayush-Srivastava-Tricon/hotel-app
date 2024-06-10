@@ -22,5 +22,6 @@
     "MANAGE_OTA": "Manage OTA",
     "LOGOUT": "Logout",
     "DASHBOARD": "Dashboard",
-    "ADD_CUSTOM_TRANSLATION":"Add Custom Translation"
+    "ADD_CUSTOM_TRANSLATION":"Add Custom Translation",
+    "MANAGE_INTERNAL_MAPPING":"Manage Internal Mapping"
 }

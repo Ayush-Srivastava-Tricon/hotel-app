@@ -54,9 +54,9 @@
     <div class="display-1">No Rooms Found</div>
   </div>
   <div class="container-fluid" *ngIf="!loader">
-    <div class="row my-2" style="background-color: antiquewhite;">
+    <div class="row my-2" style="background-color: lightblue; color: white;">
       <ng-container *ngFor="let data of mainData; let calendarIdx =index; trackBy: identify">
-        <div class="row  mb-3 d-flex justify-content-between align-items-center pt-2">
+        <div class="row  mb-1 d-flex justify-content-between align-items-center pt-2">
           <div class="col-sm-1 "></div>
           <div class="col-sm-3"> <span class="bi bi-arrow-left-square text-danger"
               style="font-size: 30px;cursor: pointer;" (click)="previousMonth()">
@@ -171,7 +171,7 @@
 
 
 <div class="modal" tabindex="-1" *ngIf="showModal">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Calendar</h5>
@@ -213,7 +213,7 @@
                     <span for="room">{{activeModalRoomName}}</span>
                   </div>
                   <div class="col-md-6 text-center">
-                    <img src="../assets/super-deluxe-room.jpg" width="100" height="80" alt="">
+                    <img src="https://images.pexels.com/photos/6775268/pexels-photo-6775268.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" width="100" height="80" alt="">
                   </div>
                 </div>
               </fieldset>
@@ -390,3 +390,5 @@
     </div>
   </div>
 </div>
+
+<div class="modal-backdrop fade in" *ngIf="showModal"></div>

@@ -515,7 +515,7 @@
             <div class="row mt-3 mb-2">
                 <div class="col-sm-12 d-flex">
                     <button type="submit" class="btn btn-primary" [disabled]="loader"
-                        (click)="isEditModal ? editRoom() :createNewRoom()">{{isEditModal?'Edit':'Create'}}</button>
+                        (click)="isEditModal ? editRoom() :createNewRoom()">{{isEditModal?'Update':'Create'}}</button>
                     <span *ngIf="loader" class="spinner-border text-primary mx-2"></span>
                 </div>
             </div>

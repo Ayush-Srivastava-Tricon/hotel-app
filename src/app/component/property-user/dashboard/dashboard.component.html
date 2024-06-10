@@ -1,25 +1,48 @@
-<!-- <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="display-6">
-                <marquee [scrollAmount]="10"> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cone" viewBox="0 0 16 16">
-                        <path d="M7.03 1.88c.252-1.01 1.688-1.01 1.94 0l2.905 11.62H14a.5.5 0 0 1 0 1H2a.5.5 0 0 1 0-1h2.125z"/>
-                      </svg> Under Construction
-                    </marquee>    
-            </div>
-        </div>
-    </div>
-</div> -->
 <div class="container">
-    <div class="row">
-      <div class="col shadow">
-        <h2> Arrivals for {{todayDate|date: 'MMM,dd'}}</h2>
-        <p>No arrivals today!</p>
-        <i class="bi bi-airplane-landing"></i> </div>
-      <div class="col shadow">
-        <h2>Departures for {{todayDate|date: 'MMM,dd'}}</h2>
-        <p>No departures today!</p>
-        <i class="bi bi-airplane-takeoff"></i> </div>
+  <div class="row d-flex justify-content-center py-2">
+    <div class="card mb-4 gradient-custom" style="border-radius: 25px;">
+      <div class="card-body p-4">
+
+        <div id="demo1" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="d-flex justify-content-between pb-2">
+                <div>
+                  <h2 class="text-dark display-2"><strong *ngIf="loader">
+                      <div class="spinner-border text-success"></div>
+                    </strong><strong *ngIf="!loader">{{weatherConfig?.weather?.temp_c}}°C</strong></h2>
+                  <p class="text-dark mb-0">Feels Like : {{weatherConfig?.weather?.feelslike_c}}°C</p>
+                  <p class="text-dark my-1">{{weatherConfig?.location?.name}}, {{weatherConfig?.location?.region}},
+                    {{weatherConfig?.location?.country}}</p>
+                  <p class="text-dark mb-0">{{realTime}}</p>
+                </div>
+                <div *ngIf="todayDate?.toLocaleTimeString()?.includes('AM')">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/ilu3.webp"
+                    width="150px">
+                </div>
+                <div class="moon" style="font-size: 5em;" *ngIf="todayDate?.toLocaleTimeString()?.includes('PM')">
+                  <i class="bi bi-moon-stars-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col shadow">
+      <h2> Arrivals for {{todayDate|date: 'MMM,dd'}}</h2>
+      <p>No arrivals today!</p>
+      <i class="bi bi-airplane-landing"></i>
+    </div>
+    <div class="col shadow">
+      <h2>Departures for {{todayDate|date: 'MMM,dd'}}</h2>
+      <p>No departures today!</p>
+      <i class="bi bi-airplane-takeoff"></i>
+    </div>
+  </div>
+</div>

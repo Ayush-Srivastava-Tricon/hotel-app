@@ -58,12 +58,10 @@ export class LoginComponent {
     localStorage.setItem("token", data.Bearer);
     localStorage.setItem("refreshToken", data.RefreshToken);
     this.authService.setAccessToken(data.Bearer, data.RefreshToken);
-    this.commonService.setAccessToken(data.Bearer, data.RefreshToken);
   }
 
   setUserAndRole(data: any) {
     this.authService.setRoleAndUser(data);
-    this.commonService.setRoleAndUser(data);
     localStorage.setItem("roleId", data.data.role)
     localStorage.setItem("userId", data.data.user_id)
     localStorage.setItem("loggedUserData", JSON.stringify(data.data));
