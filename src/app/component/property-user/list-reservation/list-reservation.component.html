@@ -107,8 +107,8 @@
                             </td>
                         </tr>
                         <tr *ngIf="reservtionList.length==0 && !loader">
-                        <td colspan="7" class="text-center">No Data Found</td>
-                    </tr>
+                            <td colspan="7" class="text-center">No Data Found</td>
+                        </tr>
                         <ng-container *ngFor="let item of reservtionList;let idx = index;">
                             <tr class="table-row-rooms" *ngIf="!loader">
                                 <td>{{item.reservations_no}}</td>
@@ -172,9 +172,10 @@
                             <label for="propertyName" class="col-sm-3 col-form-label">Reservation Code</label>
                             <div class="col-sm-9 d-flex">
                                 <strong>{{editReservationDataConfig.reservationData.reservations_no}}</strong>
-                                <button type="button" class="btn btn-primary btn-sm mx-2" (click)="copyCode(editReservationDataConfig.reservationData.reservations_no )">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy"
-                                        viewBox="0 0 16 16">
+                                <button type="button" class="btn btn-primary btn-sm mx-2"
+                                    (click)="copyCode(editReservationDataConfig.reservationData.reservations_no )">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-copy" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd"
                                             d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z">
                                         </path>
@@ -199,7 +200,7 @@
                                     <div class="col-sm-2 text-center">
                                         <i class="bi bi-arrow-right text-primary"></i>
                                         <br>
-                                      ({{daysBetweenDates}} Night)
+                                        ({{daysBetweenDates}} Night)
                                     </div>
                                     <div class="col-sm-5">
                                         <input type="date" class="form-control"
@@ -275,7 +276,7 @@
                                 <hr>
                                 <div class="row justify-content-between">
                                     <div class="col-sm-6"><strong>Amount</strong></div>
-                                    <div class="col-sm-6 text-end"><strong >€ 155.97=</strong></div>
+                                    <div class="col-sm-6 text-end"><strong>€ 155.97=</strong></div>
                                 </div>
                                 <div class="row justify-content-between">
                                     <div class="col-sm-6">Commission</div>
@@ -284,23 +285,23 @@
                                 <hr>
                                 <div class="row justify-content-between">
                                     <div class="col-sm-6"><strong>Amount Due</strong></div>
-                                    <div class="col-sm-6 text-end"><strong >€155.97 =</strong></div>
-                                </div>  
+                                    <div class="col-sm-6 text-end"><strong>€155.97 =</strong></div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 " for="color">Reservation Label</label>
                             <div class="col-sm-8">
-                                   <select class="form-select">
+                                <select class="form-select">
                                     <option value="">Select a value...</option>
-                                   </select>
-                                </div>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 " for="color">Color</label>
                             <div class="col-sm-8">
-                                 <input type="color" class="form-control">
-                                </div>
+                                <input type="color" class="form-control">
+                            </div>
                         </div>
                         <div class="form-group row mb-3 align-items-baseline ">
                             <label class="col-sm-4 ">Reservation OK !</label>
@@ -313,66 +314,67 @@
                     <fieldset class="border p-4 shadow mb-3">
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Guests
                             </button> </legend>
-                            <div class="row">
-                                <div class="col-sm-12 text-end">
-                                    <button class="btn btn-primary btn-sm mx-2" (click)="addMoreGuestInfo()">+</button>
-                                </div>
+                        <div class="row">
+                            <div class="col-sm-12 text-end">
+                                <button class="btn btn-primary btn-sm mx-2" (click)="addMoreGuestInfo()">+</button>
                             </div>
-                            <ng-container *ngIf="editReservationDataConfig.guestData.length>0">
-                                <div class="row" *ngFor="let item of editReservationDataConfig.guestData;let idx = index">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h5>Guest :- {{idx+1}}</h5>
-                                        </div>
+                        </div>
+                        <ng-container *ngIf="editReservationDataConfig.guestData.length>0">
+                            <div class="row" *ngFor="let item of editReservationDataConfig.guestData;let idx = index">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h5>Guest :- {{idx+1}}</h5>
                                     </div>
-                                    <div class="form-group row mb-3 align-items-baseline">
-                                        <label for="propertyName" class="col-sm-3 col-form-label">Last Name</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" [(ngModel)]="item.last_name">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3 align-items-baseline">
-                                        <label for="propertyName" class="col-sm-3 col-form-label">First Name</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" [(ngModel)]="item.first_name">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3 align-items-baseline">
-                                        <label for="propertyName" class="col-sm-3 col-form-label">Email</label>
-                                        <div class="col-sm-9">
-                                            <input type="email" class="form-control" [(ngModel)]="item.email">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3 align-items-baseline">
-                                        <label for="propertyName" class="col-sm-3 col-form-label">Phone Number</label>
-                                        <div class="col-sm-9">
-                                            <input type="number" class="form-control" [(ngModel)]="item.mobile">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3 align-items-baseline">
-                                        <label for="propertyName" class="col-sm-3 col-form-label">Language</label>
-                                        <div class="col-sm-9">
-                                            <select name="" id="" class="form-select" [(ngModel)]="item.language">
-                                                <option value="it">Italian</option>
-                                                <option value="en">English</option>
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-3 align-items-baseline">
-                                        <label for="propertyName" class="col-sm-3 col-form-label">Travel
-                                            Agency/Corporate</label>
-                                        <div class="col-sm-9">
-                                            <select name="" id="" class="form-select" [(ngModel)]="item.travel_agency">
-                                                <option value="it">Italian</option>
-                                                <option value="en">English</option>
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                    <hr>
                                 </div>
-                            </ng-container>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label for="propertyName" class="col-sm-3 col-form-label">Last Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" [(ngModel)]="item.last_name">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label for="propertyName" class="col-sm-3 col-form-label">First Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" [(ngModel)]="item.first_name">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label for="propertyName" class="col-sm-3 col-form-label">Email</label>
+                                    <div class="col-sm-9">
+                                        <input type="email" class="form-control" [(ngModel)]="item.email">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label for="propertyName" class="col-sm-3 col-form-label">Phone Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" [(ngModel)]="item.mobile">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label for="propertyName" class="col-sm-3 col-form-label">Language</label>
+                                    <div class="col-sm-9">
+                                        <select name="" id="" class="form-select" [(ngModel)]="item.language">
+                                            <option value="it">Italian</option>
+                                            <option value="en">English</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3 align-items-baseline">
+                                    <label for="propertyName" class="col-sm-3 col-form-label">Travel
+                                        Agency/Corporate</label>
+                                    <div class="col-sm-9">
+                                        <select name="" id="" class="form-select" [(ngModel)]="item.travel_agency">
+                                            <option value="travel_agency">Travel Agency</option>
+                                            <option value="corporate">Corporate</option>
+                                            <option value="other">Other</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </ng-container>
                         <!-- <div class="form-group row mb-3 align-items-baseline">
                             <label for="propertyName" class="col-sm-3 col-form-label">Last Name</label>
                             <div class="col-sm-9">
@@ -507,7 +509,7 @@
                                     <option [value]="" [selected]="true">Select</option>
                                     <option [value]="mode.id" *ngFor="let mode of paymentModeList">{{mode.name}}
                                     </option>
-                                </select>   
+                                </select>
                             </div>
                         </div>
                     </fieldset>
@@ -532,34 +534,39 @@
                 </div>
                 <div class="col-sm-6 mb-2 p-3">
                     <fieldset class="border p-4 shadow mb-3">
-                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Linked Reservation
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Linked
+                                Reservation
                             </button> </legend>
                         <div class="form-group row mb-3 align-items-baseline ">
-                           <div class="col-sm-12">
-                            <table class="table table-bordered table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Stay</th>
-                                        <th>Refer</th>
-                                        <th>Room</th>
-                                        <th>Refer Room</th>
-                                        <th>Price</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of editReservationDataConfig.rooms">
-                                            <td class="w-25">{{item.check_in|date : 'dd/MM'}} <i class="bi bi-arrow-right text-primary"></i> {{item.check_out|date : 'dd/MM'}}</td>
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Stay</th>
+                                            <th>Refer</th>
+                                            <th>Room</th>
+                                            <th>Refer Room</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of editReservationDataConfig.rooms">
+                                            <td class="w-25">{{item.check_in|date : 'dd/MM'}} <i
+                                                    class="bi bi-arrow-right text-primary"></i> {{item.check_out|date :
+                                                'dd/MM'}}</td>
                                             <td>{{editReservationDataConfig.reservationData.reservations_no}}</td>
                                             <td>{{item.internal_room_name}}</td>
                                             <td></td>
                                             <td class="w-25">$ {{item.price}}</td>
-                                            <td> <button class="btn btn-sm btn-success"><i class="bi bi-search"></i></button> </td>
-                                            <td><button class="btn btn-sm btn-danger"><i class="bi bi-link-45deg"></i></button> </td>
-                                    </tr>   
-                                </tbody>
-                            </table>
-                           </div>
+                                            <td> <button class="btn btn-sm btn-success"><i
+                                                        class="bi bi-search"></i></button> </td>
+                                            <td><button class="btn btn-sm btn-danger"><i
+                                                        class="bi bi-link-45deg"></i></button> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                     </fieldset>
@@ -573,8 +580,8 @@
                                 <div class="col-sm-9">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <input type="date" class="form-control" readonly
-                                              [value]=""  [(ngModel)]="item.check_in">
+                                            <input type="date" class="form-control" readonly [value]=""
+                                                [(ngModel)]="item.check_in">
                                         </div>
                                         <div class="col-sm-6">
                                             <input type="date" class="form-control" readonly
@@ -605,7 +612,8 @@
                                         <div class="col-sm-4">
                                             <label for="" class="text-info">
                                                 Baby
-                                                <input type="number" class="form-control" [(ngModel)]="item.baby" name="" id="">
+                                                <input type="number" class="form-control" [(ngModel)]="item.baby"
+                                                    name="" id="">
                                             </label>
                                         </div>
                                     </div>
@@ -641,18 +649,20 @@
                             </div>
 
                             <div class="form-group row mb-3 align-items-baseline">
-                                <label class="col-sm-3 col-form-label" >PMS <span class="text-danger">*</span> </label>
+                                <label class="col-sm-3 col-form-label">PMS <span class="text-danger">*</span> </label>
                                 <div class="col-sm-9">
                                     <select class="form-select" (change)="selectPmsRoom($event,item)">
                                         <option [value]="''" [selected]="true">Select....</option>
-                                        <option [value]="{'pms_room_id':item.pms_room_id,'index':idx}|json" [id]="idx" [disabled]="item.isSelected" *ngFor="let item of pmsRoomList;let idx= index ">{{item.name}}</option>
+                                        <option [value]="{'pms_room_id':item.pms_room_id,'index':idx}|json" [id]="idx"
+                                            [disabled]="item.isSelected"
+                                            *ngFor="let item of pmsRoomList;let idx= index ">{{item.name}}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group row mb-3 align-items-baseline">
                                 <label class="col-sm-3 col-form-label">Rate Plan</label>
-                                <div class="col-sm-9">  
+                                <div class="col-sm-9">
                                     <p class="text-info"> ? standard + {{item.avg_pr}} EUR</p>
                                 </div>
                                 <div class="row">
@@ -665,7 +675,7 @@
 
                             <div class="form-group row mb-3 align-items-center border rounded-pill py-2 bg-light">
                                 <label for="propertyName" class="col-sm-3 col-form-label">
-                                   <h5 class="m-0">Extra</h5>
+                                    <h5 class="m-0">Extra</h5>
                                 </label>
                                 <div class="col-sm-9 text-end">
                                     <button class="btn btn-info btn-sm" (click)="addExtraFacility(item);">+</button>
@@ -698,7 +708,7 @@
 
                             <div class="form-group row mb-3 align-items-baseline">
                                 <label for="propertyName" class="col-sm-3 col-form-label">
-                                   <h5>Totals</h5>
+                                    <h5>Totals</h5>
                                 </label>
                                 <div class="col-sm-9 text-end">
                                     <button class="btn btn-danger btn-sm">?</button>
@@ -766,7 +776,8 @@
             </div>
             <div class="row mt-3 mb-3">
                 <div class="col-sm-12 d-flex align-items-center">
-                    <button type="submit" class="btn btn-primary" [disabled]="loader" (click)="editReservation()">Edit</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="loader"
+                        (click)="editReservation()">Update</button>
                     <div class="spinner-border text-primary mx-2" *ngIf="loader"></div>
                 </div>
             </div>
