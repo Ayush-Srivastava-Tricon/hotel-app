@@ -33,6 +33,7 @@ export class ManageRoomsComponent {
   parentRooms:any=[];
   ratePlans:any=[];
   defaultAltImg:any='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kbSHKpngjoblArIsRQxd-axRS9x2zi49sg&usqp=CAU';
+  applyDerivationRuleConfig:any={};
 
   constructor(private fb: FormBuilder, private constants: AppConstants, private alertService: AlertService, private proService: PropertyService) {
     this.roomModal = this.fb.group(
@@ -152,6 +153,7 @@ export class ManageRoomsComponent {
   closeModal() {
     this.showModal.property = false;
     this.showModal.delete = false;
+    this.showModal.apply_derivation_rule=false;
     this.isEditModal = false;
     this.showModal.deleteImage = false;
     this.ratePlans=[];
@@ -420,9 +422,31 @@ export class ManageRoomsComponent {
     this.roomModal.controls.map_change_stopsale.updateValueAndValidity();
 
   }
-                 
-  applyDerivationRule(item:any){
 
+  confirmationDerivationRule(item:any){
+      this.applyDerivationRuleConfig['room_id'] = +item.room_id;
+      this.applyDerivationRuleConfig['map_change_avail'] = +item.map_change_avail;
+      this.applyDerivationRuleConfig['map_change_restriction'] = +item.map_change_restriction;
+      this.applyDerivationRuleConfig['map_change_stay'] = +item.map_change_stay;
+      this.applyDerivationRuleConfig['map_change_stopsale'] = +item.map_change_stopsale;
+      this.applyDerivationRuleConfig['parent_room_id'] = item.parent_room_id ? +item.parent_room_id : null;
+      this.applyDerivationRuleConfig['price'] = item.price ? item.price : "0.00";
+      this.applyDerivationRuleConfig['price_type'] = item.price_type;
+
+      this.showModal.apply_derivation_rule = true;
+  }
+                 
+  applyDerivationRule(){
+      this.proService.applyDerivationRule(this.applyDerivationRuleConfig,(res:any)=>{
+        if(res.status == 200){
+          console.log(res);
+          this.applyDerivationRuleConfig={};
+          this.showModal.apply_derivation_rule=false;
+          this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
+        }else{
+          this.alertService.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 2000, pos: 'top' });
+        }
+      })
   }
 }
 

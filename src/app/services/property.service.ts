@@ -203,4 +203,8 @@ export class PropertyService extends BaseServiceService {
     return this.http.get(`${apiUrl}?q=${params}`,{headers}).subscribe((data:any)=>callback(data));
   }
 
+  applyDerivationRule(params:any,callback:any){
+    this.postData(params,this.httpUrl['applyDerivationRule'],callback);
+  }
+
 }

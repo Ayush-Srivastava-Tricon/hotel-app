@@ -79,7 +79,7 @@
                                         *ngIf="showActionDropDown[idx]">
                                         <!-- <a class="dropdown-item">Change Status</a> -->
                                         <a class="dropdown-item" (click)="editRoomOpenModal(item)">Edit Room</a>
-                                        <a class="dropdown-item" *ngIf="item.parent_room_id && item.parent_room_id !=0 " (click)="applyDerivationRule(item)">Apply Derivation Rule</a>
+                                        <a class="dropdown-item" *ngIf="item.parent_room_id && item.parent_room_id !=0 " (click)="confirmationDerivationRule(item)">Apply Derivation Rule</a>
 
                                         <a class="dropdown-item" (click)="deleteRoomModal(item.room_id,idx)">Delete</a>
                                     </div>
@@ -536,7 +536,7 @@
 
 
 <!-- Modal -->
-<div class="modal" *ngIf="showModal.delete">
+<div class="modal" *ngIf="showModal.delete||showModal.apply_derivation_rule">
     <div class="modal-dialog" role="document">
         <div class="modal-content delete-modal">
             <div class="modal-body">
@@ -559,8 +559,19 @@
                             (click)="showModal.deleteImage ? deleteImage() :  deleteRoom()">Delete</button>
                     </div>
                 </ng-container>
+                <ng-container *ngIf="showModal.apply_derivation_rule">
+                    <div class="modal-body">
+                        <p>Do you want to apply all derivation rule ?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            (click)="closeModal()">Cancel</button>
+                        <button type="button" class="btn btn-outline-danger"
+                            (click)="applyDerivationRule()">Apply</button>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </div>
 </div>
-<div class="modal-backdrop fade in" *ngIf="showModal.delete"></div>
+<div class="modal-backdrop fade in" *ngIf="showModal.delete||showModal.apply_derivation_rule"></div>
