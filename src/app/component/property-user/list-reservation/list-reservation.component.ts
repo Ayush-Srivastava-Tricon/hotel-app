@@ -334,7 +334,8 @@ selectPmsRoom(event:any,reservationData:any){
         "internal_room_id":reservationData.internal_room_id,
         "check_in":reservationData.check_in,
         "check_out":reservationData.check_out,
-        "reservation_id":reservationData.reservations_id
+        "reservation_id":reservationData.reservations_id,
+        "reservation_room_id":reservationData.id
       });
     }else{
       let isExist:any = this.pmsRoomMapConfig.some((e:any)=>e.pms_room_id == value.pms_room_id);
@@ -344,7 +345,8 @@ selectPmsRoom(event:any,reservationData:any){
           "internal_room_id":reservationData.internal_room_id,
           "check_in":reservationData.check_in,
           "check_out":reservationData.check_out,
-          "reservation_id":reservationData.reservations_id
+          "reservation_id":reservationData.reservations_id,
+          "reservation_room_id":reservationData.id
         });
       }else{
         //

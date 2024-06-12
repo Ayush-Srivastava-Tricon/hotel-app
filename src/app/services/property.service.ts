@@ -207,4 +207,10 @@ export class PropertyService extends BaseServiceService {
     this.postData(params,this.httpUrl['applyDerivationRule'],callback);
   }
 
+  fetchArrivalDeparture(property_id:any,callback:any){
+    this.getData({},`${this.httpUrl['totalArrivalDeparture']}/${property_id}`,callback);
+
+    
+  }
+
 }

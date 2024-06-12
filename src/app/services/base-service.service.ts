@@ -96,6 +96,7 @@ export class BaseServiceService {
     'getAvailablePmsRooms': 'hotelapi/roomsForReservation/getAvailablePmsRooms',
     'listMappedRatePlans': 'hotelapi/rooms/listMappedRatePlans',
     'applyDerivationRule': 'hotelapi/rooms/applyDerivationRule',
+    'totalArrivalDeparture': 'hotelapi/dashboard/totalArrivalDeparture',
 
 
   }

@@ -15,11 +15,13 @@ export class DashboardComponent {
   realTime:any='';
   loader:boolean=false;
   latLong:any='';
+  totalArrivalDeparture:any={};
 
   constructor(private _service:PropertyService){}
 
   ngOnInit(){
       this.loggedUserData = JSON.parse(<any>localStorage.getItem("loggedUserData"))
+      this.fetchArrivalDeparture();
       if(this.loggedUserData.latitudes && this.loggedUserData.longitudes){
         this.fetchRealTimeWeather();
       }else{
@@ -29,6 +31,15 @@ export class DashboardComponent {
     console.log(232);
 
 
+  }
+
+  fetchArrivalDeparture(){
+    this._service.fetchArrivalDeparture(this.currentPropertyId,(res:any)=>{
+      if(res.status == 200){
+        console.log(res);
+        this.totalArrivalDeparture = res.data[0];
+      }
+    })
   }
 
   getCurrentLatLong() {

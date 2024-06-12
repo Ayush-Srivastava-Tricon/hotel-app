@@ -36,13 +36,15 @@
   <div class="row">
     <div class="col shadow">
       <h2> Arrivals for {{todayDate|date: 'MMM,dd'}}</h2>
-      <p>No arrivals today!</p>
-      <i class="bi bi-airplane-landing"></i>
+      <p *ngIf="totalArrivalDeparture.today_arrivals != '0' else noArrival">{{totalArrivalDeparture.today_arrivals}}</p>
+      <ng-template #noArrival>No Arrivals for Today</ng-template>
+      <i class="bi bi-airplane mx-1 d-inline-block rotated"></i>
     </div>
     <div class="col shadow">
       <h2>Departures for {{todayDate|date: 'MMM,dd'}}</h2>
-      <p>No departures today!</p>
-      <i class="bi bi-airplane-takeoff"></i>
+      <p *ngIf="totalArrivalDeparture.today_departures != '0' else noDeparture">{{totalArrivalDeparture.today_departures}}</p>
+      <ng-template #noDeparture>No Departures for Today</ng-template>
+      <i class="bi bi-airplane mx-2"></i>
     </div>
   </div>
 </div>
