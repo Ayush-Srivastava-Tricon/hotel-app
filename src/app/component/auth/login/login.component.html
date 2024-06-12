@@ -30,7 +30,7 @@
                 </ng-container>
             </div>
             
-            <button id="button" class="login-btn mb-2" [class.disabled]="!userType" (click)="login()">Submit</button> <span *ngIf="loader" class="spinner-border text-success" role="status"></span>
+            <button id="button" class="login-btn mb-2" [class.disabled]="!userType || loader" (click)="login()">Submit</button> <span *ngIf="loader" class="spinner-border text-success" role="status"></span>
             <a href="javascript:void(0);" *ngIf="!isAdminLogin" class="text-decoration-none font-bold text-primary" style="z-index: 999;" [routerLink]="'/adminLogin'">Are you Admin ?</a>
         </div>
     </div>

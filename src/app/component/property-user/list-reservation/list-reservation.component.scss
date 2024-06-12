@@ -304,7 +304,7 @@ box-shadow: none;
 background: #ddd;
 }
 
-.clear{
+.clear,.clearAll{
   cursor: pointer;
 }
 
@@ -312,4 +312,15 @@ background: #ddd;
   margin-left: 414px;
   margin-top: -41px;
   padding: -3px;
+}
+
+
+.search-container .col-sm-2{
+    position: relative;
+
+     & .clear{
+      position: absolute;
+      top: -34px;
+      right: 10px;
+    }
 }

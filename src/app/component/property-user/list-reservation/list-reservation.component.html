@@ -2,22 +2,22 @@
     <fieldset class="border p-4 shadow mb-3 rounded">
         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Search Reservation
             </button> </legend>
-        <div class="row my-2">
-            <div class="col-sm-2">
+        <div class="row my-2 align-items-baseline flex-wrap search-container">
+            <div class="col-sm-2 my-2">
+                <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['reservations_no']"
+                    (click)="searchConfig['reservations_no']=null"><i class="bi bi-x-circle fs-4"></i></div>
                 <input type="text" class="form-control rounded-pill" [(ngModel)]="searchConfig['reservations_no']"
                     placeholder="Reservation number">
-                <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['reservations_no']"
-                    (click)="searchConfig['reservations_no']=null">(Clear)</div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 my-2">
                 <input type="text" class="form-control rounded-pill" [(ngModel)]="searchConfig['guest_email']"
                     placeholder="Guest email">
                 <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['guest_email']"
-                    (click)="searchConfig['guest_email']=null">(Clear)</div>
+                    (click)="searchConfig['guest_email']=null"><i class="bi bi-x-circle fs-4"></i></div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 my-2">
                 <select class="form-select rounded-pill mx-2" [(ngModel)]="searchConfig['arrival_status']">
-                    <option selected="true" [value]="null" disabled>Select All Arrivals</option>
+                    <option selected="true" [value]="null" disabled>All Arrivals</option>
                     <option value="check_in">Check In</option>
                     <option value="check_out">Check Out</option>
                     <option value="create_time">Create Time</option>
@@ -29,17 +29,17 @@
                     <option value="15_days">Next 15 days Arrivals</option>
                 </select>
                 <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['arrival_status']"
-                    (click)="searchConfig['arrival_status']=null">(Clear)</div>
+                    (click)="searchConfig['arrival_status']=null"><i class="bi bi-x-circle fs-4"></i></div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 my-2">
                 <app-multiselect-dropdown
                     [inputConfig]="{reservation_status:this.constant.reservation_status,'reservationPage':true}"
                     (emitToParent)="receiveChildEvent($event)"></app-multiselect-dropdown>
                 <div class="small text-danger fw-bold clear text-end"
-                    *ngIf="searchConfig['reservation_status'].length>0" (click)="clearReservationStatus()">(Clear)</div>
+                    *ngIf="searchConfig['reservation_status'].length>0" (click)="clearReservationStatus()"><i class="bi bi-x-circle fs-4"></i></div>
 
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 my-2">
                 <select class="form-select rounded-pill mx-2" [(ngModel)]="searchConfig['ota_details_id']">
                     <option elected="true" [value]="null" disabled>All Channel</option>
                     <ng-container *ngFor="let ota of otaDetailList">
@@ -47,7 +47,7 @@
                     </ng-container>
                 </select>
                 <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['ota_details_id']"
-                    (click)="searchConfig['ota_details_id']=null">(Clear)</div>
+                    (click)="searchConfig['ota_details_id']=null"><i class="bi bi-x-circle fs-4"></i></div>
             </div>
             <div class="col-sm-2 d-flex align-items-center mb-4">
                 <button type="button" class="btn btn-primary rounded-pill" (click)="searchByFilter()">
@@ -59,9 +59,9 @@
                     </svg>
                     Search
                 </button>
-                <div class="small text-danger fw-bold clear text-end mx-2"
+                <div class="small text-danger fw-bold clearAll text-end mx-2"
                     *ngIf="searchConfig['reservations_no']||searchConfig['reservation_status'].length>0||searchConfig['ota_details_id']||searchConfig['guest_email']||searchConfig['arrival_status']"
-                    (click)="clearAllFilter()">(Clear All)</div>
+                    (click)="clearAllFilter()"><i class="bi bi-x-circle-fill fs-4"></i></div>
 
             </div>
         </div>
@@ -545,7 +545,7 @@
                                             <th class="small">Stay</th>
                                             <th class="small">Refer</th>
                                             <th class="small">Room</th>
-                                            <th class="small">Refer Room</th>
+                                            <!-- <th class="small">Refer Room</th> -->
                                             <th class="small">Price</th>
                                             <th class="small" colspan="2">Action</th>
                                         </tr>
@@ -557,7 +557,7 @@
                                                 'dd/MM'}}</td>
                                             <td class="small">{{editReservationDataConfig.reservationData.reservations_no}}</td>
                                             <td class="small">{{item.internal_room_name}}</td>
-                                            <td class="small w-25"></td>
+                                            <!-- <td class="small w-25"></td> -->
                                             <td class="w-25 small">$ {{item.price}}</td>
                                             <td> <button class="btn btn-sm btn-success"><i
                                                         class="bi bi-search"></i></button> </td>

@@ -294,9 +294,10 @@
             </div>
         </div>
         <div class="row mt-3 mb-2">
-            <div class="col-sm-12">
-                <button type="submit" class="btn btn-primary"
+            <div class="col-sm-12 d-flex">
+                <button type="submit" class="btn btn-primary" [disabled]="loader"
                     (click)="isEditModal ? editOtaUser() :addNewOtaUser()">{{isEditModal?'Update':'Add'}}</button>
+                    <div class="spinner-border text-success mx-2" *ngIf="loader"></div>
             </div>
         </div>
     </div>
