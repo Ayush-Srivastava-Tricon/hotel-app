@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
+import { AuthGuard } from 'src/app/permission/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,20 +15,28 @@ const routes: Routes = [
       },
      {
       path:'dashboard',
-      loadChildren:()=>import("./dashboard/dashboard.module").then(m=>m.AdminDashboardModule)
+      loadChildren:()=>import("./dashboard/dashboard.module").then(m=>m.AdminDashboardModule),
+      canActivate:[AuthGuard]
      },
      {
       path:'manage-owner',
-      loadChildren:()=>import("./manage-owner/manage-owner.module").then(m=>m.ManageOwnerModule)
+      loadChildren:()=>import("./manage-owner/manage-owner.module").then(m=>m.ManageOwnerModule),
+      canActivate:[AuthGuard]
      },
      {
       path:'manage-ota',
-      loadChildren:()=>import("./manage-ota/manage-ota.module").then(m=>m.ManageOtaModule)
+      loadChildren:()=>import("./manage-ota/manage-ota.module").then(m=>m.ManageOtaModule),
+      canActivate:[AuthGuard]
      },
      {
-      path:':id',
-      loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
+      path:"**",
+      redirectTo:'dashboard'
      }
+    //  {
+    //   path:':id',
+    //   loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule),
+    //   canActivate:[AuthGuard]
+    //  }
     ],
   },
 ];

@@ -351,7 +351,7 @@ export class ReservationComponent {
           this.successReservationConfig.alertMsg = res.reservation_number;
           setTimeout(() => {
             this.backToManageReservation();
-          }, 10000);
+          }, 5000);
         }else{
           this.alert.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 3000, pos: 'top' });
           this.loader=false;

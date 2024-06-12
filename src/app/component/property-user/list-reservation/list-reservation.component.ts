@@ -97,8 +97,6 @@ export class ListReservationComponent {
           this.editReservationDataConfig['reservationData']['cancellation_date'] = "";
           this.editReservationDataConfig['reservationData']['property_id'] = this.currentPropertyId;
           this.editReservationDataConfig['reservationData']['created_by'] = this.editReservationDataConfig['reservationData'].guest_name;
-          delete this.editReservationDataConfig['reservationData'].guest_name;
-          delete this.editReservationDataConfig['reservationData'].reservations_no;
           this.editReservationDataConfig['reservationData']['property_id'] = this.currentPropertyId;
           this.calculateDaysBetweenDates(item);
           this.getPaymentMethod();
@@ -114,6 +112,8 @@ export class ListReservationComponent {
       if (res.status == 200) {
         this.paymentModeList = res.data;
         this.editReservationDataConfig.payments;
+        console.log(this.editReservationDataConfig.payments);
+        
       }
     })
   }
@@ -228,7 +228,7 @@ addMoreGuestInfo(){
 }
 
 getPaymentDetails(event:any){
- 
+  this.editReservationDataConfig.payments[0].payment_method_id = event.target.value;
 }
 
 setPaymentsData(){
@@ -283,6 +283,8 @@ reMakePayloadData(){
     });
     this.editReservationDataConfig['pmsAssigned'] = this.pmsRoomMapConfig;
     delete this.editReservationDataConfig['reservationData'].reservation_status;
+    delete this.editReservationDataConfig['reservationData'].guest_name;
+    delete this.editReservationDataConfig['reservationData'].reservations_no;
     this.setPaymentsData();
     this.setGuestData();
 }

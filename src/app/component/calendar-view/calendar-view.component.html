@@ -74,7 +74,7 @@
           <table class="table table-bordered table-sm shadow p-3 mb-3" loading="lazy">
             <thead class="thead-dark">
               <tr id="weekId">
-                <th class="textRandom">
+                <th class="textRandom text-ellipsis" [title]="data.room_name">
                   {{data.room_name}}
                 </th>
                 <ng-container *ngFor="let head of weekdaysWithDates;let thIdx=index;">
@@ -138,7 +138,7 @@
                 <ng-container *ngFor="let child of data.children;let childrenIdx = index;">
                   <tr>
                     <td class="hover-td">
-                      <a class="text-decoration-none  small" href="javascript:void(0);">
+                      <a class="text-decoration-none text-ellipsis  small" href="javascript:void(0);" [title]="child?.room_name">
                         {{data?.room_name}} : {{child?.room_name}}
                       </a>
                       <br>

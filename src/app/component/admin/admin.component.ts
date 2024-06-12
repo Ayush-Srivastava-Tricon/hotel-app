@@ -24,9 +24,11 @@ export class AdminComponent {
       if (res && localStorage.getItem("isadmin")) {
         this.router.navigate(['/adminLogin']);
         localStorage.clear();
+        this.alert.alert("error","Logged Out Successfully","Success",{ displayDuration: 2000, pos: 'top' })
       } else {
         this.router.navigate(['/login']);
         localStorage.clear();
+        this.alert.alert("error","Logged Out Successfully","Success",{ displayDuration: 2000, pos: 'top' })
       }
     })
 

@@ -109,16 +109,16 @@
                         <div class="col-sm-9">
                             <select name="" id="" class="form-select"
                                 [(ngModel)]="ratepPlanModal.ratePlanData[0].treatment">
-                                <option [value]="null" [selected]="true">Select a value...</option>
-                                <option value="ROOM_ONLY">Room only</option>
-                                <option value="BREAKFAST">Breakfast included</option>
-                                <option value="HALF_BOARD">Half board</option>
-                                <option value="FULL_BOARD">Full board</option>
-                                <option value="FULL_BOARD_LIGHT">Full board light</option>
-                                <option value="ALL_INCLUSIVE">All inclusive</option>
-                                <option value="INSURANCE">Insurance</option>
-                                <option value="NOT_REFUNDABLE">Not refundable</option>
-                                <option value="OTHER">Custom</option>
+                                <option [value]="null" [selected]="true" disabled>Select a value...</option>
+                                <option value="Room Only">Room only</option>
+                                <option value="Breakfast">Breakfast included</option>
+                                <option value="Half Board">Half board</option>
+                                <option value="Full Board">Full board</option>
+                                <option value="Full Board Light">Full board light</option>
+                                <option value="All Inclusive">All inclusive</option>
+                                <option value="Insurance">Insurance</option>
+                                <option value="Not Refundable">Not refundable</option>
+                                <option value="Other">Custom</option>
                             </select>
                         </div>
                     </div>
@@ -127,14 +127,14 @@
                         <label for="propertyName" class="col-sm-3 col-form-label">Time Interval</label>
                         <div class="col-sm-9">
 
-                            <div class="d-flex justify-space-between ">
+                            <div class="d-flex justify-space-between align-items-center flex-wrap">
                                 <div class="mx-2">
                                     <label for="" class="d-flex align-items-center">Start:
                                         <input type="date" class="form-control  mx-2"
                                             [(ngModel)]="ratepPlanModal.ratePlanData[0].start_date">
                                     </label>
                                 </div>
-                                <div>
+                                <div class="my-1 ms-3">
                                     <label for="" class="d-flex align-items-center ">End:
                                         <input type="date" [disabled]="!ratepPlanModal.ratePlanData[0].start_date" [min]="ratepPlanModal.ratePlanData[0].start_date"  class="form-control mx-2" 
                                             [(ngModel)]="ratepPlanModal.ratePlanData[0].end_date">

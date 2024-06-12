@@ -66,10 +66,12 @@ export class AdminDashboardComponent {
     this.showFullDetailRight['details'] = this.filteredList[idx];
     this.selectedPropertyId  = propertyId;
     
+    
   }
 
   loginAsProperty() {
     localStorage.setItem("selectedPropertyId",this.selectedPropertyId);
     this.router.navigate(['/manager']);
+    // localStorage.setItem("loggedUserData",JSON.stringify(this.showFullDetailRight['details']))
   }
 }

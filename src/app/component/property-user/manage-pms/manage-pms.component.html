@@ -115,7 +115,7 @@
       <label class="col-sm-5 col-form-label" for="linenFrequency">Change linen frequency</label>
       <div class="col-sm-7">
         <select name="" id="" class="form-select" [(ngModel)]="pmsDataConfig.change_linen_frequency">
-          <option [value]="null" disabled>Select a value...</option>
+          <option value="" disabled>Select a value...</option>
           <option value="{{idx+1}} days" *ngFor="let item of [].constructor(31);let idx= index;">
             <span *ngIf="idx == 0">1 day</span>
             <span *ngIf="idx>0">{{idx+1}} days</span>

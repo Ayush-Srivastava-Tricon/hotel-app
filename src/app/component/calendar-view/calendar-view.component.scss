@@ -55,8 +55,14 @@
   .textRandom {
     min-width: 125px;
     padding: 10px;
+    font-size:14px;
   }
   
+  #weekId>th:first-child{
+    padding: 16px;
+    width: 150px;
+  }
+
   .disabled {
     background-color: rgb(192 187 187);
     color: white;
@@ -172,4 +178,13 @@
   background: black;
   opacity: 0.5;
   z-index: 999;
+}
+
+
+.text-ellipsis{
+  white-space: nowrap; 
+  width: 90px; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  display: inline-block;
 }

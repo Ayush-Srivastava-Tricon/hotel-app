@@ -245,7 +245,8 @@ export class CalendarViewComponent {
     if ((this.currentDate.getMonth() + 1) != (new Date().getMonth() + 1)) {
       this.selectDate = '';
       let selectedRangeDate: any = document.getElementById("date");
-      selectedRangeDate.value = '';
+      let setFirstMonthDate:any = new Date(this.currentDate).setDate(1)
+      selectedRangeDate.value = this.formatDate(new Date(setFirstMonthDate));
       this.fetchCalendarData(this.formatDate(this.currentDate), false);
     } else {
       this.selectDate = new Date();
@@ -262,7 +263,8 @@ export class CalendarViewComponent {
     if ((this.currentDate.getMonth() + 1) != (new Date().getMonth() + 1)) {
       this.selectDate = '';
       let selectedRangeDate: any = document.getElementById("date");
-      selectedRangeDate.value = '';
+      let setFirstMonthDate:any = new Date(this.currentDate).setDate(1)
+      selectedRangeDate.value = this.formatDate(new Date(setFirstMonthDate));
       this.fetchCalendarData(this.formatDate(this.currentDate), false);
     } else {
       this.selectDate = new Date();

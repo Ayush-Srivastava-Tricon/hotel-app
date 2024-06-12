@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OwnerComponent } from './owner.component';
+import { AuthGuard } from 'src/app/permission/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,16 +15,19 @@ const routes: Routes = [
       },
       {
         path:'manage-property',
-        loadChildren:()=>import("./manage-property/manage-property.module").then(m=>m.ManagePropertyModule)
+        loadChildren:()=>import("./manage-property/manage-property.module").then(m=>m.ManagePropertyModule),
+      canActivate:[AuthGuard]
       },
       {
         path:'dashboard',
-        loadChildren:()=>import("./dashboard/dashboard.module").then(m=>m.DashboardModule)
+        loadChildren:()=>import("./dashboard/dashboard.module").then(m=>m.DashboardModule),
+      canActivate:[AuthGuard]
       },
       {
         path:'calendar-view/:id',
         pathMatch:'full',
-        loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule)
+        loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule),
+        canActivate:[AuthGuard]
       },
       {
         path:'**',

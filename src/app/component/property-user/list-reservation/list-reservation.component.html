@@ -507,7 +507,7 @@
                             <div class="col-sm-5 text-end">
                                 <select class="form-control" (change)="getPaymentDetails($event);">
                                     <option [value]="" [selected]="true">Select</option>
-                                    <option [value]="mode.id" *ngFor="let mode of paymentModeList">{{mode.name}}
+                                    <option [value]="mode.id" [selected]="mode.id == this.editReservationDataConfig?.payments[0]?.payment_method_id" *ngFor="let mode of paymentModeList">{{mode.name}}
                                     </option>
                                 </select>
                             </div>
@@ -542,23 +542,23 @@
                                 <table class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Stay</th>
-                                            <th>Refer</th>
-                                            <th>Room</th>
-                                            <th>Refer Room</th>
-                                            <th>Price</th>
-                                            <th></th>
+                                            <th class="small">Stay</th>
+                                            <th class="small">Refer</th>
+                                            <th class="small">Room</th>
+                                            <th class="small">Refer Room</th>
+                                            <th class="small">Price</th>
+                                            <th class="small" colspan="2">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let item of editReservationDataConfig.rooms">
-                                            <td class="w-25">{{item.check_in|date : 'dd/MM'}} <i
+                                            <td class="w-100 small">{{item.check_in|date : 'dd/MM'}} <i
                                                     class="bi bi-arrow-right text-primary"></i> {{item.check_out|date :
                                                 'dd/MM'}}</td>
-                                            <td>{{editReservationDataConfig.reservationData.reservations_no}}</td>
-                                            <td>{{item.internal_room_name}}</td>
-                                            <td></td>
-                                            <td class="w-25">$ {{item.price}}</td>
+                                            <td class="small">{{editReservationDataConfig.reservationData.reservations_no}}</td>
+                                            <td class="small">{{item.internal_room_name}}</td>
+                                            <td class="small w-25"></td>
+                                            <td class="w-25 small">$ {{item.price}}</td>
                                             <td> <button class="btn btn-sm btn-success"><i
                                                         class="bi bi-search"></i></button> </td>
                                             <td><button class="btn btn-sm btn-danger"><i
