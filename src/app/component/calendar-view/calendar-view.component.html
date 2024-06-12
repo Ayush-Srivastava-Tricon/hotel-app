@@ -104,19 +104,16 @@
                     <ng-container *ngFor="let dayData of data.datesData;let dataIdx = index;">
                       <td *ngIf="id == 0" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'bg-success':dayData?.newData?.al ,'text-light':dayData?.newData?.al , 'bg-danger': !(dayData?.newData?.al) || dayData?.newData?.al == 0 ,'active':dragEl['head'+dataIdx+calendarIdx] }"
-                        (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :'' "
-                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;">
+                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx+id]=true;highlightInbetweenDates()">
                         {{dayData?.newData?.al }}
                       </td>
                       <td *ngIf="id == 1" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
-                        (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"
-                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;">
+                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;highlightInbetweenDates()">
                         {{dayData?.newData?.mn }} - {{dayData?.newData?.mx }}
                       </td>
                       <td *ngIf="id == 2" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
-                        (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"
                         (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;">
                         <i class="bi bi-box-arrow-in-right text-danger mx-1 " style="font-size: 20px;"
                           *ngIf="dayData?.newData?.cta"></i>
@@ -125,7 +122,6 @@
                       </td>
                       <td *ngIf="id == 3" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'bg-danger':dayData?.newData?.ss == 'true'|| dayData?.newData?.ss == '1','active':dragEl['head'+dataIdx+calendarIdx],'text-light':dayData?.newData?.ss == 'true'|| dayData?.newData?.ss == '1'}"
-                        (mouseover)="dragEventStart? selectCalendarDateRange(dayData.formateDate,dataIdx,calendarIdx) :''"
                         (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;">
                         {{dayData?.newData?.pr}}
                       </td>

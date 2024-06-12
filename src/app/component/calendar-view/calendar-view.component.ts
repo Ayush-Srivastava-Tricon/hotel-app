@@ -366,7 +366,8 @@ export class CalendarViewComponent {
 
   selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number,calendarIdx:any='', isDerive: any = '') {
 
-    this.dragEl[`head${dIdx}${calIdx}${calendarIdx}${isDerive}`] = !this.dragEl[`head${dIdx}${calIdx}${calendarIdx}${isDerive}`];
+    // this.dragEl[`head${dIdx}${calIdx}${calendarIdx}${isDerive}`] = !this.dragEl[`head${dIdx}${calIdx}${calendarIdx}${isDerive}`];
+
   }
 
   handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any, isDeriveModalActive: boolean) {
@@ -509,5 +510,9 @@ export class CalendarViewComponent {
     this.modalFieldForm.controls.pr.enable();
   }
 
+  highlightInbetweenDates(){
+    console.log(32324);
+    
+  }
 
 }
