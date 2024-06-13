@@ -3,19 +3,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http" ;
+import {HttpClientModule} from "@angular/common/http" ;
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient} from '@angular/common/http';
 import "../app/constants/javascript.variable";
-import { ChangePasswordComponent } from './shared/change-password/change-password.component';
 
 const isProduction:boolean = window.location.href.includes("hotel-app") ? true : false;
 @NgModule({
   declarations: [
     AppComponent,
-    ChangePasswordComponent,
   ],
   imports: [
   BrowserModule,
@@ -39,3 +37,4 @@ export class AppModule { }
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http,`./${isProduction ? 'hotel-app/' : ''}assets/i18n/`, '.json');
 }
+

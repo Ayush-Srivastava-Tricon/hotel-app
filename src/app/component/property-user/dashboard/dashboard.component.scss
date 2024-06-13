@@ -33,4 +33,6 @@ h1 {
 
     .rotated{
       transform:rotate(180deg);
+      transition: 0.5s all ease;
+
     }

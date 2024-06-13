@@ -38,4 +38,12 @@ export class OwnerService extends BaseServiceService {
    fetchCity(countryId:any,stateId:any,callback:any){
     this.getData({},`${this.httpUrl['get-city']}/?country_id=${countryId}&state_id=${stateId}`,callback);
    }
+
+   saveDefaultSetting(param:any,callback:any){
+    this.postData(param,this.httpUrl['settings'],callback)
+   }
+
+   fetchDefaultUserSetting(user_id:any,callback:any){
+    this.getData({},`${this.httpUrl['defaultData']}/${user_id}`,callback)
+   }
 }

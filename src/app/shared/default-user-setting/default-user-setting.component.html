@@ -1,0 +1,49 @@
+<div class="container p-3 shadow my-3 w-50">
+    <div class="form-group row ">
+        <label class="col-sm-3 col-form-label" for="usedType">Default Language</label>
+        <div class="col-sm-9">
+            <select class="form-control" [(ngModel)]="userSettingConfig.language">
+                <option value="" selected="true" disabled>Select</option>
+                <option value="en">English</option>
+                <option value="fr">French</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row my-2">
+        <label class="col-sm-3 col-form-label" for="usedType">Start Calendar From Date</label>
+        <div class="col-sm-9">
+            <select class="form-control"  (change)="selectCalendarStartDay($event)" >
+                <option value="" selected="true">Select</option>
+                <option [value]="idx+1" *ngFor="let days of [].constructor(31);let idx=index;">
+                    {{idx+1}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row ">
+        <label class="col-sm-3 col-form-label" for="usedType">Auto Assignment PMS</label>
+        <div class="col-sm-9">
+            <label class="switch" for="pms">
+                <input type="checkbox" id="pms" [(ngModel)]="userSettingConfig.auto_assignment_pms">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+    <div class="form-group row ">
+        <label class="col-sm-3 col-form-label" for="usedType">Time Zone</label>
+        <div class="col-sm-9">
+            <select class="form-control" (change)="selectTimeZone($event)">
+                <option value="" selected="true" disabled>Select</option>
+                <option [value]="zone.offset" *ngFor="let zone of constants.timeZones">
+                    {{zone.offset}} {{zone.cities}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col-sm-12 d-flex">
+            <button type="button" class="btn btn-primary" [disabled]="loader" (click)="saveDefaultSetting()">Submit</button>
+            <div class="spinner-border text-success mx-2" *ngIf="loader"></div>
+        </div>
+    </div>
+</div>

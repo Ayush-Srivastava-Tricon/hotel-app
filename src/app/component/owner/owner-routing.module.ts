@@ -24,6 +24,11 @@ const routes: Routes = [
       canActivate:[AuthGuard]
       },
       {
+        path:'user_setting',
+        loadChildren:()=>import("../../shared/default-user-setting/default-user-setting.module").then(m=>m.DefaultUserSettingModule),
+      canActivate:[AuthGuard]
+      },
+      {
         path:'calendar-view/:id',
         pathMatch:'full',
         loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule),
