@@ -42,7 +42,7 @@ export class ManagePropertyComponent {
         city: ['',[Validators.required]],
         state: ["",[Validators.required]],
         country: ['',Validators.required],
-        postal_code: ['',Validators.required ],
+        postal_code: ['',[Validators.required,Validators.pattern("^[0-9]*$")]],
         description: ['', ],
         amenities: ['', ],
         latitudes: ['', ],
