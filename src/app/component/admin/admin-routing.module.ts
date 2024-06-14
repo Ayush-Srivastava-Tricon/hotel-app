@@ -29,6 +29,11 @@ const routes: Routes = [
       canActivate:[AuthGuard]
      },
      {
+      path:'change_password',
+      loadChildren:()=>import("../../shared/change-password/change-password.module").then(m=>m.ChangePasswordModule),
+      canActivate:[AuthGuard]
+     },
+     {
       path:"**",
       redirectTo:'dashboard'
      }

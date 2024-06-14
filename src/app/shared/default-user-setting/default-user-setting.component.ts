@@ -15,7 +15,7 @@ export class DefaultUserSettingComponent {
     "language": '',
     "calendar_start_day": '',
     "auto_assignment_pms": false,
-    "timezone": ''
+    "time_zone": ''
   };
   loader: boolean = false;
 
@@ -38,7 +38,7 @@ export class DefaultUserSettingComponent {
   }
 
   selectTimeZone(event: any) {
-    this.userSettingConfig.timezone = event.target.value.split("UTC")[1];
+    this.userSettingConfig.time_zone = event.target.value.split("UTC")[1];
   }
 
   selectCalendarStartDay(event: any) {

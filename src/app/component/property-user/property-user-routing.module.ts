@@ -75,6 +75,11 @@ const routes: Routes = [
         loadChildren:()=>import("./manage-housekeeping/manage-housekeeping.module").then(m=>m.ManageHousekeepingModule),
          canActivate:[AuthGuard]
       },
+      {
+        path:'change_password',
+        loadChildren:()=>import("../../shared/change-password/change-password.module").then(m=>m.ChangePasswordModule),
+        canActivate:[AuthGuard]
+       },
      
     ]
   }

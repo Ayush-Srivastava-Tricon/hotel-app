@@ -27,7 +27,7 @@ export class ManagePropertyComponent {
   selectedPropertyId:number=0;
   currentOwnerId:any;
 
-  constructor(private router:Router,private fb: FormBuilder, private constants: AppConstants, 
+  constructor(private router:Router,private fb: FormBuilder, public constants: AppConstants, 
     private alertService: AlertService, 
     private ownerService: OwnerService,
     private commonService:CommonService) {
@@ -48,6 +48,7 @@ export class ManagePropertyComponent {
         latitudes: ['', ],
         longitudes: ['',],
         owner_id: ['',],
+        time_zone:['']
       }
     )
   }
@@ -250,5 +251,11 @@ export class ManagePropertyComponent {
     localStorage.setItem("propertyList",JSON.stringify(data));
   }
 
+  
+  selectTimeZone(event: any) {
+    this.propertyUserModal.controls.time_zone.setValue(event.target.value.split("UTC")[1]);
+    this.propertyUserModal.controls.time_zone.updateValueAndValidity();
+  }
+  
 }
 

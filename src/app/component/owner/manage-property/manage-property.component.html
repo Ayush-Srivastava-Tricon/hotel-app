@@ -40,11 +40,15 @@
                         <ng-container *ngIf="propertyList.length>0 && !loader">
 
                             <tr *ngFor="let item of propertyList;let idx = index;" class="text-center align-middle">
-                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar(item.property_id)">{{item.property_id}}</a></td>
-                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar(item.property_id)">{{item.property_name|titlecase}}</a> </td>
+                                <td> <a href="javascript:void(0);" class="text-small"
+                                        (click)="viewCalendar(item.property_id)">{{item.property_id}}</a></td>
+                                <td> <a href="javascript:void(0);" class="text-small"
+                                        (click)="viewCalendar(item.property_id)">{{item.property_name|titlecase}}</a>
+                                </td>
                                 <td>{{item.property_type}}</td>
                                 <td>{{item.state_name}}</td>
-                                <td> <a href="javascript:void(0);" class="text-small" (click)="viewCalendar(item.property_id)">View Calendar</a> </td>
+                                <td> <a href="javascript:void(0);" class="text-small"
+                                        (click)="viewCalendar(item.property_id)">View Calendar</a> </td>
                                 <td>
                                     <div class="dropdown">
                                         <i class="btn btn-light bi bi-three-dots-vertical"
@@ -54,7 +58,8 @@
                                             <!-- <a class="dropdown-item">Change Status</a> -->
                                             <a class="dropdown-item" (click)="editPropertyOpenModal(item)">Edit
                                                 Property</a>
-                                            <a class="dropdown-item" (click)="deletePropertyModal(item.property_id,idx)">Delete</a>
+                                            <a class="dropdown-item"
+                                                (click)="deletePropertyModal(item.property_id,idx)">Delete</a>
                                         </div>
                                     </div>
                                 </td>
@@ -74,51 +79,59 @@
         <div class="my-3 ms-2 d-flex justify-content-between ">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageProperty()">Back to Manage Property</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Property</li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "
+                            (click)="backToManageProperty()">Back to Manage Property</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Property</li>
                 </ol>
-              </nav>
+            </nav>
         </div>
         <div class="p-4 rounded bg-white" [formGroup]="propertyUserModal">
             <div class="row mb-2">
                 <div class="col-sm-6 shadow p-2">
                     <fieldset class="border p-2">
-                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Property Info
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Property
+                                Info
                             </button> </legend>
-                        
+
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Property Name <span class="text-danger">*</span></label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Property Name <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="property_name"
-                                [class.is-invalid]="propertyUserModal.controls.property_name.dirty && propertyUserModal.controls.property_name.errors?.['required']">
+                                    [class.is-invalid]="propertyUserModal.controls.property_name.dirty && propertyUserModal.controls.property_name.errors?.['required']">
                                 <small
-                                *ngIf="propertyUserModal.controls.property_name.dirty && propertyUserModal.controls.property_name.errors?.['required']"
-                                class="text-danger">Required</small>
+                                    *ngIf="propertyUserModal.controls.property_name.dirty && propertyUserModal.controls.property_name.errors?.['required']"
+                                    class="text-danger">Required</small>
                             </div>
-                        </div>    
+                        </div>
                         <div class="form-group row">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Property Type <span class="text-danger">*</span></label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Property Type <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select class="form-select" [class.is-invalid]="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']"  formControlName="property_type">
+                                <select class="form-select"
+                                    [class.is-invalid]="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']"
+                                    formControlName="property_type">
                                     <option [value]="null" [selected]="true" [hidden]="true">Select</option>
                                     <option value="APT">Apartment</option>
                                     <option value="COT">Cottage</option>
                                     <option value="VILLA">Villa</option>
                                     <option value="HOTEL">Hotel</option>
-                                </select>    
+                                </select>
                                 <small
                                     *ngIf="propertyUserModal.controls.property_type.dirty && propertyUserModal.controls.property_type.errors?.['required']"
                                     class="text-danger">Required</small>
                             </div>
-                        </div>    
+                        </div>
                     </fieldset>
                 </div>
                 <div class="col-sm-6 shadow p-2">
                     <fieldset class="border p-2">
-                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Property Owner Info
+                        <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Property
+                                Owner Info
                             </button> </legend>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Email <span class="text-danger">*</span></label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Email <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="email" class="form-control" formControlName="email" autocomplete="off">
                                 <small
@@ -130,24 +143,35 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2" *ngIf="!isEditModal">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Password <span class="text-danger">*</span></label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Password <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" formControlName="password" autocomplete="off">
+                                <input type="password" class="form-control" formControlName="password"
+                                    autocomplete="off">
                                 <small
                                     *ngIf="propertyUserModal.controls.password.dirty && propertyUserModal.controls.password.errors?.['required']"
                                     class="text-danger">Required</small>
-                                <div *ngIf="propertyUserModal.controls.password.invalid && (propertyUserModal.controls.password.dirty || propertyUserModal.controls.password.touched)">
-                                    <div class="text-danger" *ngIf="propertyUserModal.controls.password.errors.required">Password is required.</div>
-                                    <div class="text-danger" *ngIf="propertyUserModal.controls.password.errors.minlength">Password must be at least 8 characters long.</div>
-                                    <div class="text-danger" *ngIf="propertyUserModal.controls.password.errors.invalidPassword">Password must contain at least one uppercase letter, one digit, and one special character.</div>
+                                <div
+                                    *ngIf="propertyUserModal.controls.password.invalid && (propertyUserModal.controls.password.dirty || propertyUserModal.controls.password.touched)">
+                                    <div class="text-danger"
+                                        *ngIf="propertyUserModal.controls.password.errors.required">Password is
+                                        required.</div>
+                                    <div class="text-danger"
+                                        *ngIf="propertyUserModal.controls.password.errors.minlength">Password must be at
+                                        least 8 characters long.</div>
+                                    <div class="text-danger"
+                                        *ngIf="propertyUserModal.controls.password.errors.invalidPassword">Password must
+                                        contain at least one uppercase letter, one digit, and one special character.
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Mobile <span class="text-danger">*</span></label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Mobile <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" maxlength="10" class="form-control" formControlName="mobile"
-                                [class.is-invalid]="propertyUserModal.controls.mobile.errors?.['[pattern]']">
+                                    [class.is-invalid]="propertyUserModal.controls.mobile.errors?.['[pattern]']">
                                 <small
                                     *ngIf="propertyUserModal.controls.mobile.dirty && propertyUserModal.controls.mobile.errors?.['required']"
                                     class="text-danger">Required</small>
@@ -174,14 +198,17 @@
                         <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Location
                             </button> </legend>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Country <span class="text-danger">*</span></label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Country <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <select type="text" class="form-select" (change)="getStateByCountry($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let cty of countryList">
-                                        <option [value]="cty.country_id" [selected]="cty.country_id == propertyUserModal.value.country">{{cty.name}}</option>
+                                        <option [value]="cty.country_id"
+                                            [selected]="cty.country_id == propertyUserModal.value.country">{{cty.name}}
+                                        </option>
                                     </ng-container>
-                                    
+
                                 </select>
                                 <small
                                     *ngIf="propertyUserModal.controls.country.dirty && propertyUserModal.controls.country.errors?.['required']"
@@ -189,12 +216,15 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">State <span class="text-danger">*</span></label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">State <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select type="text" class="form-select"  (change)="getCityByState($event)">
+                                <select type="text" class="form-select" (change)="getCityByState($event)">
                                     <option [selected]="true" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let state of stateList">
-                                        <option [value]="state.state_id" [selected]="state.state_id == propertyUserModal.value.state">{{state.name}}</option>
+                                        <option [value]="state.state_id"
+                                            [selected]="state.state_id == propertyUserModal.value.state">{{state.name}}
+                                        </option>
                                     </ng-container>
                                 </select>
                                 <small
@@ -203,12 +233,15 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">City <span class="text-danger">*</span></label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">City <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <select type="text" class="form-select" loading="lazy" (change)="selectCity($event)">
                                     <option [selected]="true" [value]="null" [hidden]="true">Select</option>
                                     <ng-container *ngFor="let city of cityList">
-                                        <option [value]="city.city_id" [selected]="city.city_id == propertyUserModal.value.city">{{city.name}}</option>
+                                        <option [value]="city.city_id"
+                                            [selected]="city.city_id == propertyUserModal.value.city">{{city.name}}
+                                        </option>
                                     </ng-container>
                                 </select>
                                 <small
@@ -217,12 +250,24 @@
                             </div>
                         </div>
                         <div class="form-group row mb-2">
-                            <label for="propertyName" class="col-sm-3 col-form-label">Postal Code <span class="text-danger">*</span></label>
+                            <label for="propertyName" class="col-sm-3 col-form-label">Postal Code <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="postal_code">
                                 <small
                                     *ngIf="propertyUserModal.controls.postal_code.dirty && propertyUserModal.controls.postal_code.errors?.['required']"
                                     class="text-danger">Required</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label class="col-sm-3 col-form-label" for="usedType">Time Zone</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" (change)="selectTimeZone($event)">
+                                    <option value="" selected="true" disabled>Select</option>
+                                    <option [value]="zone.offset" *ngFor="let zone of constants.timeZones">
+                                        {{zone.offset}} {{zone.cities}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row mb-2">
@@ -241,12 +286,12 @@
                                 <small
                                     *ngIf="propertyUserModal.controls.longitudes.dirty && propertyUserModal.controls.longitudes.errors?.['required']"
                                     class="text-danger">Required</small>
-                                </div>
                             </div>
-                            <div class="text-end">
-                                <button class="btn btn-sm btn-primary" (click)="getCurrentLatLong()">Get Lat
-                                    Long</button>
-                                </div>
+                        </div>
+                        <div class="text-end">
+                            <button class="btn btn-sm btn-primary" (click)="getCurrentLatLong()">Get Lat
+                                Long</button>
+                        </div>
                     </fieldset>
 
                 </div>
@@ -278,7 +323,8 @@
             <div class="row mt-3 mb-2">
                 <div class="col-sm-12 d-flex">
                     <button type="submit" class="btn btn-primary" [disabled]="loader"
-                        (click)="isEditModal ? editProperty() :createNewProperty()">{{isEditModal?'Update':'Create'}}</button> <span *ngIf="loader" class="mx-2 spinner-border text-primary"></span>
+                        (click)="isEditModal ? editProperty() :createNewProperty()">{{isEditModal?'Update':'Create'}}</button>
+                    <span *ngIf="loader" class="mx-2 spinner-border text-primary"></span>
                 </div>
             </div>
         </div>
@@ -291,18 +337,18 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                    <div class="modal-header flex-row">
-                        <h4 class="modal-title w-100">Are you sure?</h4>
-                        <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Do you really want to delete the Property ?</p>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"
-                            (click)="closeModal()">Cancel</button>
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteProperty()">Delete</button>
-                    </div>
+                <div class="modal-header flex-row">
+                    <h4 class="modal-title w-100">Are you sure?</h4>
+                    <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete the Property ?</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"
+                        (click)="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-outline-danger" (click)="deleteProperty()">Delete</button>
+                </div>
             </div>
         </div>
     </div>

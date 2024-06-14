@@ -29,6 +29,11 @@ const routes: Routes = [
       canActivate:[AuthGuard]
       },
       {
+        path:'change_password',
+        loadChildren:()=>import("../../shared/change-password/change-password.module").then(m=>m.ChangePasswordModule),
+      canActivate:[AuthGuard]
+      },
+      {
         path:'calendar-view/:id',
         pathMatch:'full',
         loadChildren:()=>import("../calendar-view/calendar-view.module").then(m=>m.CalendarViewModule),

@@ -23,5 +23,7 @@
     "LOGOUT": "Logout",
     "DASHBOARD": "Dashboard",
     "ADD_CUSTOM_TRANSLATION":"Add Custom Translation",
-    "MANAGE_INTERNAL_MAPPING":"Manage Internal Mapping"
+    "MANAGE_INTERNAL_MAPPING":"Manage Internal Mapping",
+    "USER_SETTING":"User Setting",
+    "CHANGE_PASSWORD":"Change Password"
 }

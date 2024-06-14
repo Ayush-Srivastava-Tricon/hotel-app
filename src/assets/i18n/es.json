@@ -21,5 +21,6 @@
     "STATUS": "Estado",
     "LOGOUT": "Cerrar sesión",
     "MANAGE_OTA": "Administrar OTA",
-    "DASHBOARD": "Panel"
+    "DASHBOARD": "Panel",
+    "USER_SETTING":"Configuración del usuario"
 }

@@ -51,6 +51,7 @@ export class BaseServiceService {
     'get-city': 'hotelapi/city',
     'settings': 'hotelapi/settings',
     'defaultData': 'hotelapi/settings/defaultData',
+    'changepassword': 'hotelapi/changepassword',
 
     //<========Property Service========>
     'getAllRooms': 'hotelapi/rooms',

@@ -99,7 +99,7 @@ export class CalendarViewComponent {
           this.renderCalendar(this.selectDate);
         }, 0);
       } else if (res.status == 404) {
-        this.alertService.alert("error", res.error.message, "error", { displayDuration: 2000, pos: 'top' });
+        // this.alertService.alert("error", res.error.message, "error", { displayDuration: 2000, pos: 'top' });
         setTimeout(() => {
           this.renderCalendar(this.selectDate);
         }, 0);
@@ -245,7 +245,7 @@ export class CalendarViewComponent {
     if ((this.currentDate.getMonth() + 1) != (new Date().getMonth() + 1)) {
       this.selectDate = '';
       let selectedRangeDate: any = document.getElementById("date");
-      let setFirstMonthDate:any = new Date(this.currentDate).setDate(1)
+      let setFirstMonthDate: any = new Date(this.currentDate).setDate(1)
       selectedRangeDate.value = this.formatDate(new Date(setFirstMonthDate));
       this.fetchCalendarData(this.formatDate(this.currentDate), false);
     } else {
@@ -263,7 +263,7 @@ export class CalendarViewComponent {
     if ((this.currentDate.getMonth() + 1) != (new Date().getMonth() + 1)) {
       this.selectDate = '';
       let selectedRangeDate: any = document.getElementById("date");
-      let setFirstMonthDate:any = new Date(this.currentDate).setDate(1)
+      let setFirstMonthDate: any = new Date(this.currentDate).setDate(1)
       selectedRangeDate.value = this.formatDate(new Date(setFirstMonthDate));
       this.fetchCalendarData(this.formatDate(this.currentDate), false);
     } else {
@@ -358,13 +358,11 @@ export class CalendarViewComponent {
   resetDefault() {
     this.dragEl = {};
     this.showModal = false;
-    this.selectDate = ''
+    this.selectDate = '';
     this.datesData = [];
-    let selectedRangeDate: any = document.getElementById("date");
-    selectedRangeDate.value = '';
   }
 
-  selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number,calendarIdx:any='', isDerive: any = '') {
+  selectCalendarDateRange(startingDate: any, dIdx: number, calIdx: number, calendarIdx: any = '', isDerive: any = '') {
 
     // this.dragEl[`head${dIdx}${calIdx}${calendarIdx}${isDerive}`] = !this.dragEl[`head${dIdx}${calIdx}${calendarIdx}${isDerive}`];
 
@@ -396,10 +394,10 @@ export class CalendarViewComponent {
       }, 200);
     }
     this.isDeriveModalActive = isDeriveModalActive;
-   
-    if(this.isDeriveModalActive){
+
+    if (this.isDeriveModalActive) {
       this.toggleModalFieldDisableEnable(dayData);
-    }else{
+    } else {
       this.setModalFieldEnable();
     }
   }
@@ -424,7 +422,7 @@ export class CalendarViewComponent {
         "start": this.selectedStartDate ? this.selectedStartDate : eventData.start,
         "end": this.selectedEndDate ? this.selectedEndDate : eventData.end,
         "resource": roomId,
-        'parent_room_id':eventData.parent_room_id
+        'parent_room_id': eventData.parent_room_id
       });
       this.activeModalRoomName = roomName;
     } else {
@@ -437,12 +435,12 @@ export class CalendarViewComponent {
     if (this.modalFieldForm.status == 'VALID') {
       const selectedRoomId: any = this.modalFieldForm.value.resource;
       delete this.modalFieldForm.value.resource;
-      const parent_room_id:any = this.modalFieldForm.value.parent_room_id;
+      const parent_room_id: any = this.modalFieldForm.value.parent_room_id;
       delete this.modalFieldForm.value.parent_room_id;
       const params: any = {
         'room_id': selectedRoomId,
-        'parent_room_id':parent_room_id,
-        "property_id":+this.loggedProperty.propertyId,
+        'parent_room_id': parent_room_id,
+        "property_id": +this.loggedProperty.propertyId,
         "data": [this.modalFieldForm.value]
       }
       this.loader = true;
@@ -479,23 +477,23 @@ export class CalendarViewComponent {
 
   }
 
-  toggleModalFieldDisableEnable(item:any){
-    if(item.map_change_avail == '1'){
+  toggleModalFieldDisableEnable(item: any) {
+    if (item.map_change_avail == '1') {
       this.modalFieldForm.controls.al.disable();
     }
-    if(item.map_change_restriction == '1'){
+    if (item.map_change_restriction == '1') {
       this.modalFieldForm.controls.cta.disable();
       this.modalFieldForm.controls.ctd.disable();
       this.modalFieldForm.controls.cu.disable();
     }
-    if(item.map_change_stopsale == '1'){
+    if (item.map_change_stopsale == '1') {
       this.modalFieldForm.controls.ss.disable();
     }
-    if(item.map_change_stay == '1'){
+    if (item.map_change_stay == '1') {
       this.modalFieldForm.controls.mx.disable();
       this.modalFieldForm.controls.mn.disable();
     }
-    if(item.derivedPriceType.toLowerCase() == 'not derived' ){
+    if (item.derivedPriceType.toLowerCase() == 'not derived') {
       this.modalFieldForm.controls.pr.disable();
     }
   }
@@ -510,9 +508,9 @@ export class CalendarViewComponent {
     this.modalFieldForm.controls.pr.enable();
   }
 
-  highlightInbetweenDates(){
+  highlightInbetweenDates() {
     console.log(32324);
-    
+
   }
 
 }
