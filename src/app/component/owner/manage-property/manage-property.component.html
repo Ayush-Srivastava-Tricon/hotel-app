@@ -170,7 +170,7 @@
                             <label for="propertyName" class="col-sm-3 col-form-label">Mobile <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" maxlength="10" class="form-control" formControlName="mobile"
+                                <input type="text" maxlength="15" class="form-control" formControlName="mobile"
                                     [class.is-invalid]="propertyUserModal.controls.mobile.errors?.['[pattern]']">
                                 <small
                                     *ngIf="propertyUserModal.controls.mobile.dirty && propertyUserModal.controls.mobile.errors?.['required']"
@@ -253,7 +253,7 @@
                             <label for="propertyName" class="col-sm-3 col-form-label">Postal Code <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" formControlName="postal_code">
+                                <input type="text" minlength="6" class="form-control" formControlName="postal_code">
                                 <small
                                     *ngIf="propertyUserModal.controls.postal_code.dirty && propertyUserModal.controls.postal_code.errors?.['required']"
                                     class="text-danger">Required</small>

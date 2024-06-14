@@ -21,6 +21,15 @@
                 </svg>
                 <input type="password" class="inputField" id="password" placeholder="Password" [(ngModel)]="userModal['password']">
             </div>
+            <div class="inputContainer" *ngIf="captchaUrl">
+                <div class="preview">
+                    <img [src]="captchaUrl" class="captcha-img" [alt]="'https://images.pexels.com/photos/388415/pexels-photo-388415.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'">
+                </div>
+            </div>
+            <div class="inputContainer" *ngIf="captchaUrl">
+                <i class="bi bi-google"></i>
+                <input type="text" class="inputField" id="text" placeholder="Captcha Code" [(ngModel)]="userModal['captcha_code']">
+            </div>
             <div class="inputContainer">
                 <ng-container *ngIf="!isAdminLogin">
                     <input type="radio" class="inputField radio" id="owner" (change)="selectUserType('owner',2)" name="user-type">
@@ -30,8 +39,9 @@
                 </ng-container>
             </div>
             
-            <button id="button" class="login-btn mb-2" [class.disabled]="!userType || loader" (click)="login()">Submit</button> <span *ngIf="loader" class="spinner-border text-success" role="status"></span>
+            <button id="button" class="login-btn mb-2" [class.disabled]="!userType || loader" (click)="login()">Submit</button> <div *ngIf="loader" class="spinner-border text-success" ></div>
             <a href="javascript:void(0);" *ngIf="!isAdminLogin" class="text-decoration-none font-bold text-primary" style="z-index: 999;" [routerLink]="'/adminLogin'">Are you Admin ?</a>
+            <a href="javascript:void(0);" *ngIf="isAdminLogin" class="text-decoration-none font-bold text-primary" style="z-index: 999;" [routerLink]="'/login'">Owner or Property User ?</a>
         </div>
     </div>
 </div>

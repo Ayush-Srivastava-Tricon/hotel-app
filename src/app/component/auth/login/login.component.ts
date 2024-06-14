@@ -16,6 +16,7 @@ export class LoginComponent {
   userModal: any = {};
   isAdminLogin: boolean = false;
   loader: boolean = false;
+  captchaUrl:any='';
 
   constructor(private router: Router, private authService: AuthService, private alertService: AlertService, private commonService: CommonService) { }
 
@@ -25,7 +26,17 @@ export class LoginComponent {
       this.isAdminLogin = true;
       this.selectUserType('admin', 1);
     }
+    this.fetchCaptcha();
 
+  }
+
+  fetchCaptcha(){
+    this.authService.fetchCaptcha((res:any)=>{
+      if(res.status == 200){
+        console.log(res);
+        this.captchaUrl = res.CaptchaImage;
+      }
+    })
   }
 
   selectUserType(userType: any, roleNum: number) {

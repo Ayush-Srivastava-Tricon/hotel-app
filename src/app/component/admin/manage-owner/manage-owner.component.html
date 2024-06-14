@@ -169,7 +169,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <label for="propertyType">Mobile</label>
-                    <input type="text" maxlength="10" class="form-control" formControlName="mobile"
+                    <input type="text" maxlength="15" class="form-control" formControlName="mobile"
                         [class.is-invalid]="(ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['required']) || (ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['pattern'])">
                     <small
                         *ngIf="ownerModal.controls.mobile.dirty && ownerModal.controls.mobile.errors?.['required']"
@@ -180,7 +180,7 @@
                 </div>
                 <div class="col-sm-6">
                     <label for="propertyType">Alternate Mobile</label>
-                    <input type="text" maxlength="10" class="form-control" formControlName="alternate_mobile"
+                    <input type="text" maxlength="15" class="form-control" formControlName="alternate_mobile"
                         [class.is-invalid]="(ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['required']) || (ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['pattern'])">
                     <small
                         *ngIf="ownerModal.controls.alternate_mobile.dirty && ownerModal.controls.alternate_mobile.errors?.['required']"

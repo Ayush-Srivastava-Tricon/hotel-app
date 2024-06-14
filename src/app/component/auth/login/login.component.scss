@@ -124,4 +124,21 @@
     border-radius: 20px;
   }
   
-  
+  .inputContainer .preview{
+    color: #555;
+    width: 100%;
+    text-align: center;
+    height: 50px;
+    line-height: 40px;
+    letter-spacing: 8px;
+    border: 1px dashed #888;
+    border-radius: 0.5em;
+    margin-bottom: 10px;
+
+    & .captcha-img{
+      width: 240px;
+      height: 50px;
+      border-radius: 0.5em;
+      padding: 3px;
+    }
+  }

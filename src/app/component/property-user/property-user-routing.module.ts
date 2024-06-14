@@ -80,6 +80,11 @@ const routes: Routes = [
         loadChildren:()=>import("../../shared/change-password/change-password.module").then(m=>m.ChangePasswordModule),
         canActivate:[AuthGuard]
        },
+       {
+        path:'user_setting',
+        loadChildren:()=>import("../../shared/default-user-setting/default-user-setting.module").then(m=>m.DefaultUserSettingModule),
+       canActivate:[AuthGuard]
+      },
      
     ]
   }

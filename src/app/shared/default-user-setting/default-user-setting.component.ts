@@ -15,7 +15,9 @@ export class DefaultUserSettingComponent {
     "language": '',
     "calendar_start_day": '',
     "auto_assignment_pms": false,
-    "time_zone": ''
+    "time_zone": '',
+    "role_id":'',
+    "property_id":''
   };
   loader: boolean = false;
 
@@ -24,13 +26,20 @@ export class DefaultUserSettingComponent {
   }
 
   ngOnInit() {
-    this.userSettingConfig.user_id = JSON.parse(<any>localStorage.getItem("userId"));
+    if(<any>localStorage.getItem("selectedPropertyId")){
+      this.userSettingConfig.user_id = JSON.parse(<any>localStorage.getItem("selectedPropertyId"));    //same for Property
+      this.userSettingConfig.property_id = JSON.parse(<any>localStorage.getItem("selectedPropertyId"));  //same for Property
+    }else{
+      this.userSettingConfig.user_id = JSON.parse(<any>localStorage.getItem("userId"));
+    }
+    this.userSettingConfig.role_id = JSON.parse(<any>localStorage.getItem("roleId"));
+    this.userSettingConfig.property_id = 0;
     this.fetchDefaultUserSetting();
   }
 
   fetchDefaultUserSetting(){
     this._service.fetchDefaultUserSetting(this.userSettingConfig.user_id,(res:any)=>{
-      if(res.status == 200){
+      if(res.status == 200 && res.data.length>0){
         console.log(res);
         this.userSettingConfig = res.data[0];
       }

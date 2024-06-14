@@ -27,6 +27,7 @@ export class BaseServiceService {
     // <=======AUTHENTICATION=======>
     'login': "hotelapi/login",
     'logout': "hotelapi/logout",
+    'captcha': "hotelapi/captcha",
 
 
     //<========Admin Service=========>
@@ -116,9 +117,7 @@ export class BaseServiceService {
       .set('content-type', 'application/json')
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
-
-
-
+      
     return this.http.get(environment.apiUrl + url, { headers: headers, params: data }).subscribe((data: any) => {
       callback(<any>data);
     },

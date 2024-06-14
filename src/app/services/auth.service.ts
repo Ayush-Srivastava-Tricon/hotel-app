@@ -72,4 +72,7 @@ export class AuthService extends BaseServiceService {
       return this.http.get(`https://www.e2xinfotech.com/hotelapi/refreshToken/?role=${role_id}&user_id=${user_id}`);
   }
 
+  fetchCaptcha(callback:any){
+    return this.getData({},this.httpUrl['captcha'],callback);
+  }
 }
