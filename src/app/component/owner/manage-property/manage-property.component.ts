@@ -84,6 +84,9 @@ export class ManagePropertyComponent {
           this.fetchPropertyList();
           this.alertService.alert("success", "New Property Created", "Success", { displayDuration: 3000, pos: 'top' });
           this.loader=false;
+        } else if(res.status == 500){
+          this.alertService.alert("error", "Duplicate Email Entry", "Error", { displayDuration: 3000, pos: 'top' });
+          this.loader=false;
         } else {
           this.alertService.alert("error", "Something went wrong", "Error", { displayDuration: 3000, pos: 'top' });
           this.loader=false;

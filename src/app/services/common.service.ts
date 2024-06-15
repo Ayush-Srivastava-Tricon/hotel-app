@@ -12,7 +12,7 @@ export class CommonService {
 
 validatePassword(control:any) {
   const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  if (!passwordRegex.test(control.value)) {
+  if (!passwordRegex.test(control.value ? control.value : control)) {
     return { invalidPassword: true };
   }
   return null;
