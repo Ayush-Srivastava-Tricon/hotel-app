@@ -61,6 +61,7 @@ export class LoginComponent {
       } else {
         this.loader = false;
         this.alertService.alert("error", res.error.message, "Error", { displayDuration: 2000, pos: 'top' });      //need to be change
+        this.fetchCaptcha()
       }
     })
   }

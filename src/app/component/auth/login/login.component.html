@@ -39,7 +39,11 @@
                 </ng-container>
             </div>
             
-            <button id="button" class="login-btn mb-2" [class.disabled]="!userType || loader" (click)="login()">Submit</button> <div *ngIf="loader" class="spinner-border text-success" ></div>
+            <button id="button" class="login-btn mb-2" [class.disabled]="!userType || loader" (click)="login()">Submit</button>
+            <div>
+                <div *ngIf="loader" class="d-block spinner-border text-primary" ></div>
+            </div>
+
             <a href="javascript:void(0);" *ngIf="!isAdminLogin" class="text-decoration-none font-bold text-primary" style="z-index: 999;" [routerLink]="'/adminLogin'">Are you Admin ?</a>
             <a href="javascript:void(0);" *ngIf="isAdminLogin" class="text-decoration-none font-bold text-primary" style="z-index: 999;" [routerLink]="'/login'">Owner or Property User ?</a>
         </div>
