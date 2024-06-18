@@ -43,8 +43,8 @@ export class OwnerService extends BaseServiceService {
     this.postData(param,this.httpUrl['settings'],callback)
    }
 
-   fetchDefaultUserSetting(user_id:any,callback:any){
-    this.getData({},`${this.httpUrl['defaultData']}/${user_id}`,callback)
+   fetchDefaultUserSetting(user_id:any,role_id:any,callback:any){
+    this.getData({},`${this.httpUrl['defaultData']}?user_id=${user_id}&role_id=${role_id}`,callback)
    }
 
    changePassword(param:any,callback:any){

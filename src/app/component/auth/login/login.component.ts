@@ -56,6 +56,7 @@ export class LoginComponent {
         this.setAccessToken(res);
         this.setUserAndRole(res);
         this.setDefaultLang();
+        this.setTimeZoneAndStartingDate(res.data);
         this.router.navigate([this.userType]);
         this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
       } else {
@@ -85,6 +86,14 @@ export class LoginComponent {
 
   setDefaultLang(){
     localStorage.setItem("defaultLang","en");
+  }
+
+  setTimeZoneAndStartingDate(data:any){
+    let timeZoneAndStartingDate:any = {
+      time_zone:data.default_settings.time_zone,
+      calendar_start_day:data.default_settings.calendar_start_day
+    }
+    localStorage.setItem("defaultSetting",JSON.stringify(timeZoneAndStartingDate));
   }
 
 

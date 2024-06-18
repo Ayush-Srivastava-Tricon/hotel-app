@@ -4,7 +4,7 @@
     <div class="form-group row ">
         <label class="col-sm-3 col-form-label" for="usedType">Default Language</label>
         <div class="col-sm-9">
-            <select class="form-control" [(ngModel)]="userSettingConfig.language">
+            <select class="form-control" [ngClass]="{'spinner-border text-primary':fetchLoader}" [(ngModel)]="userSettingConfig.language">
                 <option value="" selected="true" disabled>Select</option>
                 <option value="en">English</option>
                 <option value="fr">French</option>
@@ -14,9 +14,9 @@
     <div class="form-group row my-2">
         <label class="col-sm-3 col-form-label" for="usedType">Start Calendar From Date</label>
         <div class="col-sm-9">
-            <select class="form-control"  (change)="selectCalendarStartDay($event)" >
+            <select class="form-control" [ngClass]="{'spinner-border text-primary':fetchLoader}"  (change)="selectCalendarStartDay($event)" >
                 <option value="" selected="true">Select</option>
-                <option [value]="idx+1" *ngFor="let days of [].constructor(31);let idx=index;">
+                <option [value]="idx+1" [selected]="idx+1 == userSettingConfig.calendar_start_day" *ngFor="let days of [].constructor(31);let idx=index;">
                     {{idx+1}}
                 </option>
             </select>
@@ -34,10 +34,10 @@
     <div class="form-group row ">
         <label class="col-sm-3 col-form-label" for="usedType">Time Zone</label>
         <div class="col-sm-9">
-            <select class="form-control" (change)="selectTimeZone($event)">
+            <select class="form-control" [ngClass]="{'spinner-border text-primary':fetchLoader}" (change)="selectTimeZone($event)">
                 <option value="" selected="true" disabled>Select</option>
-                <option [value]="zone.offset" *ngFor="let zone of constants.timeZones">
-                    {{zone.offset}} {{zone.cities}}
+                <option [value]="zone.offset" [selected]="zone.offset == userSettingConfig.time_zone" *ngFor="let zone of constants.timeZones">
+                    UTC{{zone.offset}} {{zone.cities}}
                 </option>
             </select>
         </div>

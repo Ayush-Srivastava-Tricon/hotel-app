@@ -50,6 +50,7 @@ export class CalendarViewComponent {
   isAdmin: boolean = false;
   isOwner: boolean = false;
   isDeriveModalActive: boolean = false;
+  timeZoneAndStartDate:any={};
 
   constructor(private _service: CalendarService, private fb: FormBuilder, private alertService: AlertService, public constant: AppConstants) {
     this.modalFieldForm = this.fb.group({
@@ -71,6 +72,7 @@ export class CalendarViewComponent {
   ngOnInit(): void {
     this.isAdmin = JSON.parse(<any>localStorage.getItem("isadmin"));
     this.isOwner = JSON.parse(<any>localStorage.getItem("isowner"));
+    this.getDefaultTimeZoneAndStartDate();
     if (localStorage.getItem("selectedPropertyId")) {
       this.loggedProperty.isLoginProperty = true;
       this.loggedProperty.propertyId = localStorage.getItem("selectedPropertyId");
@@ -511,6 +513,37 @@ export class CalendarViewComponent {
   highlightInbetweenDates() {
     console.log(32324);
 
+  }
+
+   formatDateWithTimezone(startingDay:any, timeZone:any) {
+    // Parse timeZone string to extract hours and minutes
+    const [sign, hours, minutes] = timeZone.match(/([-+])(\d{1,2}):(\d{2})/).slice(1);
+    const offsetMilliseconds = (parseInt(hours, 10) * 60 + parseInt(minutes, 10)) * 60000;
+    const timeZoneOffset = (sign === '-' ? -1 : 1) * offsetMilliseconds;
+  
+    const currentDate = new Date();
+    currentDate.setUTCDate(startingDay);
+    const adjustedDate = new Date(currentDate.getTime() + timeZoneOffset);
+    
+    const yyyy = adjustedDate.getUTCFullYear();
+    const mm = String(adjustedDate.getUTCMonth() + 1).padStart(2, '0'); 
+    const dd = String(adjustedDate.getUTCDate()).padStart(2, '0');
+  
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  
+  getDefaultTimeZoneAndStartDate(){
+      let {time_zone,calendar_start_day}:any = JSON.parse(<any>localStorage.getItem("defaultSetting"));
+      if((calendar_start_day != "0" || calendar_start_day != 0) && time_zone){
+        this.todayDate = new Date(this.formatDateWithTimezone(calendar_start_day,time_zone));
+      }else if((calendar_start_day == "0" || calendar_start_day == 0) && time_zone){
+        calendar_start_day = new Date().getDate();
+        this.todayDate = new Date(this.formatDateWithTimezone(calendar_start_day,time_zone));
+      }else{
+        //the calendar will open from today's date with curernt time zone
+      }
+      console.log(this.todayDate);
+      
   }
 
 }

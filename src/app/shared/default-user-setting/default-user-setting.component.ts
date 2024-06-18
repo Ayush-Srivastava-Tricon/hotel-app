@@ -20,6 +20,7 @@ export class DefaultUserSettingComponent {
     "property_id":''
   };
   loader: boolean = false;
+  fetchLoader:boolean=true;
 
   constructor(private _service: OwnerService, public constants: AppConstants, private alert: AlertService) {
 
@@ -38,16 +39,18 @@ export class DefaultUserSettingComponent {
   }
 
   fetchDefaultUserSetting(){
-    this._service.fetchDefaultUserSetting(this.userSettingConfig.user_id,(res:any)=>{
+    this._service.fetchDefaultUserSetting(this.userSettingConfig.user_id,this.userSettingConfig.role_id,(res:any)=>{
       if(res.status == 200 && res.data.length>0){
-        console.log(res);
         this.userSettingConfig = res.data[0];
+        this.fetchLoader=false;
       }
     })
   }
 
   selectTimeZone(event: any) {
-    this.userSettingConfig.time_zone = event.target.value.split("UTC")[1];
+    this.userSettingConfig.time_zone = event.target.value;
+    console.log(event.target.value);
+    
   }
 
   selectCalendarStartDay(event: any) {
