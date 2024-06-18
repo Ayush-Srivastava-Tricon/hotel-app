@@ -85,8 +85,8 @@ export class ManagePmsComponent {
   
   openModal(){
     this.showModal.pms = true;
-    this.resetConfig();
     this.isEditModal = false;
+    this.resetConfig();
     this.getParentRoomId();
   }
 
@@ -112,6 +112,7 @@ export class ManagePmsComponent {
         // lastCleaningTime: '',
       }
     ));
+    this.selectedDays=[];
   }
 
   getParentRoomId() {
@@ -139,6 +140,7 @@ export class ManagePmsComponent {
         this.showModal.pms = true;
         this.getParentRoomId();
         this.pmsDataConfig = res.data[0];
+        this.selectedDays = this.pmsDataConfig.cleaning_frequency;
         this.pmsDataConfig.previous_cleaning_status = res.data[0].cleaning_status;
         this.pmsDataConfig.previous_internal_notes = res.data[0].internal_notes;
         this.pmsDataConfig.previous_last_cleaning_date =res.data[0].last_cleaning_date;
@@ -154,6 +156,7 @@ export class ManagePmsComponent {
     delete this.pmsDataConfig.id;
     delete this.pmsDataConfig.last_cleaning_date;
     delete this.pmsDataConfig.update_time;
+    this.pmsDataConfig.cleaning_frequency = this.selectedDays;
     
     this._service.updatePMS(this.pmsDataConfig,(res:any)=>{
       if(res.status == 200){
