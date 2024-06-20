@@ -101,6 +101,7 @@ export class BaseServiceService {
     'listMappedRatePlans': 'hotelapi/rooms/listMappedRatePlans',
     'applyDerivationRule': 'hotelapi/rooms/applyDerivationRule',
     'totalArrivalDeparture': 'hotelapi/dashboard/totalArrivalDeparture',
+    'listPMSRoomsWithHouseKeeper': 'hotelapi/employee/listPMSRoomsWithHouseKeeper',
 
 
   }

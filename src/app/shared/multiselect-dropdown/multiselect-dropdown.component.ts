@@ -19,6 +19,7 @@ export class MultiselectDropdownComponent {
 constructor(){}
 
 ngOnInit(){
+  this.setSelectedValue();
 }
 
 
@@ -119,6 +120,18 @@ toggleDropdown(prop:any){
     this.filteredOptions[prop]= this.inputConfig[prop];
     this.togggleDropdown = true;
     
+}
+
+
+setSelectedValue(){
+  if(this.inputConfig.houseKeepePage && this.inputConfig.pmsData?.length>0){
+         this.inputConfig.pmsData?.forEach((e:any)=>{
+          if(e.checked){
+            this.multiselectPageConfig.pmsData.push(e);
+          }
+         })
+
+  }
 }
 
 

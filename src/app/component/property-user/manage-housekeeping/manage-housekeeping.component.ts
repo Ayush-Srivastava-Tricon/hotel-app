@@ -28,7 +28,8 @@ export class ManageHousekeepingComponent {
     "pmsRooms":[]
   };
   pmsData:any=[];
-  
+
+
   constructor(private _service:PropertyService,private alert:AlertService){}
 
   ngOnInit(){
@@ -144,6 +145,11 @@ export class ManageHousekeepingComponent {
   closeModal(){
     this.showModal.delete=false;
     this.showModal.map=false;
+    this.mapHousekeeperConfig = JSON.parse(JSON.stringify({
+      "house_keeper_id":0,
+      "pmsRooms":[]
+    }));
+    this.pmsData = [];
   }
 
   backToKeeper(){
@@ -160,10 +166,24 @@ export class ManageHousekeepingComponent {
   getPMSRooms(){
     this._service.listPMSRooms(this.currentPropertyId,(res:any)=>{
       if(res.status == 200){
-        this.pmsData = res.data.map((e:any)=>{return{'value':e.name,'id':e.id,'checked':false}});
-        console.log(res);
+        this.listPMSRoomsWithHouseKeeper(res.data);
+
       }else{
         this.pmsData=[];
+      }
+    })
+  }
+
+  listPMSRoomsWithHouseKeeper(pmsData:any){
+    this._service.listPMSRoomsWithHouseKeeper(this.mapHousekeeperConfig.house_keeper_id,(res:any)=>{
+      if(res.status == 200){
+        console.log(res);
+        this.pmsData = pmsData.map((e:any)=>{return{'value':e.name,'id':e.id,'checked':false}});
+        this.pmsData.forEach((e:any)=>{
+          if(res.data[0]?.pms_room_id.includes(+e.id)){
+            e.checked=true;
+          }
+        })
       }
     })
   }
@@ -175,12 +195,12 @@ export class ManageHousekeepingComponent {
   }
 
   mapHousekeeper(){
-      this.loader=true;
+    this.loader=true;
       this._service.mapPMSRoomsWithHouseKeeper(this.mapHousekeeperConfig,(res:any)=>{
         if(res.status == 200){
           console.log(res);
           this.loader=false;
-          this.alert.alert("error",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
+          this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
           this.closeModal();
         }else{
           this.closeModal();

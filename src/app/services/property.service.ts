@@ -209,8 +209,10 @@ export class PropertyService extends BaseServiceService {
 
   fetchArrivalDeparture(property_id:any,callback:any){
     this.getData({},`${this.httpUrl['totalArrivalDeparture']}/${property_id}`,callback);
-
-    
+  }
+  
+  listPMSRoomsWithHouseKeeper(house_keeper_id:any,callback:any){
+    this.getData({},`${this.httpUrl['listPMSRoomsWithHouseKeeper']}/${house_keeper_id}`,callback);
   }
 
 }
