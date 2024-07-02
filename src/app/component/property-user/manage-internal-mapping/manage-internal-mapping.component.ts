@@ -167,7 +167,7 @@ export class ManageInternalMappingComponent {
             e['activeIntRoomMap'] = false;
             e['activeMapping'] = false;
           }
-        })
+        }) 
         this.alert.alert("error",res.message,"Success", { displayDuration: 2000, pos: 'top' });
       }else{
         this.alert.alert("error",res.message,"Error", { displayDuration: 2000, pos: 'top' });
@@ -180,7 +180,7 @@ export class ManageInternalMappingComponent {
 
   setActiveIntRoomToMap(room:any){
     room['activeMapping'] = true;
-    this.mapConfig['internal_room_id'] = +room.room_id;
+    this.mapConfig['internal_room_id'] =+room.room_id;
   }
 
   setActiveExtRoomToMap(room:any){
@@ -209,10 +209,6 @@ export class ManageInternalMappingComponent {
           }
         })
       }
-
-      
-
-
   }
 
 }

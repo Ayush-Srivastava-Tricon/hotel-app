@@ -48,7 +48,8 @@ export class ManagePropertyComponent {
         latitudes: ['', ],
         longitudes: ['',],
         owner_id: ['',],
-        time_zone:['']
+        time_zone:[''],
+        city_tax:['']
       }
     )
   }

@@ -179,7 +179,7 @@ export class ManageHousekeepingComponent {
       if(res.status == 200){
         console.log(res);
         this.pmsData = pmsData.map((e:any)=>{return{'value':e.name,'id':e.id,'checked':false}});
-        this.pmsData.forEach((e:any)=>{
+        this.pmsData.forEach((e:any)=>{ 
           if(res.data[0]?.pms_room_id.includes(+e.id)){
             e.checked=true;
           }
@@ -193,6 +193,7 @@ export class ManageHousekeepingComponent {
         this.mapHousekeeperConfig.pmsRooms = event.value;
       }
   }
+  
 
   mapHousekeeper(){
     this.loader=true;

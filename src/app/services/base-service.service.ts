@@ -53,6 +53,12 @@ export class BaseServiceService {
     'settings': 'hotelapi/settings',
     'defaultData': 'hotelapi/settings/defaultData',
     'changepassword': 'hotelapi/changepassword',
+    'addMailTemplate': 'hotelapi/notifications/addMailTemplate',
+    'fetchEmailTemplate':'hotelapi/notifications/listMailTemplate',
+    'pDeleteRec':'hotelapi/notifications/pDeleteRec',
+    'viewMailTemplate':'hotelapi/notifications/viewMailTemplate',
+    'updateTemplate':'hotelapi/notifications/updateTemplate',
+
 
     //<========Property Service========>
     'getAllRooms': 'hotelapi/rooms',

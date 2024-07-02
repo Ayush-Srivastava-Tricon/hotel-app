@@ -25,5 +25,7 @@
     "ADD_CUSTOM_TRANSLATION":"Add Custom Translation",
     "MANAGE_INTERNAL_MAPPING":"Manage Internal Mapping",
     "USER_SETTING":"User Setting",
-    "CHANGE_PASSWORD":"Change Password"
+    "CHANGE_PASSWORD":"Change Password",
+    "TEMPLATE_LIST":"E-mail Template",
+    "ADD_TEMPLATE":"Add E-mail Template"
 }

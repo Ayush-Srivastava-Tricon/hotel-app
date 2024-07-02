@@ -1,0 +1,182 @@
+<div class="container-fluid">
+    <ng-container *ngIf="!showModal.template">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-sm-12">
+                <div class="table-wrapper shadow">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <span class="title">{{'TEMPLATE_LIST'|translate}}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
+                                    data-toggle="modal"><span>{{'ADD_TEMPLATE'|translate}}</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-shadow table-lg table-striped table-hover">
+                        <thead class="thead-dark">
+                            <tr class="table-row-rooms">
+                                <th scope="col">Language</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Template Type</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="loader">
+                                <td class="tg-cly1">
+                                </td>
+                                <td class="tg-cly1">
+                                </td>
+                                <td class="tg-cly1">
+                                </td>
+                                <td class="tg-cly1">
+                                </td>
+                                <td class="tg-cly1">
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="emailTemplateData.length>0 && !loader">
+
+                                <tr *ngFor="let item of emailTemplateData;let idx = index;"
+                                    class="text-center align-middle">
+                                    <td>{{item.language}}</td>
+                                    <td>{{item.status}}</td>
+                                    <td>{{item.subject}}</td>
+                                    <td>{{item.template_type}}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <i class="btn btn-light btn-sm bi bi-three-dots-vertical"
+                                                (click)="showDropDown(idx)"></i>
+                                            <div class="dropdown-menu d-block"
+                                                (mouseleave)="showActionDropDown[idx]=false;"
+                                                *ngIf="showActionDropDown[idx]">
+                                                <!-- <a class="dropdown-item">Change Status</a> -->
+                                                <a class="dropdown-item"
+                                                    (click)="fetchEmailTempalteById(item.id)">{{"EDIT_TEMPLATE"|translate}}</a>
+                                                <a class="dropdown-item" (click)="deleteTemplateModal(item.id,idx)">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="showModal.template">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)" (click)="backToTemplate()">Back</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add email template</li>
+            </ol>
+        </nav>
+
+        <fieldset class="container p-3 shadow my-3 w-75">
+            <legend class="float-none w-auto"> <button class="btn text-light btn-primary rounded-0 ">E-mail Template
+                </button> </legend>
+
+                <div class="form-group row align-items-baseline ">
+                    <label class="col-sm-3 col-form-label" for="cleaningFrequency">Language</label>
+                    <div class="col-sm-9">
+                      <div class="weekdays-container">
+                        <div *ngFor="let day of languages" class="border"
+                             [ngClass]="{'selected': isSelected(day),'shadow':isSelected(day)}"
+                             (click)="selectDay(day)">
+                          {{ day }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+            <!-- <div class="form-group row ">
+                <label class="col-sm-3 col-form-label" for="usedType">Language</label>
+                <div class="col-sm-9">
+                    <select class="form-control" [ngClass]="{'spinner-border text-primary':loader}"
+                        [(ngModel)]="emailTemplateConfig.language">
+                        <option value="" selected="true" disabled>Select</option>
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                    </select>
+                </div>
+            </div> -->
+            <div class="form-group row my-2">
+                <label class="col-sm-3 col-form-label" for="usedType">Template Type</label>
+                <div class="col-sm-9">
+                    <select class="form-control" [ngClass]="{'spinner-border text-primary':loader}"
+                        [(ngModel)]="emailTemplateConfig.template_type">
+                        <option value="" disabled selected="true">Select</option>
+                        <option [value]="item.value" *ngFor="let item of constants.template_type[userType]">
+                            {{item.value}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row my-2">
+                <label class="col-sm-3 col-form-label" for="usedType">Subject</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="subject" [(ngModel)]="emailTemplateConfig.subject">
+                </div>
+            </div>
+            <div class="form-group row ">
+                <label class="col-sm-3 col-form-label" for="message_format">Message Format</label>
+                <div class="col-sm-9">
+                    <select class="form-control" [ngClass]="{'spinner-border text-primary':loader}"
+                        [(ngModel)]="emailTemplateConfig.message_format">
+                        <option value="" selected="true" disabled>Select</option>
+                        <option value="text">Text</option>
+                        <option value="html">HTML</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row my-2">
+                <label class="col-sm-3 col-form-label" for="message_format">Message</label>
+                <div class="col-sm-9">
+                    <editor [init]="editorConfig" [(ngModel)]="emailTemplateConfig.message"></editor>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-sm-12 d-flex">
+                    <button type="button" class="btn btn-sm btn-primary" [disabled]="loader"
+                        (click)="isEditModal ? editTemplate() : addMailTemplate()">{{isEditModal ? 'Edit' : 'Add'}}</button>
+                    <div class="spinner-border text-success mx-2" *ngIf="loader"></div>
+                </div>
+            </div>
+        </fieldset>
+
+    </ng-container>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal" *ngIf="showModal.delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <ng-container *ngIf="showModal.delete">
+                    <div class="modal-header flex-row">
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Do you really want to delete the template ?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            (click)="closeModal()">Cancel</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteTemplate()">Delete</button>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade in" *ngIf="showModal.delete"></div>

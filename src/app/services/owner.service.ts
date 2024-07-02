@@ -50,4 +50,24 @@ export class OwnerService extends BaseServiceService {
    changePassword(param:any,callback:any){
     this.putData(param,this.httpUrl['changepassword'],callback)
    }
+
+   addMailTemplate(param:any,callback:any){
+    this.postData(param,this.httpUrl['addMailTemplate'],callback)
+   }
+
+   fetchEmailTempalte(param:any,callback:any){
+    this.getData({},`${this.httpUrl['fetchEmailTemplate']}?role_id=${param.role_id}&user_id=${param.user_id}`,callback)
+   }
+
+   fetchEmailTempalteById(template_id:any,callback:any){
+    this.getData({},`${this.httpUrl['viewMailTemplate']}/${template_id}`,callback)
+   }
+
+   deleteTemplate(template_id:any,callback:any){
+    this.deleteData({},`${this.httpUrl['pDeleteRec']}/${template_id}`,callback)
+   }
+   
+   updateTemplate(param:any,callback:any){
+    this.putData(param,this.httpUrl['updateTemplate'],callback)
+   }
 }

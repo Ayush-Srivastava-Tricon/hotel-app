@@ -34,6 +34,15 @@ const routes: Routes = [
       canActivate:[AuthGuard]
      },
      {
+      path: 'e_mail',
+      loadChildren: () => import("../../shared/e-mail-template/e-mail-template.module").then(m => m.EMailTemplateModule),
+      canActivate: [AuthGuard]
+    },
+     {
+      path:'admin-setting',
+      loadChildren:()=>import("../admin/admin-setting/admin-setting.module").then(m=>m.AdminSettingModule)
+    },
+     {
       path:"**",
       redirectTo:'dashboard'
      }

@@ -20,7 +20,12 @@
                     <li>
                         <a href="javascript:void(0)" routerLink="/admin/manage-ota"
                             class="nav-link text-light px-0 align-middle">
-                            <i class="fs-4 bi bi-building-fill"></i> <span class="ms-1 d-none d-sm-inline">{{'MANAGE_OTA'|translate}}</span></a>
+                            <i class="fs-4 bi bi-building-fill"></i> <span class="ms-1 d-none d-sm-inline">MANAGE OTA</span></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" routerLink="/admin/admin-setting"
+                            class="nav-link text-light px-0 align-middle">
+                            <i class="fs-4 bi bi-building-fill"></i> <span class="ms-1 d-none d-sm-inline">Admin setting</span></a>
                     </li>
                     <li>
                         <a href="javascript:void(0)" routerLink="/admin/change_password"
@@ -69,7 +74,7 @@
                 </div>
             </div>
             <div class="row justify-content-end">
-                <div class="col-sm-2 my-2">
+                <div class="col-sm-2 my-2 w-auto">
                     <select class="form-select rounded-pill shadow" (change)="changeLang($event)">
                         <option value="null" [selected]="true" disabled>Select Lang...</option>
                         <option value="en">English</option>

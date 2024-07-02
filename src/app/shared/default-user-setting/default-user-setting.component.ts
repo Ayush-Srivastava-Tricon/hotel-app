@@ -44,6 +44,7 @@ export class DefaultUserSettingComponent {
         this.userSettingConfig = res.data[0];
         this.fetchLoader=false;
       }
+      this.fetchLoader=false;
     })
   }
 

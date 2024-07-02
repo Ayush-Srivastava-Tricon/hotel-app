@@ -320,6 +320,15 @@
                                     class="text-danger">Required</small>
                             </div>
                         </div>
+                        <div class="form-group row mb-2">
+                            <label for="propertyName" class="col-sm-3 col-form-label">City Tax</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="city_tax">
+                                <small
+                                    *ngIf="propertyUserModal.controls.city_tax.dirty && propertyUserModal.controls.city_tax.errors?.['required']"
+                                    class="text-danger">Required</small>
+                            </div>
+                        </div>
                     </fieldset>
                 </div>
             </div>

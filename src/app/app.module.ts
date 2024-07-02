@@ -9,8 +9,10 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient} from '@angular/common/http';
 import "../app/constants/javascript.variable";
+import { EditorModule,TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
-const isProduction:boolean = window.location.href.includes("hotel-app") ? true : false;
+// const isProduction:boolean = window.location.href.includes("hotel-app") ? true : false;
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,11 +29,15 @@ const isProduction:boolean = window.location.href.includes("hotel-app") ? true :
           useFactory: HttpLoaderFactory,
           deps: [HttpClient]
       }
-  })
+  }),
+  EditorModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide :TINYMCE_SCRIPT_SRC, useValue:'tinymce/tinymce.min.js'}
+  ],
   bootstrap: [AppComponent],
-  exports:[TranslateModule]
+  exports:[TranslateModule,EditorModule]
 })
 export class AppModule { }
 export function HttpLoaderFactory(http: HttpClient) {

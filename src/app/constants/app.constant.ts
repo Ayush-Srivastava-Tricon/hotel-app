@@ -79,4 +79,61 @@ export class AppConstants {
         { offset: "+12:00", cities: ["Auckland", "Fiji"] }
     ];
 
+    public template_type:any={
+        '1':[
+            {
+                value:"Create Owner"
+            },
+            {
+                value:"Create Property"
+            },
+            {
+                value:"Generate OTP"
+            },
+            {
+                value:"Reset Password"
+            },
+            {
+                value:"Change Password"
+            },
+            {
+                value:"Generate Report"
+            },
+            {
+                value:"OTA Updated"
+            },
+            {
+                value:"OTA Failed"
+            },
+        ],
+        '2':[
+                {
+                    value:"Confirm Reservation"
+                },
+                {
+                    value:"Cancel Reservation"
+                },
+                {
+                    value:"Generate Invoice"
+                },
+                {
+                    value:"Reservation Created"
+                },
+        ],
+        '3':[
+                {
+                    value:"Confirm Reservation"
+                },
+                {
+                    value:"Cancel Reservation"
+                },
+                {
+                    value:"Generate Invoice"
+                },
+                {
+                    value:"Reservation Created"
+                },
+        ],
+    }
+
 }
