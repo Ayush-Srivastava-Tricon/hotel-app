@@ -85,6 +85,11 @@ const routes: Routes = [
         loadChildren:()=>import("../../shared/default-user-setting/default-user-setting.module").then(m=>m.DefaultUserSettingModule),
        canActivate:[AuthGuard]
       },
+       {
+        path:'pms_calendar',
+        loadChildren:()=>import("../property-user/pms-calendar/pms-calendar.module").then(m=>m.PmsCalendarModule),
+       canActivate:[AuthGuard]
+      },
      
     ]
   }

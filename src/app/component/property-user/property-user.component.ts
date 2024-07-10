@@ -13,6 +13,7 @@ export class PropertyUserComponent {
 
   currentPropertyId:any=0;
   loggedUserData:any={};
+  hideNavbar:boolean=false;
 
   constructor(private router:Router,private adminService:AdminService,private alert:AlertService,private translate:TranslationService){}
 
@@ -46,5 +47,18 @@ export class PropertyUserComponent {
 
   changeLang(event:any){
     this.translate.setLanguage(event.target.value)
+  }
+
+  openNav(){
+    let el:any =  document.getElementById("mySidenav");
+    el.style.width = "282px";
+  }
+  closeNav(){
+    let el:any =  document.getElementById("mySidenav");
+    el.style.width = "0";
+  }
+
+  hideNav(){
+    this.hideNavbar = !this.hideNavbar;
   }
 }

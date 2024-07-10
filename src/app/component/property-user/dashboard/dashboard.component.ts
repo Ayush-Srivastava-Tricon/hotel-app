@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { PropertyService } from 'src/app/services/property.service';
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -16,11 +16,14 @@ export class DashboardComponent {
   loader:boolean=false;
   latLong:any='';
   totalArrivalDeparture:any={};
+  url:any='';
 
-  constructor(private _service:PropertyService){}
+  constructor(private _service:PropertyService,private sanitizer:DomSanitizer,private zone: NgZone){}
 
   ngOnInit(){
       this.loggedUserData = JSON.parse(<any>localStorage.getItem("loggedUserData"))
+      let url:any = `https://maps.google.com/maps?q=${this.loggedUserData.latitudes},${this.loggedUserData.longitudes}&z=15&output=embed`;
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
       this.fetchArrivalDeparture();
       if(this.loggedUserData.latitudes && this.loggedUserData.longitudes){
         this.fetchRealTimeWeather();
@@ -29,7 +32,6 @@ export class DashboardComponent {
       }
       this.setRealTime();
     console.log(232);
-
 
   }
 
@@ -77,5 +79,11 @@ export class DashboardComponent {
       this.realTime = new Date().toLocaleTimeString();
     },1000)
   }
+
+  changeMap(){
+    let url:any = `https://maps.google.com/maps?q=${this.loggedUserData.latitudes},${this.loggedUserData.longitudes}&z=15&output=embed`;
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
 
 }

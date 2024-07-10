@@ -104,12 +104,12 @@
                     <ng-container *ngFor="let dayData of data.datesData;let dataIdx = index;">
                       <td *ngIf="id == 0" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'bg-success':dayData?.newData?.al ,'text-light':dayData?.newData?.al , 'bg-danger': !(dayData?.newData?.al) || dayData?.newData?.al == 0 ,'active':dragEl['head'+dataIdx+calendarIdx] }"
-                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx+id]=true;highlightInbetweenDates()">
+                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx+id]=true;">
                         {{dayData?.newData?.al }}
                       </td>
                       <td *ngIf="id == 1" class="hover-td"
                         [ngClass]="{'disabled':dayData.isDatePassed,'active':dragEl['head'+dataIdx+calendarIdx]}"
-                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;highlightInbetweenDates()">
+                        (click)="handleClickEvent(dayData.formateDate,dayData?.newData,data.room_name,data.room_id,false);dragEl['head'+dataIdx+calendarIdx]=true;">
                         {{dayData?.newData?.mn }} - {{dayData?.newData?.mx }}
                       </td>
                       <td *ngIf="id == 2" class="hover-td"

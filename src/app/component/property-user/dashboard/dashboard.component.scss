@@ -36,3 +36,12 @@ h1 {
       transition: 0.5s all ease;
 
     }
+
+    iframe {
+      display: block;
+      width: 50%;
+      max-width: 60rem;
+      height: 25em;
+      margin: 2rem auto;
+      border:1px solid black;
+    }

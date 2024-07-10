@@ -1,7 +1,8 @@
 <ng-container>
+  
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 background-nav ">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 background-nav " [ngClass]="{'collapsed': hideNavbar}">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 d-none d-sm-inline">E2X InfoTech</span>
@@ -19,12 +20,17 @@
                                 <i class="fs-4 bi-calendar3"></i> <span class="ms-4 d-none d-sm-inline">Calendar View</span></a>
                         </li>
                         <li>
+                            <a href="javascript:void(0)" routerLink="/manager/pms_calendar"
+                                class="nav-link text-light px-0 align-middle">
+                                <i class="fs-4 bi-calendar3"></i> <span class="ms-4 d-none d-sm-inline">PMS Calendar</span></a>
+                        </li>
+                        <li>
                             <a href="javascript:void(0)" routerLink="/manager/manage-internal-mapping"
                                 class="nav-link text-light px-0 align-middle">
                                 <i class="fs-4 bi bi-building-fill"></i> <span class="ms-4 d-none d-sm-inline">{{'MANAGE_INTERNAL_MAPPING'|translate}}</span></a>
                         </li>
                         <li>
-                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link text-light px-0 align-middle">
+                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link text-light px-0 align-middle" [ngClass]="{'collapsed': hideNavbar}">
                                 <i class="fs-4 bi bi-kanban"></i> <span class="ms-4 d-none d-sm-inline">Manage Room</span> </a>
                             <ul class="collapse nav flex-column ms-5 ps-3" style="list-style: circle;" id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100">
@@ -42,7 +48,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#submenu4" data-bs-toggle="collapse" class="nav-link text-light px-0 align-middle">
+                            <a href="#submenu4" data-bs-toggle="collapse" class="nav-link text-light px-0 align-middle" [ngClass]="{'collapsed': hideNavbar}">
                                 <i class="fs-4 bi bi-kanban"></i> <span class="ms-4 d-none d-sm-inline">Manage OTA User</span> </a>
                             <ul class="collapse nav flex-column ms-5 ps-3" style="list-style:circle" id="submenu4" data-bs-parent="#menu">
                                 <li class="w-100">
@@ -54,7 +60,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#submenu5" data-bs-toggle="collapse" class="nav-link text-light px-0 align-middle">
+                            <a href="#submenu5" data-bs-toggle="collapse" class="nav-link text-light px-0 align-middle" [ngClass]="{'collapsed': hideNavbar}">
                                 <i class="fs-4 bi bi-kanban"></i> <span class="ms-4 d-none d-sm-inline">Manage Reservation</span> </a>
                             <ul class="collapse nav flex-column ms-5 ps-3" style="list-style:circle" id="submenu5" data-bs-parent="#menu">
                                 <li class="w-100">
@@ -76,10 +82,20 @@
                                 <i class="fs-4 bi bi-building-fill"></i> <span class="ms-4 d-none d-sm-inline">{{'USER_SETTING'|translate}}</span></a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" (click)="logout()" class="nav-link text-light px-0 align-middle">
+                            <a href="javascript:void(0)" (click)="logout()" class="nav-link text-light px-0 align-middle mb-3">
                                 <i class="fs-4 bi bi-door-closed"></i> <span class="ms-4 d-none d-sm-inline">{{'LOGOUT'|translate}}</span></a>
                         </li>
+                        <div class="d-block w-100">
+                            <li>
+                                <a href="javascript:void(0)"  class="nav-link text-light px-0 " (click)="hideNav()">
+                                    <i class="fs-4 bi" [ngClass]="{'bi-twitter-x': hideNavbar , 'bi-list': !hideNavbar}"></i> <span class="ms-4 d-none d-sm-inline"></span></a>
+                                </li>
+
+                        </div>
                     </ul>
+                </div>
+                <div>
+                   
                 </div>
             </div>
             <div class="col table-responsive">
@@ -89,8 +105,6 @@
                         <div class="text-light">
                             (
                             <small class="text-light">Last Login : {{loggedUserData.last_login_time|date:'dd MMMM yyyy, HH:mm' }}</small>
-                            <!-- <small class="text-light">, User Name : {{loggedUserData.user_name}}</small> -->
-                            <!-- <small class="text-light">, Role : {{loggedUserData.role_name}}</small> -->
                             <small class="text-light"> Property-ID : {{currentPropertyId}}</small>
                             )
                         </div>

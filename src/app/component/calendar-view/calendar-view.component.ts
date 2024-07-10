@@ -510,11 +510,6 @@ export class CalendarViewComponent {
     this.modalFieldForm.controls.pr.enable();
   }
 
-  highlightInbetweenDates() {
-    console.log(32324);
-
-  }
-
    formatDateWithTimezone(startingDay:any, timeZone:any) {
     // Parse timeZone string to extract hours and minutes
     const [sign, hours, minutes] = timeZone.match(/([-+])(\d{1,2}):(\d{2})/).slice(1);
