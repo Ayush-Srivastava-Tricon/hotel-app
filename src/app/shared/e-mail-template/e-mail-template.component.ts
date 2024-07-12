@@ -57,7 +57,6 @@ export class EMailTemplateComponent {
     this.loader = true;
     this._service.fetchEmailTempalte(param, (res: any) => {
       if (res.status == 200) {
-        console.log(res);
         this.loader = false;
         this.emailTemplateData = res.data;
         this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' })
@@ -86,7 +85,6 @@ export class EMailTemplateComponent {
     this.emailTemplateConfig.role_id = this.userType;
     this._service.addMailTemplate([this.emailTemplateConfig], (res: any) => {
       if (res.status == 200) {
-        console.log(res);
         this.loader = false;
         this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' })
         this.backToTemplate();
@@ -116,7 +114,6 @@ export class EMailTemplateComponent {
     this.loader = true;
     this._service.fetchEmailTempalteById(id, (res: any) => {
       if (res.status == 200) {
-        console.log(res);
         this.loader = false;
         this.emailTemplateConfig = res.data[0];
         this.showModal.template = true;
@@ -133,7 +130,6 @@ export class EMailTemplateComponent {
     this.loader=true;
     this._service.updateTemplate(this.emailTemplateConfig,(res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.loader=false;
         this.backToTemplate();
         this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
@@ -201,7 +197,6 @@ export class EMailTemplateComponent {
     // } else {
       // this.selectedDays.push(day);
     // }
-    // console.log(this.selectedDays);
   }
 
   isSelected(day: string): boolean {

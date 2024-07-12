@@ -166,7 +166,6 @@ export class ManageOwnerComponent {
       const htmlContent:any = document.querySelector(".form-check-label");
       this.adminService.doGTranslate(htmlContent.innerText,selectedLangKey,(res:any)=>{
           if(res){
-            console.log(res);
             
           }
       })

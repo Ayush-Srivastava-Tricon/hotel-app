@@ -136,7 +136,6 @@ export class ManagePropertyComponent {
 
   selectCity(event: any) {
     this.propertyUserModal.controls.city.setValue(event.target.value);
-    console.log(this.propertyUserModal.value);
 
   }
 

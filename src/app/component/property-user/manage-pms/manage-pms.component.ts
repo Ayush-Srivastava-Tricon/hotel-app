@@ -59,8 +59,6 @@ export class ManagePmsComponent {
       if(res.status == 200){
         this.loader=false;
         this.pmsData = res.data;
-        console.log(res);
-        
       }
     })
   }
@@ -75,7 +73,6 @@ export class ManagePmsComponent {
     this.pmsDataConfig.priority = +this.pmsDataConfig.priority;
     this._service.savePMS(this.pmsDataConfig,(res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
         this.fetchPMS();
         this.backToPMS();
@@ -161,7 +158,6 @@ export class ManagePmsComponent {
     this._service.updatePMS(this.pmsDataConfig,(res:any)=>{
       if(res.status == 200){
         this.loader=false;
-        console.log(res);
         this.backToPMS();
         this.resetConfig();
         this.fetchPMS();
@@ -181,7 +177,6 @@ export class ManagePmsComponent {
   deleteRoom(){
       this._service.deletePMS(this.currentPMSId,(res:any)=>{
         if(res.status = 200){
-          console.log(res);
           this.showModal.delete=false;
           this.resetConfig();
           this.backToPMS();
@@ -209,7 +204,6 @@ export class ManagePmsComponent {
     } else {
       this.selectedDays.push(day);
     }
-    console.log(this.selectedDays);
   }
 
   isSelected(day: string): boolean {

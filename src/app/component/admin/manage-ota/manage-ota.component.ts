@@ -71,7 +71,6 @@ export class ManageOtaComponent {
     this.adminService.fetchOtaDetails((res:any)=>{
       if(res.status == 200){
         this.loader=false;
-        console.log(res);
         this.otaList = res.data;
       }
     })
@@ -96,7 +95,6 @@ export class ManageOtaComponent {
   editOwnerOpenModal(item:any){
     this.isEditModal = true;
     this.otaModal.patchValue(item);
-    console.log(item);
     this.showModal.ota = true;
     this.currentOtaId = item.id;
   }
@@ -110,8 +108,6 @@ export class ManageOtaComponent {
   }
 
   addNewOtaDetails(){
-    console.log(this.otaModal.value);
-    
     if(this.otaModal.status == 'VALID'){
       // let params:any={
       //   otaData:[this.otaModal.value]

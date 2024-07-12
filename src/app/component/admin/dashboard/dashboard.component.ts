@@ -43,7 +43,6 @@ export class AdminDashboardComponent {
     this.loader = true;
     this.adminService.filterByIdOrName(params, (res: any) => {
       if (res.status == 200) {
-        console.log(res);
         this.loader = false;
         this.filteredList = res.data;
         this.setAllPropertyListToLocal(res.data);

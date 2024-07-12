@@ -340,10 +340,11 @@
   }
 
 
-  line {
+  #line {
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
     animation: dash 2s   forwards ease-in-out;
+    display: none;
   }
   
   @keyframes dash {

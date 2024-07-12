@@ -1,6 +1,35 @@
+
 <div class="container-fluid">
   <div class="row mb-3 justify-content-around align-items-center calendar-header ">
-
+    <div class="col-sm-11">
+      <div class="d-inline-flex align-items-center me-2">
+        <div class="bi bi-square-fill text-success me-1" style="font-size: 20px;"></div>
+        <span>Available</span>
+      </div>
+      <div class="d-inline-flex align-items-center me-2">
+        <div class="bi bi-square-fill text-danger me-1" style="font-size: 20px;"></div>
+        <span>Not Available</span>
+      </div>
+      <div class="d-inline-flex align-items-center me-2">
+        <div class="bi bi-dash-square-fill text-danger me-1" style="font-size: 20px;"></div>
+        <span>Stop Sale</span>
+      </div>
+      <div class="d-inline-flex align-items-center me-2">
+        <div class="bi bi-slash-circle-fill text-warning me-1" style="font-size: 20px;"></div>
+        <span>Out of Order</span>
+      </div>
+      <div class="d-inline-flex align-items-center me-2">
+        <div class="bi bi-box-arrow-in-right text-danger me-1" style="font-size: 20px;"></div>
+        <span>Closed to Arrival</span>
+      </div>
+      <div class="d-inline-flex align-items-center me-2">
+        <div class="bi bi-box-arrow-right text-danger me-1" style="font-size: 20px;"></div>
+        <span>Closed to Departure</span>
+      </div>
+    </div>
+    <div class="col-sm-1 text-end">
+      <span class="bi bi-question-octagon-fill text-primary" style="font-size: 25px;"></span>
+    </div>
   </div>
 
   <div class="row mb-4 justify-content-between">
@@ -32,12 +61,12 @@
               class="bi bi-arrow-right-square text-danger" style="font-size: 30px;cursor: pointer;"
               (click)="nextMonth()"></span></div>
         </div>
-        
-        <div class="table-responsive ">
+
+        <div class="table-responsive " *ngIf="mainData.length>0">
           <table class="table table-bordered table-sm shadow p-3 mb-3 calendar-table">
             <thead>
               <tr>
-                <th>Room</th>
+                <th>PMS Rooms</th>
                 <th *ngFor="let day of weekdaysWithDates">{{ day.weekday }} <br> {{ day.date }}</th>
               </tr>
             </thead>
@@ -48,31 +77,28 @@
                 </tr>
                 <ng-container *ngFor="let room of group.data.pmsRoomList;let roomIdx=index">
                   <tr>
-                    <td class="px-3 pms_name d-block text-ellipsis">PMS - {{ room.pmsName }}</td>
-                    <ng-container *ngFor="let date of datesData; let dateIndex = index; let last = last;">
-                      <td class="hover-td {{dateIndex}}" [ngClass]="{'last-td': last}"
-                        [class.clash]="hasClashReservation(room, date)"
-                         [class.disabled]="date.isDatePassed"
-                        (drop)="drop($event)" 
-                        (dragover)="allowDrop($event)"
-                         [id]="'td'+groupIndex+roomIdx+dateIndex">
-                        <ng-container *ngIf="hasReservation(room, date)"> 
-                          <div class="reservation">
-                                              <img class="reservation-image"
-                                                   [src]="getReservationImage(room, date)" 
-                                                   [width]="getReservationDaysWidth(room, date)*60"
-                                                   height="67"
-                                                   [draggable]="true"
-                                                   (dragstart)="drag($event)"
-                                                   [id]="'td'+groupIndex+roomIdx+dateIndex"
-                                                   alt="">
-                                                   <div class="reservation-info">
-                                                    <div>{{ getReservationCustomerName(room, date)}}</div>
-                                                    <div>Check-in: {{ getReservationData(room, date)?.checkin }}</div>
-                                                    <div>Check-out: {{ getReservationData(room, date)?.checkout }}</div>
-                                                    <div>Reservation: {{ getReservationData(room, date)?.reservation }}</div>
-                                                  </div>
-                                          </div>
+                    <td class="px-3 pms_name d-block text-ellipsis"> <i class="bi bi-house"></i> {{ room.pmsName }}</td>
+                    <ng-container *ngFor="let date of datesData; let dateIndex = index; let last = last;let even= even;">
+                      <td class="hover-td" [ngClass]="{'overdate': last, }"
+                        [class.clash]="hasClashReservation(room, date)" [class.disabled]="date.isDatePassed"
+                        (drop)="drop($event)" (dragover)="allowDrop($event)"  
+                        >
+                        <ng-container *ngIf="isStartOfReservation(room, date)">
+                          <div class="reservation" (click)="getReserationDetails(room,date)">
+                            <div class="ota-img" > <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg': 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'" width="30" height="30" alt=""> </div>
+                            <div class="reservation-image" [id]="'td'+groupIndex+roomIdx+dateIndex">
+                              <canvas [id]="'captcha'+groupIndex+roomIdx+dateIndex">{{createImage(room, date,{groupIndex,roomIdx,dateIndex})}}</canvas>
+                            </div>
+                            <!-- <img class="reservation-image" [src]="getReservationImage(room, date)"
+                              [width]="getReservationDaysWidth(room, date)*50" height="67" [draggable]="true"
+                              (dragstart)="drag($event)" [id]="'td'+groupIndex+roomIdx+dateIndex" alt=""> -->
+                            <div class="reservation-info">
+                              <div>{{ getReservationCustomerName(room, date)}}</div>
+                              <div>Check-in: {{ getReservationData(room, date)?.checkin }}</div>
+                              <div>Check-out: {{ getReservationData(room, date)?.checkout }}</div>
+                              <div>Reservation: {{ getReservationData(room, date)?.reservation }}</div>
+                            </div>
+                          </div>
                         </ng-container>
                       </td>
                     </ng-container>
@@ -82,3 +108,537 @@
             </tbody>
           </table>
         </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="container-fluid text-center" *ngIf="loader">
+  <div class="spinner-border text-danger position-relative" role="status" style="width: 100px; height: 100px;z-index: 9999;">
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" *ngIf="showModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reservation Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="add-room-container">
+          <div>
+              <div class="row mb-2 mx-2">
+                  <div class="col-sm-6 mb-2 p-3">
+                      <fieldset class="border p-4 shadow mb-3">
+                          <legend class="float-none w-auto"> <button
+                                  class="btn btn-sm text-light btn-primary ">Reservation
+                                  Detail
+                              </button> </legend>
+                          <div class="form-group row mb-3 align-items-baseline">
+                              <label for="propertyName" class="col-sm-3 col-form-label">Reservation Code</label>
+                              <div class="col-sm-9 d-flex">
+                                  <strong>{{editReservationDataConfig.reservationData.reservations_no}}</strong>
+                                  <button type="button" class="btn btn-primary btn-sm mx-2"
+                                      (click)="copyCode(editReservationDataConfig.reservationData.reservations_no )">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                          class="bi bi-copy" viewBox="0 0 16 16">
+                                          <path fill-rule="evenodd"
+                                              d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z">
+                                          </path>
+                                      </svg>
+                                  </button>
+                              </div>
+                          </div>
+                          <div class="form-group row mb-3 align-items-baseline">
+                              <label for="propertyName" class="col-sm-3 col-form-label">Rooms</label>
+                              <div class="col-sm-9">
+                                  <strong>{{editReservationDataConfig.rooms.length}} Room</strong>
+                              </div>
+                          </div>
+                          <div class="form-group row mb-3 align-items-baseline">
+                              <label class="col-sm-3 col-form-label" for="description">Stay</label>
+                              <div class="col-sm-9">
+                                  <div class="row">
+                                      <div class="col-sm-5">
+                                          <input type="date" class="form-control"
+                                              [(ngModel)]="editReservationDataConfig.reservationData.check_in" readonly>
+                                      </div>
+                                      <div class="col-sm-2 text-center">
+                                          <i class="bi bi-arrow-right text-primary"></i>
+                                          <br>
+                                          ({{daysBetweenDates}} Night)
+                                      </div>
+                                      <div class="col-sm-5">
+                                          <input type="date" class="form-control"
+                                              [(ngModel)]="editReservationDataConfig.reservationData.check_out" readonly>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="form-group row mb-3 align-items-baseline">
+                              <label class="col-sm-3 col-form-label" for="description">Guests <span
+                                      class="text-danger">*</span></label>
+                              <div class="col-sm-9">
+                                  <div class="row">
+                                      <div class="col-sm-4">
+                                          <label class="text-center">
+                                              Adult
+                                              <input type="text" class="form-control"
+                                                  [(ngModel)]="editReservationDataConfig.reservationData.total_adult"
+                                                  (blur)="setAdultGuestReserve($event)" name="" id="">
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-4">
+                                          <label class="text-center">
+                                              Children
+                                              <input type="text" class="form-control"
+                                                  [(ngModel)]="editReservationDataConfig.reservationData.total_children"
+                                                  (blur)="setChildGuestReserve($event)" name="" id="">
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-4">
+                                          <label class="text-center">
+                                              Baby
+                                              <input type="text" class="form-control" (blur)="setBabyGuestReserve($event)"
+                                                  name="" id="">
+                                          </label>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="form-group row mb-3 align-items-baseline">
+                              <label class="col-sm-3 col-form-label" for="description">Rate Plan <span
+                                      class="text-danger">*</span></label>
+                              <div class="col-sm-9">
+                                  <p>? Not Defined</p>
+                              </div>
+                          </div>
+                          <div class="form-group row mb-3 align-items-baseline  ">
+                              <label class="col-sm-4 " for="source">Totals</label>
+                              <div class="col-sm-8 rounded border p-2">
+                                  <div class="row justify-content-between">
+                                      <div class="col-sm-6">Room GROSS</div>
+                                      <div class="col-sm-6 text-end">€ 31.97+</div>
+                                  </div>
+                                  <div class="row justify-content-between mb-2">
+                                      <div class="col-sm-6">Extras GROSS</div>
+                                      <div class="col-sm-6 text-end">€0.00 +</div>
+                                  </div>
+                                  <hr>
+                                  <div class="row justify-content-between">
+                                      <div class="col-sm-6"> <strong>Sub Total</strong></div>
+                                      <div class="col-sm-6 text-end"><strong>€131.97=</strong></div>
+                                  </div>
+                                  <div class="row justify-content-between">
+                                      <div class="col-sm-6">City Tax</div>
+                                      <div class="col-sm-6 text-end">€24.00+</div>
+                                  </div>
+                                  <hr>
+                                  <div class="row justify-content-between">
+                                      <div class="col-sm-6"><strong>Amount</strong></div>
+                                      <div class="col-sm-6 text-end"><strong>€ 155.97=</strong></div>
+                                  </div>
+                                  <div class="row justify-content-between">
+                                      <div class="col-sm-6">Commission</div>
+                                      <div class="col-sm-6 text-end"><strong>€0.00</strong></div>
+                                  </div>
+                                  <hr>
+                                  <div class="row justify-content-between">
+                                      <div class="col-sm-6"><strong>Amount Due</strong></div>
+                                      <div class="col-sm-6 text-end"><strong>€155.97 =</strong></div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="form-group row mb-3 align-items-baseline ">
+                              <label class="col-sm-4 " for="color">Reservation Label</label>
+                              <div class="col-sm-8">
+                                  <select class="form-select">
+                                      <option value="">Select a value...</option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="form-group row mb-3 align-items-baseline ">
+                              <label class="col-sm-4 " for="color">Color</label>
+                              <div class="col-sm-8">
+                                  <input type="color" class="form-control">
+                              </div>
+                          </div>
+                          <div class="form-group row mb-3 align-items-baseline ">
+                              <label class="col-sm-4 ">Reservation OK !</label>
+                              <div class="col-sm-8">
+                                  <span class="border rounded p-2"><i class="bi bi-hand-thumbs-down"></i> No</span>
+                              </div>
+                          </div>
+  
+                      </fieldset>
+                      <fieldset class="border p-4 shadow mb-3">
+                          <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Guests
+                              </button> </legend>
+                          <div class="row">
+                              <div class="col-sm-12 text-end">
+                                  <button class="btn btn-primary btn-sm mx-2" (click)="addMoreGuestInfo()">+</button>
+                              </div>
+                          </div>
+                          <ng-container *ngIf="editReservationDataConfig.guestData.length>0">
+                              <div class="row" *ngFor="let item of editReservationDataConfig.guestData;let idx = index">
+                                  <div class="row">
+                                      <div class="col-sm-12">
+                                          <h5>Guest :- {{idx+1}}</h5>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row mb-3 align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">Last Name</label>
+                                      <div class="col-sm-9">
+                                          <input type="text" class="form-control" [(ngModel)]="item.last_name">
+                                      </div>
+                                  </div>
+                                  <div class="form-group row mb-3 align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">First Name</label>
+                                      <div class="col-sm-9">
+                                          <input type="text" class="form-control" [(ngModel)]="item.first_name">
+                                      </div>
+                                  </div>
+                                  <div class="form-group row mb-3 align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">Email</label>
+                                      <div class="col-sm-9">
+                                          <input type="email" class="form-control" [(ngModel)]="item.email">
+                                      </div>
+                                  </div>
+                                  <div class="form-group row mb-3 align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">Phone Number</label>
+                                      <div class="col-sm-9">
+                                          <input type="number" class="form-control" [(ngModel)]="item.mobile">
+                                      </div>
+                                  </div>
+                                  <div class="form-group row mb-3 align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">Language</label>
+                                      <div class="col-sm-9">
+                                          <select name="" id="" class="form-select" [(ngModel)]="item.language">
+                                              <option value="it">Italian</option>
+                                              <option value="en">English</option>
+                                          </select>
+  
+                                      </div>
+                                  </div>
+                                  <div class="form-group row mb-3 align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">Travel
+                                          Agency/Corporate</label>
+                                      <div class="col-sm-9">
+                                          <select name="" id="" class="form-select" [(ngModel)]="item.travel_agency">
+                                              <option value="Travel Agency">Travel Agency</option>
+                                              <option value="Corporate">Corporate</option>
+                                              <option value="Other">Other</option>
+                                          </select>
+  
+                                      </div>
+                                  </div>
+                                  <hr>
+                              </div>
+                          </ng-container>
+                         
+                      </fieldset>
+                      <fieldset class="border p-4 shadow mb-3">
+                          <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Email
+                              </button> </legend>
+                          <div class="form-group row mb-3 align-items-baseline">
+                              <label for="propertyName" class="col-sm-3 col-form-label"></label>
+                              <div class="col-sm-9 text-end">
+                                  <button class="btn btn-primary">?</button>
+                              </div>
+                          </div>
+                      </fieldset>
+                      <fieldset class="border p-4 shadow mb-3">
+                          <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Payment
+                                  Mode
+                              </button> </legend>
+                          <div class="form-group row mb-3 align-items-baseline">
+                              <label for="propertyName" class="col-sm-7 col-form-label">Choose the preferred payment way
+                                  for this reservation</label>
+                              <div class="col-sm-5 text-end">
+                                  <select class="form-control" (change)="getPaymentDetails($event);">
+                                      <option [value]="" [selected]="true">Select</option>
+                                      <option [value]="mode.id" [selected]="mode.id == this.editReservationDataConfig?.payments[0]?.payment_method_id" *ngFor="let mode of paymentModeList">{{mode.name}}
+                                      </option>
+                                  </select>
+                              </div>
+                          </div>
+                      </fieldset>
+                      <fieldset class="border p-4 shadow mb-3">
+                          <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Special
+                                  Requests
+                              </button> </legend>
+                          <div class="form-group row mb-3 align-items-baseline">
+                              <label for="propertyName" class="col-sm-3 col-form-label">Special Requests</label>
+                              <div class="col-sm-9 text-end">
+                                  <button class="btn btn-danger btn-sm">?</button>
+  
+                              </div>
+                              <div class="row my-2">
+                                  <div class="col-sm-12">
+                                      <textarea [(ngModel)]="editReservationDataConfig.reservationData.special_request"
+                                          cols="50" rows="3"></textarea>
+                                  </div>
+                              </div>
+                          </div>
+                      </fieldset>
+                  </div>
+                  <div class="col-sm-6 mb-2 p-3">
+                      <fieldset class="border p-4 shadow mb-3">
+                          <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Linked
+                                  Reservation
+                              </button> </legend>
+                          <div class="form-group row mb-3 align-items-baseline ">
+                              <div class="col-sm-12">
+                                  <table class="table table-bordered table-striped table-hover">
+                                      <thead>
+                                          <tr>
+                                              <th class="small">Stay</th>
+                                              <th class="small">Refer</th>
+                                              <th class="small">Room</th>
+                                              <th class="small">Price</th>
+                                              <th class="small" colspan="2">Action</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <tr *ngFor="let item of editReservationDataConfig.rooms">
+                                              <td class="w-100 small">{{item.check_in|date : 'dd/MM'}} <i
+                                                      class="bi bi-arrow-right text-primary"></i> {{item.check_out|date :
+                                                  'dd/MM'}}</td>
+                                              <td class="small">{{editReservationDataConfig.reservationData.reservations_no}}</td>
+                                              <td class="small">{{item.internal_room_name}}</td>
+                                              <td class="w-25 small">$ {{item.price}}</td>
+                                              <td> <button class="btn btn-sm btn-success"><i
+                                                          class="bi bi-search"></i></button> </td>
+                                              <td><button class="btn btn-sm btn-danger"><i
+                                                          class="bi bi-link-45deg"></i></button> </td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+  
+                      </fieldset>
+                      <ng-container *ngFor="let item of editReservationDataConfig.rooms;let idx=index; trackBy:trackBy">
+                          <fieldset class="border p-4 shadow mb-3">
+                              <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Room
+                                      {{idx+1}}
+                                  </button> </legend>
+                              <div class="form-group row mb-3 align-items-baseline">
+                                  <label class="col-sm-3 col-form-label" for="description">Stay</label>
+                                  <div class="col-sm-9">
+                                      <div class="row">
+                                          <div class="col-sm-6">
+                                              <input type="date" class="form-control" readonly [value]=""
+                                                  [(ngModel)]="item.check_in">
+                                          </div>
+                                          <div class="col-sm-6">
+                                              <input type="date" class="form-control" readonly
+                                                  [(ngModel)]="item.check_out">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-group row mb-3 align-items-baseline">
+                                  <label class="col-sm-3 col-form-label" for="description">Guests <span
+                                          class="text-danger">*</span></label>
+                                  <div class="col-sm-9">
+                                      <div class="row">
+                                          <div class="col-sm-4">
+                                              <label for="" class="text-info">
+                                                  Adult
+                                                  <input type="number" class="form-control" [(ngModel)]="item.adult"
+                                                      name="" id="">
+                                              </label>
+                                          </div>
+                                          <div class="col-sm-4">
+                                              <label for="" class="text-info">
+                                                  Children
+                                                  <input type="number" class="form-control" [(ngModel)]="item.children"
+                                                      name="" id="">
+                                              </label>
+                                          </div>
+                                          <div class="col-sm-4">
+                                              <label for="" class="text-info">
+                                                  Baby
+                                                  <input type="number" class="form-control" [(ngModel)]="item.baby"
+                                                      name="" id="">
+                                              </label>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-group row mb-3 align-items-baseline">
+                                  <label class="col-sm-3 col-form-label">Room Type</label>
+                                  <div class="col-sm-9">
+                                      <p class="text-info">{{item.internal_room_name}}</p>
+                                  </div>
+                              </div>
+                              <div class="form-group row mb-3 align-items-baseline">
+                                  <label class="col-sm-3 col-form-label">Discount</label>
+                                  <div class="col-sm-9">
+                                      <p class="text-danger">Check invalid authentication ~ 20.00 EUR</p>
+                                  </div>
+                              </div>
+                              <div class="form-group row mb-3 align-items-baseline">
+                                  <label class="col-sm-3 col-form-label">Total Room</label>
+                                  <div class="col-sm-8">
+                                      <input type="number" [(ngModel)]="item.price" class="form-control">
+                                  </div>
+                                  <div class="col-sm-1">EUR</div>
+                              </div>
+  
+                              <div class="form-group row mb-3 align-items-baseline">
+                                  <label class="col-sm-3 col-form-label">Deposit <span class="text-danger">*</span>
+                                  </label>
+                                  <div class="col-sm-8">
+                                      <input type="number" class="form-control" [(ngModel)]="item.deposit">
+                                  </div>
+                                  <div class="col-sm-1">EUR</div>
+                              </div>
+  
+                              <div class="form-group row mb-3 align-items-baseline">
+                                  <label class="col-sm-3 col-form-label">PMS <span class="text-danger">*</span> </label>
+                                  <div class="col-sm-9">
+                                      <select class="form-select" (change)="selectPmsRoom($event,item)">
+                                          <option [value]="''" [selected]="true">Select....</option>
+                                          <option [value]="{'pms_room_id':item.pms_room_id,'index':idx}|json" [id]="idx"
+                                              [disabled]="item.isSelected"
+                                              *ngFor="let item of pmsRoomList;let idx= index ">{{item.name}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+  
+                              <div class="form-group row mb-3 align-items-baseline">
+                                  <label class="col-sm-3 col-form-label">Rate Plan</label>
+                                  <div class="col-sm-9">
+                                      <p class="text-info"> ? standard + {{item.avg_pr}} EUR</p>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-sm-12">
+                                          <p class="text-info">These extras are normally mandatory for your customers,
+                                              they will automatically added unless you remove them.</p>
+                                      </div>
+                                  </div>
+                              </div>
+  
+                              <div class="form-group row mb-3 align-items-center border rounded-pill py-2 bg-light">
+                                  <label for="propertyName" class="col-sm-3 col-form-label">
+                                      <h5 class="m-0">Extra</h5>
+                                  </label>
+                                  <div class="col-sm-9 text-end">
+                                      <button class="btn btn-info btn-sm" (click)="addExtraFacility(item);">+</button>
+                                      <button class="btn btn-primary btn-sm mx-2"><i class="bi bi-gear-fill"></i></button>
+                                      <button class="btn btn-danger btn-sm">?</button>
+                                  </div>
+                              </div>
+  
+                              <ng-container *ngIf="item?.showExtraFac">
+                                  <div class="mb-2">
+                                      <div class="form-check form-check-inline">
+                                          <input class="form-check-input" (change)="selectExtraFac($event,'SPA',item)"
+                                              [(ngModel)]="item.extra_facilities.SPA" type="checkbox" id="SPA"
+                                              value="150">
+                                          <label class="form-check-label" for="SPA">SPA</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                          <input class="form-check-input" (change)="selectExtraFac($event,'Pool',item)"
+                                              [(ngModel)]="item.extra_facilities.Pool" type="checkbox" id="Pool"
+                                              value="30">
+                                          <label class="form-check-label" for="Pool">Pool</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                          <input class="form-check-input" (change)="selectExtraFac($event,'Jim',item)"
+                                              [(ngModel)]="item.extra_facilities.Jim" type="checkbox" id="Gym" value="50">
+                                          <label class="form-check-label" for="Gym">Gym</label>
+                                      </div>
+                                  </div>
+                              </ng-container>
+  
+                              <div class="form-group row mb-3 align-items-baseline">
+                                  <label for="propertyName" class="col-sm-3 col-form-label">
+                                      <h5>Totals</h5>
+                                  </label>
+                                  <div class="col-sm-9 text-end">
+                                      <button class="btn btn-danger btn-sm">?</button>
+                                  </div>
+                                  <div class="form-group row align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">Room</label>
+                                      <div class="col-sm-9 text-center">
+                                          <p class="text-dark">230.00 +</p>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">Extras</label>
+                                      <div class="col-sm-9 text-center">
+                                          <p class="text-dark">0.0 -</p>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">Amount</label>
+                                      <div class="col-sm-9 text-center">
+                                          <p class="text-danger">230.00 =</p>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label">City Tax</label>
+                                      <div class="col-sm-9 text-center">
+                                          <p class="text-dark">12.00</p>
+                                      </div>
+                                  </div>
+                                  <div class="form-group row align-items-baseline">
+                                      <label for="propertyName" class="col-sm-3 col-form-label opacity-50">Discount
+                                          Value</label>
+                                      <div class="col-sm-9 text-center">
+                                          <p class="text-dark opacity-50">20.00</p>
+                                      </div>
+                                  </div>
+                              </div>
+  
+                          </fieldset>
+  
+                      </ng-container>
+                      <fieldset class="border p-4 shadow mb-3">
+                          <legend class="float-none w-auto"> <button class="btn btn-sm text-light btn-primary ">Voucher
+                              </button> </legend>
+                          <div class="form-group row mb-2 ">
+                              <label class="col-sm-4 " for="toProperty">Send voucher to property</label>
+                              <div class="col-sm-8 text-center">
+                                  <label class="switch">
+                                      <input type="checkbox" id="toProperty">
+                                      <span class="slider"></span>
+                                  </label>
+                              </div>
+                          </div>
+                          <div class="form-group row mb-2 ">
+                              <label class="col-sm-4 " for="toGuest">Send voucher to guest</label>
+                              <div class="col-sm-8 text-center">
+                                  <label class="switch">
+                                      <input type="checkbox" id="toGuest">
+                                      <span class="slider"></span>
+                                  </label>
+                              </div>
+                          </div>
+                      </fieldset>
+                  </div>
+  
+              </div>
+              <div class="row mt-3 mb-3">
+                  <div class="col-sm-12 d-flex align-items-center">
+                      <button type="submit" class="btn btn-primary" [disabled]="loader"
+                          (click)="editReservation()">Update</button>
+                      <div class="spinner-border text-primary mx-2" *ngIf="loader"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade in" *ngIf="showModal||loader"></div>

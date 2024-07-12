@@ -40,7 +40,6 @@ export class ChangePasswordComponent {
       this._service.changePassword(this.changePassConfig, (res: any) => {
         if (res.status == 200) {
           this.loader = false;
-          console.log(res);
           this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
         }
         this.loader = false;

@@ -70,4 +70,8 @@ export class OwnerService extends BaseServiceService {
    updateTemplate(param:any,callback:any){
     this.putData(param,this.httpUrl['updateTemplate'],callback)
    }
+   
+   editOwner(params: any, callback: any) {
+    this.putData(params, this.httpUrl['editOwner'], callback)
+  }
 }

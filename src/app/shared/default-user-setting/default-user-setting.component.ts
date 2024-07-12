@@ -50,8 +50,6 @@ export class DefaultUserSettingComponent {
 
   selectTimeZone(event: any) {
     this.userSettingConfig.time_zone = event.target.value;
-    console.log(event.target.value);
-    
   }
 
   selectCalendarStartDay(event: any) {
@@ -64,7 +62,6 @@ export class DefaultUserSettingComponent {
       this._service.saveDefaultSetting(this.userSettingConfig, (res: any) => {
         if (res.status == 200) {
           this.loader = false;
-          console.log(res);
           this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' })
         } else {
           this.alert.alert("error", "Something went wrong", "Error", { displayDuration: 2000, pos: 'top' })

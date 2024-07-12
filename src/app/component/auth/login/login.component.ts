@@ -21,7 +21,6 @@ export class LoginComponent {
   constructor(private router: Router, private authService: AuthService, private alertService: AlertService, private commonService: CommonService) { }
 
   ngOnInit() {
-    console.log(this.router.url);
     if (this.router.url.endsWith("/adminLogin")) {
       this.isAdminLogin = true;
       this.selectUserType('admin', 1);
@@ -33,7 +32,6 @@ export class LoginComponent {
   fetchCaptcha(){
     this.authService.fetchCaptcha((res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.captchaUrl = res.CaptchaImage;
       }
     })
@@ -51,7 +49,6 @@ export class LoginComponent {
     this.authService.login(this.userModal, (res: any) => {
       if (res.status == 200) {
         this.loader = false;
-        console.log(res);
         this.setUserLoggedIn();
         this.setAccessToken(res);
         this.setUserAndRole(res);

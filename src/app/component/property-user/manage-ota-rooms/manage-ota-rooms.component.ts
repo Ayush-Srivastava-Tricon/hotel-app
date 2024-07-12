@@ -48,7 +48,6 @@ export class ManageOtaRoomsComponent {
     this.loader=true;
     this._service.fetchOtaRooms(this.currentPropertyId,(res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.otaRoomList = res.data;
         this.loader=false;
       }else{
@@ -96,7 +95,6 @@ export class ManageOtaRoomsComponent {
   editRoomOpenModal(item: any) {
     this.isEditModal = true;
     this.otaRoomModal.patchValue(item);
-    console.log(item);
     this.showModal.otaRoom = true;
     this.currentOtaRoomId = item.id;
     this.fetchOtaUserList();
@@ -155,8 +153,6 @@ export class ManageOtaRoomsComponent {
     } else {
       this.alertService.alert("error", "Please Check Fields Again", "Error", { displayDuration: 2000, pos: 'top' });
     }
-    console.log(this.otaRoomModal.value);
-
   }
 
   convertStringToNumber() {
@@ -166,13 +162,9 @@ export class ManageOtaRoomsComponent {
 
    async fetchIpAddress(){
         let ipAdress = await fetch("https://api.ipify.org?format=json").then((res:any)=>res.json());
-        console.log(ipAdress);
         if(ipAdress.ip){
           this.otaRoomModal.controls.requester_ip.setValue(ipAdress.ip);
           this.otaRoomModal.controls.requester_ip.updateValueAndValidity();
-          console.log(this.otaRoomModal.value);
-          
-          
         }
         
   }

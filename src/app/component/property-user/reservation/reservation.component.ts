@@ -90,7 +90,6 @@ export class ReservationComponent {
     this.searchRoomAvailConfig.property_id = this.currentPropertyId;
     this._service.fetchReservation(this.searchRoomAvailConfig, (res: any) => {
       if (res.status == 200 && res.responseData?.displayData?.length > 0) {
-        console.log(res);
         this.loader = false;
         this.reservationList = res.responseData.displayData;
 
@@ -257,10 +256,6 @@ export class ReservationComponent {
       }
     }
 
-    console.log(this.addReservationConfig);
-
-
-
   }
 
   getPaymentMethod() {
@@ -295,8 +290,6 @@ export class ReservationComponent {
       room.adult = baseAdultsPerRoom + (additionalAdultsRooms > 0 ? 1 : 0);
       additionalAdultsRooms = Math.max(0, additionalAdultsRooms - 1);
     });
-
-    console.log(this.addReservationConfig);
   }
 
   setChildGuestReserve(event: any) {
@@ -311,7 +304,6 @@ export class ReservationComponent {
       additionalChildRooms = Math.max(0, additionalChildRooms - 1);
     });
 
-    console.log(this.addReservationConfig);
   }
 
   setBabyGuestReserve(event: any) {
@@ -338,13 +330,10 @@ export class ReservationComponent {
     this.setGuestData();
     this.setRoomsData();
     this.setPaymentMethodData();
-    console.log(34);
-    
     setTimeout(() => {
       this.loader=true;
       this._service.addReservationDetails(this.reservationPayloadDataConfig,(res:any)=>{
         if(res.status == 200){
-          console.log(res);
           this.loader=false;
           this.alert.alert("success", res.message, "Success", { displayDuration: 3000, pos: 'top' });
           this.successReservationConfig.showAlert=true;

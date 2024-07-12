@@ -66,7 +66,7 @@
             <div class="my-3 ms-2 d-flex justify-content-between ">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageMapping()">Back to Manage Internal Mapping</a></li>
+                      <li class="breadcrumb-item"><i class="bi bi-arrow-90deg-left mx-2"></i><a href="javascript:void(0);" class="text-decoration-none "  (click)="backToManageMapping()">Back to Manage Internal Mapping</a></li>
                       <li class="breadcrumb-item active" aria-current="page">Manage Internal Mapping</li>
                     </ol>
                   </nav>
@@ -126,7 +126,7 @@
                         <!-- SVG line for mapping -->
                         <div class="col-sm-4">
                             <svg height="50" width="100%">
-                                <line [attr.x1]="50" y1="25" [attr.x2]="250" y2="25" style="stroke:#137d92;stroke-width:8px" stroke-linecap="round"/>
+                                <line id = "line" [attr.x1]="50" y1="25" [attr.x2]="250" y2="25" style="stroke:#137d92;stroke-width:8px" stroke-linecap="round"/>
                             </svg>
                         </div>
     

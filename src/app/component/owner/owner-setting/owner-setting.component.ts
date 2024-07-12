@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormControl,FormGroup,FormBuilder } from '@angular/forms';
+import { AdminService } from 'src/app/services/admin.service';
+import { OwnerService } from 'src/app/services/owner.service';
 
 @Component({
   selector: 'app-owner-setting',
@@ -7,20 +8,29 @@ import { FormControl,FormGroup,FormBuilder } from '@angular/forms';
   styleUrls: ['./owner-setting.component.scss']
 })
 export class OwnerSettingComponent {
-  loginForm:any
+  profileSettingConfig: any = {};
+  error: any = {};
+  loader: boolean = false;
+  currentOwnerId:number=0;
 
-  constructor(private _formBuilder:FormBuilder){
 
-    this.loginForm = this._formBuilder.group({
-      name:'',
-      address:'',
-      contact:'',
-      cityTax:''
-    })
+
+  constructor(private _service:OwnerService) { }
+
+  ngOnInit(){
+    this.currentOwnerId = JSON.parse(<any>localStorage.getItem("userId")); 
   }
-    getFormValues(){
-      console.log(this.loginForm.value);
-      
-    
+
+  update(){
+    this.loader= true;
+    this.profileSettingConfig['owner_id'] = this.currentOwnerId;
+    this._service.editOwner(this.profileSettingConfig,(res:any)=>{
+      if(res.status == 200){
+          this.loader= false;
+        }else{
+          this.loader=false;
+        }
+      })
   }
+
 }

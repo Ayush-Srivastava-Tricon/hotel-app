@@ -66,13 +66,9 @@ export class ManageOtaUserComponent {
 
   async fetchIpAddress(){
         let ipAdress = await fetch("https://api.ipify.org?format=json").then((res:any)=>res.json());
-        console.log(ipAdress);
         if(ipAdress.ip){
           this.otaUserModal.controls.requester_ip.setValue(ipAdress.ip);
           this.otaUserModal.controls.requester_ip.updateValueAndValidity();
-          console.log(this.otaUserModal.value);
-          
-          
         }
         
   }
@@ -108,7 +104,6 @@ export class ManageOtaUserComponent {
       if(res.status == 200){
         this.isEditModal = true;
         this.otaUserModal.patchValue(res.data[0]);  
-        console.log(item);
         this.showModal.otaUser = true;
         this.currentOtaUserId = item.id;
         this.fetchOtaDetails();
@@ -151,8 +146,6 @@ export class ManageOtaUserComponent {
   }
 
   editOtaUser(){
-    console.log(this.otaUserModal.value);
-    
     if(this.otaUserModal.status == 'VALID'){
       const editModalObj: any = JSON.parse(JSON.stringify(this.otaUserModal.value));
       editModalObj['id'] = this.currentOtaUserId;

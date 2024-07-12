@@ -31,14 +31,12 @@ export class DashboardComponent {
         this.getCurrentLatLong();
       }
       this.setRealTime();
-    console.log(232);
 
   }
 
   fetchArrivalDeparture(){
     this._service.fetchArrivalDeparture(this.currentPropertyId,(res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.totalArrivalDeparture = res.data[0];
       }
     })

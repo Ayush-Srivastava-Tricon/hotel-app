@@ -112,8 +112,6 @@ export class ListReservationComponent {
       if (res.status == 200) {
         this.paymentModeList = res.data;
         this.editReservationDataConfig.payments;
-        console.log(this.editReservationDataConfig.payments);
-        
       }
     })
   }
@@ -132,8 +130,6 @@ export class ListReservationComponent {
   receiveChildEvent(event:any){
     if(event['action'] === 'selectedReservationStatus'){
       this.searchConfig['reservation_status'] = event.value;
-      console.log(this.searchConfig);
-      
     }
   }
 
@@ -191,7 +187,6 @@ export class ListReservationComponent {
       additionalAdultsRooms = Math.max(0, additionalAdultsRooms - 1);
     });
 
-    console.log(this.editReservationDataConfig.rooms);
   }
 
   setChildGuestReserve(event: any) {
@@ -206,7 +201,6 @@ export class ListReservationComponent {
       additionalChildRooms = Math.max(0, additionalChildRooms - 1);
     });
 
-    console.log(this.editReservationDataConfig.rooms);
   }
 
   setBabyGuestReserve(event: any) {
@@ -268,7 +262,6 @@ editReservation(){
       }
     })
   },0)
-  console.log(this.editReservationDataConfig);
       
 }
 
@@ -318,7 +311,6 @@ copyCode(val: string){
 getAvailablePMSRoom(data:any){
   this._service.getAvailablePMSRoom(data.internal_room_id,data.check_in.split(" ")[0],(res:any)=>{
     if(res.status == 200){
-      console.log(res);
       this.pmsRoomList = res.data.map((e:any)=>{return {...e,isSelected:false}});
     }
   })
@@ -356,9 +348,6 @@ selectPmsRoom(event:any,reservationData:any){
   }else{
    this.pmsRoomList.forEach((e:any)=>e.isSelected = false);
   }
-
-  console.log(this.pmsRoomMapConfig);
-  
 }
 
 }

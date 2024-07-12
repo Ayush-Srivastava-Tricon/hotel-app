@@ -94,7 +94,6 @@ export class CalendarViewComponent {
     this.loader = true;
     this._service.getAllCalendarData(this.loggedProperty.propertyId, startEndDate, (res: any) => {
       if (res.status == 200 && res.responseData.length > 0) {
-        console.log(res);
         this.mainData = res.responseData;
         this.alertService.alert(res.responseData.length > 0 ? "success" : 'error', res.message, "Success", { displayDuration: 2000, pos: 'top' });
         setTimeout(() => {
@@ -309,7 +308,6 @@ export class CalendarViewComponent {
     });
     this.loader = false;
 
-    console.log(this.mainData);
   }
 
   createChildrenArray() {
@@ -409,7 +407,6 @@ export class CalendarViewComponent {
     this.dragEl = {};
     this.dragEventStart = false;
     let eventData: any = data || {};
-    console.log(eventData);
 
     if (eventData) {
       this.modalFieldForm.patchValue({
@@ -475,7 +472,6 @@ export class CalendarViewComponent {
   }
 
   addClass(event: any) {
-    console.log(event.source.element.nativeElement.classList.add('active'));
 
   }
 
@@ -537,7 +533,6 @@ export class CalendarViewComponent {
       }else{
         //the calendar will open from today's date with curernt time zone
       }
-      console.log(this.todayDate);
       
   }
 

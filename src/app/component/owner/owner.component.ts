@@ -16,7 +16,6 @@ export class OwnerComponent {
 
   ngOnInit(){
     this.loggedUserData = JSON.parse(<any>localStorage.getItem('loggedUserData'));
-    console.log(this.loggedUserData);
     this.setDefaultLang();
   }
 

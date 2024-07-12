@@ -661,10 +661,11 @@ input#menu[type="checkbox"] {
 
 .background-nav {
   transition: width 0.3s; /* Smooth transition for width changes */
+
+  &.collapsed {
+    width: 80px; /* Adjust this width according to your design */
+  }
 }
-// .collapsed {
-//   width: 80px; /* Adjust this width according to your design */
-// }
 
 .background-nav.collapsed .d-none {
   display: none !important;

@@ -38,7 +38,6 @@ export class ManageInternalMappingComponent {
     this.propertyService.fetchAllRooms(this.currentPropertyId,(res:any)=>{
       if(res.status == 200){
         this.internalRoomData = res.data;
-        console.log(res.data);
         this.loader=false;
         this.checkExisitingMappedRoom(this.externalRoomData);
       }else{
@@ -53,7 +52,6 @@ export class ManageInternalMappingComponent {
       if(res.status == 200 && res.data.length>0){
         this.loader=false;
         this.otaUserData = res.data;
-        console.log(res.data);
       }else{
         this.alert.alert("error", res.message, "Error", { displayDuration: 2000, pos: 'top' });
         this.loader=false;
@@ -64,7 +62,6 @@ export class ManageInternalMappingComponent {
   viewMapping(userId:any,userName:any){
       this.propertyService.fetchOtaRoomsById(userId,(res:any)=>{
         if(res.status == 200 && res.data.length>0){
-          console.log(res);
           this.showMappingPage = true;
           this.externalRoomData = res.data;
           this.currentOtaUserName = userName;
@@ -104,8 +101,6 @@ export class ManageInternalMappingComponent {
   }
 
   selectInternalRoomToMap(room:any){
-    console.log(room);
-    
       this.selectedInternal.push(room);
       this.internalRoomData.forEach((e:any)=>{
         if(e.room_id == room.room_id){
@@ -200,7 +195,8 @@ export class ManageInternalMappingComponent {
       if(params.ota_rooms_id && params.ota_user_id && params.internal_room_id){
         this.propertyService.setInternalMappingBetweenRoom(params,(res:any)=>{
           if(res.status == 200){
-            console.log(res);
+            let a:any = document.getElementById("line");
+            a.style.display = 'block';
             this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
             this.mapConfig={};
           }else{

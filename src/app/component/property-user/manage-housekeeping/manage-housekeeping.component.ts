@@ -47,8 +47,6 @@ export class ManageHousekeepingComponent {
       if(res.status == 200){
         this.loader=false;
         this.housekeeperData = res.data;
-        console.log(res);
-        
       }
     })
   }
@@ -109,7 +107,6 @@ export class ManageHousekeepingComponent {
     this._service.updateHouseKeeper(this.housekeeperDataConfig,(res:any)=>{
       if(res.status == 200){
         this.loader=false;
-        console.log(res);
         this.backToKeeper();
         this.resetConfig();
         this.fetchHousekeepers();
@@ -129,7 +126,6 @@ export class ManageHousekeepingComponent {
   deleteRoom(){
       this._service.deleteKeeper(this.currentHouseKeeperId,(res:any)=>{
         if(res.status = 200){
-          console.log(res);
           this.showModal.delete=false;
           this.resetConfig();
           this.backToKeeper();
@@ -177,7 +173,6 @@ export class ManageHousekeepingComponent {
   listPMSRoomsWithHouseKeeper(pmsData:any){
     this._service.listPMSRoomsWithHouseKeeper(this.mapHousekeeperConfig.house_keeper_id,(res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.pmsData = pmsData.map((e:any)=>{return{'value':e.name,'id':e.id,'checked':false}});
         this.pmsData.forEach((e:any)=>{ 
           if(res.data[0]?.pms_room_id.includes(+e.id)){
@@ -199,7 +194,6 @@ export class ManageHousekeepingComponent {
     this.loader=true;
       this._service.mapPMSRoomsWithHouseKeeper(this.mapHousekeeperConfig,(res:any)=>{
         if(res.status == 200){
-          console.log(res);
           this.loader=false;
           this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
           this.closeModal();

@@ -360,3 +360,9 @@ label{
 .form-select{
   cursor: pointer !important;
 }
+
+.breadcrumb-item a{
+  text-decoration: none !important;
+  font-weight: 500;
+  color: #137d92;
+}

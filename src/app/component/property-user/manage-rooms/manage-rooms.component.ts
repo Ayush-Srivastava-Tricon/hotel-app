@@ -96,8 +96,6 @@ export class ManageRoomsComponent {
   }
 
   createNewRoom() {
-  console.log(this.roomModal.value);
-  
     if (this.roomModal.status == "VALID") {
       this.loader=true;
       this.roomModal.controls.property_id.setValue(this.currentPropertyId);
@@ -177,7 +175,6 @@ export class ManageRoomsComponent {
         this.isEditModal = true;
         this.convertRatePlanIntoNumeric(res.data);
         this.roomModal.patchValue(res.data[0]);
-        console.log(res.data[0]);
         this.showModal.property = true;
         this.currentRoomId = item.room_id;
         this.toUploadImagefile = JSON.parse(JSON.stringify([]));
@@ -204,7 +201,6 @@ export class ManageRoomsComponent {
   getUploadedImage(roomId:any){
       this.proService.getUploadedImageByRoom(roomId,(res:any)=>{
         if(res.status === 200 && res.data.length>0){
-          console.log(res);
           this.imageArrayContainer = JSON.parse(JSON.stringify(res.data));
         }else{
           this.imageArrayContainer = [{
@@ -264,7 +260,6 @@ export class ManageRoomsComponent {
   deleteUploadedImages(){
     this.proService.deleteUploadedFiles(this.removedImgObj,(res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.alertService.alert("error",res.message,"Success",{ displayDuration: 2000, pos: 'top' })
         
       }
@@ -375,7 +370,6 @@ export class ManageRoomsComponent {
     if(event.target.value){
       this.proService.getRatePlanByParent(event.target.value,(res:any)=>{
         if(res.status ==200){
-          console.log(res);
           this.ratePlans=res.data;
           this.setDefaultDerivationRuleValue();
         }
@@ -439,7 +433,6 @@ export class ManageRoomsComponent {
   applyDerivationRule(){
       this.proService.applyDerivationRule(this.applyDerivationRuleConfig,(res:any)=>{
         if(res.status == 200){
-          console.log(res);
           this.applyDerivationRuleConfig={};
           this.showModal.apply_derivation_rule=false;
           this.alertService.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });

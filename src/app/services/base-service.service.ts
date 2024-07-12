@@ -133,7 +133,6 @@ export class BaseServiceService {
         if (error.error.status == 401 && error.error.message == 'Expired token') {
           this.handleRefreshToken(url, (res: any) => {
             if (res) {
-              console.log(res);
               localStorage.setItem("token", res.Bearer);
               this.getData({}, url, callback);
             }
@@ -171,7 +170,6 @@ export class BaseServiceService {
         if (error.error.status == 401 && error.error.message == 'Expired token') {
           this.handleRefreshToken(url, (res: any) => {
             if (res) {
-              console.log(res);
               localStorage.setItem("token", res.Bearer);
               this.postData(data, url, callback);
             }
@@ -190,16 +188,12 @@ export class BaseServiceService {
       .set('Access-Control-Allow-Origin', '*')
       .set('Authorization', `Bearer ${this.getTokenFromLocal()}`)
 
-    console.log(this.getTokenFromLocal());
-
-
     return this.http.post(environment.apiUrl + url, data, { headers: headers }).subscribe((data: any) => { callback(data) },
       (error: any) => {
         console.log(error)
         if (error.error.status == 401 && error.error.message == 'Expired token') {
           this.handleRefreshToken(url, (res: any) => {
             if (res) {
-              console.log(res);
               localStorage.setItem("token", res.Bearer);
               this.postData(data, url, callback);
             }
@@ -225,7 +219,6 @@ export class BaseServiceService {
         if (error.error.status == 401 && error.error.message == 'Expired token') {
           this.handleRefreshToken(url, (res: any) => {
             if (res) {
-              console.log(res);
               localStorage.setItem("token", res.Bearer);
               this.putData(data, url, callback);
             }
@@ -250,7 +243,6 @@ export class BaseServiceService {
         if (error.error.status == 401 && error.error.message == 'Expired token') {
           this.handleRefreshToken(url, (res: any) => {
             if (res) {
-              console.log(res);
               localStorage.setItem("token", res.Bearer);
               this.putData(data, url, callback);
             }

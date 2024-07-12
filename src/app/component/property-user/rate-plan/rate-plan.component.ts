@@ -73,7 +73,6 @@ export class RatePlanComponent {
     this.ratepPlanModal.ratePlanData[0]['property_id'] = this.currentPropertyId;
     this._service.fetchRateplan(this.currentPropertyId,(res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.loader=false;
         this.rateplanData = res.data;
         }else{
@@ -95,8 +94,6 @@ export class RatePlanComponent {
               'value': e.room_name, 'checked': dataFromExistingMap.parent_room_id.some((ele:any)=>ele == e.room_id), 'room_id': e.room_id
             }
         });
-          console.log(this.parentRoomData);
-          
         }
       }
     })  
@@ -105,7 +102,6 @@ export class RatePlanComponent {
   listMappedRoomWithRatePlan(rateplan_id:any){
     this._service.listMappedRoomWithRatePlan(rateplan_id, (res: any) => {
       if (res.status == 200 && res.data.length>0) {
-        console.log(res);
         this.fetchParentRoom(res.data[0]);
       }
     })  
@@ -150,7 +146,6 @@ export class RatePlanComponent {
       this.ratepPlanModal.ratePlanData[0]['property_id'] = +this.currentPropertyId;
       this._service.saveRatePlan(this.ratepPlanModal,(res:any)=>{
         if(res.status == 200){
-          console.log(res);
           this.loader=false;
           this.backToRateplan();
           this.fetchRateplan();
@@ -226,8 +221,6 @@ export class RatePlanComponent {
       this.loader=false;
     }
    })
-    console.log(this.ratepPlanModal);
-    
   }
 
   deleteRateplanModal(rateplan_id:any,idx:any){
@@ -252,7 +245,6 @@ export class RatePlanComponent {
   deletePMS(){
    this._service.deleteRatePlans(this.currentRatePlanId,(res:any)=>{
     if(res.status == 200){
-      console.log(res);
       this.closeModal();
       this.alert.alert("error",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
     }else{
@@ -271,7 +263,6 @@ export class RatePlanComponent {
     this.loader=true;
     this._service.mapRatePlan(this.mapRatePlanWithRoomsConfig,(res:any)=>{
       if(res.status == 200){
-        console.log(res);
         this.loader=false;
         this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' });
         this.closeModal();
