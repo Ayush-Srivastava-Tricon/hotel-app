@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { PropertyUserRoutingModule } from './property-user-routing.module';
 import { PropertyUserComponent } from './property-user.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { LanguageDropdownModule } from "../../shared/language-dropdown/language-dropdown.module";
 
 
 @NgModule({
@@ -11,8 +12,9 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     CommonModule,
     PropertyUserRoutingModule,
-    TranslateModule
-  ],
+    TranslateModule,
+    LanguageDropdownModule
+],
   exports:[PropertyUserComponent]
 })
 export class PropertyUserModule { }

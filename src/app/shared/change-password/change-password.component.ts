@@ -45,12 +45,12 @@ export class ChangePasswordComponent {
         this.loader = false;
         this.alert.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 2000, pos: 'top' });
       })
-    }else{
+    } else {
       this.alert.alert("error", "Mandatory fields", "Error", { displayDuration: 2000, pos: 'top' });
     }
   }
 
-  checkValidation(){
+  checkValidation() {
     return !!this.changePassConfig.existing_pass && !!this.changePassConfig.new_pass;
   }
 

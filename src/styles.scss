@@ -183,6 +183,16 @@ $animation-duration: 1.5s;
   border: none;
 }
 
+.btn-outline-primary{
+  border: 1px solid var(--adminBlue) !important;
+  outline: 1px solid var(--adminBlue) !important;
+  color: #000;
+
+  &:hover{
+    background-color: var(--adminBlue) !important;;
+  }
+}
+
 
 .goog-te-banner-frame.skiptranslate {
   display: none !important;

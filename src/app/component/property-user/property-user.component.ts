@@ -14,6 +14,7 @@ export class PropertyUserComponent {
   currentPropertyId:any=0;
   loggedUserData:any={};
   hideNavbar:boolean=false;
+  defaultLang:any='';
 
   constructor(private router:Router,private adminService:AdminService,private alert:AlertService,private translate:TranslationService){}
 
@@ -24,12 +25,9 @@ export class PropertyUserComponent {
       this.currentPropertyId = localStorage.getItem("userId");
     }
     this.loggedUserData = JSON.parse(<any>localStorage.getItem('loggedUserData'));
-    this.setDefaultLang();
   }
 
-  setDefaultLang(){
-    this.translate.setLanguage('en');
-  }
+
 
   logout(){
     if(this.adminService.isAdmin()){
@@ -45,8 +43,17 @@ export class PropertyUserComponent {
     
   }
 
-  changeLang(event:any){
-    this.translate.setLanguage(event.target.value)
+  setDefaultLang(){
+    this.translate.setLanguage(this.defaultLang);
+  }
+
+  receiveChildEvent(event:any){
+    if(event.action == 'setDefaultLang'){
+      this.defaultLang=event.value;
+      this.setDefaultLang();
+    }else if(event.action == 'changeLang'){
+      this.translate.setLanguage(event.value);
+    }
   }
 
   openNav(){

@@ -11,7 +11,7 @@ import { AlertService } from '../alert.service';
 export class EMailTemplateComponent {
 
   emailTemplateConfig: any = {
-    language: '',
+    language: 'en',
     template_type: '',
     subject: '',
     message_format: '',
@@ -29,12 +29,32 @@ export class EMailTemplateComponent {
   userType: any = '';
   showModal: any = {};
   emailTemplateData: any = [];
+  filteredTemplateData:any=[];
   showActionDropDown: any = {};
   isEditModal: boolean = false;
   selectedTemplateId: any = 0;
 
-  languages = ['English', 'French', 'Spanish'];
-  selectedLanguageIndex: number = 0; // Default to English tab
+  languages = [
+    {
+      'lang': 'English',
+      'key':'en',
+      isSelected: true,
+    },
+    {
+      'lang': 'Spanish',
+      'key':'es',
+      isSelected: false,
+    },
+    {
+      'lang': 'French',
+      'key':'fr',
+      isSelected: false,
+    },
+  ];
+
+  currentType:any='Language';
+
+  selectedLanguageItems: any = []; // Default to English tab
   objectsArray: any[] = [];
   newObject: any = { templateType: '', message: '', subject: '' };
 
@@ -47,6 +67,9 @@ export class EMailTemplateComponent {
     this.currentOwnerId = localStorage.getItem("userId");
     this.userType = localStorage.getItem("roleId");
     this.fetchEmailTempalte();
+    this.emailTemplateConfig.role_id = this.userType;
+    this.emailTemplateConfig.user_id = this.currentOwnerId;
+    this.changeTypedPlaceholder();
   }
 
   fetchEmailTempalte() {
@@ -59,6 +82,7 @@ export class EMailTemplateComponent {
       if (res.status == 200) {
         this.loader = false;
         this.emailTemplateData = res.data;
+        this.filteredTemplateData = [...res.data];
         this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' })
       } else {
         this.loader = false;
@@ -67,23 +91,15 @@ export class EMailTemplateComponent {
     })
   }
 
-
-  // ngAfterViewInit(){
-  //   setTimeout(() => {
-  //     this.removeBrandingFromTinyMce();
-  //   }, 300);
-  // }
-
   openModal() {
     this.showModal.template = true;
+    this.selectedLanguageItems.push(this.emailTemplateConfig);
     this.removeBrandingFromTinyMce();
   }
 
   addMailTemplate() {
     this.loader = true;
-    this.emailTemplateConfig.user_id = this.currentOwnerId;
-    this.emailTemplateConfig.role_id = this.userType;
-    this._service.addMailTemplate([this.emailTemplateConfig], (res: any) => {
+    this._service.addMailTemplate(this.selectedLanguageItems, (res: any) => {
       if (res.status == 200) {
         this.loader = false;
         this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' })
@@ -94,14 +110,16 @@ export class EMailTemplateComponent {
       }
     })
 
+    console.log(this.selectedLanguageItems);
+    
   }
 
   removeBrandingFromTinyMce() {
     setTimeout(() => {
-      let el: any = document.getElementsByClassName("tox-promotion");
-      el[0].style.display = "none";
-      let brand: any = document.getElementsByClassName("tox-statusbar__branding");
-      brand[0].style.display = "none";
+      let el: any = document.querySelectorAll(".tox-promotion");
+      el.forEach((element:any)=>element.style.display = "none");
+      let brand: any = document.querySelectorAll(".tox-statusbar__branding");
+      brand.forEach((element:any)=>element.style.display = "none");
     }, 200);
   }
 
@@ -115,26 +133,26 @@ export class EMailTemplateComponent {
     this._service.fetchEmailTempalteById(id, (res: any) => {
       if (res.status == 200) {
         this.loader = false;
-        this.emailTemplateConfig = res.data[0];
+        this.selectedLanguageItems = res.data;
         this.showModal.template = true;
         this.isEditModal = true;
         this.removeBrandingFromTinyMce();
-      }else{
+      } else {
         this.loader = false;
         this.alert.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 2000, pos: 'top' });
       }
     })
   }
 
-  editTemplate(){
-    this.loader=true;
-    this._service.updateTemplate(this.emailTemplateConfig,(res:any)=>{
-      if(res.status == 200){
-        this.loader=false;
-        this.backToTemplate();
+  editTemplate() {
+    this.loader = true;
+    this._service.updateTemplate(this.selectedLanguageItems[0], (res: any) => {
+      if (res.status == 200) {
+        this.loader = false;
         this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
+        this.backToTemplate();
       } else {
-        this.alert.alert("error", res.error ? res.error.message : res.message , "Error", { displayDuration: 2000, pos: 'top' });
+        this.alert.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 2000, pos: 'top' });
       }
     })
   }
@@ -161,6 +179,8 @@ export class EMailTemplateComponent {
     this.showModal.template = false;
     this.isEditModal = false;
     this.showActionDropDown = {};
+    this.selectedLanguageItems=[];
+    this.languages.forEach((e:any)=>e.key !== 'en' ? e.isSelected=false : '')
     this.fetchEmailTempalte();
   }
 
@@ -169,38 +189,52 @@ export class EMailTemplateComponent {
   }
 
 
-  toggleLanguageTab(index: number): void {
-    if (this.selectedLanguageIndex === index) {
-      this.selectedLanguageIndex = -1; // Deselect if already selected
-    } else {
-      this.selectedLanguageIndex = index; // Select the tab
+  selectDay(day: any) {
+    if(this.selectedLanguageItems.length == 1 && day.isSelected){
+      return;
     }
-  }
-
-  submitForm(language: string): void {
-    if (this.newObject.templateType && this.newObject.message && this.newObject.subject) {
-      const obj = { language, ...this.newObject };
-      this.objectsArray.push(obj);
-      this.clearForm();
+    let isExist: any = this.selectedLanguageItems.some((item: any) => item.language == day.key);
+    if (!isExist) {
+      day.isSelected = true;
+      this.selectedLanguageItems.push({
+        language: day.key,
+        template_type: '',
+        subject: '',
+        message_format: '',
+        role_id: this.userType,
+        user_id: this.currentOwnerId
+      })
     } else {
-      alert('Please fill all fields.');
+      this.selectedLanguageItems.forEach((e: any, idx: any) => {
+        if(e.language == day.key){
+          day.isSelected = false;
+          this.selectedLanguageItems.splice(idx, 1);
+        }
+      });
     }
+    this.removeBrandingFromTinyMce();
   }
 
-  clearForm(): void {
-    this.newObject = { templateType: '', message: '', subject: '' };
+  changeTypedPlaceholder(){
+    setInterval(()=>{
+      this.currentType == 'Language' ? this.currentType = 'Subject' : this.currentType = 'Language';
+    },1000)
   }
 
-  selectDay(day: string) {
-    // if (this.selectedDays.includes(day)) {
-      // this.selectedDays = this.selectedDays.filter((d:any) => d !== day);
-    // } else {
-      // this.selectedDays.push(day);
-    // }
-  }
 
-  isSelected(day: string): boolean {
-    return true;
+  searchFilter(event:any){
+    let searchText = event.target.value;
+    if (!searchText.trim()) {
+      this.filteredTemplateData = this.emailTemplateData; // Show all items if search text is empty
+    } else {
+      const searchTextLower = searchText.trim().toLowerCase();
+      this.filteredTemplateData = this.emailTemplateData.filter((item:any) =>
+        item.language.toLowerCase().includes(searchTextLower) ||
+        item.subject.toLowerCase().includes(searchTextLower)
+      );
+    }
+
+
   }
 
 }

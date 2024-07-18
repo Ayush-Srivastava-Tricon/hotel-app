@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppConstants } from 'src/app/constants/app.constant';
 import { AuthService } from 'src/app/services/auth.service';
 import { TranslationService } from 'src/app/services/translation.service';
 
@@ -11,12 +12,13 @@ import { TranslationService } from 'src/app/services/translation.service';
 export class OwnerComponent {
 
   loggedUserData:any={};
+  defaultLang:any='';
 
-  constructor(private router:Router,private authService:AuthService,private translate:TranslationService){}
+
+  constructor(private router:Router,private authService:AuthService,private translate:TranslationService,public constants:AppConstants){}
 
   ngOnInit(){
     this.loggedUserData = JSON.parse(<any>localStorage.getItem('loggedUserData'));
-    this.setDefaultLang();
   }
 
   logout(){
@@ -32,13 +34,21 @@ export class OwnerComponent {
       }
     })
   }
-  
-  changeLang(event:any){
-    this.translate.setLanguage(event.target.value);
-  }
 
   setDefaultLang(){
-    this.translate.setLanguage(<any>localStorage.getItem("defaultLang"));
+    this.translate.setLanguage(this.defaultLang);
+  }
+
+  receiveChildEvent(event:any){
+    if(event.action == 'setDefaultLang'){
+      this.defaultLang=event.value;
+      this.setDefaultLang();
+    }else if(event.action == 'changeLang'){
+      this.translate.setLanguage(event.value);
+    }
   }
 
 }
+
+
+

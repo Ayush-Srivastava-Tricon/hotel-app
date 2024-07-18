@@ -8,17 +8,19 @@
                             <div class="col-sm-6">
                                 <span class="title">{{'TEMPLATE_LIST'|translate}}</span>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 d-flex justify-content-end">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" (keyup)="searchFilter($event)" [placeholder]="'Search by '+ currentType">
+                                </div>
                                 <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success"
                                     data-toggle="modal"><span>{{'ADD_TEMPLATE'|translate}}</span></a>
                             </div>
                         </div>
                     </div>
-                    <table class="table table-shadow table-lg table-striped table-hover">
+                    <table class="table table-shadow table-lg table-hover">
                         <thead class="thead-dark">
                             <tr class="table-row-rooms">
                                 <th scope="col">Language</th>
-                                <th scope="col">Status</th>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Template Type</th>
                                 <th scope="col">Action</th>
@@ -34,30 +36,56 @@
                                 </td>
                                 <td class="tg-cly1">
                                 </td>
-                                <td class="tg-cly1">
-                                </td>
                             </tr>
-                            <ng-container *ngIf="emailTemplateData.length>0 && !loader">
+                            <tr *ngIf="filteredTemplateData.length == 0">
+                                <td colspan="4" class="text-center">No Data Found</td>
+                            </tr>
+                            <ng-container *ngIf="filteredTemplateData.length>0 && !loader">
 
-                                <tr *ngFor="let item of emailTemplateData;let idx = index;"
-                                    class="text-center align-middle">
-                                    <td>{{item.language}}</td>
-                                    <td>{{item.status}}</td>
+                              
+
+                                <tr *ngFor="let item of filteredTemplateData;let idx = index;"
+                                    class="text-center align-middle" (mouseover)="showActionDropDown[idx]=true"
+                                    (mouseleave)="showActionDropDown[idx]=false;">
+                                    <td>{{constants.LANGUAGES[item.language.toLowerCase()]}}</td>
                                     <td>{{item.subject}}</td>
                                     <td>{{item.template_type}}</td>
-                                    <td>
-                                        <div class="dropdown">
+                                    <td class="action-btn">
+                                        <div class="d-flex" *ngIf="showActionDropDown[idx]">
+                                            <button type="button" class="btn btn-sm btn-light mx-2"
+                                                (click)="fetchEmailTempalteById(item.id)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z">
+                                                    </path>
+                                                    <path fill-rule="evenodd"
+                                                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                                (click)="deleteTemplateModal(item.id,idx)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <!-- <div class="dropdown">
                                             <i class="btn btn-light btn-sm bi bi-three-dots-vertical"
                                                 (click)="showDropDown(idx)"></i>
                                             <div class="dropdown-menu d-block"
                                                 (mouseleave)="showActionDropDown[idx]=false;"
                                                 *ngIf="showActionDropDown[idx]">
-                                                <!-- <a class="dropdown-item">Change Status</a> -->
                                                 <a class="dropdown-item"
                                                     (click)="fetchEmailTempalteById(item.id)">{{"EDIT_TEMPLATE"|translate}}</a>
-                                                <a class="dropdown-item" (click)="deleteTemplateModal(item.id,idx)">Delete</a>
+                                                <a class="dropdown-item"
+                                                    (click)="deleteTemplateModal(item.id,idx)">Delete</a>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </td>
                                 </tr>
                             </ng-container>
@@ -73,7 +101,8 @@
     <ng-container *ngIf="showModal.template">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><i class="bi bi-arrow-90deg-left mx-2"></i><a href="javascript:void(0)" (click)="backToTemplate()">Back</a></li>
+                <li class="breadcrumb-item"><i class="bi bi-arrow-90deg-left mx-2"></i><a href="javascript:void(0)"
+                        (click)="backToTemplate()">Back</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Add email template</li>
             </ol>
         </nav>
@@ -82,74 +111,67 @@
             <legend class="float-none w-auto"> <button class="btn text-light btn-primary rounded-0 ">E-mail Template
                 </button> </legend>
 
-                <div class="form-group row align-items-baseline ">
-                    <label class="col-sm-3 col-form-label" for="cleaningFrequency">Language</label>
-                    <div class="col-sm-9">
-                      <div class="weekdays-container">
+            <div class="form-group row align-items-baseline" *ngIf="!isEditModal">
+                <label class="col-sm-3 col-form-label" for="cleaningFrequency">Language</label>
+                <div class="col-sm-9">
+                    <div class="weekdays-container">
                         <div *ngFor="let day of languages" class="border"
-                             [ngClass]="{'selected': isSelected(day),'shadow':isSelected(day)}"
-                             (click)="selectDay(day)">
-                          {{ day }}
+                            [ngClass]="{'selected': day.isSelected,'shadow':day.isSelected}" (click)="selectDay(day)">
+                            {{ day.lang }}
                         </div>
-                      </div>
                     </div>
-                  </div>
+                </div>
+            </div>
 
-            <!-- <div class="form-group row ">
-                <label class="col-sm-3 col-form-label" for="usedType">Language</label>
-                <div class="col-sm-9">
-                    <select class="form-control" [ngClass]="{'spinner-border text-primary':loader}"
-                        [(ngModel)]="emailTemplateConfig.language">
-                        <option value="" selected="true" disabled>Select</option>
-                        <option value="en">English</option>
-                        <option value="fr">French</option>
-                    </select>
+            <ng-container *ngFor="let items of selectedLanguageItems">
+                <h5 class="text-center my-4 py-2 bg-light text-dark">
+                    {{constants.LANGUAGES[items.language.toLowerCase()]}}</h5>
+                <div class="form-group row my-2">
+                    <label class="col-sm-3 col-form-label" for="usedType">Template Type</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" [(ngModel)]="items.template_type">
+                            <option value="" disabled selected="true">Select</option>
+                            <option [value]="item.value" *ngFor="let item of constants.template_type[userType]">
+                                {{item.value}}
+                            </option>
+                        </select>
+                    </div>
                 </div>
-            </div> -->
-            <div class="form-group row my-2">
-                <label class="col-sm-3 col-form-label" for="usedType">Template Type</label>
-                <div class="col-sm-9">
-                    <select class="form-control" [ngClass]="{'spinner-border text-primary':loader}"
-                        [(ngModel)]="emailTemplateConfig.template_type">
-                        <option value="" disabled selected="true">Select</option>
-                        <option [value]="item.value" *ngFor="let item of constants.template_type[userType]">
-                            {{item.value}}
-                        </option>
-                    </select>
+                <div class="form-group row my-2">
+                    <label class="col-sm-3 col-form-label" for="usedType">Subject</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="subject" [(ngModel)]="items.subject">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row my-2">
-                <label class="col-sm-3 col-form-label" for="usedType">Subject</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" id="subject" [(ngModel)]="emailTemplateConfig.subject">
-                </div>
-            </div>
-            <div class="form-group row ">
-                <label class="col-sm-3 col-form-label" for="message_format">Message Format</label>
-                <div class="col-sm-9">
-                    <select class="form-control" [ngClass]="{'spinner-border text-primary':loader}"
-                        [(ngModel)]="emailTemplateConfig.message_format">
-                        <option value="" selected="true" disabled>Select</option>
-                        <option value="text">Text</option>
-                        <option value="html">HTML</option>
+                <div class="form-group row ">
+                    <label class="col-sm-3 col-form-label" for="message_format">Message Format</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" [(ngModel)]="items.message_format">
+                            <option value="" selected="true" disabled>Select</option>
+                            <option value="text">Text</option>
+                            <option value="html">HTML</option>
 
-                    </select>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row my-2">
-                <label class="col-sm-3 col-form-label" for="message_format">Message</label>
-                <div class="col-sm-9">
-                    <editor [init]="editorConfig" [(ngModel)]="emailTemplateConfig.message"></editor>
+                <div class="form-group row my-2">
+                    <label class="col-sm-3 col-form-label" for="message_format">Message</label>
+                    <div class="col-sm-9">
+                        <editor [init]="editorConfig" [(ngModel)]="items.message"></editor>
+                    </div>
                 </div>
-            </div>
+            </ng-container>
+
             <div class="row my-2">
                 <div class="col-sm-12 d-flex">
-                    <button type="button" class="btn btn-sm btn-primary" [disabled]="loader"
-                        (click)="isEditModal ? editTemplate() : addMailTemplate()">{{isEditModal ? 'Edit' : 'Add'}}</button>
+                    <button type="button" class="btn btn-primary" [disabled]="loader"
+                        (click)="isEditModal ? editTemplate() : addMailTemplate()">{{isEditModal ? 'Edit' :
+                        'Add'}}</button>
                     <div class="spinner-border text-success mx-2" *ngIf="loader"></div>
                 </div>
             </div>
         </fieldset>
+
 
     </ng-container>
 

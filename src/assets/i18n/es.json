@@ -22,5 +22,6 @@
     "LOGOUT": "Cerrar sesión",
     "MANAGE_OTA": "Administrar OTA",
     "DASHBOARD": "Panel",
-    "USER_SETTING":"Configuración del usuario"
+    "USER_SETTING":"Configuración del usuario",
+    "EDIT_TEMPLATE":"Edit Template"
 }

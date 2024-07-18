@@ -27,5 +27,6 @@
     "USER_SETTING":"User Setting",
     "CHANGE_PASSWORD":"Change Password",
     "TEMPLATE_LIST":"E-mail Template",
-    "ADD_TEMPLATE":"Add E-mail Template"
+    "ADD_TEMPLATE":"Add E-mail Template",
+    "EDIT_TEMPLATE":"Edit Template"
 }

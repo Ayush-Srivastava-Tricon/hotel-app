@@ -1,0 +1,14 @@
+<div class="dropdown">
+    <button class="btn btn-primary rounded-0 dropdown-toggle" type="button"
+        (click)="showLangDropdown = !showLangDropdown"> <img [src]="currentFlag ? currentFlag : 'https://e1.pngegg.com/pngimages/715/644/png-clipart-world-flag-icons-united-kingdom-flag-art-thumbnail.png'" width="30" height="15">
+        {{currentLang? currentLang :'Select Language...'}}
+        <span class="caret"></span></button>
+    <ul class="dropdown-menu" *ngIf="showLangDropdown" (mouseleave)="showLangDropdown=false;">
+        <li *ngFor="let lang of constants.TRANSLATION_LANGUAGES">
+            <a href="javascript:void(0);" [title]="lang.name" (click)="changeLang(lang,lang.flagPath)"
+                class="d-flex justify-content-around py-2 bg-light bg-hover mx-2 px-2"><img
+                    [src]="lang.flagPath" width="30" height="15" alt=""> <span
+                    class="text-ellipsis mx-2">{{lang.name}}</span></a>
+        </li>
+    </ul>
+</div>

@@ -134,6 +134,26 @@ export class AppConstants {
                     value:"Reservation Created"
                 },
         ],
+    };
+
+    public LANGUAGES:any={
+        'en':"English",
+        'fr':"French",
+        'sp':'Spanish',
+        'es':'Spanish'
     }
+
+   public TRANSLATION_LANGUAGES:any= [
+    {
+        name:'English',
+        key:'en',
+        flagPath:'https://e1.pngegg.com/pngimages/715/644/png-clipart-world-flag-icons-united-kingdom-flag-art-thumbnail.png'
+    },
+    {
+        name:'Spanish',
+        key:'es',
+        flagPath:'https://image.similarpng.com/very-thumbnail/2020/06/Spain-flag-icon-on-transparent-background-PNG.png'
+    },
+   ] 
 
 }

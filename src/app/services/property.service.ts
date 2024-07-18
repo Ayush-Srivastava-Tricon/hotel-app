@@ -215,4 +215,8 @@ export class PropertyService extends BaseServiceService {
     this.getData({},`${this.httpUrl['listPMSRoomsWithHouseKeeper']}/${house_keeper_id}`,callback);
   }
 
+  fetchReservedPMSList(callback:any){
+    this.getData({},`${this.httpUrl['listReservedPMSRooms']}`,callback);
+  }
+
 }
