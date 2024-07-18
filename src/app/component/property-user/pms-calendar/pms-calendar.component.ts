@@ -979,7 +979,7 @@ export class PmsCalendarComponent {
       let fontSize = 25;
       ctx.font = `${fontSize}px Georgia`;
 
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "black";  //pending
       ctx.fillRect(0, 0, canv.width, canv.height);
 
       ctx.fillStyle = "white";
