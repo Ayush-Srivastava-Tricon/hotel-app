@@ -5,6 +5,7 @@ import { ManageHousekeepingRoutingModule } from './manage-housekeeping-routing.m
 import { ManageHousekeepingComponent } from './manage-housekeeping.component';
 import { FormsModule } from '@angular/forms';
 import { MultiselectDropdownModule } from 'src/app/shared/multiselect-dropdown/multiselect-dropdown.module';
+import { PropertyService } from 'src/app/services/property.service';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { MultiselectDropdownModule } from 'src/app/shared/multiselect-dropdown/m
     FormsModule,
     MultiselectDropdownModule
   ],
-  exports:[ManageHousekeepingComponent]
+  exports:[ManageHousekeepingComponent],
+  providers:[PropertyService]
 })
 export class ManageHousekeepingModule { }

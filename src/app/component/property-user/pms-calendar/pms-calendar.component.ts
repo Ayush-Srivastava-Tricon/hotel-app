@@ -1,3 +1,4 @@
+import { HtmlTagDefinition } from '@angular/compiler';
 import { ChangeDetectionStrategy, Component, } from '@angular/core';
 import { PropertyService } from 'src/app/services/property.service';
 import { AlertService } from 'src/app/shared/alert.service';
@@ -33,7 +34,7 @@ export class PmsCalendarComponent {
   pmsRoomMapConfig: any = [];
   daysBetweenDates: any = '';
   currentPropertyId: number = 0;
-
+  reservationsWithCanvas:any={};
 
   constructor(private alert: AlertService, private _service: PropertyService) { }
 
@@ -152,7 +153,7 @@ export class PmsCalendarComponent {
               {
                 date: '2024-07-28',
                 reservation: 80,
-                reservation_customer_name: "Bituu ",
+                reservation_customer_name: "Bituu Srivasatva LAal singgh",
                 checkin: '2024-07-28',
                 checkout: '2024-08-02',
                 bg_color: "#4caf50",
@@ -383,8 +384,25 @@ export class PmsCalendarComponent {
           },
         ]
       },
-    ]
+    ];
+
+  this.precomputeCanvasElements();
+    
   }
+
+  precomputeCanvasElements() {
+    for (const group of this.mainData) {
+      for (const room of group.data) {
+        for (const reservation of room.data) {
+          const indexes = { groupIndex: this.mainData.indexOf(group), roomIdx: group.data.indexOf(room), dateIndex: room.data.indexOf(reservation) };
+          this.reservationsWithCanvas[`${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`] = this.createCanvas(reservation, indexes);
+        }
+      }
+    }
+    console.dir(this.reservationsWithCanvas['000']);
+    
+  }
+
 
   handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any, isDeriveModalActive: boolean) {
     if (this.timeoutId !== null) {            //this part will run if double clicked within 200ms
@@ -956,6 +974,38 @@ export class PmsCalendarComponent {
   //   ev.preventDefault();
   // }
 
+  
+  createCanvas(reservation: any, indexes: any): HTMLElement {
+    const text:any = reservation.reservation_customer_name.toUpperCase();
+    const canvas:any = document.createElement("canvas");
+    canvas.id = `captcha${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`;
+    canvas.width = 300; // Adjust as necessary
+    canvas.height = 60;
+
+    const ctx :any= canvas.getContext("2d");
+    const fontSize = 25;
+    ctx.font = `${fontSize}px Georgia`;
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+
+    let textWidth = ctx.measureText(text).width;
+    let paddingLeft = 37;
+    ctx.strokeText(text, paddingLeft, 40);
+
+    let textX = (canvas.width - textWidth) / 2;
+    let textY = 40;
+
+    ctx.fillText(text, textX, textY);
+
+    canvas.style.borderTopLeftRadius = "20px";
+    canvas.style.borderBottomRightRadius = "20px";
+
+    let target = new Image();
+    target.src = canvas.toDataURL();
+    
+    return target;
+  }
 
 
   createImage(room: any, date: any, indexes: any) {
@@ -975,25 +1025,30 @@ export class PmsCalendarComponent {
       canv.width = this.getReservationDaysWidth(room, date) * 50;
       canv.height = 60;
 
+      console.log(reservation);
+      
+
       let ctx = canv.getContext("2d");
       let fontSize = 25;
       ctx.font = `${fontSize}px Georgia`;
-
-      ctx.fillStyle = "black";  //pending
+      ctx.fillStyle = reservation.bg_color;
+      
       ctx.fillRect(0, 0, canv.width, canv.height);
 
       ctx.fillStyle = "white";
 
       let textWidth = ctx.measureText(text).width;
+    let textX: number;
 
-      let paddingLeft = 37;
-      ctx.strokeText(text, paddingLeft, 40);
-
-      let textX = (canv.width - textWidth) / 2;
-      let textY = 40;
-
-      ctx.fillText(text, textX, textY);
-
+    if (text.trim().indexOf(' ') === -1) {
+      textX = (canv.width - textWidth) / 2;
+    } else {
+      let paddingLeft = 50; 
+      textX = paddingLeft;
+    }
+    let textY = 40; 
+    ctx.fillText(text, textX, textY);
+  
       el.appendChild(canv);
 
       let reservationEl: any = document.getElementById(`td${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`);
@@ -1007,6 +1062,7 @@ export class PmsCalendarComponent {
 
       canv.style.borderTopLeftRadius = "20px";
       canv.style.borderBottomRightRadius = "20px";
+      
       reservationEl.addEventListener('dragstart', this.drag);
     }
   }

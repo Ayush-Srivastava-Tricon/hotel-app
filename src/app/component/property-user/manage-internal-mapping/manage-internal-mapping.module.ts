@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ManageInternalMappingRoutingModule } from './manage-internal-mapping-routing.module';
 import { ManageInternalMappingComponent } from './manage-internal-mapping.component';
+import { PropertyService } from 'src/app/services/property.service';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import { ManageInternalMappingComponent } from './manage-internal-mapping.compon
     CommonModule,
     ManageInternalMappingRoutingModule
   ],
-  exports:[ManageInternalMappingComponent]
+  exports:[ManageInternalMappingComponent],
+  providers:[PropertyService]
 })
 export class ManageInternalMappingModule { }

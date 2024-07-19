@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { AdminDashboardRoutingModule } from './dashboard-routing.module';
 import { AdminDashboardComponent } from './dashboard.component';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AdminService } from 'src/app/services/admin.service';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     TranslateModule
   ],
-  exports:[AdminDashboardComponent]
+  exports:[AdminDashboardComponent],
+  providers:[AdminService,TranslateService]
 })
 export class AdminDashboardModule { }

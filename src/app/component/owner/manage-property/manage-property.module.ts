@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ManagePropertyRoutingModule } from './manage-property-routing.module';
 import { ManagePropertyComponent } from './manage-property.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { OwnerService } from 'src/app/services/owner.service';
 
 
 @NgModule({
@@ -14,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  exports:[ManagePropertyComponent]
+  exports:[ManagePropertyComponent],
+  providers:[OwnerService]
 })
 export class ManagePropertyModule { }

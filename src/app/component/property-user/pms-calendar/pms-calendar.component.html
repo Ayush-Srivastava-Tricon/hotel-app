@@ -107,7 +107,6 @@
                                   </tr>
                                 </ng-container>
                               </ng-container> -->
-                              
 
 
                               <ng-container *ngFor="let group of mainData; let groupIndex = index">
@@ -120,32 +119,83 @@
                                       <i class="bi bi-house"></i> {{ room.pmsRoomName }}
                                     </td>
                                     <ng-container *ngFor="let date of datesData; let dateIndex = index; let last = last; let even = even; trackBy: trackByFn;">
-                                      <td class="hover-td" [ngClass]="{'overdate': last, }" [class.clash]="hasClashReservation(room, date)" [class.disabled]="date.isDatePassed" 
+                                      <td class="hover-td" [class.clash]="hasClashReservation(room, date)" [class.disabled]="date.isDatePassed" 
                                       (drop)="drop($event)" (dragover)="allowDrop($event)" 
                                       [attr.data-start]="room.data[roomIdx]?.checkin" [attr.data-end]="room.data[roomIdx]?.checkout" [attr.data-roomId]="room.pms_room_id" [attr.data-currentDate]="date.formateDate">
-                                        <ng-container *ngIf="isStartOfReservation(room, date)">
-                                          <div class="reservation" (click)="getReserationDetails(room, date)" [id]="'td' + groupIndex + roomIdx + dateIndex">
-                                            <div class="ota-img" style="pointer-events: none;">
-                                              <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg' : 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'" width="30" height="30" alt="">
-                                            </div>
-                                            <div class="reservation-image" [id]="'append' + groupIndex + roomIdx + dateIndex">
-                                              <div [id]="'captcha' + groupIndex + roomIdx + dateIndex">
-                                                {{ createImage(room, date, {groupIndex, roomIdx, dateIndex}) }}
+                                        
+                                        <ng-container *ngFor="let reservation of room.data; let resIdx = index">
+                                          <ng-container *ngIf="date.formateDate == reservation.checkin">
+                                            <div class="reservation" (click)="getReserationDetails(room, date)" [id]="'td' + groupIndex + roomIdx + dateIndex">
+                                              <div class="ota-img" style="pointer-events: none;">
+                                                <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg' : reservation.otaImg" width="30" height="30" alt="">
+                                              </div>
+                                              <div class="reservation-image" [id]="'append' + groupIndex + roomIdx + dateIndex">
+                                                <div [id]="'captcha' + groupIndex + roomIdx + dateIndex">
+                                                  {{ createImage(room, date, {groupIndex, roomIdx, dateIndex}) }}
+                                                </div>
+                                              </div>
+                                              <div class="reservation-info">
+                                                <div>{{ reservation.reservation_customer_name }}</div>
+                                                <div>Check-in: {{ reservation.checkin }}</div>
+                                                <div>Check-out: {{ reservation.checkout }}</div>
+                                                <div>Reservation: {{ reservation.reservation }}</div>
                                               </div>
                                             </div>
-                                            <div class="reservation-info">
-                                              <div>{{ getReservationData(room, date) }}</div>
-                                              <div>Check-in: {{ getReservationData(room, date)?.checkin }}</div>
-                                              <div>Check-out: {{ getReservationData(room, date)?.checkout }}</div>
-                                              <div>Reservation: {{ getReservationData(room, date)?.reservation }}</div>
-                                            </div>
-                                          </div>
+                                          </ng-container>
                                         </ng-container>
                                       </td>
                                     </ng-container>
                                   </tr>
                                 </ng-container>
                               </ng-container>
+                              
+                              
+
+
+                              <!-- <ng-container *ngFor="let group of mainData; let groupIndex = index">
+                                <tr>
+                                  <td [attr.colspan]="weekdaysWithDates.length + 1" class="group-name">{{ group.parentRoom }}</td>
+                                </tr>
+                                <ng-container *ngFor="let room of group.data; let roomIdx = index">
+                                  <tr>
+                                    <td class="px-3 pms_name d-block text-ellipsis">
+                                      <i class="bi bi-house"></i> {{ room.pmsRoomName }}
+                                    </td>
+                                    <ng-container *ngFor="let date of datesData; let dateIndex = index; let last = last; let even = even; trackBy: trackByFn;">
+                                      <td class="hover-td" [class.clash]="hasClashReservation(room, date)" [class.disabled]="date.isDatePassed" 
+                                      (drop)="drop($event)" (dragover)="allowDrop($event)" 
+                                      [attr.data-start]="room.data[roomIdx]?.checkin" [attr.data-end]="room.data[roomIdx]?.checkout" [attr.data-roomId]="room.pms_room_id" [attr.data-currentDate]="date.formateDate">
+                                        
+                                        <ng-container *ngFor="let reservation of room.data; let resIdx = index">
+                                          <ng-container *ngIf="date.formateDate == reservation.checkin">
+                                            <div class="reservation" (click)="getReserationDetails(room, date)" [id]="'td' + groupIndex + roomIdx + dateIndex">
+                                              <div class="ota-img" style="pointer-events: none;">
+                                                <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg' : reservation.otaImg" width="30" height="30" alt="">
+                                              </div>
+                                              <div class="reservation-image" [id]="'append' + groupIndex + roomIdx + dateIndex">
+                                                <div [id]="'captcha' + groupIndex + roomIdx + dateIndex">
+                                                  <ng-container *ngIf="true">
+                                                    <img [src]="reservationsWithCanvas[groupIndex+roomIdx+dateIndex]?.currentSrc">
+                                                    {{reservationsWithCanvas[groupIndex+roomIdx+dateIndex]?.currentSrc}}
+                                                  </ng-container>
+                                                </div>
+                                              </div>
+                                              <div class="reservation-info">
+                                                <div>{{ reservation.reservation_customer_name }}</div>
+                                                <div>Check-in: {{ reservation.checkin }}</div>
+                                                <div>Check-out: {{ reservation.checkout }}</div>
+                                                <div>Reservation: {{ reservation.reservation }}</div>
+                                              </div>
+                                            </div>
+                                          </ng-container>
+                                        </ng-container>
+                                      </td>
+                                    </ng-container>
+                                  </tr>
+                                </ng-container>
+                              </ng-container> -->
+                              
+                              
                               
                         </tbody>
                     </table>

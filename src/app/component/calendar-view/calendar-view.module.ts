@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CalendarViewRoutingModule } from './calendar-view-routing.module';
 import { CalendarViewComponent } from './calendar-view.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CalendarService } from 'src/app/services/calendar.service';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  exports:[CalendarViewComponent]
+  exports:[CalendarViewComponent],
+  providers:[CalendarService]
 })
 export class CalendarViewModule { }

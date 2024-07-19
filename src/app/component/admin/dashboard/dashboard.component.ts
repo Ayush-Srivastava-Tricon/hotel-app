@@ -23,11 +23,11 @@ export class AdminDashboardComponent {
   }
 
   ngAfterContentInit() {
-    this.getAllSortedLang();
+    // this.getAllSortedLang();
   }
 
   getAllSortedLang() {
-    this.allLang = homeLanguages;
+    // this.allLang = homeLanguages;
   }
 
   setDefaultLang(lang: any) {

@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
+  title:any='hotel booking system';
+
   constructor(){}
 
   ngAfterViewInit(){

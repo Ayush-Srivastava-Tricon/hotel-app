@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { SignupRoutingModule } from './signup-routing.module';
 import { SignupComponent } from './signup.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @NgModule({
@@ -11,6 +12,8 @@ import { SignupComponent } from './signup.component';
     CommonModule,
     SignupRoutingModule
   ],
-  exports:[SignupComponent]
+  exports:[SignupComponent],
+  providers:[AuthService]
+
 })
 export class SignupModule { }

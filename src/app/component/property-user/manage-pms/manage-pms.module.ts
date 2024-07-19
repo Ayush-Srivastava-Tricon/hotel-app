@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ManagePmsRoutingModule } from './manage-pms-routing.module';
 import { ManagePmsComponent } from './manage-pms.component';
 import { FormsModule } from '@angular/forms';
+import { PropertyService } from 'src/app/services/property.service';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { FormsModule } from '@angular/forms';
     ManagePmsRoutingModule,
     FormsModule
   ],
-  exports:[ManagePmsComponent]
+  exports:[ManagePmsComponent],
+  providers:[PropertyService]
 })
 export class ManagePmsModule { }

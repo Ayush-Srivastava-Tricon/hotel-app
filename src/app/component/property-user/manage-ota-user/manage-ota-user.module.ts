@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ManageOtaUserRoutingModule } from './manage-ota-user-routing.module';
 import { ManageOtaUserComponent } from './manage-ota-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PropertyService } from 'src/app/services/property.service';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ManageOtaUserRoutingModule,
     ReactiveFormsModule,
   ],
-  exports:[ManageOtaUserComponent]
+  exports:[ManageOtaUserComponent],
+  providers:[PropertyService]
 })
 export class ManageOtaUserModule { }
