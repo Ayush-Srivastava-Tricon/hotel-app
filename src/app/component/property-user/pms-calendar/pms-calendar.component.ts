@@ -39,369 +39,291 @@ export class PmsCalendarComponent {
   constructor(private alert: AlertService, private _service: PropertyService) { }
 
   ngOnInit() {
-    // this.loader = true;
-
     this.selectedDate({ target: { value: this.formatDate(this.todayDate) } });
-    this.getPMSData();
   }
 
-  getPMSData() {
-    this._service.fetchReservedPMSList((res: any) => {
-      if (res.status == 200) {
-        console.log(res);
-
+  getPMSData(selectedDate?:any) {
+    this.mainData = [];
+    this.loader = true;
+    let params:any={
+      checkIn:this.formatDate(new Date(selectedDate ? selectedDate : '')),
+      checkOut:this.defaultRangeDate(selectedDate)
+    }
+    this._service.fetchReservedPMSList(params,(res: any) => {
+      if (res.status == 200 && res.responseData.length > 0 ) {
+        // this.mainData  = [res.responseData[0]];
+        this.mainData = res.responseData;
+        this.loader = false;
+      }else{
+        
+        this.loader = false;
       }
     })
   }
 
-
-  makeCalendarData() {
-
-    //   let pmsData: any = [
-    //     { pmsName: 'Aman', reservation_id: 10 },
-    //     { pmsName: 'Arnav', reservation_id: 20 },
-    //     { pmsName: 'Golu', reservation_id: 30 },
-    //     { pmsName: 'Danny', reservation_id: 40 },
-    //     { pmsName: 'Bobby', reservation_id: 50 },
-    //     { pmsName: 'Prafull', reservation_id: 60 },
-    //     { pmsName: 'Prateek', reservation_id: 70 },
-    //     { pmsName: 'Ranu', reservation_id: 80 },
-    //     { pmsName: 'Jitu', reservation_id: 90 }
-    //   ];
-
-    //   let data: any = [
-    //     {
-    //       date: '2024-07-06',
-    //       reservation: 10,
-    //       reservation_id: 10,
-    //       reservation_customer_name: "Ayush",
-    //       checkin: '2024-08-01',
-    //       checkout: '2024-08-07',
-    //       img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-    //     },
-    //     {
-    //       date: '2024-07-15',
-    //       reservation: 5,
-    //       reservation_id: 20,
-    //       reservation_customer_name: "Bituu",
-    //       checkin: '2024-07-15',
-    //       checkout: '2024-07-18',
-    //       img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-    //     },
-    //   ];
-
-    //   const dateArray:any = JSON.parse(JSON.stringify(this.datesData));
-
-    //  let m =  pmsData.map((e: any) => {
-    //   this.datesData = dateArray;
-    //     data.forEach((ele: any) => {
-
-    //       for (let i = 0; i < this.datesData.length; i++) {
-    //         if (((new Date(this.datesData[i].formateDate).setHours(0, 0, 0, 0) >= new Date(ele.checkin).setHours(0, 0, 0, 0))
-    //           &&
-    //           (new Date(this.datesData[i].formateDate).setHours(0, 0, 0, 0) <= new Date(ele.checkout).setHours(0, 0, 0, 0))) && ele.reservation_id == e.reservation_id ) {
-    //           this.datesData[i]['data'] = ele;
-    //         }
-    //       }
-    //     })
-    //     e['datesData'] = JSON.parse(JSON.stringify(this.datesData));
-    //     return e;
-    //   });
-
-
-
-
-
-    // this.mainData.forEach((e: any) => {
-    //     e.data.pmsRoomList.forEach((ele:any)=>{
-    //       // this.datesData
-    //       ele.data.forEach((item: any) => {
-    //         for (let i = 0; i < this.datesData.length; i++) {
-    //           if (new Date(item.date).setHours(0, 0, 0, 0) == new Date(this.datesData[i].formateDate).setHours(0, 0, 0, 0)) {
-    //             this.datesData[i]['newData'] = item;
-    //             this.datesData[i].newData['resource'] = e.room_id;
-    //             this.datesData[i].newData['start'] = item.date;
-    //             break;
-    //           }
-    //         }
-    //       });
-    //       ele['datesData'] = JSON.parse(JSON.stringify(this.datesData));
-    //     });
-    //   });
-
-    console.log(234);
-
-    this.mainData = [
-      {
-        parentRoom: "Super delux Room",
-        data: [
-          {
-
-            pmsRoomName: "Aman",
-            pms_room_id: 1,
-            data: [
-              {
-                date: '2024-08-07',
-                reservation: 6,
-                reservation_id: 42,
-                reservation_customer_name: "Ayush",
-                checkin: '2024-08-07',
-                checkout: '2024-08-10',
-                bg_color: "#4caf50",
-                otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
-              },
-              {
-                date: '2024-07-28',
-                reservation: 80,
-                reservation_customer_name: "Bituu Srivasatva LAal singgh",
-                checkin: '2024-07-28',
-                checkout: '2024-08-02',
-                bg_color: "#4caf50",
-                img: 'https://i.ytimg.com/vi/C_FvZs4dOEw/sddefault.jpg',
-                otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
-              },
-            ]
-          },
-
-          {
-            pmsRoomName: "Arnav",
-            pms_room_id: 2,
-            data: [
-              {
-                date: '2024-07-06',
-                reservation: 10,
-                reservation_customer_name: "Arnav",
-                checkin: '2024-07-06',
-                checkout: '2024-07-08',
-                bg_color: "#3d50b4",
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-              {
-                date: '2024-07-15',
-                reservation: 5,
-                reservation_id: 42,
-                reservation_customer_name: "Bituu",
-                checkin: '2024-07-15',
-                checkout: '2024-07-18',
-                bg_color: "#3d50b4",
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
-                otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
-              },
-            ]
-          },
-          {
-            pmsRoomName: "Golu",
-            pms_room_id: 3,
-            data: [
-              {
-                date: '2024-07-09',
-                reservation: 10,
-                reservation_customer_name: "Ayush",
-                checkin: '2024-07-09',
-                checkout: '2024-07-10',
-                bg_color: "#4caf50",
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-              {
-                date: '2024-07-25',
-                reservation: 5,
-                reservation_customer_name: "Bituu",
-                checkin: '2024-07-25',
-                checkout: '2024-07-28',
-                bg_color: "#3d50b4",
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
-                otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
-              },
-            ]
-          },
-        ]
-      },
-      {
-        parentRoom: "Delux Room",
-        data: [
-          {
-
-            pmsRoomName: "Danny",
-            pms_room_id: 4,
-            data: [
-              {
-                date: '2024-07-05',
-                reservation: 6,
-                reservation_customer_name: "Danny",
-                checkin: '2024-07-05',
-                checkout: '2024-07-07',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
-                otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
-              },
-              {
-                date: '2024-07-11',
-                reservation: 80,
-                reservation_customer_name: "Danny",
-                checkin: '2024-07-11',
-                checkout: '2024-07-17',
-                bg_color: "#3d50b4",
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
-                otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
-              },
-            ]
-          },
-
-          {
-            pmsRoomName: "Bobby",
-            pms_room_id: 5,
-            data: [
-              {
-                date: '2024-07-31',
-                reservation: 10,
-                reservation_customer_name: "Bobby",
-                checkin: '2024-07-31',
-                checkout: '2024-08-12',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
-                otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
-              },
-              {
-                date: '2024-08-13',
-                reservation: 5,
-                reservation_customer_name: "Bobby",
-                checkin: '2024-08-13',
-                checkout: '2024-08-15',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-            ]
-          },
-          {
-            pmsRoomName: "Prafull",
-            pms_room_id: 6,
-            data: [
-              {
-                date: '2024-07-16',
-                reservation: 10,
-                reservation_customer_name: "Nayak",
-                checkin: '2024-07-16',
-                checkout: '2024-07-16',
-                img: 'https://i.ytimg.com/vi/C_FvZs4dOEw/sddefault.jpg',
-                otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
-              },
-              {
-                date: '2024-08-04',
-                reservation: 5,
-                reservation_customer_name: "Guru",
-                checkin: '2024-08-04',
-                checkout: '2024-08-11',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
-                otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
-              },
-              {
-                date: '2024-07-12',
-                reservation: 5,
-                reservation_customer_name: "Naman",
-                checkin: '2024-07-12',
-                checkout: '2024-07-14',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-            ]
-          },
-        ]
-      },
-      {
-        parentRoom: "Room with Mountain view",
-        data: [
-          {
-
-            pmsRoomName: "Prateek",
-            pms_room_id: 7,
-            data: [
-              {
-                date: '2024-07-04',
-                reservation: 6,
-                reservation_customer_name: "Ayush",
-                checkin: '2024-07-03',
-                checkout: '2024-07-06',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-              {
-                date: '2024-07-10',
-                reservation: 80,
-                reservation_customer_name: "Bituu",
-                checkin: '2024-07-10',
-                checkout: '2024-07-12',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-            ]
-          },
-
-          {
-            pmsRoomName: "Ranu",
-            pms_room_id: 8,
-            data: [
-              {
-                date: '2024-07-06',
-                reservation: 10,
-                reservation_customer_name: "Ayush",
-                checkin: '2024-07-06',
-                checkout: '2024-07-10',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-              {
-                date: '2024-07-15',
-                reservation: 5,
-                reservation_customer_name: "Bituu",
-                checkin: '2024-07-15',
-                checkout: '2024-07-18',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-            ]
-          },
-          {
-            pmsRoomName: "Jitu",
-            pms_room_id: 9,
-            data: [
-              {
-                date: '2024-08-01',
-                reservation: 10,
-                reservation_customer_name: "Ayush",
-                checkin: '2024-08-01',
-                checkout: '2024-08-03',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-              {
-                date: '2024-08-10',
-                reservation: 5,
-                reservation_customer_name: "Bituu",
-                checkin: '2024-08-10',
-                checkout: '2024-08-15',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-              {
-                date: '2024-08-05',
-                reservation: 5,
-                reservation_customer_name: "Bituu",
-                checkin: '2024-08-05',
-                checkout: '2024-08-05',
-                img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
-              },
-            ]
-          },
-        ]
-      },
-    ];
-
-  this.precomputeCanvasElements();
-    
+  defaultRangeDate(selectedRangeDate:any = new Date()){
+    const date = selectedRangeDate.setMonth(selectedRangeDate.getMonth()+1);
+    return this.formatDate(new Date(date));
+     
   }
 
-  precomputeCanvasElements() {
-    for (const group of this.mainData) {
-      for (const room of group.data) {
-        for (const reservation of room.data) {
-          const indexes = { groupIndex: this.mainData.indexOf(group), roomIdx: group.data.indexOf(room), dateIndex: room.data.indexOf(reservation) };
-          this.reservationsWithCanvas[`${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`] = this.createCanvas(reservation, indexes);
-        }
-      }
-    }
-    console.dir(this.reservationsWithCanvas['000']);
-    
-  }
+
+  // makeCalendarData() {
+  //   this.mainData = [
+  //     {
+  //       parentRoom: "Super delux Room",
+  //       data: [
+  //         {
+
+  //           pmsRoomName: "Aman",
+  //           pms_room_id: 1,
+  //           data: [
+  //             {
+  //               date: '2024-08-07',
+  //               reservation: 6,
+  //               reservation_id: 42,
+  //               reservation_customer_name: "Ayush",
+  //               check_in: '2024-08-07',
+  //               check_out: '2024-08-10',
+  //               bg_color: "#4caf50",
+  //               otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
+  //             },
+  //             {
+  //               date: '2024-07-28',
+  //               reservation: 80,
+  //               reservation_customer_name: "Bituu Srivasatva LAal singgh",
+  //               check_in: '2024-07-28',
+  //               check_out: '2024-08-02',
+  //               bg_color: "#4caf50",
+  //               img: 'https://i.ytimg.com/vi/C_FvZs4dOEw/sddefault.jpg',
+  //               otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
+  //             },
+  //           ]
+  //         },
+
+  //         {
+  //           pmsRoomName: "Arnav",
+  //           pms_room_id: 2,
+  //           data: [
+  //             {
+  //               date: '2024-07-06',
+  //               reservation: 10,
+  //               reservation_customer_name: "Arnav",
+  //               check_in: '2024-07-06',
+  //               check_out: '2024-07-08',
+  //               bg_color: "#3d50b4",
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //             {
+  //               date: '2024-07-15',
+  //               reservation: 5,
+  //               reservation_id: 42,
+  //               reservation_customer_name: "Bituu",
+  //               check_in: '2024-07-15',
+  //               check_out: '2024-07-18',
+  //               bg_color: "#3d50b4",
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
+  //               otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
+  //             },
+  //           ]
+  //         },
+  //         {
+  //           pmsRoomName: "Golu",
+  //           pms_room_id: 3,
+  //           data: [
+  //             {
+  //               date: '2024-07-09',
+  //               reservation: 10,
+  //               reservation_customer_name: "Ayush",
+  //               check_in: '2024-07-09',
+  //               check_out: '2024-07-10',
+  //               bg_color: "#4caf50",
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //             {
+  //               date: '2024-07-25',
+  //               reservation: 5,
+  //               reservation_customer_name: "Bituu",
+  //               check_in: '2024-07-25',
+  //               check_out: '2024-07-28',
+  //               bg_color: "#3d50b4",
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
+  //               otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
+  //             },
+  //           ]
+  //         },
+  //       ]
+  //     },
+  //     {
+  //       parentRoom: "Delux Room",
+  //       data: [
+  //         {
+
+  //           pmsRoomName: "Danny",
+  //           pms_room_id: 4,
+  //           data: [
+  //             {
+  //               date: '2024-07-05',
+  //               reservation: 6,
+  //               reservation_customer_name: "Danny",
+  //               check_in: '2024-07-05',
+  //               check_out: '2024-07-07',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
+  //               otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
+  //             },
+  //             {
+  //               date: '2024-07-11',
+  //               reservation: 80,
+  //               reservation_customer_name: "Danny",
+  //               check_in: '2024-07-11',
+  //               check_out: '2024-07-17',
+  //               bg_color: "#3d50b4",
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
+  //               otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
+  //             },
+  //           ]
+  //         },
+
+  //         {
+  //           pmsRoomName: "Bobby",
+  //           pms_room_id: 5,
+  //           data: [
+  //             {
+  //               date: '2024-07-31',
+  //               reservation: 10,
+  //               reservation_customer_name: "Bobby",
+  //               check_in: '2024-07-31',
+  //               check_out: '2024-08-12',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
+  //               otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
+  //             },
+  //             {
+  //               date: '2024-08-13',
+  //               reservation: 5,
+  //               reservation_customer_name: "Bobby",
+  //               check_in: '2024-08-13',
+  //               check_out: '2024-08-15',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //           ]
+  //         },
+  //         {
+  //           pmsRoomName: "Prafull",
+  //           pms_room_id: 6,
+  //           data: [
+  //             {
+  //               date: '2024-07-16',
+  //               reservation: 10,
+  //               reservation_customer_name: "Nayak",
+  //               check_in: '2024-07-16',
+  //               check_out: '2024-07-16',
+  //               img: 'https://i.ytimg.com/vi/C_FvZs4dOEw/sddefault.jpg',
+  //               otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
+  //             },
+  //             {
+  //               date: '2024-08-04',
+  //               reservation: 5,
+  //               reservation_customer_name: "Guru",
+  //               check_in: '2024-08-04',
+  //               check_out: '2024-08-11',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg',
+  //               otaImg: 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'
+  //             },
+  //             {
+  //               date: '2024-07-12',
+  //               reservation: 5,
+  //               reservation_customer_name: "Naman",
+  //               check_in: '2024-07-12',
+  //               check_out: '2024-07-14',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //           ]
+  //         },
+  //       ]
+  //     },
+  //     {
+  //       parentRoom: "Room with Mountain view",
+  //       data: [
+  //         {
+
+  //           pmsRoomName: "Prateek",
+  //           pms_room_id: 7,
+  //           data: [
+  //             {
+  //               date: '2024-07-04',
+  //               reservation: 6,
+  //               reservation_customer_name: "Ayush",
+  //               check_in: '2024-07-03',
+  //               check_out: '2024-07-06',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //             {
+  //               date: '2024-07-10',
+  //               reservation: 80,
+  //               reservation_customer_name: "Bituu",
+  //               check_in: '2024-07-10',
+  //               check_out: '2024-07-12',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //           ]
+  //         },
+
+  //         {
+  //           pmsRoomName: "Ranu",
+  //           pms_room_id: 8,
+  //           data: [
+  //             {
+  //               date: '2024-07-06',
+  //               reservation: 10,
+  //               reservation_customer_name: "Ayush",
+  //               check_in: '2024-07-06',
+  //               check_out: '2024-07-10',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //             {
+  //               date: '2024-07-15',
+  //               reservation: 5,
+  //               reservation_customer_name: "Bituu",
+  //               check_in: '2024-07-15',
+  //               check_out: '2024-07-18',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //           ]
+  //         },
+  //         {
+  //           pmsRoomName: "Jitu",
+  //           pms_room_id: 9,
+  //           data: [
+  //             {
+  //               date: '2024-08-01',
+  //               reservation: 10,
+  //               reservation_customer_name: "Ayush",
+  //               check_in: '2024-08-01',
+  //               check_out: '2024-08-03',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //             {
+  //               date: '2024-08-10',
+  //               reservation: 5,
+  //               reservation_customer_name: "Bituu",
+  //               check_in: '2024-08-10',
+  //               check_out: '2024-08-15',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //             {
+  //               date: '2024-08-05',
+  //               reservation: 5,
+  //               reservation_customer_name: "Bituu",
+  //               check_in: '2024-08-05',
+  //               check_out: '2024-08-05',
+  //               img: 'https://i.ytimg.com/vi/RPrXxYBZO9c/maxresdefault.jpg'
+  //             },
+  //           ]
+  //         },
+  //       ]
+  //     },
+  //   ];
+  // }
 
 
   handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any, isDeriveModalActive: boolean) {
@@ -496,10 +418,8 @@ export class PmsCalendarComponent {
       monthCounter++;
     }
     setTimeout(() => {
-      this.makeCalendarData();
+      this.getPMSData(selectedDate);
       this.lastDateCalendar = this.datesData[this.datesData.length - 1];
-      // this.loader = false;
-
     }, 0);
   }
 
@@ -549,7 +469,6 @@ export class PmsCalendarComponent {
     this.selectDate = new Date(event.target.value);
     this.datesData = [];
     this.renderCalendar(this.selectDate);
-
   }
 
 
@@ -574,16 +493,15 @@ export class PmsCalendarComponent {
     if ((this.currentDate.getMonth() + 1) != (new Date().getMonth() + 1)) {
       this.selectDate = '';
       let selectedRangeDate: any = document.getElementById("date");
-      let setFirstMonthDate: any = new Date(this.currentDate).setDate(1)
+      let setFirstMonthDate: any = new Date(this.currentDate).setDate(1);
+      let now: any = new Date(setFirstMonthDate);
       selectedRangeDate.value = this.formatDate(new Date(setFirstMonthDate));
-      this.renderCalendar(this.currentDate);
-      // this.fetchCalendarData(this.formatDate(this.currentDate), false);
+      this.renderCalendar(now);
     } else {
       this.selectDate = new Date();
       let selectedRangeDate: any = document.getElementById("date");
       selectedRangeDate.value = this.formatDate(this.selectDate);
       this.renderCalendar(this.selectDate);
-      // this.fetchCalendarData(this.formatDate(this.selectDate), true);
     }
   }
 
@@ -614,10 +532,10 @@ export class PmsCalendarComponent {
 
 
   getReservationDaysWidth(room: any, date: any): number {
-    const reservation = room.data.find((reservation: any) => reservation.checkin == date.formateDate);
+    const reservation = room.data.find((reservation: any) => reservation.check_in == date.formateDate);
     if (reservation) {
-      const checkinDate = new Date(reservation.checkin);
-      const checkoutDate = new Date(reservation.checkout);
+      const checkinDate = new Date(reservation.check_in);
+      const checkoutDate = new Date(reservation.check_out);
       const diffTime = checkoutDate.getTime() - checkinDate.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -636,36 +554,36 @@ export class PmsCalendarComponent {
   }
 
   getReservationData(room: any, date: any): any {
-    const reservation = room.data.find((reservation: any) => (date.formateDate >= reservation.checkin) && (date.formateDate <= reservation.checkout));
+    const reservation = room.data.find((reservation: any) => (date.formateDate >= reservation.check_in) && (date.formateDate <= reservation.check_out));
     return reservation;
   }
 
   getReservationColor(room: any, date: any): string {
-    const reservation = room.data.find((reservation: any) => (date.formateDate >= reservation.checkin) && (date.formateDate <= reservation.checkout));
+    const reservation = room.data.find((reservation: any) => (date.formateDate >= reservation.check_in) && (date.formateDate <= reservation.check_out));
     return reservation ? reservation.color : '#fff';
   }
 
   hasReservation(room: any, date: any): boolean {
-    return room.data.some((reservation: any) => (date.formateDate >= reservation.checkin) && (date.formateDate <= reservation.checkout));
+    return room.data.some((reservation: any) => (date.formateDate >= reservation.check_in) && (date.formateDate <= reservation.check_out));
   }
 
   hasClashReservation(room: any, date: any): boolean {
-    const reservations = room.data.filter((reservation: any) => date.formateDate >= reservation.checkin && date.formateDate <= reservation.checkout);
+    const reservations = room.data.filter((reservation: any) => date.formateDate >= reservation.check_in && date.formateDate <= reservation.check_out);
     return reservations.length > 1;
   }
 
   isStartOfReservation(room: any, date: any): boolean {
-    return room.data.some((reservation: any) => reservation.checkin == date.formateDate);
+    return room.data.some((reservation: any) => reservation.check_in == date.formateDate);
   }
 
   getReservationImage(room: any, date: any): string {
-    const reservation = room.data.find((reservation: any) => (date.formateDate >= reservation.checkin) && (date.formateDate <= reservation.checkout));
+    const reservation = room.data.find((reservation: any) => (date.formateDate >= reservation.check_in) && (date.formateDate <= reservation.check_out));
     return reservation ? reservation.img : '';
   }
 
 
   hasReservationAcrossMonth(room: any, date: any) {
-    return room.data.some((reservation: any) => (reservation.checkout >= date.formateDate));
+    return room.data.some((reservation: any) => (reservation.check_out >= date.formateDate));
 
   }
 
@@ -843,8 +761,8 @@ export class PmsCalendarComponent {
   }
 
   calculateDaysBetweenDates(reservationDetail: any) {
-    let date1 = new Date(reservationDetail.checkin);
-    let date2 = new Date(reservationDetail.checkout);
+    let date1 = new Date(reservationDetail.check_in);
+    let date2 = new Date(reservationDetail.check_out);
 
     let Difference_In_Time = date2.getTime() - date1.getTime();
 
@@ -872,7 +790,7 @@ export class PmsCalendarComponent {
   }
 
   getReserationDetails(room: any, date: any) {
-    const reservation: any = room.data.find((e: any) => e.checkin == date.formateDate)
+    const reservation: any = room.data.find((e: any) => e.check_in == date.formateDate)
     if (reservation?.reservation_id) {
       this._service.getSingleReservation(reservation?.reservation_id, (res: any) => {
         if (res.status == 200) {
@@ -895,127 +813,15 @@ export class PmsCalendarComponent {
   }
 
 
-  // createImage(room: any, date: any, indexes: any) {
-  //   let reservation: any = room.data.find((ele: any) => (date.formateDate >= ele.checkin) && (date.formateDate <= ele.checkout));
-
-  //   if (reservation) {
-  //     let el: any = document.getElementById(`append${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`);
-  //     el.innerHTML = "";
-
-  //     let charsArray: any = reservation.reservation_customer_name.toUpperCase();
-  //     let captcha = charsArray.split('');
-
-  //     let text = captcha.join("");
-
-  //     let canv: any = document.createElement("canvas");
-  //     canv.id = `captcha${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`;
-  //     canv.width = this.getReservationDaysWidth(room, date) * 50;
-  //     canv.height = 60;
-
-  //     let ctx = canv.getContext("2d");
-  //     let fontSize = 25;
-  //     ctx.font = `${fontSize}px Georgia`;
-
-  //     ctx.fillStyle = "black";
-  //     ctx.fillRect(0, 0, canv.width, canv.height);
-
-  //     ctx.fillStyle = "white";
-
-  //     let textWidth = ctx.measureText(text).width;
-
-  //     let paddingLeft = 37; 
-  //     ctx.strokeText(text, paddingLeft, 40);
-
-  //     let textX = (canv.width - textWidth) / 2;
-  //     let textY = 40; 
-
-  //     ctx.fillText(text, textX, textY);
-
-  //     el.appendChild(canv);
-
-  //     let reservationEl:any = document.getElementById(`td${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`);
-
-  //     reservationEl.style.width = this.getReservationDaysWidth(room, date) * 50 +"px";
-  //     reservationEl.draggable=true;
-
-  //     reservationEl.dataset.checkin = reservation.checkin;
-  //     reservationEl.dataset.checkout = reservation.checkout;
-
-  //     canv.style.borderTopLeftRadius = "20px";
-  //     canv.style.borderBottomRightRadius = "20px";
-  //     reservationEl.addEventListener('dragstart', this.drag);
-
-
-  //   }
-  // }
-
-  // drag(ev: any) {
-  //   console.log('Drag started:', ev.target.id);
-  //   let currentDraggedElement :any= document.querySelector(`#${ev.target.id} .reservation-info`);
-  //   currentDraggedElement.style.display = "none";
-  //   // currentDraggedElement = document.querySelectorAll(`.reservation-info`);   pending logic ...for show/hide reseravion info
-  //   ev.dataTransfer.setData("text/plain", ev.target.id);
-  // }
-
-  // drop(ev: any) {
-  //   ev.preventDefault();
-  //   let data = ev.dataTransfer.getData("text/plain");
-  //   console.log('Dropped data:', data);
-  //   let draggedElement:any = document.getElementById(data);
-  //   let checkIn :any = draggedElement.dataset.checkin
-  //   let checkout :any = draggedElement.dataset.checkout
-  //   if (draggedElement && ev.target !== draggedElement.parentNode) {
-  //     ev.target.innerHTML = ""; // Clear the target cell before appending
-  //     ev.target.appendChild(draggedElement);
-  //   }
-  // }
-
-  // allowDrop(ev: any) {
-  //   ev.preventDefault();
-  // }
-
-  
-  createCanvas(reservation: any, indexes: any): HTMLElement {
-    const text:any = reservation.reservation_customer_name.toUpperCase();
-    const canvas:any = document.createElement("canvas");
-    canvas.id = `captcha${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`;
-    canvas.width = 300; // Adjust as necessary
-    canvas.height = 60;
-
-    const ctx :any= canvas.getContext("2d");
-    const fontSize = 25;
-    ctx.font = `${fontSize}px Georgia`;
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "white";
-
-    let textWidth = ctx.measureText(text).width;
-    let paddingLeft = 37;
-    ctx.strokeText(text, paddingLeft, 40);
-
-    let textX = (canvas.width - textWidth) / 2;
-    let textY = 40;
-
-    ctx.fillText(text, textX, textY);
-
-    canvas.style.borderTopLeftRadius = "20px";
-    canvas.style.borderBottomRightRadius = "20px";
-
-    let target = new Image();
-    target.src = canvas.toDataURL();
-    
-    return target;
-  }
-
-
   createImage(room: any, date: any, indexes: any) {
-    let reservation: any = room.data.find((ele: any) => (date.formateDate >= ele.checkin) && (date.formateDate <= ele.checkout));
-
+    let reservation: any = room.data.find((ele: any) => (date.formateDate >= ele.check_in) && (date.formateDate <= ele.check_out));
+    
     if (reservation) {
       let el: any = document.getElementById(`append${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`);
       el.innerHTML = "";
+      reservation.custmer_name = "Ayush Kumar yadav"
 
-      let charsArray: any = reservation.reservation_customer_name.toUpperCase();
+      let charsArray: any = reservation.custmer_name.toUpperCase();
       let captcha = charsArray.split('');
 
       let text = captcha.join("");
@@ -1056,8 +862,8 @@ export class PmsCalendarComponent {
       reservationEl.style.width = this.getReservationDaysWidth(room, date) * 50 + "px";
       reservationEl.draggable = true;
 
-      reservationEl.dataset.checkin = reservation.checkin;
-      reservationEl.dataset.checkout = reservation.checkout;
+      reservationEl.dataset.check_in = reservation.check_in;
+      reservationEl.dataset.check_out = reservation.check_out;
       reservationEl.dataset.roomId = room.pms_room_id;
 
       canv.style.borderTopLeftRadius = "20px";
@@ -1090,7 +896,7 @@ export class PmsCalendarComponent {
     if (this.isDropAllowed(draggedElement, targetElement)) {
       targetElement.innerHTML = ""; // Clear the target cell before appending
       targetElement.appendChild(draggedElement);
-    }else if(targetElement.dataset.currentdate < draggedElement.dataset.checkin || targetElement.dataset.currentdate >= draggedElement.dataset.checkout){
+    }else if(targetElement.dataset.currentdate < draggedElement.dataset.check_in || targetElement.dataset.currentdate >= draggedElement.dataset.check_out){
       this.alert.alert("error","Previous & Future Dates Reservation Not Allowed","Error",{ displayDuration: 3000, pos: 'top' })
     } else{
       this.alert.alert("error","Reservation already exist","Error",{ displayDuration: 3000, pos: 'top' })
@@ -1100,8 +906,8 @@ export class PmsCalendarComponent {
   isDropAllowed(draggedElement: any, targetElement: any): boolean {
     if (!draggedElement || !targetElement) return false;
 
-    const draggedCheckin = draggedElement.dataset.checkin;
-    const draggedCheckout = draggedElement.dataset.checkout;
+    const draggedCheckin = draggedElement.dataset.check_in;
+    const draggedCheckout = draggedElement.dataset.check_out;
 
     const targetEleCurrentDate:any = targetElement.dataset.currentdate;
 
@@ -1115,7 +921,7 @@ export class PmsCalendarComponent {
   }
 
   hasAlreadyReservationWithinRange(filteredRoom: any, draggedCheckin: any, draggedCheckout: any) {
-    return filteredRoom.some((e: any) => (draggedCheckin >= e.checkin && draggedCheckout <= e.checkout) || (draggedCheckin <= e.checkout && draggedCheckout >= e.checkin))
+    return filteredRoom.some((e: any) => (draggedCheckin >= e.check_in && draggedCheckout <= e.check_out) || (draggedCheckin <= e.check_out && draggedCheckout >= e.check_in))
 
   }
 

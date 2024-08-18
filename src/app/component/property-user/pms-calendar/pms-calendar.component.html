@@ -35,19 +35,17 @@
         <div class="col-sm-3">
             <div class="d-flex">
                 <div class="d-block border-top text-light rounded shadow bg-primary p-2">Date Range</div>
-                <input type="date" id="date" class="form-control-sm mx-4" [value]="this.formatDate(todayDate)"
+                <input type="date" id="date" class="form-control-sm mx-4" [disabled]="mainData.length == 0" [value]="this.formatDate(todayDate)"
                     (change)="selectedDate($event)">
             </div>
         </div>
         <div class="col-sm-6"></div>
     </div>
-    <div class="container-fluid text-center" *ngIf="!loader && mainData.length == 0">
-        <div class="display-1">No Rooms Found</div>
-    </div>
+  
     <div class="container-fluid" *ngIf="!loader">
         <div class="row my-2" style="background-color: lightblue; color: white;">
-            <ng-container>
-                <div class="row  mb-1 d-flex justify-content-between align-items-center pt-2">
+            <ng-container >
+                <div class="row mb-1 d-flex justify-content-between align-items-center pt-2" > 
                     <div class="col-sm-1 "></div>
                     <div class="col-sm-3"> <span class="bi bi-arrow-left-square text-danger"
                             style="font-size: 30px;cursor: pointer;" (click)="previousMonth()">
@@ -70,61 +68,22 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            <!-- <ng-container *ngFor="let group of mainData; let groupIndex = index">
-                                <tr>
-                                  <td [attr.colspan]="weekdaysWithDates.length + 1" class="group-name">Group {{ group.group }}</td>
-                                </tr>
-                                <ng-container *ngFor="let room of group.data.pmsRoomList; let roomIdx = index">
-                                  <tr>
-                                    <td class="px-3 pms_name d-block text-ellipsis">
-                                      <i class="bi bi-house"></i> {{ room.pmsName }}
-                                    </td>
-                                    <ng-container *ngFor="let date of datesData; let dateIndex = index; let last = last; let even = even; trackBy: trackByFn">
-                                      <td class="hover-td"  [ngClass]="{'overdate': last, }" [class.clash]="hasClashReservation(room, date)"
-                                        [class.disabled]="date.isDatePassed" (drop)="drop($event)" (dragover)="allowDrop($event)" [attr.data-date]="date.formateDate" >
-                                        <ng-container *ngIf="isStartOfReservation(room, date)">
-                                          <div class="reservation"  (click)="getReserationDetails(room, date)" [id]="'td' + groupIndex + roomIdx + dateIndex">
-                                            <div class="ota-img">
-                                              <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg' : 'https://static.vecteezy.com/system/resources/thumbnails/000/579/928/small/01-01.jpg'"
-                                                width="30" height="30" alt="">
-                                            </div>
-                                            <div class="reservation-image" [id]="'append' + groupIndex + roomIdx + dateIndex">
-                                              <div [id]="'captcha' + groupIndex + roomIdx + dateIndex">
-                                                {{ createImage(room, date, { groupIndex, roomIdx, dateIndex }) }}
-                                              </div>
-                                            </div>
-                                            <div class="reservation-info">
-                                              <div>{{ getReservationData(room, date) }}</div>
-                                              <div>Check-in: {{ getReservationData(room, date)?.checkin }}</div>
-                                              <div>Check-out: {{ getReservationData(room, date)?.checkout }}</div>
-                                              <div>Reservation: {{ getReservationData(room, date)?.reservation }}</div>
-                                            </div>
-                                          </div>
-                                        </ng-container>
-                                      </td>
-                                    </ng-container>
-                                  </tr>
-                                </ng-container>
-                              </ng-container> -->
-
-
                               <ng-container *ngFor="let group of mainData; let groupIndex = index">
                                 <tr>
-                                  <td [attr.colspan]="weekdaysWithDates.length + 1" class="group-name">{{ group.parentRoom }}</td>
+                                  <td [attr.colspan]="weekdaysWithDates?.length + 1" class="group-name p-2">{{ group.parentRoom }}</td>
                                 </tr>
                                 <ng-container *ngFor="let room of group.data; let roomIdx = index">
                                   <tr>
                                     <td class="px-3 pms_name d-block text-ellipsis">
-                                      <i class="bi bi-house"></i> {{ room.pmsRoomName }}
+                                      <i class="bi bi-house"></i> {{ group.room_name }}
                                     </td>
                                     <ng-container *ngFor="let date of datesData; let dateIndex = index; let last = last; let even = even; trackBy: trackByFn;">
                                       <td class="hover-td" [class.clash]="hasClashReservation(room, date)" [class.disabled]="date.isDatePassed" 
                                       (drop)="drop($event)" (dragover)="allowDrop($event)" 
-                                      [attr.data-start]="room.data[roomIdx]?.checkin" [attr.data-end]="room.data[roomIdx]?.checkout" [attr.data-roomId]="room.pms_room_id" [attr.data-currentDate]="date.formateDate">
+                                      [attr.data-start]="room.data[roomIdx]?.check_in" [attr.data-end]="room.data[roomIdx]?.check_out" [attr.data-roomId]="room.pms_room_id" [attr.data-currentDate]="date.formateDate">
                                         
                                         <ng-container *ngFor="let reservation of room.data; let resIdx = index">
-                                          <ng-container *ngIf="date.formateDate == reservation.checkin">
+                                          <ng-container *ngIf="date.formateDate == reservation.check_in">
                                             <div class="reservation" (click)="getReserationDetails(room, date)" [id]="'td' + groupIndex + roomIdx + dateIndex">
                                               <div class="ota-img" style="pointer-events: none;">
                                                 <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg' : reservation.otaImg" width="30" height="30" alt="">
@@ -136,8 +95,8 @@
                                               </div>
                                               <div class="reservation-info">
                                                 <div>{{ reservation.reservation_customer_name }}</div>
-                                                <div>Check-in: {{ reservation.checkin }}</div>
-                                                <div>Check-out: {{ reservation.checkout }}</div>
+                                                <div>Check-in: {{ reservation.check_in }}</div>
+                                                <div>Check-out: {{ reservation.check_out }}</div>
                                                 <div>Reservation: {{ reservation.reservation }}</div>
                                               </div>
                                             </div>
@@ -202,6 +161,9 @@
                 </div>
             </ng-container>
         </div>
+    </div>
+    <div class="container-fluid text-center" *ngIf="!loader && mainData?.length == 0">
+        <div class="display-1">No Rooms Found</div>
     </div>
 </div>
 <div class="container-fluid text-center" *ngIf="loader">
