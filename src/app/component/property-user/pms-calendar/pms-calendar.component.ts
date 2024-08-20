@@ -516,13 +516,11 @@ export class PmsCalendarComponent {
       let now: any = new Date(setFirstMonthDate);
       selectedRangeDate.value = this.formatDate(new Date(setFirstMonthDate));
       this.renderCalendar(now);
-      // this.fetchCalendarData(this.formatDate(this.currentDate), false);
     } else {
       this.selectDate = new Date();
       let selectedRangeDate: any = document.getElementById("date");
       selectedRangeDate.value = this.formatDate(this.selectDate);
       this.renderCalendar(this.selectDate);
-      // this.fetchCalendarData(this.formatDate(this.selectDate), true);
     }
   }
 

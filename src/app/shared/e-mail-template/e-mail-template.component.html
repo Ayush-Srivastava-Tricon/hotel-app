@@ -157,7 +157,7 @@
                 <div class="form-group row my-2">
                     <label class="col-sm-3 col-form-label" for="message_format">Message</label>
                     <div class="col-sm-9">
-                        <editor [init]="editorConfig" [(ngModel)]="items.message"></editor>
+                        <editor [init]="editorConfig" [(ngModel)]="items.message" (onGetContent)="tinyMceLoaded($event)"></editor>
                     </div>
                 </div>
             </ng-container>

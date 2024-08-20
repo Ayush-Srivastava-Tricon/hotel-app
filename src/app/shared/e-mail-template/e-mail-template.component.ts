@@ -19,7 +19,7 @@ export class EMailTemplateComponent {
     user_id: 0
   };
   editorConfig: any = {
-    base_url: '/tinymce',
+    base_url: 'https://e2xinfotech.com/hotel-app/tinymce',
     suffix: ".min",
     plugins: 'lists link wordcount codesample',
     menubar: "format insert"
@@ -94,7 +94,6 @@ export class EMailTemplateComponent {
   openModal() {
     this.showModal.template = true;
     this.selectedLanguageItems.push(this.emailTemplateConfig);
-    this.removeBrandingFromTinyMce();
   }
 
   addMailTemplate() {
@@ -235,6 +234,10 @@ export class EMailTemplateComponent {
     }
 
 
+  }
+
+  tinyMceLoaded(event:any){
+    this.removeBrandingFromTinyMce();
   }
 
 }
