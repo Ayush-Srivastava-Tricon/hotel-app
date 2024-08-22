@@ -219,4 +219,8 @@ export class PropertyService extends BaseServiceService {
     this.getData({},`${this.httpUrl['listReservedPMSRooms']}?check_in=${params.checkIn}&check_out=${params.checkOut}`,callback);
   }
 
+  updateDraggedReservationPMSRoom(params:any,callback:any){
+    this.putData(params,this.httpUrl['updateDraggedReservationPMSRoom'],callback);
+  }
+
 }

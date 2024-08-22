@@ -299,9 +299,16 @@ div.modal-dialog {
   z-index: 999;
 }
 
+.reservation .active-drag{
+  display: none !important;
+}
+
 .reservation:hover .reservation-info {
   display: block;
 }
+
+
+
 
 .table-sm{
   padding: 0px !important;

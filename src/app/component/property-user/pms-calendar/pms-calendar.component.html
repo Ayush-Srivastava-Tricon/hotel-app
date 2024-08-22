@@ -80,14 +80,17 @@
                                     <ng-container *ngFor="let date of datesData; let dateIndex = index; let last = last; let even = even; trackBy: trackByFn;">
                                         <td *ngIf="!room.data" class="hover-td" [class.disabled]="date.isDatePassed" 
                                         (drop)="drop($event)" (dragover)="allowDrop($event)"
+                                        [attr.data-target_room_id]="group?.room_id"
                                         [attr.data-roomId]="room.pms_id" [attr.data-currentDate]="date.formateDate"></td>
-                                      <td class="hover-td" *ngIf="room.data" [class.clash]="hasClashReservation(room, date)" [class.disabled]="date.isDatePassed" 
+                                      <td class="hover-td"   *ngIf="room.data" [class.clash]="hasClashReservation(room, date)" [class.disabled]="date.isDatePassed" 
                                       (drop)="drop($event)" (dragover)="allowDrop($event)" 
-                                      [attr.data-start]="room?.data[roomIdx]?.check_in" [attr.data-end]="room?.data[roomIdx]?.check_out" [attr.data-roomId]="room.pms_id" [attr.data-currentDate]="date.formateDate">
-                                        
+                                      [attr.data-existing_room_id]="group?.room_id"
+                                      [attr.data-target_room_id]="group?.room_id"
+                                    [attr.data-reservation_id]="room?.data[roomIdx]?.reservation_id"  [attr.data-start]="room?.data[roomIdx]?.check_in" [attr.data-end]="room?.data[roomIdx]?.check_out" [attr.data-roomId]="room.pms_id" [attr.data-currentDate]="date.formateDate">
                                         <ng-container *ngFor="let reservation of room?.data; let resIdx = index">
                                           <ng-container *ngIf="date.formateDate == reservation.check_in">
-                                            <div class="reservation" (click)="getReserationDetails(room, date)" [id]="'td' + groupIndex + roomIdx + dateIndex">
+                                            <div class="reservation" (click)="getReserationDetails(room, date)" [attr.data-existing_room_id]="group?.room_id"
+                                            [attr.data-target_room_id]="group?.room_id"  [id]="'td' + groupIndex + roomIdx + dateIndex">
                                               <div class="ota-img" style="pointer-events: none;">
                                                 <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg' : reservation.otaImg" width="30" height="30" alt="">
                                               </div>
@@ -744,6 +747,3 @@
 </div>
 
 <div class="modal-backdrop fade in" *ngIf="showModal||loader"></div>
-
-
-

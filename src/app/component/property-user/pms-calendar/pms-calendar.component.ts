@@ -35,6 +35,7 @@ export class PmsCalendarComponent {
   daysBetweenDates: any = '';
   currentPropertyId: number = 0;
   reservationsWithCanvas:any={};
+  dragReservationEventStart:boolean=false;
 
   constructor(private alert: AlertService, private _service: PropertyService) { }
 
@@ -608,7 +609,8 @@ export class PmsCalendarComponent {
       reservationEl.dataset.check_in = reservation.check_in;
       reservationEl.dataset.check_out = reservation.check_out;
       reservationEl.dataset.roomId = room.pms_id;
-
+      reservationEl.dataset.reservation_id = reservation.reservation_id;
+  
       canv.style.borderTopLeftRadius = "20px";
       canv.style.borderBottomRightRadius = "20px";
       
@@ -618,9 +620,11 @@ export class PmsCalendarComponent {
 
   drag(ev: any) {
     console.log('Drag started:', ev.target.id);
+    this.dragReservationEventStart = true;
     let currentDraggedElement: any = document.querySelector(`#${ev.target.id} .reservation-info`);
-    currentDraggedElement.style.display = "none";
-
+    if(this.dragReservationEventStart){
+      currentDraggedElement.classList.add('active-drag');
+    }
     ev.dataTransfer.setData("text/plain", ev.target.id);
   }
 
@@ -646,6 +650,19 @@ export class PmsCalendarComponent {
     } else{
       this.alert.alert("error","Reservation already exist","Error",{ displayDuration: 3000, pos: 'top' })
     }
+
+    this.dragReservationEventStart = false;
+    let currentDraggedElement: any = document.querySelector(`#${data} .reservation-info`);
+    currentDraggedElement.classList.remove('active-drag');
+
+    this.updateDraggedReservationPMSRoom(
+      {
+        existing_room_id : draggedElement.dataset.existing_room_id,
+        reservation_id:draggedElement.dataset.reservation_id,
+        target_room_id:targetElement.dataset.target_room_id,
+        target_pms_id:targetElement.dataset.roomid
+      }
+  );
   }
 
   isDropAllowed(draggedElement: any, targetElement: any): boolean {
@@ -718,4 +735,19 @@ export class PmsCalendarComponent {
     return item.formateDate; // or any unique identifier for the date
   }
 
+  updateDraggedReservationPMSRoom(data:any){
+   
+    this.loader=true;
+    this._service.updateDraggedReservationPMSRoom(data,(res:any)=>{
+      if (res.status == 200) {
+        this.loader = false;
+        this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
+      } else {
+        this.loader = false;
+        this.alert.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 2000, pos: 'top' });
+      }
+    })
+
+
+  }
 }

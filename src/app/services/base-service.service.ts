@@ -109,7 +109,7 @@ export class BaseServiceService {
     'totalArrivalDeparture': 'hotelapi/dashboard/totalArrivalDeparture',
     'listPMSRoomsWithHouseKeeper': 'hotelapi/employee/listPMSRoomsWithHouseKeeper',
     'listReservedPMSRooms': 'hotelapi/roomsForReservation/listReservedPMSRooms',
-
+    'updateDraggedReservationPMSRoom': 'hotelapi/roomsForReservation/updatePMSRooms',
 
   }
 
