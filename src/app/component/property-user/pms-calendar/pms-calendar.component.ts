@@ -643,6 +643,19 @@ export class PmsCalendarComponent {
     if (this.isDropAllowed(draggedElement, targetElement)) {
       targetElement.innerHTML = ""; // Clear the target cell before appending
       targetElement.appendChild(draggedElement);
+
+      this.dragReservationEventStart = false;
+      let currentDraggedElement: any = document.querySelector(`#${data} .reservation-info`);
+      currentDraggedElement.classList.remove('active-drag');
+        this.updateDraggedReservationPMSRoom(
+          {
+            existing_room_id : draggedElement.dataset.existing_room_id,
+            reservation_id:draggedElement.dataset.reservation_id,
+            target_room_id:targetElement.dataset.target_room_id,
+            target_pms_id:targetElement.dataset.roomid
+          }
+      );
+  
     }else if(targetElement.dataset.currentdate < draggedElement.dataset.check_in || targetElement.dataset.currentdate >= draggedElement.dataset.check_out){
       this.alert.alert("error","Previous & Future Dates Reservation Not Allowed","Error",{ displayDuration: 3000, pos: 'top' })
     }else if(draggedElement.dataset.roomId == targetElement.dataset.roomid && targetElement.dataset.currentdate != draggedElement.dataset.check_in ){
@@ -651,18 +664,7 @@ export class PmsCalendarComponent {
       this.alert.alert("error","Reservation already exist","Error",{ displayDuration: 3000, pos: 'top' })
     }
 
-    this.dragReservationEventStart = false;
-    let currentDraggedElement: any = document.querySelector(`#${data} .reservation-info`);
-    currentDraggedElement.classList.remove('active-drag');
-
-    this.updateDraggedReservationPMSRoom(
-      {
-        existing_room_id : draggedElement.dataset.existing_room_id,
-        reservation_id:draggedElement.dataset.reservation_id,
-        target_room_id:targetElement.dataset.target_room_id,
-        target_pms_id:targetElement.dataset.roomid
-      }
-  );
+ 
   }
 
   isDropAllowed(draggedElement: any, targetElement: any): boolean {
@@ -737,13 +739,11 @@ export class PmsCalendarComponent {
 
   updateDraggedReservationPMSRoom(data:any){
    
-    this.loader=true;
     this._service.updateDraggedReservationPMSRoom(data,(res:any)=>{
       if (res.status == 200) {
-        this.loader = false;
+        this.selectedDate({ target: { value: this.formatDate(this.todayDate) } });
         this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
       } else {
-        this.loader = false;
         this.alert.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 2000, pos: 'top' });
       }
     })
