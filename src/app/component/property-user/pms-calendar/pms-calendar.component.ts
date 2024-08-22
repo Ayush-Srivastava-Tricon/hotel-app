@@ -53,6 +53,7 @@ export class PmsCalendarComponent {
       if (res.status == 200 && res.responseData.length > 0 ) {
         // this.mainData  = [res.responseData[0]];
         this.mainData = res.responseData;
+        this.manipulateMainData();
         this.loader = false;
       }else{
         
@@ -60,6 +61,11 @@ export class PmsCalendarComponent {
       }
     })
   }
+
+  manipulateMainData(){
+    
+  }
+  
 
   defaultRangeDate(selectedRangeDate:any = new Date()){
     const date = selectedRangeDate.setMonth(selectedRangeDate.getMonth()+1);
@@ -659,8 +665,13 @@ export class PmsCalendarComponent {
       return true;
     }
 
-    let filteredRoom = this.getRoomById(targetElement.dataset.roomid).filter((e: any) => (new Date(e.check_in).getMonth() + 1) == new Date().getMonth() + 1);
-    return this.isContentDropValid(filteredRoom, targetEleCurrentDate, draggedCheckin, draggedCheckout);
+    let filteredRoom = this.getRoomById(targetElement.dataset.roomid)||[];
+    if(filteredRoom.length>0 ){
+      filteredRoom = filteredRoom?.filter((e: any) => (new Date(e.check_in).getMonth() + 1) == new Date().getMonth() + 1);
+      return this.isContentDropValid(filteredRoom, targetEleCurrentDate, draggedCheckin, draggedCheckout);
+    }else{
+      return true;
+    }
   }
 
   isDateOverlap(start1: any, end1: any, start2: any, end2: any) {
