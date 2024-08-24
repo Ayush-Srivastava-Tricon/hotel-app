@@ -36,19 +36,28 @@ export class PmsCalendarComponent {
   currentPropertyId: number = 0;
   reservationsWithCanvas:any={};
   dragReservationEventStart:boolean=false;
+  loggedProperty:any={};
 
   constructor(private alert: AlertService, private _service: PropertyService) { }
 
   ngOnInit() {
-    this.selectedDate({ target: { value: this.formatDate(this.todayDate) } });
+    if (localStorage.getItem("selectedPropertyId")) {
+      this.loggedProperty.isLoginProperty = true;
+      this.loggedProperty.propertyId = localStorage.getItem("selectedPropertyId");
+      this.selectedDate({ target: { value: this.formatDate(this.todayDate) } })
+    } else {
+      this.loggedProperty.propertyId = localStorage.getItem("userId");
+      this.selectedDate({ target: { value: this.formatDate(this.todayDate) } });
   }
+}
 
   getPMSData(selectedDate?:any) {
     this.mainData = [];
     this.loader = true;
     let params:any={
       checkIn:this.formatDate(new Date(selectedDate ? selectedDate : '')),
-      checkOut:this.defaultRangeDate(selectedDate)
+      checkOut:this.defaultRangeDate(selectedDate),
+      property_id:this.loggedProperty.propertyId
     };
     this._service.fetchReservedPMSList(params,(res: any) => {
       if (res.status == 200 && res.responseData.length > 0 ) {

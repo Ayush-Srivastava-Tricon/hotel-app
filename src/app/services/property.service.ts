@@ -216,7 +216,7 @@ export class PropertyService extends BaseServiceService {
   }
 
   fetchReservedPMSList(params:any,callback:any){
-    this.getData({},`${this.httpUrl['listReservedPMSRooms']}?check_in=${params.checkIn}&check_out=${params.checkOut}`,callback);
+    this.getData({},`${this.httpUrl['listReservedPMSRooms']}?check_in=${params.checkIn}&check_out=${params.checkOut}&property_id=${params.property_id}`,callback);
   }
 
   updateDraggedReservationPMSRoom(params:any,callback:any){
