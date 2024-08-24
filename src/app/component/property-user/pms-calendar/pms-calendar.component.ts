@@ -28,25 +28,22 @@ export class PmsCalendarComponent {
   pmsRoomListData: any = [];
   lastDateCalendar: any = '';
   showModal: boolean = false;
-
   editReservationDataConfig: any = { reservationData: {} };
   paymentModeList: any = [];
   pmsRoomMapConfig: any = [];
   daysBetweenDates: any = '';
-  currentPropertyId: number = 0;
+  currentPropertyId: any = 0;
   reservationsWithCanvas:any={};
   dragReservationEventStart:boolean=false;
-  loggedProperty:any={};
 
   constructor(private alert: AlertService, private _service: PropertyService) { }
 
   ngOnInit() {
     if (localStorage.getItem("selectedPropertyId")) {
-      this.loggedProperty.isLoginProperty = true;
-      this.loggedProperty.propertyId = localStorage.getItem("selectedPropertyId");
+      this.currentPropertyId = localStorage.getItem("selectedPropertyId");
       this.selectedDate({ target: { value: this.formatDate(this.todayDate) } })
     } else {
-      this.loggedProperty.propertyId = localStorage.getItem("userId");
+      this.currentPropertyId = localStorage.getItem("userId");
       this.selectedDate({ target: { value: this.formatDate(this.todayDate) } });
   }
 }
@@ -57,7 +54,7 @@ export class PmsCalendarComponent {
     let params:any={
       checkIn:this.formatDate(new Date(selectedDate ? selectedDate : '')),
       checkOut:this.defaultRangeDate(selectedDate),
-      property_id:this.loggedProperty.propertyId
+      property_id:this.currentPropertyId
     };
     this._service.fetchReservedPMSList(params,(res: any) => {
       if (res.status == 200 && res.responseData.length > 0 ) {
@@ -555,7 +552,6 @@ export class PmsCalendarComponent {
           this.editReservationDataConfig['reservationData']['reservation_id'] = reservation?.reservation_id;
           delete this.editReservationDataConfig['reservationData'].id;
           this.editReservationDataConfig['reservationData']['cancellation_date'] = "";
-          this.editReservationDataConfig['reservationData']['property_id'] = this.currentPropertyId;
           this.editReservationDataConfig['reservationData']['created_by'] = this.editReservationDataConfig['reservationData'].guest_name;
           this.editReservationDataConfig['reservationData']['property_id'] = this.currentPropertyId;
           this.calculateDaysBetweenDates(reservation);
