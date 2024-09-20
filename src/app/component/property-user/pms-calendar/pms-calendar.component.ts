@@ -44,6 +44,7 @@ export class PmsCalendarComponent {
   startRowIndex: number | null = null;
   startColIndex: number | null = null;
   endColIndex: number | null = null;
+  groupRowIndex: number | null = null;
 
 
   constructor(private alert: AlertService, private _service: PropertyService, private fb: FormBuilder) {
@@ -111,34 +112,6 @@ export class PmsCalendarComponent {
     return this.formatDate(new Date(date));
 
   }
-
-
-  // handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any, isDeriveModalActive: boolean) {
-  //   if (this.timeoutId !== null) {            //this part will run if double clicked within 200ms
-  //     clearTimeout(this.timeoutId);
-  //     this.timeoutId = null;
-  //     this.openModal(dayData, roomName, startDate, roomId);
-  //   } else {                                      //this part will run if single clicked 
-  //     this.timeoutId = setTimeout(() => {
-  //       this.timeoutId = null;
-
-  //       if (!this.selectedStartDate) {
-  //         this.selectedStartDate = startDate;
-  //       }
-  //       this.dragEventStart = !this.dragEventStart;
-  //       if (!this.dragEventStart) {
-  //         if (new Date(this.selectedStartDate).setHours(0, 0, 0, 0) >= new Date(startDate).setHours(0, 0, 0, 0)) {
-  //           let tempDate: any = this.selectedStartDate;
-  //           this.selectedStartDate = startDate;
-  //           startDate = tempDate;
-  //           this.openModal({}, roomName, startDate, roomId);
-  //         }
-  //         this.openModal({}, roomName, startDate, roomId);
-  //       }
-
-  //     }, 200);
-  //   }
-  // }
 
   renderCalendar(selectedDate?: Date): void {
     const monthNames: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -375,6 +348,7 @@ export class PmsCalendarComponent {
   closeModal() {
     this.showModal = false;
     this.quickReservationModal = false;
+    this.dragStarted = false;
     this.selectedStartDate = '';
   }
 
@@ -577,6 +551,8 @@ export class PmsCalendarComponent {
   }
 
   getReserationDetails(room: any, date: any) {
+    console.log(23);
+    
     const reservation: any = room.data.find((e: any) => e.check_in == date.formateDate)
     if (reservation?.reservation_id) {
       this._service.getSingleReservation(reservation?.reservation_id, (res: any) => {
@@ -654,6 +630,8 @@ export class PmsCalendarComponent {
       canv.style.borderBottomRightRadius = "20px";
 
       reservationEl.addEventListener('dragstart', this.drag);
+      canv.addEventListener('click', this.getReserationDetails);
+
     }
   }
 
@@ -669,12 +647,10 @@ export class PmsCalendarComponent {
       currentDraggedElement.classList.add('active-drag');
     }
     ev.dataTransfer.setData("text/plain", ev.target.id);
-    ev.dataTransfer.effectAllowed = "grab";
   }
 
 
   allowDrop(ev: any) {
-    ev.dataTransfer.dropEffect = "grab";
     ev.preventDefault();
 
   }
@@ -778,10 +754,6 @@ export class PmsCalendarComponent {
     return null;
   }
 
-  trackByFn(index: number, item: any): any {
-    return item.formateDate; // or any unique identifier for the date
-  }
-
   updateDraggedReservationPMSRoom(data: any) {
 
     this._service.updateDraggedReservationPMSRoom(data, (res: any) => {
@@ -820,21 +792,23 @@ export class PmsCalendarComponent {
   }
 
 
-  startHighlighting(rowIndex: number, colIndex: number, startDate: any, pmsRoom: any, parentRoom: any) {
-
+  startHighlighting(groupIndex:number,rowIndex: number, colIndex: number, startDate: any, pmsRoom: any, parentRoom: any,data:any) {
+    
     if (this.dragStarted) {
       this.dragStarted = false;
       this.startRowIndex = null;
       this.startColIndex = null;
       this.endColIndex = null;
+      this.groupRowIndex = null;
 
       if (new Date(this.selectedStartDate).setHours(0, 0, 0, 0) >= new Date(startDate).setHours(0, 0, 0, 0)) {
         let tempDate: any = this.selectedStartDate;
         this.selectedStartDate = startDate;
         startDate = tempDate;
-        this.openModal(startDate, pmsRoom, parentRoom);
+        !this.checkReservationExistForDragCalendar(data,this.selectedStartDate) ?  this.openModal(startDate, pmsRoom, parentRoom) : this.alert.alert("error","Reservation Already Exist","Error",{displayDuration:2000,pos:'top'})
+       
       } else {
-        this.openModal(startDate, pmsRoom, parentRoom);
+        !this.checkReservationExistForDragCalendar(data,this.selectedStartDate) ?  this.openModal(startDate, pmsRoom, parentRoom) : this.alert.alert("error","Reservation Already Exist","Error",{displayDuration:2000,pos:'top'})
       }
 
     } else {
@@ -843,24 +817,29 @@ export class PmsCalendarComponent {
       this.startRowIndex = rowIndex;
       this.startColIndex = colIndex;
       this.endColIndex = colIndex;
+      this.groupRowIndex = groupIndex;
     }
 
 
   }
 
-  handleMouseOver(rowIndex: number, colIndex: number) {
-    if (this.dragStarted && this.startRowIndex === rowIndex) {
+  checkReservationExistForDragCalendar(data:any,checkInDate:any){
+    return data?.some((e:any)=>e.check_in >= checkInDate)
+  }
+
+  handleMouseOver(groupIndex:number,rowIndex: number, colIndex: number) {
+    if (this.dragStarted && this.startRowIndex === rowIndex && this.groupRowIndex == groupIndex) {
       this.endColIndex = colIndex; // Update end column while hovering
     }
   }
 
-  isHighlighted(rowIndex: number, colIndex: number): boolean {
+  isHighlighted(groupIndex:number,rowIndex: number, colIndex: number): boolean {
     if (this.startRowIndex === null) return false;
 
     const startCol = Math.min(this.startColIndex ?? 0, this.endColIndex ?? 0);
     const endCol = Math.max(this.startColIndex ?? 0, this.endColIndex ?? 0);
 
-    return rowIndex === this.startRowIndex &&
+    return groupIndex == this.groupRowIndex &&  rowIndex === this.startRowIndex &&
       colIndex >= startCol &&
       colIndex <= endCol;
   }

@@ -81,17 +81,16 @@
                                         <!-- (click)="handleClickEvent(date.formateDate,date?.newData,date.room_name,date.room_id,false)" -->
                                         <ng-container
                                             *ngFor="let date of datesData; let dateIndex = index; let last = last; let even = even;">
-                                            <td *ngIf="!room.data" class="hover-td"
+                                            <td *ngIf="!room.data" class="hover-td {{groupIndex}}"
                                                 [class.disabled]="date.isDatePassed" (drop)="drop($event)"
                                                 (dragover)="allowDrop($event)"
                                                 [attr.data-target_room_id]="group?.room_id"
                                                 [attr.data-roomId]="room.pms_id"
                                                 [attr.data-currentDate]="date.formateDate"
-                                                [class.active]="this.dragStarted ? isHighlighted(roomIdx, dateIndex) : ''"
-                                                (mousedown)="startHighlighting(roomIdx, dateIndex,date.formateDate,room,group)"
-                                                (mouseover)="this.dragStarted ? handleMouseOver(roomIdx, dateIndex) : '' "></td>
+                                                [class.active]="this.dragStarted ? isHighlighted(groupIndex,roomIdx, dateIndex) : ''"
+                                                (mousedown)="startHighlighting(groupIndex,roomIdx, dateIndex,date.formateDate,room,group,room.data)"
+                                                (mouseover)="this.dragStarted ? handleMouseOver(groupIndex,roomIdx, dateIndex) : '' "></td>
                                             <td class="hover-td"
-                                            [ngClass]="{'active':dragEl['head'+dateIndex+roomIdx+groupIndex]}"
                                                 *ngIf="room.data" [class.clash]="hasClashReservation(room, date)"
                                                 [class.disabled]="date.isDatePassed" (drop)="drop($event)"
                                                 (dragover)="allowDrop($event)"
@@ -102,16 +101,16 @@
                                                 [attr.data-end]="room?.data[roomIdx]?.check_out"
                                                 [attr.data-roomId]="room.pms_id"
                                                 [attr.data-currentDate]="date.formateDate"
-                                                [class.active]="this.dragStarted ? isHighlighted(roomIdx, dateIndex) : ''"
-                                                (mousedown)="startHighlighting(roomIdx, dateIndex,date.formateDate,room,group)"
-                                                (mouseover)="this.dragStarted ? handleMouseOver(roomIdx, dateIndex) : '' ">
+                                                [class.active]="this.dragStarted ? isHighlighted(groupIndex,roomIdx, dateIndex) : ''"
+                                                (mousedown)="startHighlighting(groupIndex,roomIdx, dateIndex,date.formateDate,room,group,room.data)"
+                                                (mouseover)="this.dragStarted ? handleMouseOver(groupIndex,roomIdx, dateIndex) : '' ">
                                                 <ng-container
                                                     *ngFor="let reservation of room?.data; let resIdx = index">
                                                     <ng-container *ngIf="date.formateDate == reservation.check_in">
-                                                        <div class="reservation" #draggableDiv
+                                                        <div class="reservation"
+                                                        (click)="getReserationDetails(room, date)"
                                                             (dragstart)="drag($event)"
                                                             [attr.data-start]="room?.data[roomIdx]?.check_in"
-                                                            (click)="getReserationDetails(room, date)"
                                                             [attr.data-existing_room_id]="group?.room_id"
                                                             [attr.data-target_room_id]="group?.room_id"
                                                             [id]="'td' + groupIndex + roomIdx + dateIndex">
