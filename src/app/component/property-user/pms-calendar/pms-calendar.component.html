@@ -35,17 +35,17 @@
         <div class="col-sm-3">
             <div class="d-flex">
                 <div class="d-block border-top text-light rounded shadow bg-primary p-2">Date Range</div>
-                <input type="date" id="date" class="form-control-sm mx-4" [disabled]="mainData.length == 0" [value]="this.formatDate(todayDate)"
-                    (change)="selectedDate($event)">
+                <input type="date" id="date" class="form-control-sm mx-4" [disabled]="mainData.length == 0"
+                    [value]="this.formatDate(todayDate)" (change)="selectedDate($event)">
             </div>
         </div>
         <div class="col-sm-6"></div>
     </div>
-  
+
     <div class="container-fluid" *ngIf="!loader">
         <div class="row my-2" style="background-color: lightblue; color: white;">
-            <ng-container >
-                <div class="row mb-1 d-flex justify-content-between align-items-center pt-2" > 
+            <ng-container>
+                <div class="row mb-1 d-flex justify-content-between align-items-center pt-2">
                     <div class="col-sm-1 "></div>
                     <div class="col-sm-3"> <span class="bi bi-arrow-left-square text-danger"
                             style="font-size: 30px;cursor: pointer;" (click)="previousMonth()">
@@ -68,56 +68,85 @@
                             </tr>
                         </thead>
                         <tbody>
-                              <ng-container *ngFor="let group of mainData; let groupIndex = index">
+                            <ng-container *ngFor="let group of mainData; let groupIndex = index">
                                 <tr>
-                                  <td [attr.colspan]="weekdaysWithDates?.length + 1" class="group-name p-2">{{ group.room_name }}</td>
+                                    <td [attr.colspan]="weekdaysWithDates?.length + 1" class="group-name p-2">{{
+                                        group.room_name }}</td>
                                 </tr>
                                 <ng-container *ngFor="let room of group.data; let roomIdx = index">
-                                  <tr>
-                                    <td class="px-3 pms_name d-block text-ellipsis">
-                                      <i class="bi bi-house"></i> {{ room.pms_room_name }}
-                                    </td>
-                                    <ng-container *ngFor="let date of datesData; let dateIndex = index; let last = last; let even = even; trackBy: trackByFn;">
-                                        <td *ngIf="!room.data" class="hover-td" [class.disabled]="date.isDatePassed" 
-                                        (drop)="drop($event)" (dragover)="allowDrop($event)"
-                                        [attr.data-target_room_id]="group?.room_id"
-                                        [attr.data-roomId]="room.pms_id" [attr.data-currentDate]="date.formateDate"></td>
-                                      <td class="hover-td"   *ngIf="room.data" [class.clash]="hasClashReservation(room, date)" [class.disabled]="date.isDatePassed" 
-                                      (drop)="drop($event)" (dragover)="allowDrop($event)" 
-                                      [attr.data-existing_room_id]="group?.room_id"
-                                      [attr.data-target_room_id]="group?.room_id"
-                                    [attr.data-reservation_id]="room?.data[roomIdx]?.reservation_id"  [attr.data-start]="room?.data[roomIdx]?.check_in" [attr.data-end]="room?.data[roomIdx]?.check_out" [attr.data-roomId]="room.pms_id" [attr.data-currentDate]="date.formateDate">
-                                        <ng-container *ngFor="let reservation of room?.data; let resIdx = index">
-                                          <ng-container *ngIf="date.formateDate == reservation.check_in">
-                                            <div class="reservation" (click)="getReserationDetails(room, date)" [attr.data-existing_room_id]="group?.room_id"
-                                            [attr.data-target_room_id]="group?.room_id"  [id]="'td' + groupIndex + roomIdx + dateIndex">
-                                              <div class="ota-img" style="pointer-events: none;">
-                                                <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg' : reservation.otaImg" width="30" height="30" alt="">
-                                              </div>
-                                              <div class="reservation-image" [id]="'append' + groupIndex + roomIdx + dateIndex">
-                                                <div [id]="'captcha' + groupIndex + roomIdx + dateIndex">
-                                                  {{ createImage(room, date, {groupIndex, roomIdx, dateIndex}) }}
-                                                </div>
-                                              </div>
-                                              <div class="reservation-info">
-                                                <div>{{ reservation.custmer_name }}</div>
-                                                <div>Check-in: {{ reservation.check_in }}</div>
-                                                <div>Check-out: {{ reservation.check_out }}</div>
-                                                <div>Reservation No: {{ reservation.reservations_no }}</div>
-                                              </div>
-                                            </div>
-                                          </ng-container>
+                                    <tr>
+                                        <td class="px-3 pms_name d-block text-ellipsis">
+                                            <i class="bi bi-house"></i> {{ room.pms_room_name }}
+                                        </td>
+                                        <!-- (click)="handleClickEvent(date.formateDate,date?.newData,date.room_name,date.room_id,false)" -->
+                                        <ng-container
+                                            *ngFor="let date of datesData; let dateIndex = index; let last = last; let even = even;">
+                                            <td *ngIf="!room.data" class="hover-td"
+                                                [class.disabled]="date.isDatePassed" (drop)="drop($event)"
+                                                (dragover)="allowDrop($event)"
+                                                [attr.data-target_room_id]="group?.room_id"
+                                                [attr.data-roomId]="room.pms_id"
+                                                [attr.data-currentDate]="date.formateDate"
+                                                [class.active]="this.dragStarted ? isHighlighted(roomIdx, dateIndex) : ''"
+                                                (mousedown)="startHighlighting(roomIdx, dateIndex,date.formateDate,room,group)"
+                                                (mouseover)="this.dragStarted ? handleMouseOver(roomIdx, dateIndex) : '' "></td>
+                                            <td class="hover-td"
+                                            [ngClass]="{'active':dragEl['head'+dateIndex+roomIdx+groupIndex]}"
+                                                *ngIf="room.data" [class.clash]="hasClashReservation(room, date)"
+                                                [class.disabled]="date.isDatePassed" (drop)="drop($event)"
+                                                (dragover)="allowDrop($event)"
+                                                [attr.data-existing_room_id]="group?.room_id"
+                                                [attr.data-target_room_id]="group?.room_id"
+                                                [attr.data-reservation_id]="room?.data[roomIdx]?.reservation_id"
+                                                [attr.data-start]="room?.data[roomIdx]?.check_in"
+                                                [attr.data-end]="room?.data[roomIdx]?.check_out"
+                                                [attr.data-roomId]="room.pms_id"
+                                                [attr.data-currentDate]="date.formateDate"
+                                                [class.active]="this.dragStarted ? isHighlighted(roomIdx, dateIndex) : ''"
+                                                (mousedown)="startHighlighting(roomIdx, dateIndex,date.formateDate,room,group)"
+                                                (mouseover)="this.dragStarted ? handleMouseOver(roomIdx, dateIndex) : '' ">
+                                                <ng-container
+                                                    *ngFor="let reservation of room?.data; let resIdx = index">
+                                                    <ng-container *ngIf="date.formateDate == reservation.check_in">
+                                                        <div class="reservation" #draggableDiv
+                                                            (dragstart)="drag($event)"
+                                                            [attr.data-start]="room?.data[roomIdx]?.check_in"
+                                                            (click)="getReserationDetails(room, date)"
+                                                            [attr.data-existing_room_id]="group?.room_id"
+                                                            [attr.data-target_room_id]="group?.room_id"
+                                                            [id]="'td' + groupIndex + roomIdx + dateIndex">
+                                                            <div class="ota-img" style="pointer-events: none;">
+                                                                <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg' : reservation.otaImg"
+                                                                    width="30" height="30" alt="">
+                                                            </div>
+                                                            <div class="reservation-image"
+                                                                [id]="'append' + groupIndex + roomIdx + dateIndex">
+                                                                <div
+                                                                    [id]="'captcha' + groupIndex + roomIdx + dateIndex">
+                                                                    {{ createImage(room, date, {groupIndex, roomIdx,
+                                                                    dateIndex}) }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="reservation-info">
+                                                                <div>{{ reservation.custmer_name }}</div>
+                                                                <div>Check-in: {{ reservation.check_in }}</div>
+                                                                <div>Check-out: {{ reservation.check_out }}</div>
+                                                                <div>Reservation No: {{ reservation.reservations_no }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </td>
                                         </ng-container>
-                                      </td>
-                                    </ng-container>
-                                  </tr>
+                                    </tr>
                                 </ng-container>
-                              </ng-container>
-                              
-                              
+                            </ng-container>
 
 
-                              <!-- <ng-container *ngFor="let group of mainData; let groupIndex = index">
+
+
+                            <!-- <ng-container *ngFor="let group of mainData; let groupIndex = index">
                                 <tr>
                                   <td [attr.colspan]="weekdaysWithDates.length + 1" class="group-name">{{ group.parentRoom }}</td>
                                 </tr>
@@ -159,9 +188,9 @@
                                   </tr>
                                 </ng-container>
                               </ng-container> -->
-                              
-                              
-                              
+
+
+
                         </tbody>
                     </table>
                 </div>
@@ -745,5 +774,156 @@
         </div>
     </div>
 </div>
+
+<ng-container *ngIf="quickReservationModal">
+    <div class="modal" id="reservationModal">
+        <div class="modal-dialog quick-reservation">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="reservationModalLabel">Reservation</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="quickReservationForm" (ngSubmit)="createQuickReservation()">
+                <div class="mb-2 row align-items-baseline">
+                    <div class="col-sm-3">
+                        <label class="form-label">Stay</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" formControlName="check_in" readonly>
+                    </div>
+                    <div class="col-sm-1">
+                    ➡️
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" formControlName="check_out" readonly>
+                    </div>
+                </div>
+                <div class="mb-2 d-flex gap-3">
+                  <div>
+                    <label class="form-label">Nights</label>
+                    <input type="number" class="form-control" formControlName="nights" readonly>
+                  </div>
+                  <div>
+                    <label class="form-label">Adults</label>
+                    <input type="number" class="form-control" formControlName="adults">
+                  </div>
+                  <div>
+                    <label class="form-label">Children</label>
+                    <input type="number" class="form-control" formControlName="children">
+                  </div>
+                  <div>
+                    <label class="form-label">Baby</label>
+                    <input type="number" class="form-control" formControlName="baby">
+                  </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">Arrival Time</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <select class="form-select" formControlName="arrivalTime">
+                          <option>Not provided</option>
+                          <option value="08:00">08:00 AM</option>
+                          <option value="12:00">12:00 PM</option>
+                          <option value="18:00">06:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">Last Name</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" formControlName="lastName" placeholder="Last name">
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">First Name</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" formControlName="firstName" placeholder="First name">
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">Phone</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" formControlName="phone" placeholder="Phone number">
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">Email</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="email" class="form-control" formControlName="email" placeholder="Email address">
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">Room</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" formControlName="room" placeholder="Room">
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">PMS</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" formControlName="pms" placeholder="PMS">
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">Rate Plan</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <select class="form-select" formControlName="ratePlan">
+                          <option>AI</option>
+                          <option>BB</option>
+                          <option>HB</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">Total</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" formControlName="total" readonly>
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-sm-3">
+                        <label class="form-label">Internal Notes</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" formControlName="notes"></textarea>
+                    </div>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Open reservation details after save
+                  </label>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button type="button" class="btn btn-danger">Out of order</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+</ng-container>
+
+
 
 <div class="modal-backdrop fade in" *ngIf="showModal||loader"></div>

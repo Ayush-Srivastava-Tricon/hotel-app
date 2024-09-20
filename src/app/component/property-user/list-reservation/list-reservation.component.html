@@ -17,7 +17,7 @@
             </div>
             <div class="col-sm-2 my-2">
                 <select class="form-select rounded-pill mx-2" [(ngModel)]="searchConfig['arrival_status']">
-                    <option selected="true" [value]="null" disabled>All Arrivals</option>
+                    <option selected="true" value="null">All Arrivals</option>
                     <option value="check_in">Check In</option>
                     <option value="check_out">Check Out</option>
                     <option value="create_time">Create Time</option>
@@ -27,6 +27,7 @@
                     <option value="5_days">Next 5 days Arrivals</option>
                     <option value="7_days">Next 7 days Arrivals</option>
                     <option value="15_days">Next 15 days Arrivals</option>
+                    <option value="past">All Past Reservation</option>
                 </select>
                 <div class="small text-danger fw-bold clear text-end" *ngIf="searchConfig['arrival_status']"
                     (click)="searchConfig['arrival_status']=null"><i class="bi bi-x-circle fs-4"></i></div>
@@ -84,6 +85,7 @@
                             <th>Check In <i class="bi bi-box-arrow-in-right"></i></th>
                             <th>Check Out <i class="bi bi-box-arrow-right"></i></th>
                             <th>Total Room <i class="bi bi-house-door-fill"></i></th>
+                            <th>Guest Name <i class="bi bi-person-fill"></i></th>
                             <th>Total Guest <i class="bi bi-person-arms-up"></i></th>
                             <th>Reservation Status</th>
                             <th>Action</th>
@@ -91,20 +93,14 @@
                     </thead>
                     <tbody>
                         <tr *ngIf="loader">
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
-                            <td class="tg-cly1">
-                            </td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"> </td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"> </td>
+                            <td class="tg-cly1"></td>
+                            <td class="tg-cly1"></td>
                         </tr>
                         <tr *ngIf="reservtionList.length==0 && !loader">
                             <td colspan="7" class="text-center">No Data Found</td>
@@ -115,6 +111,7 @@
                                 <td>{{item.check_in|date}}</td>
                                 <td>{{item.check_out|date}}</td>
                                 <td>{{item.total_room}}</td>
+                                <td>{{item.guest_name|titlecase}}</td>
                                 <td>Adult : {{item.total_adult}}, Child : {{item.total_children}}, Baby :
                                     {{item.total_baby}}</td>
                                 <td>

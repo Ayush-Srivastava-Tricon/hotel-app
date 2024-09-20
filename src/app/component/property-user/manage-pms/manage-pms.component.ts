@@ -204,6 +204,7 @@ export class ManagePmsComponent {
     } else {
       this.selectedDays.push(day);
     }
+    this.pmsDataConfig.cleaning_frequency = this.selectedDays;
   }
 
   isSelected(day: string): boolean {

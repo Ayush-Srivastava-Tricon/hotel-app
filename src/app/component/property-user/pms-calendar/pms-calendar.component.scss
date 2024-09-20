@@ -7,7 +7,11 @@
 
   .modal-dialog {
 
-    max-width: 1200px !important;
+    max-width: 1200px;
+
+    &.quick-reservation{
+      max-width: 450px !important;
+    }
   }
 }
 
@@ -152,10 +156,6 @@ legend.scheduler-border {
   border-bottom: none;
 }
 
-div.modal-dialog {
-  max-width: 700px !important;
-}
-
 .selected-date {
   font-weight: 800;
   font-size: 15px;
@@ -254,6 +254,7 @@ div.modal-dialog {
   position: relative;
   text-align: center;
   transition: all 0.5s;
+  cursor: move;
    
   canvas{
     border-top-left-radius: 20px;
@@ -301,6 +302,7 @@ div.modal-dialog {
 
 .reservation .active-drag{
   display: none !important;
+  cursor: grab;
 }
 
 .reservation:hover .reservation-info {
@@ -319,3 +321,7 @@ div.modal-dialog {
   display: block; /* Show on hover if required */
 }
 
+
+.highlight-column{
+  background-color: lightcoral;
+}

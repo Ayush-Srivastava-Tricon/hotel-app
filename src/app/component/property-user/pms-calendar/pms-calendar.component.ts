@@ -1,5 +1,6 @@
 import { HtmlTagDefinition } from '@angular/compiler';
 import { ChangeDetectionStrategy, Component, } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PropertyService } from 'src/app/services/property.service';
 import { AlertService } from 'src/app/shared/alert.service';
 
@@ -33,10 +34,39 @@ export class PmsCalendarComponent {
   pmsRoomMapConfig: any = [];
   daysBetweenDates: any = '';
   currentPropertyId: any = 0;
-  reservationsWithCanvas:any={};
-  dragReservationEventStart:boolean=false;
+  reservationsWithCanvas: any = {};
+  dragReservationEventStart: boolean = false;
+  quickReservationModal: boolean = false;
+  quickReservationForm: FormGroup;
 
-  constructor(private alert: AlertService, private _service: PropertyService) { }
+
+  dragStarted = false;
+  startRowIndex: number | null = null;
+  startColIndex: number | null = null;
+  endColIndex: number | null = null;
+
+
+  constructor(private alert: AlertService, private _service: PropertyService, private fb: FormBuilder) {
+    this.quickReservationForm = this.fb.group({
+      check_in: [{ value: '', disabled: true }],
+      check_out: [{ value: '', disabled: true }],
+      nights: [0, Validators.required],
+      adults: [0, Validators.required],
+      children: [0],
+      baby: [0],
+      arrivalTime: ['Not provided'],
+      lastName: ['', Validators.required],
+      firstName: ['', Validators.required],
+      phone: ['', Validators.required],
+      email: ['',],
+      room: [{ value: '', disabled: true }],
+      pms: [{ value: '', disabled: true }],
+      ratePlan: [''],
+      total: [{ value: 500, disabled: true }],
+      notes: [''],
+      color:['']
+    });
+  }
 
   ngOnInit() {
     if (localStorage.getItem("selectedPropertyId")) {
@@ -45,68 +75,70 @@ export class PmsCalendarComponent {
     } else {
       this.currentPropertyId = localStorage.getItem("userId");
       this.selectedDate({ target: { value: this.formatDate(this.todayDate) } });
+    }
   }
-}
 
-  getPMSData(selectedDate?:any) {
+  getPMSData(selectedDate?: any) {
     this.mainData = [];
     this.loader = true;
-    let params:any={
-      checkIn:this.formatDate(new Date(selectedDate ? selectedDate : '')),
-      checkOut:this.defaultRangeDate(selectedDate),
-      property_id:this.currentPropertyId
+    let params: any = {
+      checkIn: this.formatDate(new Date(selectedDate ? selectedDate : '')),
+      checkOut: this.defaultRangeDate(selectedDate),
+      property_id: this.currentPropertyId
     };
-    this._service.fetchReservedPMSList(params,(res: any) => {
-      if (res.status == 200 && res.responseData.length > 0 ) {
+    this._service.fetchReservedPMSList(params, (res: any) => {
+      if (res.status == 200 && res.responseData.length > 0) {
         // this.mainData  = [res.responseData[0]];
         this.mainData = res.responseData;
+        console.log(this.mainData);
+
         this.manipulateMainData();
         this.loader = false;
-      }else{
-        
+      } else {
+
         this.loader = false;
       }
     })
   }
 
-  manipulateMainData(){
-    
-  }
-  
+  manipulateMainData() {
 
-  defaultRangeDate(selectedRangeDate:any = new Date()){
-    const date = selectedRangeDate.setMonth(selectedRangeDate.getMonth()+1);
+  }
+
+
+  defaultRangeDate(selectedRangeDate: any = new Date()) {
+    const date = selectedRangeDate.setMonth(selectedRangeDate.getMonth() + 1);
     return this.formatDate(new Date(date));
-     
+
   }
 
 
-  handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any, isDeriveModalActive: boolean) {
-    if (this.timeoutId !== null) {            //this part will run if double clicked within 200ms
-      clearTimeout(this.timeoutId);
-      this.timeoutId = null;
-      // this.openModal(dayData, roomName, startDate, roomId);
-    } else {                                      //this part will run if single clicked 
-      this.timeoutId = setTimeout(() => {
-        this.timeoutId = null;
+  // handleClickEvent(startDate: any, dayData: any, roomName: any, roomId: any, isDeriveModalActive: boolean) {
+  //   if (this.timeoutId !== null) {            //this part will run if double clicked within 200ms
+  //     clearTimeout(this.timeoutId);
+  //     this.timeoutId = null;
+  //     this.openModal(dayData, roomName, startDate, roomId);
+  //   } else {                                      //this part will run if single clicked 
+  //     this.timeoutId = setTimeout(() => {
+  //       this.timeoutId = null;
 
-        if (!this.selectedStartDate) {
-          this.selectedStartDate = startDate;
-        }
-        this.dragEventStart = !this.dragEventStart;
-        if (!this.dragEventStart) {
-          if (new Date(this.selectedStartDate).setHours(0, 0, 0, 0) >= new Date(startDate).setHours(0, 0, 0, 0)) {
-            let tempDate: any = this.selectedStartDate;
-            this.selectedStartDate = startDate;
-            startDate = tempDate;
-            // this.openModal({}, roomName, startDate, roomId);
-          }
-          // this.openModal({}, roomName, startDate, roomId);
-        }
+  //       if (!this.selectedStartDate) {
+  //         this.selectedStartDate = startDate;
+  //       }
+  //       this.dragEventStart = !this.dragEventStart;
+  //       if (!this.dragEventStart) {
+  //         if (new Date(this.selectedStartDate).setHours(0, 0, 0, 0) >= new Date(startDate).setHours(0, 0, 0, 0)) {
+  //           let tempDate: any = this.selectedStartDate;
+  //           this.selectedStartDate = startDate;
+  //           startDate = tempDate;
+  //           this.openModal({}, roomName, startDate, roomId);
+  //         }
+  //         this.openModal({}, roomName, startDate, roomId);
+  //       }
 
-      }, 200);
-    }
-  }
+  //     }, 200);
+  //   }
+  // }
 
   renderCalendar(selectedDate?: Date): void {
     const monthNames: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -342,6 +374,8 @@ export class PmsCalendarComponent {
 
   closeModal() {
     this.showModal = false;
+    this.quickReservationModal = false;
+    this.selectedStartDate = '';
   }
 
 
@@ -567,7 +601,7 @@ export class PmsCalendarComponent {
 
   createImage(room: any, date: any, indexes: any) {
     let reservation: any = room.data.find((ele: any) => (date.formateDate >= ele.check_in) && (date.formateDate <= ele.check_out));
-    
+
     if (reservation) {
       let el: any = document.getElementById(`append${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`);
       el.innerHTML = "";
@@ -586,24 +620,24 @@ export class PmsCalendarComponent {
       let ctx = canv.getContext("2d");
       let fontSize = 25;
       ctx.font = `${fontSize}px Georgia`;
-      ctx.fillStyle = reservation.bg_color;
-      
+      ctx.fillStyle = reservation.colors;
+
       ctx.fillRect(0, 0, canv.width, canv.height);
 
       ctx.fillStyle = "white";
 
       let textWidth = ctx.measureText(text).width;
-    let textX: number;
+      let textX: number;
 
-    if (text.trim().indexOf(' ') === -1) {
-      textX = (canv.width - textWidth) / 2;
-    } else {
-      let paddingLeft = 50; 
-      textX = paddingLeft;
-    }
-    let textY = 40; 
-    ctx.fillText(text, textX, textY);
-  
+      if (text.trim().indexOf(' ') === -1) {
+        textX = (canv.width - textWidth) / 2;
+      } else {
+        let paddingLeft = 50;
+        textX = paddingLeft;
+      }
+      let textY = 40;
+      ctx.fillText(text, textX, textY);
+
       el.appendChild(canv);
 
       let reservationEl: any = document.getElementById(`td${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`);
@@ -615,26 +649,34 @@ export class PmsCalendarComponent {
       reservationEl.dataset.check_out = reservation.check_out;
       reservationEl.dataset.roomId = room.pms_id;
       reservationEl.dataset.reservation_id = reservation.reservation_id;
-  
+
       canv.style.borderTopLeftRadius = "20px";
       canv.style.borderBottomRightRadius = "20px";
-      
+
       reservationEl.addEventListener('dragstart', this.drag);
     }
   }
 
+
   drag(ev: any) {
     console.log('Drag started:', ev.target.id);
+    var img = new Image();
+    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+    ev.dataTransfer.setDragImage(img, 0, 0);
     this.dragReservationEventStart = true;
     let currentDraggedElement: any = document.querySelector(`#${ev.target.id} .reservation-info`);
-    if(this.dragReservationEventStart){
+    if (this.dragReservationEventStart) {
       currentDraggedElement.classList.add('active-drag');
     }
     ev.dataTransfer.setData("text/plain", ev.target.id);
+    ev.dataTransfer.effectAllowed = "grab";
   }
 
+
   allowDrop(ev: any) {
+    ev.dataTransfer.dropEffect = "grab";
     ev.preventDefault();
+
   }
 
   drop(ev: any) {
@@ -648,28 +690,29 @@ export class PmsCalendarComponent {
     if (this.isDropAllowed(draggedElement, targetElement)) {
       targetElement.innerHTML = ""; // Clear the target cell before appending
       targetElement.appendChild(draggedElement);
-
-      this.dragReservationEventStart = false;
-      let currentDraggedElement: any = document.querySelector(`#${data} .reservation-info`);
-      currentDraggedElement.classList.remove('active-drag');
-        this.updateDraggedReservationPMSRoom(
-          {
-            existing_room_id : draggedElement.dataset.existing_room_id,
-            reservation_id:draggedElement.dataset.reservation_id,
-            target_room_id:targetElement.dataset.target_room_id,
-            target_pms_id:targetElement.dataset.roomid
-          }
+      this.updateDraggedReservationPMSRoom(
+        {
+          existing_room_id: draggedElement.dataset.existing_room_id,
+          reservation_id: draggedElement.dataset.reservation_id,
+          target_room_id: targetElement.dataset.target_room_id,
+          target_pms_id: targetElement.dataset.roomid
+        }
       );
-  
-    }else if(targetElement.dataset.currentdate < draggedElement.dataset.check_in || targetElement.dataset.currentdate >= draggedElement.dataset.check_out){
-      this.alert.alert("error","Previous & Future Dates Reservation Not Allowed","Error",{ displayDuration: 3000, pos: 'top' })
-    }else if(draggedElement.dataset.roomId == targetElement.dataset.roomid && targetElement.dataset.currentdate != draggedElement.dataset.check_in ){
-      this.alert.alert("error","Only Same Check In Allowed","Error",{ displayDuration: 3000, pos: 'top' })
-    } else{
-      this.alert.alert("error","Reservation already exist","Error",{ displayDuration: 3000, pos: 'top' })
-    }
 
- 
+    } else if (targetElement.dataset.currentdate < draggedElement.dataset.check_in || targetElement.dataset.currentdate >= draggedElement.dataset.check_out) {
+      this.alert.alert("error", "Previous & Future Dates Reservation Not Allowed", "Error", { displayDuration: 3000, pos: 'top' })
+    } else if (targetElement.dataset.currentdate != draggedElement.dataset.check_in) {
+      this.alert.alert("error", "Only Same Check In Allowed", "Error", { displayDuration: 3000, pos: 'top' })
+    } else {
+      this.alert.alert("error", "Reservation already exist", "Error", { displayDuration: 3000, pos: 'top' })
+    }
+    this.removeCanvasDraggedHighlightCell(data);
+  }
+
+  removeCanvasDraggedHighlightCell(data:any){
+    this.dragReservationEventStart = false;
+    let currentDraggedElement: any = document.querySelector(`#${data} .reservation-info`);
+    currentDraggedElement.classList.remove('active-drag');
   }
 
   isDropAllowed(draggedElement: any, targetElement: any): boolean {
@@ -680,20 +723,17 @@ export class PmsCalendarComponent {
 
     const targetEleCurrentDate: any = targetElement.dataset.currentdate;
 
-    if (targetEleCurrentDate != draggedCheckin) {
-      return false;
-    }
-    else if (targetEleCurrentDate < draggedCheckin || targetElement.dataset.currentdate >= draggedCheckout) {
+    if (targetEleCurrentDate < draggedCheckin || targetElement.dataset.currentdate >= draggedCheckout) {
       return false;
     } else if (draggedElement.dataset.roomId == targetElement.dataset.roomid) {
       return true;
     }
 
-    let filteredRoom = this.getRoomById(targetElement.dataset.roomid)||[];
-    if(filteredRoom.length>0 ){
+    let filteredRoom = this.getRoomById(targetElement.dataset.roomid) || [];
+    if (filteredRoom.length > 0) {
       filteredRoom = filteredRoom?.filter((e: any) => (new Date(e.check_in).getMonth() + 1) == new Date().getMonth() + 1);
       return this.isContentDropValid(filteredRoom, targetEleCurrentDate, draggedCheckin, draggedCheckout);
-    }else{
+    } else {
       return true;
     }
   }
@@ -742,9 +782,9 @@ export class PmsCalendarComponent {
     return item.formateDate; // or any unique identifier for the date
   }
 
-  updateDraggedReservationPMSRoom(data:any){
-   
-    this._service.updateDraggedReservationPMSRoom(data,(res:any)=>{
+  updateDraggedReservationPMSRoom(data: any) {
+
+    this._service.updateDraggedReservationPMSRoom(data, (res: any) => {
       if (res.status == 200) {
         this.selectedDate({ target: { value: this.formatDate(this.todayDate) } });
         this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
@@ -752,7 +792,78 @@ export class PmsCalendarComponent {
         this.alert.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 2000, pos: 'top' });
       }
     })
+  }
+
+  openModal(endDate: any, roomName: any, parentRoom: any) {
+    this.quickReservationForm.controls['check_in'].setValue(this.selectedStartDate);
+    this.quickReservationForm.controls['check_out'].setValue(endDate);
+    this.quickReservationForm.controls['pms'].setValue(roomName.pms_room_name);
+    this.quickReservationForm.controls['room'].setValue(parentRoom.room_name);
+    let totalNightStay = this.calcNights(endDate);
+    this.quickReservationForm.controls['nights'].setValue(totalNightStay);
+
+    this.quickReservationModal = true;
+  }
+
+  calcNights(endDate: any) {
+    let date1 = new Date(this.selectedStartDate);
+    let date2 = new Date(endDate);
+    let Difference_In_Time = date2.getTime() - date1.getTime();
+    let Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
+    return Difference_In_Days;
+  }
+
+  createQuickReservation() {
+    if (this.quickReservationForm.valid) {
+      console.log(this.quickReservationForm.getRawValue());
+    }
+  }
+
+
+  startHighlighting(rowIndex: number, colIndex: number, startDate: any, pmsRoom: any, parentRoom: any) {
+
+    if (this.dragStarted) {
+      this.dragStarted = false;
+      this.startRowIndex = null;
+      this.startColIndex = null;
+      this.endColIndex = null;
+
+      if (new Date(this.selectedStartDate).setHours(0, 0, 0, 0) >= new Date(startDate).setHours(0, 0, 0, 0)) {
+        let tempDate: any = this.selectedStartDate;
+        this.selectedStartDate = startDate;
+        startDate = tempDate;
+        this.openModal(startDate, pmsRoom, parentRoom);
+      } else {
+        this.openModal(startDate, pmsRoom, parentRoom);
+      }
+
+    } else {
+      this.selectedStartDate = startDate;
+      this.dragStarted = true;
+      this.startRowIndex = rowIndex;
+      this.startColIndex = colIndex;
+      this.endColIndex = colIndex;
+    }
 
 
   }
+
+  handleMouseOver(rowIndex: number, colIndex: number) {
+    if (this.dragStarted && this.startRowIndex === rowIndex) {
+      this.endColIndex = colIndex; // Update end column while hovering
+    }
+  }
+
+  isHighlighted(rowIndex: number, colIndex: number): boolean {
+    if (this.startRowIndex === null) return false;
+
+    const startCol = Math.min(this.startColIndex ?? 0, this.endColIndex ?? 0);
+    const endCol = Math.max(this.startColIndex ?? 0, this.endColIndex ?? 0);
+
+    return rowIndex === this.startRowIndex &&
+      colIndex >= startCol &&
+      colIndex <= endCol;
+  }
+
+
 }

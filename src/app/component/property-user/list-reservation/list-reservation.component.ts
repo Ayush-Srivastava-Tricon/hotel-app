@@ -140,6 +140,7 @@ export class ListReservationComponent {
       if(res.status == 200 && res.data.length> 0){
         this.reservtionList = res.data;
         this.loader=false;
+        this.alert.alert("success",res.message,"Success",{ displayDuration: 2000, pos: 'top' })
       } else{
           this.reservtionList =[];
           this.loader=false;

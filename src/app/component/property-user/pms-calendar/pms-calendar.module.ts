@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { PmsCalendarRoutingModule } from './pms-calendar-routing.module';
 import { PmsCalendarComponent } from './pms-calendar.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     PmsCalendarRoutingModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   exports:[PmsCalendarComponent]
 })
