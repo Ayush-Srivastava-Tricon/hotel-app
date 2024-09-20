@@ -805,10 +805,10 @@ export class PmsCalendarComponent {
         let tempDate: any = this.selectedStartDate;
         this.selectedStartDate = startDate;
         startDate = tempDate;
-        !this.checkReservationExistForDragCalendar(data,this.selectedStartDate) ?  this.openModal(startDate, pmsRoom, parentRoom) : this.alert.alert("error","Reservation Already Exist","Error",{displayDuration:2000,pos:'top'})
+        !this.checkReservationExistForDragCalendar(data,this.selectedStartDate,startDate) ?  this.openModal(startDate, pmsRoom, parentRoom) : this.alert.alert("error","Reservation Already Exist","Error",{displayDuration:2000,pos:'top'})
        
       } else {
-        !this.checkReservationExistForDragCalendar(data,this.selectedStartDate) ?  this.openModal(startDate, pmsRoom, parentRoom) : this.alert.alert("error","Reservation Already Exist","Error",{displayDuration:2000,pos:'top'})
+        !this.checkReservationExistForDragCalendar(data,this.selectedStartDate,startDate) ?  this.openModal(startDate, pmsRoom, parentRoom) : this.alert.alert("error","Reservation Already Exist","Error",{displayDuration:2000,pos:'top'})
       }
 
     } else {
@@ -823,8 +823,16 @@ export class PmsCalendarComponent {
 
   }
 
-  checkReservationExistForDragCalendar(data:any,checkInDate:any){
-    return data?.some((e:any)=>e.check_in >= checkInDate)
+  checkReservationExistForDragCalendar(data:any,checkInDate:any,checkOutDate:any){
+    let filteredExistReservationFromToday:any = data?.filter((e:any)=>e.check_in >= this.formatDate(new Date()));
+    if(!filteredExistReservationFromToday || filteredExistReservationFromToday?.length == 0){
+      return false;
+    }else{
+      let overExistReservation: boolean = filteredExistReservationFromToday.some((e:any)=>checkInDate < e.check_in && checkOutDate > e.check_out);
+      return overExistReservation;
+    }
+    // return data?.filter((e:any)=>e.check_in >= this.formatDate(new Date())).some((e:any)=>checkInDate >= e.check_in && checkOutDate <= e.check_out)
+    // return data?.filter((e:any)=>checkInDate >= this.formatDate(new Date())).some((e:any)=>checkInDate < e.check_in);
   }
 
   handleMouseOver(groupIndex:number,rowIndex: number, colIndex: number) {
