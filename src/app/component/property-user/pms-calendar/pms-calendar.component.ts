@@ -45,6 +45,7 @@ export class PmsCalendarComponent {
   startColIndex: number | null = null;
   endColIndex: number | null = null;
   groupRowIndex: number | null = null;
+  
 
 
   constructor(private alert: AlertService, private _service: PropertyService, private fb: FormBuilder) {
@@ -92,7 +93,6 @@ export class PmsCalendarComponent {
         // this.mainData  = [res.responseData[0]];
         this.mainData = res.responseData;
         console.log(this.mainData);
-
         this.manipulateMainData();
         this.loader = false;
       } else {
@@ -103,7 +103,134 @@ export class PmsCalendarComponent {
   }
 
   manipulateMainData() {
+  //  this.mainData =  [
+  //     {
+  //         "room_id": "125",
+  //         "room_name": "Single Room",
+  //         "data": [
+  //           {
+  //               "pms_room_name": "unassign",
+  //               "data": [
+  //                   {
+  //                       "reservation_id": "61",
+  //                       "check_in": "2024-09-28",
+  //                       "check_out": "2024-09-29",
+  //                       "colors": "#000",
+  //                       "reservations_no": "FW9S7594",
+  //                       "custmer_name": "Kumar Pandey"
+  //                   },
+  //                   {
+  //                       "reservation_id": "61",
+  //                       "check_in": "2024-10-02",
+  //                       "check_out": "2024-10-04",
+  //                       "colors": "#7865e7",
+  //                       "reservations_no": "FW9S7594",
+  //                       "custmer_name": "Kumar Pandey"
+  //                   }
+  //               ]
+  //           },
+  //             {
+  //                 "pms_id": "30",
+  //                 "pms_room_name": "pms-101",
+  //                 "data": [
+  //                     {
+  //                         "pms_room_id": "30",
+  //                         "reservation_id": "54",
+  //                         "check_in": "2024-09-03",
+  //                         "check_out": "2024-09-05",
+  //                         "colors": "#d51010",
+  //                         "reservations_no": "A04Q375T",
+  //                         "custmer_name": "Shrivastava Raju"
+  //                     },
+  //                     {
+  //                         "pms_room_id": "30",
+  //                         "reservation_id": "55",
+  //                         "check_in": "2024-09-10",
+  //                         "check_out": "2024-09-14",
+  //                         "colors": "#33e6c8",
+  //                         "reservations_no": "HX9GQ43L",
+  //                         "custmer_name": "Thakur Abhiraj "
+  //                     },
+  //                     {
+  //                         "pms_room_id": "30",
+  //                         "reservation_id": "60",
+  //                         "check_in": "2024-09-17",
+  //                         "check_out": "2024-09-19",
+  //                         "colors": "#58b918",
+  //                         "reservations_no": "43T6PTHN",
+  //                         "custmer_name": "Bal raam"
+  //                     }
+  //                 ]
+  //             },
+  //             {
+  //                 "pms_id": "31",
+  //                 "pms_room_name": "pms -102",
+  //                 "data": [
+  //                     {
+  //                         "pms_room_id": "31",
+  //                         "reservation_id": "61",
+  //                         "check_in": "2024-09-24",
+  //                         "check_out": "2024-09-27",
+  //                         "colors": "#1293e2",
+  //                         "reservations_no": "FW9S7594",
+  //                         "custmer_name": "Kumar Pandey"
+  //                     }
+  //                 ]
+  //             },
+  //         ],
+        
+  //     },
+  //     {
+  //         "room_id": "126",
+  //         "room_name": "Double Room",
+  //         "data": [
+  //           {
+  //             "pms_room_name": "unassign",
+  //             "data": [
+  //                 {
+  //                     "reservation_id": "61",
+  //                     "check_in": "2024-09-25",
+  //                     "check_out": "2024-09-27",
+  //                     "colors": "#000",
+  //                     "reservations_no": "FW9S7594",
+  //                     "custmer_name": "Sooryvanshi"
+  //                 },
+  //                 {
+  //                     "reservation_id": "61",
+  //                     "check_in": "2024-10-02",
+  //                     "check_out": "2024-10-04",
+  //                     "colors": "#7865e7",
+  //                     "reservations_no": "FW9S7594",
+  //                     "custmer_name": "Kumar Pandey"
+  //                 }
+  //             ]
+  //         },
+  //             {
+  //                 "pms_id": "27",
+  //                 "pms_room_name": "202",
+  //                 "data": [
+  //                     {
+  //                         "pms_room_id": "27",
+  //                         "reservation_id": "62",
+  //                         "check_in": "2024-09-22",
+  //                         "check_out": "2024-09-24",
+  //                         "colors": "#f45d0b",
+  //                         "reservations_no": "Q6C1GMRJ",
+  //                         "custmer_name": "aryan PAtel"
+  //                     }
+  //                 ]
+  //             },
+  //             {
+  //                 "pms_id": "34",
+  //                 "pms_room_name": "203"
+  //             }
+  //         ],
+  //     }
+  // ];
 
+
+
+ 
   }
 
 
@@ -551,8 +678,6 @@ export class PmsCalendarComponent {
   }
 
   getReserationDetails(room: any, date: any) {
-    console.log(23);
-    
     const reservation: any = room.data.find((e: any) => e.check_in == date.formateDate)
     if (reservation?.reservation_id) {
       this._service.getSingleReservation(reservation?.reservation_id, (res: any) => {
@@ -574,6 +699,10 @@ export class PmsCalendarComponent {
 
   }
 
+  trackByFn(idx:any){
+    console.log(12);
+
+  }
 
   createImage(room: any, date: any, indexes: any) {
     let reservation: any = room.data.find((ele: any) => (date.formateDate >= ele.check_in) && (date.formateDate <= ele.check_out));
@@ -581,7 +710,6 @@ export class PmsCalendarComponent {
     if (reservation) {
       let el: any = document.getElementById(`append${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`);
       el.innerHTML = "";
-      // reservation.custmer_name = "Ayush Kumar yadav"
 
       let charsArray: any = reservation.custmer_name.toUpperCase();
       let captcha = charsArray.split('');
@@ -591,10 +719,10 @@ export class PmsCalendarComponent {
       let canv: any = document.createElement("canvas");
       canv.id = `captcha${indexes.groupIndex}${indexes.roomIdx}${indexes.dateIndex}`;
       canv.width = this.getReservationDaysWidth(room, date) * 50;
-      canv.height = 60;
+      canv.height = 30;
 
       let ctx = canv.getContext("2d");
-      let fontSize = 25;
+      let fontSize = 14;
       ctx.font = `${fontSize}px Georgia`;
       ctx.fillStyle = reservation.colors;
 
@@ -611,7 +739,7 @@ export class PmsCalendarComponent {
         let paddingLeft = 50;
         textX = paddingLeft;
       }
-      let textY = 40;
+      let textY = 20;
       ctx.fillText(text, textX, textY);
 
       el.appendChild(canv);
@@ -626,11 +754,11 @@ export class PmsCalendarComponent {
       reservationEl.dataset.roomId = room.pms_id;
       reservationEl.dataset.reservation_id = reservation.reservation_id;
 
-      canv.style.borderTopLeftRadius = "20px";
-      canv.style.borderBottomRightRadius = "20px";
+      canv.style.borderTopLeftRadius = "10px";
+      canv.style.borderBottomRightRadius = "10px";
+      canv.style.marginTop = "5px";
 
       reservationEl.addEventListener('dragstart', this.drag);
-      canv.addEventListener('click', this.getReserationDetails);
 
     }
   }
@@ -641,11 +769,6 @@ export class PmsCalendarComponent {
     var img = new Image();
     img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
     ev.dataTransfer.setDragImage(img, 0, 0);
-    this.dragReservationEventStart = true;
-    let currentDraggedElement: any = document.querySelector(`#${ev.target.id} .reservation-info`);
-    if (this.dragReservationEventStart) {
-      currentDraggedElement.classList.add('active-drag');
-    }
     ev.dataTransfer.setData("text/plain", ev.target.id);
   }
 
@@ -760,8 +883,10 @@ export class PmsCalendarComponent {
       if (res.status == 200) {
         this.selectedDate({ target: { value: this.formatDate(this.todayDate) } });
         this.alert.alert("success", res.message, "Success", { displayDuration: 2000, pos: 'top' });
+        this.closeModal();
       } else {
         this.alert.alert("error", res.error ? res.error.message : res.message, "Error", { displayDuration: 2000, pos: 'top' });
+        this.closeModal();
       }
     })
   }

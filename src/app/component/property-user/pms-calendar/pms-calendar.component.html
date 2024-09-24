@@ -75,10 +75,9 @@
                                 </tr>
                                 <ng-container *ngFor="let room of group.data; let roomIdx = index">
                                     <tr>
-                                        <td class="px-3 pms_name d-block text-ellipsis">
-                                            <i class="bi bi-house"></i> {{ room.pms_room_name }}
+                                        <td class="px-3 pms_name d-block text-ellipsis" [ngClass]="{'text-danger fw-bold' : room.pms_room_name == 'unassign'}">
+                                            <i class="bi bi-house" *ngIf="room.pms_room_name != 'unassign'"></i> {{ room.pms_room_name == 'unassign' ? 'Assign Room' : room.pms_room_name|titlecase }}
                                         </td>
-                                        <!-- (click)="handleClickEvent(date.formateDate,date?.newData,date.room_name,date.room_id,false)" -->
                                         <ng-container
                                             *ngFor="let date of datesData; let dateIndex = index; let last = last; let even = even;">
                                             <td *ngIf="!room.data" class="hover-td {{groupIndex}}"
@@ -90,7 +89,7 @@
                                                 [class.active]="this.dragStarted ? isHighlighted(groupIndex,roomIdx, dateIndex) : ''"
                                                 (mousedown)="startHighlighting(groupIndex,roomIdx, dateIndex,date.formateDate,room,group,room.data)"
                                                 (mouseover)="this.dragStarted ? handleMouseOver(groupIndex,roomIdx, dateIndex) : '' "></td>
-                                            <td class="hover-td"
+                                            <td class="hover-td" [ngClass]="{'unassigned':room.pms_room_name == 'unassign'}"
                                                 *ngIf="room.data" [class.clash]="hasClashReservation(room, date)"
                                                 [class.disabled]="date.isDatePassed" (drop)="drop($event)"
                                                 (dragover)="allowDrop($event)"
@@ -116,9 +115,9 @@
                                                             [id]="'td' + groupIndex + roomIdx + dateIndex">
                                                             <div class="ota-img" style="pointer-events: none;">
                                                                 <img [src]="even ? 'https://i.pinimg.com/474x/a6/32/e9/a632e999c2e6ec483f9dec3baca3bb0c.jpg' : reservation.otaImg"
-                                                                    width="30" height="30" alt="">
+                                                                    width="25" height="25" alt="">
                                                             </div>
-                                                            <div class="reservation-image"
+                                                            <div class="reservation-image" style="pointer-events: none;"
                                                                 [id]="'append' + groupIndex + roomIdx + dateIndex">
                                                                 <div
                                                                     [id]="'captcha' + groupIndex + roomIdx + dateIndex">
