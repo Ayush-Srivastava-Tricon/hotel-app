@@ -90,6 +90,11 @@ const routes: Routes = [
         loadChildren:()=>import("../property-user/pms-calendar/pms-calendar.module").then(m=>m.PmsCalendarModule),
        canActivate:[AuthGuard]
       },
+       {
+        path:'manage_discount',
+        loadChildren:()=>import("../../component/manage-discount-offer/manage-discount-offer.module").then(m=>m.ManageDiscountOfferModule),
+       canActivate:[AuthGuard]
+      },
      
     ]
   }

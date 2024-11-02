@@ -22,7 +22,7 @@ export class AdminComponent {
     const userId:any = this.authService.userId ? this.authService.userId : JSON.parse(<any>localStorage.getItem("userId"));
     this.authService.logout(role_id, userId, (res: any) => {
       if (res && localStorage.getItem("isadmin")) {
-        this.router.navigate(['/adminLogin']);
+        this.router.navigate(['/login']);
         localStorage.clear();
         this.alert.alert("error","Logged Out Successfully","Success",{ displayDuration: 2000, pos: 'top' })
       } else {

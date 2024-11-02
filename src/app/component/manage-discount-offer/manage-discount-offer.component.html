@@ -1,0 +1,251 @@
+<div class="container-fluid" *ngIf="!showModal.housekeeping">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-sm-12">
+        <div class="table-wrapper shadow">
+          <div class="table-title">
+            <div class="row">
+              <div class="col-sm-6">
+                <span class="title">Discount Offers</span>
+              </div>
+              <div class="col-sm-6">
+                <a href="javascript:void(0);" (click)="openModal()" class="btn btn-success" data-toggle="modal"><span>Add
+                    Discount</span></a>
+              </div>
+            </div>
+          </div>
+          <table class="table table-shadow table-sm table-hover">
+            <thead class="thead-dark">
+              <tr class="table-row-rooms">
+                <th>Name</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="loader">
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+                <td class="tg-cly1"></td>
+              </tr>
+              <tr *ngIf="housekeeperData.length==0 && !loader">
+                <td colspan="19" class="text-center">
+                  No Data
+                </td>
+              </tr>
+              <tr *ngFor="let item of housekeeperData;let idx = index;" class="text-center align-middle">
+                <td>{{item.name}}</td>
+                <td>{{item.gender}}</td>
+                <td>{{item.dob}}</td>
+                <td>{{item.mobile}}</td>
+                <td>{{item.email}}</td>
+                <td>
+                  <div class="dropdown">
+                    <i class="btn btn-light btn-sm bi bi-three-dots-vertical" (click)="showDropDown(idx)"></i>
+                    <div class="dropdown-menu d-block" (mouseleave)="showActionDropDown[idx]=false;"
+                      *ngIf="showActionDropDown[idx]">
+                      <!-- <a class="dropdown-item">Change Status</a> -->
+                      <a class="dropdown-item" (click)="editKeeperOpenModal(item)">Edit Keeper</a>
+                      <a class="dropdown-item" (click)="mapKeeperModal(item.id)">Map with PMS</a>
+                      <a class="dropdown-item" (click)="deleteKeeperModal(item.id)">Delete</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-fluid mt-2" *ngIf="showModal.housekeeping">
+    <div class="my-3 ms-2 d-flex justify-content-between ">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><i class="bi bi-arrow-90deg-left mx-2"></i><a href="javascript:void(0);" class="text-decoration-none "
+              (click)="backToKeeper()">Back to Manage Discount </a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{isEditModal? 'Edit':'Add'}} Discount</li>
+        </ol>
+      </nav>
+    </div>
+  
+    <div [formGroup]="discountForm" class="discount-form">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="section">
+            <h4>Discount</h4>
+            <div class="form-group">
+              <label for="name">Name *</label>
+              <input type="text" id="name" formControlName="name">
+            </div>
+            <div class="form-group">
+              <label for="type">Type</label>
+              <select id="type" formControlName="type">
+                <option value="normal">Normal offer</option>
+              </select>
+            </div>
+            <div class="form-group toggle">
+              <label>Enabled</label>
+              <div class="toggle-switch" (click)="toggleControl('enabled')">
+                <div class="switch" [class.active]="discountForm.get('enabled').value"></div>
+                <!-- <span>{{ discountForm.get('enabled').value ? 'Yes' : 'No' }}</span> -->
+              </div>
+            </div>
+            <div class="form-group toggle">
+              <label>Display on OctoSite</label>
+              <div class="toggle-switch" (click)="toggleControl('displayOnOctoSite')">
+                <div class="switch" [class.active]="discountForm.get('displayOnOctoSite').value"></div>
+                <!-- <span>{{ discountForm.get('displayOnOctoSite').value ? 'Yes' : 'No' }}</span> -->
+              </div>
+            </div>
+            <div class="form-group toggle">
+              <label>Display on Booking Engine</label>
+              <div class="toggle-switch" (click)="toggleControl('displayOnBookingEngine')">
+                <div class="switch" [class.active]="discountForm.get('displayOnBookingEngine').value"></div>
+                <!-- <span>{{ discountForm.get('displayOnBookingEngine').value ? 'Yes' : 'No' }}</span> -->
+              </div>
+            </div>
+            <div class="form-group toggle">
+              <label>Show on OTA</label>
+              <div class="toggle-switch" (click)="toggleControl('showOnOTA')">
+                <div class="switch" [class.active]="discountForm.get('showOnOTA').value"></div>
+                <!-- <span>{{ discountForm.get('showOnOTA').value ? 'Yes' : 'No' }}</span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="section">
+            <h4>Restrictions</h4>
+            <div class="form-group">
+              <label>Valid for stays from</label>
+              <input type="text" formControlName="validFrom" placeholder="Leave empty field for all dates.">
+            </div>
+            <div class="form-group">
+              <label>Valid for stays to</label>
+              <input type="text" formControlName="validTo" placeholder="Leave empty field for all dates.">
+            </div>
+            <div class="form-group">
+              <label>Valid for reservations made from</label>
+              <input type="text" formControlName="reservationsFrom" placeholder="Leave empty field for all dates.">
+            </div>
+            <div class="form-group">
+              <label>Valid for reservations made to</label>
+              <input type="text" formControlName="reservationsTo" placeholder="Leave empty field for all dates.">
+            </div>
+            <div class="form-group toggle">
+              <label>Mobile Only</label>
+              <div class="toggle-switch" (click)="toggleControl('mobileOnly')">
+                <div class="switch" [class.active]="discountForm.get('mobileOnly').value"></div>
+                <span>{{ discountForm.get('mobileOnly').value ? 'Yes' : 'No' }}</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Specific geographic areas</label>
+              <select formControlName="geographicAreas">
+                <option value="all">All regions</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Days before arrival: between 0 and 999</label>
+              <input type="range" formControlName="daysBeforeArrival" min="0" max="999">
+            </div>
+            <div class="form-group">
+              <label>Length of stay: between 1 and 365</label>
+              <input type="range" formControlName="lengthOfStay" min="1" max="365">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="section">
+            <h4>Value</h4>
+            <div class="form-group">
+              <label>Fixed value discount *</label>
+              <input type="number" formControlName="fixedValueDiscount">
+              <span>EUR</span>
+            </div>
+            <div class="form-group">
+              <label>Percent discount</label>
+              <div class="percent-circle">
+                {{ discountForm.get('percentDiscount').value }}%
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+    
+        </div>
+      </div>
+    
+    
+    </div>
+    
+      <div class="form-buttons">
+        <div class="d-flex align-items-center">
+          <button type="submit" class="btn btn-success" (click)="isEditModal ? editHousekeeping() : saveHousekeeping()"
+            [disabled]="loader">{{isEditModal? 'Update':'Save'}}</button>
+          <div class="spinner-border text-primary mx-2" *ngIf="loader"></div>
+        </div>
+      </div>
+  </div>
+  
+  <!-- DELETE Modal -->
+  <div class="modal" *ngIf="showModal.delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content delete-modal">
+            <div class="modal-body">
+                <ng-container *ngIf="showModal.delete">
+                    <div class="modal-header flex-row">
+                        <h4 class="modal-title w-100">Are you sure?</h4>
+                        <button (click)="closeModal()" type="button" class="btn btn-sm btn-ligt close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Do you really want to delete the Keeper ?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            (click)="closeModal()">Cancel</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteRoom()">Delete</button>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showModal.map">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content delete-modal">
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h5 class="modal-title">Map HouseKeeper</h5>
+                    <button type="button" class="btn btn-light btn-sm" (click)="closeModal()">
+                      <span >&times;</span>
+                    </button>
+                  </div>
+                  <div class="row my-4">
+                    <div class="col-sm-12" *ngIf="pmsData.length>0">
+                      
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 d-flex">
+                        <button class="btn btn-success" [disabled]="loader" (click)="mapHousekeeper()">Map</button>
+                        <div class="spinner-border text-primary mx-2" *ngIf="loader"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  <div class="modal-backdrop fade in" *ngIf="showModal.delete||showModal.map"></div>
